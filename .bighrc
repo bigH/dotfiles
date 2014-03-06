@@ -1,0 +1,19 @@
+[[ -f ~/.shutil ]] && source ~/.shutil
+
+alias vim='vim -p'
+
+export PATH=$PATH:~/.bigh/bin
+
+portcheck () {
+  if [ -z "$1" ]
+  then
+    echo "ERROR: specify port number."
+  else
+    re='^[0-9]+$'
+    if ! [[ $1 =~ $re ]] ; then
+      echo "ERROR: argument must be a port number."
+    else
+      lsof -n -i4TCP:$1 | grep LISTEN
+    fi
+  fi
+}
