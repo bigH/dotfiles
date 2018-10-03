@@ -3,12 +3,43 @@
 # That matches how "git config --global" edits the file.
 
 [user]
-        name = "Hiren Hiranandani"
-        email = "hiren@stripe.com"
+  name = "Hiren Hiranandani"
+  email = "hiren@stripe.com"
 
 [push]
-        default = simple
+  default = simple
 
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
 [core]
-        preloadindex = true
+  preloadindex = true
+
+[color]
+	ui = true
+
+[alias]
+# Show Status in Summary Form
+	st = status --short
+# List History
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+# List History in Long Format
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+# List History with Relative Dates
+	ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+# List History with Short Format
+	le = log --oneline --decorate
+# List a File's Log
+	filelog = log -u
+# Last Commit Diff
+	lastdiff = diff --cached HEAD^
+# Last Commit
+	last = "!git ll -1"
+# Files Containing $1
+	find = "!git ls-files | grep -i"
+# Ignore Case by Default
+	grep = grep -Ii
+# Print .gitconfig
+	showconfig = "!cat ~/.gitconfig"
+# Print Aliases
+	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
+[push]
+	default = matching
