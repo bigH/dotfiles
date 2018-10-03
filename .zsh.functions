@@ -1,9 +1,9 @@
-[[ -f ~/.shutil ]] && source ~/.shutil
+# jj - list autojump directories
+jj() {
+  autojump -s
+}
 
-alias vim='vim -p'
-
-export PATH=$PATH:~/.bigh/bin
-
+# portcheck - check if a port is available
 portcheck () {
   if [ -z "$1" ]
   then

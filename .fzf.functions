@@ -1,0 +1,54 @@
+## CD
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# fda - including hidden directories
+fda() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+
+# cdf - cd into the directory of the selected file
+fdc() {
+  local file
+  local dir
+  file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+}
+
+## VIM
+
+# fv - mult-select to choose files to edit
+fv() {
+  vim $(fzf -m)
+}
+
+# v - open files in ~/.viminfo
+v() {
+  local files
+  files=$(grep '^>' ~/.viminfo | cut -c3- |
+          while read line; do
+            [ -f "${line/\~/$HOME}" ] && echo "$line"
+          done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
+}
+
+## GIT
+
+# gaf - add files to staging
+gaf() {
+  git ls-files -m -o --exclude-standard | \
+    fzf -m --print0 | \
+    xargs -0 -o -t git add
+}
+
+# gcof - checkout files (basically make working copy like staging)
+gcof() {
+  git ls-files -m -o --exclude-standard | \
+    fzf -m --print0 | \
+    xargs -0 -o -t git checkout
+}

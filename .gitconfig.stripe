@@ -1,0 +1,14 @@
+# Please indent options with one tab when editing defaults in
+# https://github.com/stripe-internal/marionette-puppet-config/blob/master/modules/git/templates/gitconfig.erb
+# That matches how "git config --global" edits the file.
+
+[user]
+        name = "Hiren Hiranandani"
+        email = "hiren@stripe.com"
+
+[push]
+        default = simple
+
+# http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
+[core]
+        preloadindex = true

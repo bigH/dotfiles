@@ -1,0 +1,9 @@
+# Add Visual Studio Code (code)
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# Add Local `bin`
+export PATH="/usr/local/bin:$PATH"
+
+# Add Local `bin`
+export PATH="$HOME/bin:$PATH"
+

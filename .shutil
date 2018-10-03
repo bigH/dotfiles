@@ -1,4 +1,0 @@
-include () {
-    [[ -f "$1" ]] && source "$1" || echo "ERROR: could not source $1"
-}
-

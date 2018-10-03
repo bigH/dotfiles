@@ -1,7 +1,109 @@
-"{{{Auto Commands
+"{{{ Misc
 
-" Automatically cd into the directory that the file is in
-autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
+set fileencodings=utf-8
+set encoding=utf-8
+
+" Necesary  for lots of cool vim things
+set nocompatible
+
+" This shows what you are typing as a command.  I love this!
+set showcmd
+
+" Set syntax highlighting to always on
+syntax enable
+
+" 20 tabs max per vim session
+set tabpagemax=20
+
+" Who doesn't like autoindent?
+set autoindent
+
+" Use english for spellchecking, but don't spellcheck by default
+if version >= 700
+   set spl=en spell
+   set nospell
+endif
+
+" Cool tab completion stuff
+set wildmenu
+set wildmode=list:longest,full
+
+" Show highlighting on search matches
+set hlsearch
+
+" Show search matches while typing
+set incsearch
+
+" set visualbell, to silence the annoying audible bell
+set vb
+
+" When I close a tab, remove the buffer
+set nohidden
+
+" Set off the other paren
+highlight MatchParen ctermbg=4
+
+" Move backups and temps into home directory
+set backup
+set backupdir=~/.vim/backup
+set directory=~/.vim/tmp
+
+"}}}
+
+
+"{{{ Text Formatting
+
+" show whitespace? list/nolist
+set nolist
+
+" 2 space 'tabs'
+set tabstop=2
+
+" 2 space indentations
+set shiftwidth=2
+
+" expand tabs to spaces
+set expandtab
+
+" tabs are dumb
+set nosmarttab
+
+" shift to multiples of tabstop
+set shiftround
+
+"}}}
+
+
+"{{{ Highlighting
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+au ColorScheme * highlight ExtraWhitespace guibg=red
+au BufEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhiteSpace /\s\+$/
+
+"}}}
+
+
+"{{{ UI
+
+" Show the cursor position all the time
+set ruler
+
+" Display current mode
+set showmode
+
+" Show row numbers on the left side
+set number
+
+" Status line gnarliness
+set laststatus=2
+set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+
+"}}}
+
+
+"{{{ Auto Commands
 
 " Remove any trailing whitespace that is in the file
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
@@ -34,96 +136,6 @@ augroup END
 
 "}}}
 
-"{{{Misc Settings
-
-" Necesary  for lots of cool vim things
-set nocompatible
-
-" This shows what you are typing as a command.  I love this!
-set showcmd
-
-" Folding Stuffs
-set foldmethod=marker
-
-" Needed for Syntax Highlighting and stuff
-filetype on
-filetype plugin on
-syntax enable
-set grepprg=grep\ -nH\ $*
-
-" 20 tabs max per vim session
-set tabpagemax=20
-
-" Who doesn't like autoindent?
-set autoindent
-
-" Spaces are better than a tab character
-set expandtab
-set smarttab
-
-" Who wants an 8 character tab?  Not me!
-set shiftwidth=4
-set softtabstop=4
-
-" Use english for spellchecking, but don't spellcheck by default
-if version >= 700
-   set spl=en spell
-   set nospell
-endif
-
-" Cool tab completion stuff
-set wildmenu
-set wildmode=list:longest,full
-
-" Enable mouse support in console
-set mouse=a
-
-" Line Numbers PWN!
-set number
-
-" Ignoring case is a fun trick
-set ignorecase
-
-" And so is Artificial Intellegence!
-set smartcase
-
-" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-inoremap jj <Esc>
-nnoremap JJJJ <Nop>
-
-" Incremental searching is sexy
-set incsearch
-
-" Highlight things that we find with the search
-set hlsearch
-
-" When I close a tab, remove the buffer
-set nohidden
-
-" Set off the other paren
-highlight MatchParen ctermbg=4
-
-" Move backups and temps into home directory
-set backup
-set backupdir=~/.vim/backup
-set directory=~/.vim/tmp
-
-" Disable Ex-Mode
-nnoremap Q <Nop>
-
-"}}}
-
-"{{{Look and Feel
-
-" Status line gnarliness
-set laststatus=2
-set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
-
-" Colorize Current Line
-set cul
-hi CursorLine term=none cterm=none ctermbg=0
-
-"}}}
 
 "{{{ Paste Toggle
 
@@ -142,40 +154,101 @@ func! Paste_on_off()
    return
 endfunc
 
-"}}}
-
-"{{{ Mappings
-
-" Next Tab -- Mac Specific
-nnoremap <silent> <Left> :tabprevious<CR>
-nnoremap <silent> <Leader>h :tabprevious<CR>
-
-" Previous Tab -- Mac Specific
-nnoremap <silent> <Right> :tabnext<CR>
-nnoremap <silent> <Leader>l :tabnext<CR>
-
-" First Tab -- Mac Specific
-nnoremap <silent> <Up> :tabfirst<CR>
-nnoremap <silent> <Leader>k :tabfirst<CR>
-
-" Previous Tab -- Mac Specific
-nnoremap <silent> <Down> :tablast<CR>
-nnoremap <silent> <Leader>j :tablast<CR>
-
 " Paste Mode!  Dang! <F10>
+
 nnoremap <silent> <F10> :call Paste_on_off()<CR>
 set pastetoggle=<F10>
+
+"}}}
+
+
+"{{{ Key Mappings
+
+" Sane Y
+nnoremap <silent> Y y$
+
+" Next Tab -- Mac Specific
+nmap <silent> <Left> :tabprevious<CR>
+imap <silent> <Left> <Esc>:tabprevious<CR>
+nmap <silent> H :tabprevious<CR>
+
+" Previous Tab -- Mac Specific
+nmap <silent> <Right> :tabnext<CR>
+imap <silent> <Right> <Esc>:tabnext<CR>
+nmap <silent> L :tabnext<CR>
+
+" First Tab -- Mac Specific
+nmap <silent> <Up> :tabfirst<CR>
+imap <silent> <Up> <Esc>:tabfirst<CR>
+
+" Previous Tab -- Mac Specific
+nmap <silent> <Down> :tablast<CR>
+imap <silent> <Down> <Esc>:tablast<CR>
 
 " Up and down are more logical with g..
 nnoremap <silent> k gk
 nnoremap <silent> j gj
+
+" Map <Space><Space> to save
+nnoremap <silent> <Space><Space> :wa<Enter>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 map N Nzz
 map n nzz
 
+" NOT NEEDED if mapping Caps Lock to Escape
+" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
+" inoremap jj <Esc>
+" inoremap <Esc> <NOP>
+
+" Disable Ex-Mode
+nnoremap Q <Nop>
+
 "}}}
 
-filetype plugin indent on
-syntax on
+
+"{{{ Vundle
+
+" Required for vundle
+set nocompatible
+filetype off
+
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Let Vundle manage Vundle
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugins
+Plugin 'kana/vim-surround'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'airblade/vim-rooter'
+Plugin 'scrooloose/nerdcommenter'
+
+call vundle#end()
+
+" Turn filetype back on after Vundle
+filetype on
+filetype plugin on
+
+"}}}
+
+
+"{{{ Plugin Configurations
+
+" Map `K` to FZF file lister (Ctrl-T for new tab)
+map K :Files<CR>
+
+" Map `K` to FZF file lister (Ctrl-T for new tab)
+map S :GFiles?<CR>
+
+" Only respect .git dir
+let g:rooter_patterns = ['.git/']
+
+"}}}
+
+
+

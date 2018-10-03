@@ -1,5 +1,0 @@
-[[ -f ~/.shutil ]] && source ~/.shutil
-
-alias resource='source ~/.zshrc'
-
-include ~/.bighrc
