@@ -16,6 +16,12 @@
 [color]
 	ui = true
 
+[push]
+	default = matching
+
+[diff]
+	algorithm = patience
+
 [alias]
 # Show Status in Summary Form
 	st = status --short
@@ -31,15 +37,17 @@
 	filelog = log -u
 # Last Commit Diff
 	lastdiff = diff --cached HEAD^
+# Last Commit Diff
+	lastdiff = diff --cached HEAD^
 # Last Commit
 	last = "!git ll -1"
 # Files Containing $1
 	find = "!git ls-files | grep -i"
 # Ignore Case by Default
 	grep = grep -Ii
+# Use FZF to add files
+	af = "!zsh -c 'gaf'"
 # Print .gitconfig
 	showconfig = "!cat ~/.gitconfig"
 # Print Aliases
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
-[push]
-	default = matching

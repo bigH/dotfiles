@@ -239,14 +239,27 @@ filetype plugin on
 
 "{{{ Plugin Configurations
 
+" -- fzf --
+
 " Map `K` to FZF file lister (Ctrl-T for new tab)
 map K :Files<CR>
 
 " Map `K` to FZF file lister (Ctrl-T for new tab)
 map S :GFiles?<CR>
 
+" -- vim-rooter --
+
 " Only respect .git dir
 let g:rooter_patterns = ['.git/']
+
+" -- nerdcommenter --
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
 
 "}}}
 
