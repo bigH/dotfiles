@@ -34,6 +34,9 @@ set hlsearch
 " Show search matches while typing
 set incsearch
 
+" Ignore case in search
+set ignorecase
+
 " set visualbell, to silence the annoying audible bell
 set vb
 
@@ -47,6 +50,9 @@ highlight MatchParen ctermbg=4
 set backup
 set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
+
+" Remember commands
+set history=1000
 
 "}}}
 
@@ -67,6 +73,9 @@ set expandtab
 
 " tabs are dumb
 set nosmarttab
+
+" backspace should eat all
+set backspace=indent,eol,start
 
 " shift to multiples of tabstop
 set shiftround
@@ -93,8 +102,15 @@ set ruler
 " Display current mode
 set showmode
 
-" Show row numbers on the left side
-set number
+" Show relative numbers on the left side
+set relativenumber
+
+" Don't allow cursor to be at edges
+set scrolloff=1
+set sidescrolloff=5
+
+" Delete comment character when joining lines
+set formatoptions+=j
 
 " Status line gnarliness
 set laststatus=2
@@ -110,7 +126,9 @@ autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 " Restore cursor position to where it was before
 augroup JumpCursorOnEdit
+
    au!
+
    autocmd BufReadPost *
             \ if expand("<afile>:p:h") !=? $TEMP |
             \   if line("'\"") > 1 && line("'\"") <= line("$") |
@@ -123,6 +141,7 @@ augroup JumpCursorOnEdit
             \     exe JumpCursorOnEdit_foo |
             \   endif |
             \ endif
+
    " Need to postpone using "zv" until after reading the modelines.
    autocmd BufWinEnter *
             \ if exists("b:doopenfold") |
@@ -132,23 +151,39 @@ augroup JumpCursorOnEdit
             \   endif |
             \   unlet b:doopenfold |
             \ endif
+
 augroup END
+
+" When editing a file, always jump to the last known cursor position.
+" Don't do it when the position is invalid or when inside an event handler
+" (happens when dropping a file on gvim).
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
 
 "}}}
 
 
-"{{{ Paste Toggle
+"{{{ Line Number and Paste Toggle
 
-let paste_mode = 0 " 0 = normal, 1 = paste
+let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
 func! Paste_on_off()
    if g:paste_mode == 0
       set paste
       set nonumber
+      set norelativenumber
       let g:paste_mode = 1
-   else
+   elseif g:paste_mode == 1
       set nopaste
       set number
+      set norelativenumber
+      let g:paste_mode = 2
+   else
+      set nopaste
+      set nonumber
+      set relativenumber
       let g:paste_mode = 0
    endif
    return
@@ -168,22 +203,22 @@ set pastetoggle=<F10>
 nnoremap <silent> Y y$
 
 " Next Tab -- Mac Specific
-nmap <silent> <Left> :tabprevious<CR>
-imap <silent> <Left> <Esc>:tabprevious<CR>
-nmap <silent> H :tabprevious<CR>
+nmap <silent> <Left> :wincmd l<CR>:tabprevious<CR>
+imap <silent> <Left> <Esc>:wincmd l<CR>:tabprevious<CR>
+nmap <silent> H :wincmd l<CR>:tabprevious<CR>
 
 " Previous Tab -- Mac Specific
-nmap <silent> <Right> :tabnext<CR>
-imap <silent> <Right> <Esc>:tabnext<CR>
-nmap <silent> L :tabnext<CR>
+nmap <silent> <Right> :wincmd l<CR>:tabnext<CR>
+imap <silent> <Right> <Esc>:wincmd l<CR>:tabnext<CR>
+nmap <silent> L :wincmd l<CR>:tabnext<CR>
 
 " First Tab -- Mac Specific
-nmap <silent> <Up> :tabfirst<CR>
-imap <silent> <Up> <Esc>:tabfirst<CR>
+nmap <silent> <Up> :wincmd l<CR>:tabfirst<CR>
+imap <silent> <Up> <Esc>:wincmd l<CR>:tabfirst<CR>
 
 " Previous Tab -- Mac Specific
-nmap <silent> <Down> :tablast<CR>
-imap <silent> <Down> <Esc>:tablast<CR>
+nmap <silent> <Down> :wincmd l<CR>:tablast<CR>
+imap <silent> <Down> <Esc>:wincmd l<CR>:tablast<CR>
 
 " Up and down are more logical with g..
 nnoremap <silent> k gk
@@ -198,12 +233,32 @@ map N Nzz
 map n nzz
 
 " NOT NEEDED if mapping Caps Lock to Escape
-" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
+"" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
 " inoremap jj <Esc>
 " inoremap <Esc> <NOP>
 
-" Disable Ex-Mode
-nnoremap Q <Nop>
+" Disable Ex-Mode and map Q to quit
+map Q :q<CR>
+
+" Avoid deleting text while inserting that cannot be recovered
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+
+"}}}
+
+
+"{{{ Often mistyped
+
+command! Q  q
+command! Qa  qa
+command! QA  qa
+command! W  w
+command! E  e
+command! Wq wq
+command! WQ wq
+command! WQA wqa
+command! WQa wqa
+command! Wqa wqa
 
 "}}}
 
@@ -227,6 +282,15 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'airblade/vim-rooter'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'w0rp/ale'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'tmhedberg/matchit'
+Plugin 'kana/vim-textobj-user'
+Plugin 'nelstrom/vim-textobj-rubyblock'
+
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'mxw/vim-jsx'
 
 call vundle#end()
 
@@ -260,6 +324,45 @@ let g:NERDSpaceDelims = 1
 " Align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
 
+" -- ale --
+
+" Execution configs
+let g:ale_linters = {}
+let g:ale_linters['ruby'] = ['rubocop']
+let g:ale_ruby_rubocop_executable = 'bundle'
+let g:ale_linters['javascript'] = ['eslint', 'flow']
+
+" Don't lint while typing
+let g:ale_lint_on_text_changed = 'never'
+
+" Show the full list of lint errors
+let g:ale_open_list = 1
+
+" -- nerd-tree --
+
+" Set it to not show `? for help`
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+" F1 opens NERDTree
+nmap <silent> <F1> :NERDTreeFind<CR>
+imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
+
+" F2 closes NERDTree
+nmap <silent> <F2> :NERDTreeClose<CR>
+imap <silent> <F2> <Esc>:NERDTreeClose<CR>a
+
+" F3 focus toggles NERDTree
+nmap <silent> <F3> :wincmd w<CR>
+imap <silent> <F3> <Esc>:wincmd w<CR>a
+
+" -- airline --
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffers_label = ''
+let g:airline#extensions#tabline#tabs_label = ''
+
+" -- vim-textobj-rubyblock --
+runtime macros/matchit.vim
 
 "}}}
 

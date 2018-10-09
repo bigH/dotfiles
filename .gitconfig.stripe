@@ -37,16 +37,12 @@
 	filelog = log -u
 # Last Commit Diff
 	lastdiff = diff --cached HEAD^
-# Last Commit Diff
-	lastdiff = diff --cached HEAD^
-# Last Commit
-	last = "!git ll -1"
+# Last Commit Info
+	last = "!git --no-pager log -1"
 # Files Containing $1
 	find = "!git ls-files | grep -i"
 # Ignore Case by Default
 	grep = grep -Ii
-# Use FZF to add files
-	af = "!zsh -c 'gaf'"
 # Print .gitconfig
 	showconfig = "!cat ~/.gitconfig"
 # Print Aliases
