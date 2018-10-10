@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+if [ "$#" -ne 1 ]; then
+  echo "ERROR: exactly one argument required."
+elif [ ! -f "$1" ]; then
+  echo "ERROR: '$1' does not exist or is not a file."
+else
+  FILE=$(basename -- "$1")
+  EXT=$(echo "$FILE" | sed 's/^.*\.//')
+
+  case "$EXT" in
+    rb)
+      cat "$1" | \
+      grep --color=never -E "(^[[:space:]]*module |^[[:space:]]*class |^[[:space:]]*def |^[[:space:]]*extend |^[[:space:]]*describe |^[[:space:]]*it )"
+      ;;
+    jsx)
+      cat "$1" | \
+      grep --color=never -E "(^[[:space:]]*export |^[[:space:]]*constructor\\( |^[[:space:]]*.*\\=.*\\=>.*|^[[:space:]]*function )" | grep "{$" | \
+        sed 's/=>[[:space:]]{$/=> {}/' | sed 's/[[:space:]]*{$//'
+      ;;
+    *)
+      echo "-- Unsupported file type '.$EXT' for '$1' --"
+      echo ""
+      cat "$1"
+      exit 1
+      ;;
+  esac
+fi
+

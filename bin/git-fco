@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+git_fco() {
+  local branches target
+  branches=$(git branch | grep -v HEAD) || return
+  target=$(echo "$branches" |
+           fzf --no-hscroll --no-multi \
+               --ansi --preview="git log -30 --pretty=format:%s $(echo {} | cut -c3-)") || return
+  echo git checkout $(echo "$target" | cut -c3-) &&
+  git checkout $(echo "$target" | cut -c3-)
+}
+
+git_fco

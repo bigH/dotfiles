@@ -87,7 +87,7 @@ echo ""
 
 echo ""
 
-echo '  -- Recommend: `brew install fzf ag`'
+echo '  -- Recommend: `brew install fzf ag ccat`'
 echo '  -- ... there may be more'
 
 echo ""

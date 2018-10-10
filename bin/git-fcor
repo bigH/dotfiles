@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+git_fcor() {
+  local branches target
+  branches=$(git branch --remotes | grep -v HEAD | cut -c3-) || return
+  target=$(echo "$branches" |
+           fzf --no-hscroll --no-multi \
+               --ansi --preview="git log -30 --pretty=format:%s {}") || return
+  git checkout -b $(echo "$target" | cut -d'/' -f2-) $(echo "$target") &&
+  git checkout -b $(echo "$target" | cut -d'/' -f2-) $(echo "$target")
+}
+
+git_fcor

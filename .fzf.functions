@@ -5,27 +5,36 @@ fd() {
   local dir
   dir=$(find ${1:-.} -path '*/\.*' -prune \
                   -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
+    echo cd "$dir" &&
+    cd "$dir"
 }
 
 # fda - including hidden directories
 fda() {
   local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) &&
+    echo cd "$dir" &&
+    cd "$dir"
 }
 
 # cdf - cd into the directory of the selected file
 fdc() {
   local file
   local dir
-  file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+  file=$(fzf +m -q "$1") &&
+    dir=$(dirname "$file") &&
+    echo cd "$dir" &&
+    cd "$dir"
 }
 
 ## VIM
 
 # fv - mult-select to choose files to edit
 fv() {
-  vim $(fzf -m)
+  local files
+  files=$(fzf -m -q "$1" --preview="preview {}") &&
+    echo $files &&
+    vim $(echo $files | paste -sd ' ' -)
 }
 
 # v - open files in ~/.viminfo
@@ -34,21 +43,6 @@ v() {
   files=$(grep '^>' ~/.viminfo | cut -c3- |
           while read line; do
             [ -f "${line/\~/$HOME}" ] && echo "$line"
-          done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
+          done | fzf -d -m -q "$*" -1 --preview='sh -c preview\ $(echo {} |  sed "s/~/\$HOME/" )') && vim ${files//\~/$HOME}
 }
 
-## GIT
-
-# gaf - add files to staging
-gaf() {
-  git ls-files -m -o --exclude-standard | \
-    fzf -m --print0 | \
-    xargs -0 -o -t git add
-}
-
-# gcof - checkout files (basically make working copy like staging)
-gcof() {
-  git ls-files -m -o --exclude-standard | \
-    fzf -m --print0 | \
-    xargs -0 -o -t git checkout
-}

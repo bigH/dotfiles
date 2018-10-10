@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 
-git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -o -t git add
+git_fa() {
+  local files targets
+  files=$(git ls-files -m -o --exclude-standard) || return
+  targets=$(echo "$files" | fzf -m) || return
+  echo git add $(echo "$targets") &&
+  git add $(echo "$targets")
+}
+
+git_fa
