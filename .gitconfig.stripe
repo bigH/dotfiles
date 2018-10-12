@@ -37,6 +37,8 @@
 	filelog = log -u
 # Last Commit Diff
 	lastdiff = diff --cached HEAD^
+# Diff Against `master`
+	masterdiff = diff origin/master --
 # Last Commit Info
 	last = "!git --no-pager log -1"
 # Files Containing $1

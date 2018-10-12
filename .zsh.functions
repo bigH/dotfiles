@@ -17,3 +17,17 @@ portcheck () {
     fi
   fi
 }
+
+# bip - install (one or multiple) selected application(s)
+# (mnemonic [B]rew [I]nstall [P]lugin)
+bip() {
+  local apps casks targets
+  apps=$(brew search | awk '{print "\x1b[31;1mbrew\x1b[m " $1}') &&
+  casks=$(brew search --casks 2>/dev/null | awk '{print "\x1b[34;1mcask\x1b[m " $1}') &&
+  targets=$(
+    (echo "$apps"; echo "$casks") |
+    fzf --ansi -m -d " " -n 2 --preview="echo $(echo {} | awk 'if ($1 == "brew") print "brew info $2"; else print "brew cask info $2"')"
+  ) &&
+  brew install $(echo $targets | cut -d ' ' -f2-)
+}
+

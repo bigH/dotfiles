@@ -87,16 +87,14 @@ echo ""
 
 echo ""
 
-echo '  -- Recommend: `brew install fzf ag ccat`'
-echo '  -- ... there may be more'
+echo '  -- Recommendations:'
+echo ''
+echo '     `brew install fzf ag ccat coreutils`'
+echo '     ... there may be more'
+echo ''
+echo '     `~/.hiren/.osx`'
+echo '     ... sets up OS X in a nice way'
+echo ''
+echo 'Done!'
+echo ''
 
-echo ""
-
-echo '  -- Recommend: `~/.hiren/.osx`'
-echo '  -- ... sets up OS X in a nice way'
-
-echo ""
-
-echo "Done!"
-
-echo ""

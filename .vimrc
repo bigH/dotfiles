@@ -54,6 +54,14 @@ set directory=~/.vim/tmp
 " Remember commands
 set history=1000
 
+" Indent wrapped lines up to the same level
+if exists('&breakindent')
+  set breakindent
+endif
+
+" Use the mouse
+set mouse=a
+
 "}}}
 
 
@@ -202,23 +210,31 @@ set pastetoggle=<F10>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Next Tab -- Mac Specific
+" Next Tab - unfocus NERDTree
 nmap <silent> <Left> :wincmd l<CR>:tabprevious<CR>
 imap <silent> <Left> <Esc>:wincmd l<CR>:tabprevious<CR>
 nmap <silent> H :wincmd l<CR>:tabprevious<CR>
 
-" Previous Tab -- Mac Specific
+" Previous Tab - unfocus NERDTree
 nmap <silent> <Right> :wincmd l<CR>:tabnext<CR>
 imap <silent> <Right> <Esc>:wincmd l<CR>:tabnext<CR>
 nmap <silent> L :wincmd l<CR>:tabnext<CR>
 
-" First Tab -- Mac Specific
+" First Tab - unfocus NERDTree
 nmap <silent> <Up> :wincmd l<CR>:tabfirst<CR>
 imap <silent> <Up> <Esc>:wincmd l<CR>:tabfirst<CR>
 
-" Previous Tab -- Mac Specific
+" Previous Tab - unfocus NERDTree
 nmap <silent> <Down> :wincmd l<CR>:tablast<CR>
 imap <silent> <Down> <Esc>:wincmd l<CR>:tablast<CR>
+
+" Move Tab Left
+nmap <silent> <S-Left> :tabm -1<CR>
+imap <silent> <S-Left> <Esc>:tabm -1<CR>
+
+" Move Tab Right
+nmap <silent> <S-Right> :tabm +1<CR>
+imap <silent> <S-Right> <Esc>:tabm +1<CR>
 
 " Up and down are more logical with g..
 nnoremap <silent> k gk
@@ -247,8 +263,9 @@ inoremap <c-w> <c-g>u<c-w>
 "}}}
 
 
-"{{{ Often mistyped
+"{{{ Commands
 
+" Commonly mispelled
 command! Q  q
 command! Qa  qa
 command! QA  qa
@@ -259,6 +276,9 @@ command! WQ wq
 command! WQA wqa
 command! WQa wqa
 command! Wqa wqa
+
+" Write read-only file with sudo
+command! WS w !sudo tee %
 
 "}}}
 
@@ -277,6 +297,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'kana/vim-surround'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -289,6 +310,7 @@ Plugin 'tmhedberg/matchit'
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 
+" Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
 " Plugin 'mxw/vim-jsx'
 
@@ -302,6 +324,11 @@ filetype plugin on
 
 
 "{{{ Plugin Configurations
+
+" -- vim-colors-solarized --
+
+" Use correct vim colors in solarized
+colorscheme solarized
 
 " -- fzf --
 

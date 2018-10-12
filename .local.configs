@@ -1,9 +1,11 @@
-# Add Visual Studio Code (code)
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
 # Add Local `bin`
 export PATH="/usr/local/bin:$PATH"
 
-# Add Local `bin`
+# Add Home `bin`
 export PATH="$HOME/bin:$PATH"
+
+# Add `coreutils`
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
 

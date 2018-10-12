@@ -19,8 +19,6 @@ else
         sed 's/=>[[:space:]]{$/=> {}/' | sed 's/[[:space:]]*{$//'
       ;;
     *)
-      echo "-- Unsupported file type '.$EXT' for '$1' --"
-      echo ""
       cat "$1"
       exit 1
       ;;

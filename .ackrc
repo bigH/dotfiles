@@ -73,6 +73,7 @@
 --type-add=haskell:ext:hs,lhs
 --type-add=html:ext:htm,html
 --type-add=java:ext:java,properties
+--type-add=jsx:ext:jsx
 --type-add=js:ext:js,jsx
 --type-add=jsp:ext:jsp,jspx,jhtm,jhtml
 --type-add=json:ext:json

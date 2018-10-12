@@ -1,0 +1,1 @@
+ - get rid of `oh-my-zsh`
