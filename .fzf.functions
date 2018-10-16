@@ -32,12 +32,12 @@ fdc() {
 # fv - mult-select to choose files to edit
 fv() {
   local files
-  files=$(fzf -m -q "$1" --preview="preview {}") &&
-    echo $files &&
-    vim $(echo $files | paste -sd ' ' -)
+  files=$(fzf -m --preview="preview {}") &&
+    echo $files | paste -sd ' ' - &&
+    vim $* $(echo $files | paste -sd ' ' -)
 }
 
-# v - open files in ~/.viminfo
+# fvh - open files in ~/.viminfo
 fvh() {
   local files
   files=$(
@@ -45,8 +45,10 @@ fvh() {
     while read line; do
       [ -f "${line/\~/$HOME}" ] && echo "$line"
     done |
-    fzf -d -m -q "$*" -1 --preview='sh -c preview\ $(echo {} |  sed "s/~/\$HOME/" )'
-  ) && vim ${files//\~/$HOME}
+    fzf -m -1 --preview='sh -c preview\ $(echo {} |  sed "s/~/\$HOME/" )'
+  ) &&
+  echo $files | paste -sd ' ' - &&
+  vim $* $(echo ${files//\~/$HOME})
 }
 
 ## RANDOM

@@ -179,6 +179,7 @@ let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
 func! Paste_on_off()
    if g:paste_mode == 0
+      sign unplace *
       set paste
       set nonumber
       set norelativenumber
