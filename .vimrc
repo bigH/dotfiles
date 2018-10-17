@@ -310,6 +310,9 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'tmhedberg/matchit'
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -370,24 +373,43 @@ let g:ale_open_list = 1
 
 " Set it to not show `? for help`
 let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-
-" F1 opens NERDTree
-nmap <silent> <F1> :NERDTreeFind<CR>
-imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
-
-" F2 closes NERDTree
-nmap <silent> <F2> :NERDTreeClose<CR>
-imap <silent> <F2> <Esc>:NERDTreeClose<CR>a
-
-" F3 focus toggles NERDTree
-nmap <silent> <F3> :wincmd w<CR>
-imap <silent> <F3> <Esc>:wincmd w<CR>a
 
 " -- airline --
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = ''
 let g:airline#extensions#tabline#tabs_label = ''
+
+" -- easytags --
+
+" Put tags in these directories
+set tags=./tags;,~/.vimtags
+
+" Re-tag file after these events
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+
+" Update tags file asyncronously
+let g:easytags_async = 1
+
+
+" -- tagbar --
+
+" -- IDE Feel --
+
+" F1 opens NERDTree
+nmap <silent> <F1> :NERDTreeFind<CR>
+imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
+
+" F2 opens Tagbar
+nmap <silent> <F2> :TagbarOpen<CR>
+imap <silent> <F2> <Esc>:TagbarOpen<CR>a
+
+" F3 focus rotation
+nmap <silent> <F3> :wincmd w<CR>
+imap <silent> <F3> <Esc>:wincmd w<CR>a
+
+" F4 closes both
+nmap <silent> <F4> :NERDTreeClose<CR>:TagbarClose<CR>
+imap <silent> <F4> <Esc>:NERDTreeClose<CR>:TagbarClose<CR>a
 
 " -- vim-textobj-rubyblock --
 runtime macros/matchit.vim

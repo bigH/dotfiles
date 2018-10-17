@@ -79,6 +79,7 @@ echo ""
 echo "ZSH Setup Complete!"
 echo ""
 
+link_if_possible ~/.hiren/.gitignore_global ~/.gitignore_global
 link_if_possible ~/.hiren/.gitconfig.stripe ~/.gitconfig
 link_if_possible ~/.hiren/.ackrc ~/.ackrc
 link_if_possible ~/.hiren/bin ~/bin
@@ -89,7 +90,7 @@ echo ""
 
 echo '  -- Recommendations:'
 echo ''
-echo '     `brew install fzf ag ccat coreutils`'
+echo '     `brew install fzf ag ccat coreutils ctags`'
 echo '     ... there may be more'
 echo ''
 echo '     `~/.hiren/.osx`'

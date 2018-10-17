@@ -1,0 +1,8 @@
+# find ctags directory using brew
+export CTAGS_HOME=`brew info ctags | grep /usr/local/Cellar | cut -d' ' -f1`
+
+if [ -d "$CTAGS_HOME" ]; then
+  export PATH="$CTAGS_HOME/bin:$PATH"
+else
+  echo "ERROR: can't find \$CTAGS_HOME; got '$CTAGS_HOME'"
+fi

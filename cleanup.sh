@@ -2,6 +2,7 @@
 
 # unlinks
 unlink ~/.ackrc
+unlink ~/.gitignore_global
 unlink ~/.gitconfig
 unlink ~/.vimrc
 unlink ~/.zshrc
