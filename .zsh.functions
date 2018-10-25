@@ -18,6 +18,7 @@ portcheck () {
   fi
 }
 
+# TODO - support building 2 commands `brew cask` and `brew`
 # bip - install (one or multiple) selected application(s)
 # (mnemonic [B]rew [I]nstall [P]lugin)
 bip() {
@@ -28,6 +29,13 @@ bip() {
     (echo "$apps"; echo "$casks") |
     fzf --ansi -m -d " " -n 2 --preview="echo $(echo {} | awk 'if ($1 == "brew") print "brew info $2"; else print "brew cask info $2"')"
   ) &&
-  brew install $(echo $targets | cut -d ' ' -f2-)
+  echo brew install $(echo $targets | cut -d ' ' -f2-)
+}
+
+
+# TODO - check arguments
+# lines [from] [to] - for piping only
+lines() {
+  head -$(echo "$2" | bc) | tail -$(echo "$2 - $1 + 1" | bc)
 }
 

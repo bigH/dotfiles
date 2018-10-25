@@ -51,6 +51,9 @@ set backup
 set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
 
+" Save undo-history
+set undodir=~/.vim/undodir
+
 " Remember commands
 set history=1000
 
@@ -61,6 +64,10 @@ endif
 
 " Use the mouse
 set mouse=a
+
+" Put tags in the `.tags` file - `$PROJECT_ROOT/.tags`
+" (because of `vim-rooter`)
+set tags=.tags;/
 
 "}}}
 
@@ -129,6 +136,9 @@ set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 "{{{ Auto Commands
 
+" Rehighlight syntax on resize (maybe it works?)
+" autocmd VimResized * syntax enable
+
 " Remove any trailing whitespace that is in the file
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
@@ -178,30 +188,29 @@ autocmd BufReadPost *
 let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
 func! Paste_on_off()
-   if g:paste_mode == 0
-      sign unplace *
-      set paste
-      set nonumber
-      set norelativenumber
-      let g:paste_mode = 1
-   elseif g:paste_mode == 1
-      set nopaste
-      set number
-      set norelativenumber
-      let g:paste_mode = 2
-   else
-      set nopaste
-      set nonumber
-      set relativenumber
-      let g:paste_mode = 0
-   endif
-   return
+  if g:paste_mode == 0
+    sign unplace *
+    set paste
+    set nonumber
+    set norelativenumber
+    let g:paste_mode = 1
+  elseif g:paste_mode == 1
+    set nopaste
+    set number
+    set norelativenumber
+    let g:paste_mode = 2
+  else
+    set nopaste
+    set nonumber
+    set relativenumber
+    let g:paste_mode = 0
+  endif
+  return
 endfunc
 
 " Paste Mode!  Dang! <F10>
 
 nnoremap <silent> <F10> :call Paste_on_off()<CR>
-set pastetoggle=<F10>
 
 "}}}
 
@@ -261,6 +270,9 @@ map Q :q<CR>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" 'S' maps to <C-W>
+nmap <silent> S <C-W>
+
 "}}}
 
 
@@ -310,9 +322,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'tmhedberg/matchit'
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
+Plugin 'airblade/vim-gitgutter'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -327,6 +338,27 @@ filetype plugin on
 "}}}
 
 
+"{{{ Color Scheme toggle
+
+let color_scheme_mode = 0 " 0 = dark, 1 = light
+
+func! ColorSchemeLightDark()
+  if g:color_scheme_mode == 0
+    set background=light
+    let g:color_scheme_mode = 1
+  else
+    set background=dark
+    let g:color_scheme_mode = 0
+  endif
+  return
+endfunc
+
+nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
+inoremap <silent> <F12> <Esc>:call ColorSchemeLightDark()<CR>a
+
+"}}}
+
+
 "{{{ Plugin Configurations
 
 " -- vim-colors-solarized --
@@ -336,11 +368,11 @@ colorscheme solarized
 
 " -- fzf --
 
-" Map `K` to FZF file lister (Ctrl-T for new tab)
-map K :Files<CR>
+" Map `\o` to FZF file lister (Ctrl-T for new tab)
+map <leader>o :Files<CR>
 
-" Map `K` to FZF file lister (Ctrl-T for new tab)
-map S :GFiles?<CR>
+" Map `\O` to FZF git file lister (Ctrl-T for new tab)
+map <leader>O :GFiles?<CR>
 
 " -- vim-rooter --
 
@@ -349,10 +381,10 @@ let g:rooter_patterns = ['.git/']
 
 " -- nerdcommenter --
 
-" Add spaces after comment delimiters by default
+" Add spaces after comment phrase
 let g:NERDSpaceDelims = 1
 
-" Align line-wise comment delimiters flush left instead of following code indentation
+" Comment in the same column
 let g:NERDDefaultAlign = 'left'
 
 " -- ale --
@@ -375,46 +407,59 @@ let g:ale_open_list = 1
 let NERDTreeMinimalUI = 1
 
 " -- airline --
+
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = ''
 let g:airline#extensions#tabline#tabs_label = ''
 
-" -- easytags --
-
-" Put tags in these directories
-set tags=./tags;,~/.vimtags
-
-" Re-tag file after these events
-let g:easytags_events = ['BufReadPost', 'BufWritePost']
-
-" Update tags file asyncronously
-let g:easytags_async = 1
-
-
 " -- tagbar --
+
+" Remove help from tagbar
+let g:tagbar_compact = 1
+
+" Set icon characters
+let g:tagbar_iconchars = ['▸', '▾']
+
+" Unfold tags to show current object
+let g:tagbar_autoshowtag = 1
+
+" Preview window position
+let g:tagbar_previewwin_pos = "aboveleft"
+
+" Automatically preview highlighted tag (can be annoying)
+" let g:tagbar_autopreview = 1
+
+" -- git-gutter --
+
+nmap <C-J> :GitGutterNextHunk<CR>zz
+nmap <C-K> :GitGutterPrevHunk<CR>zz
 
 " -- IDE Feel --
 
-" F1 opens NERDTree
-nmap <silent> <F1> :NERDTreeFind<CR>
-imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
+" F2 opens NERDTree
+nmap <silent> <F2> :NERDTreeFind<CR>
+imap <silent> <F2> <Esc>:NERDTreeFind<CR>a
 
-" F2 opens Tagbar
-nmap <silent> <F2> :TagbarOpen<CR>
-imap <silent> <F2> <Esc>:TagbarOpen<CR>a
+" F3 opens Tagbar
+nmap <silent> <F3> :TagbarOpen<CR>
+imap <silent> <F3> <Esc>:TagbarOpen<CR>a
 
-" F3 focus rotation
-nmap <silent> <F3> :wincmd w<CR>
-imap <silent> <F3> <Esc>:wincmd w<CR>a
+" F4 focus rotation
+nmap <silent> <F4> :wincmd w<CR>
+imap <silent> <F4> <Esc>:wincmd w<CR>a
 
-" F4 closes both
-nmap <silent> <F4> :NERDTreeClose<CR>:TagbarClose<CR>
-imap <silent> <F4> <Esc>:NERDTreeClose<CR>:TagbarClose<CR>a
+" F5 re-enables syntax
+nmap <silent> <F5> :tabdo syntax enable<CR>
+imap <silent> <F5> <Esc>:tabdo syntax enable<CR>a
+
+" F6 closes both
+nmap <silent> <F6> :NERDTreeClose<CR>:TagbarClose<CR>
+imap <silent> <F6> <Esc>:NERDTreeClose<CR>:TagbarClose<CR>a
 
 " -- vim-textobj-rubyblock --
+
 runtime macros/matchit.vim
 
 "}}}
-
 
 

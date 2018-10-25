@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-git_fco() {
+git_vim() {
   local files targets
-  files=$(git ls-files -m -o --exclude-standard) || return
+  if [ -z "$@" ]; then
+    files=$(git status --short --porcelain | cut -c4-) || return
+  else
+    files=$(git diff --name-only $@) || return
+  fi
   targets=$(echo "$files" | fzf -m) || return
   echo $targets &&
-  vim $(echo "$targets")
+  vim -p $(echo "$targets")
 }
 
-git_fco
+git_vim "$@"

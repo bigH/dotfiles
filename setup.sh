@@ -38,6 +38,7 @@ echo ""
 mkdir_if_not_exists ~/.hiren/.vim/tmp
 mkdir_if_not_exists ~/.hiren/.vim/backup
 mkdir_if_not_exists ~/.hiren/.vim/bundle
+mkdir_if_not_exists ~/.hiren/.vim/undodir
 
 echo ""
 

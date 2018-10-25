@@ -7,6 +7,7 @@ unlink ~/.gitconfig
 unlink ~/.vimrc
 unlink ~/.zshrc
 
+# unlink directories
 rm -f ~/.vim
 rm -f ~/bin
 

@@ -49,3 +49,5 @@
 	showconfig = "!cat ~/.gitconfig"
 # Print Aliases
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
+# Print Aliases
+	n = "!git --no-pager"

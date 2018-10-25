@@ -1,3 +1,10 @@
+## FZF Helpers
+
+# fzfe - echo's to stderr all files selected
+fzfe() {
+  fzf "$@" | tee /dev/stderr
+}
+
 ## CD
 
 # fd - cd to selected directory
