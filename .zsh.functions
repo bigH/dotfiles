@@ -18,7 +18,7 @@ portcheck () {
   fi
 }
 
-# TODO - support building 2 commands `brew cask` and `brew`
+# TODO - this doesn't work - 2 commands `bcip` and `bip`
 # bip - install (one or multiple) selected application(s)
 # (mnemonic [B]rew [I]nstall [P]lugin)
 bip() {
@@ -31,7 +31,6 @@ bip() {
   ) &&
   echo brew install $(echo $targets | cut -d ' ' -f2-)
 }
-
 
 # TODO - check arguments
 # lines [from] [to] - for piping only

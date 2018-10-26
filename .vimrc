@@ -253,6 +253,9 @@ nnoremap <silent> j gj
 " Map <Space><Space> to save
 nnoremap <silent> <Space><Space> :wa<Enter>
 
+" Map <C-[> to go back in the tag lookup (like <C-T>)
+" nnoremap <silent> <C-[> <C-T>
+
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 map N Nzz
@@ -292,6 +295,13 @@ command! Wqa wqa
 
 " Write read-only file with sudo
 command! WS w !sudo tee %
+
+"}}}
+
+
+"{{{ Custom Plugin Ganks
+
+source ~/.hiren/vim_custom/visual_star.vimrc
 
 "}}}
 

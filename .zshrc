@@ -65,6 +65,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
   autojump
   colored-man-pages
+  zsh-completions
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
@@ -102,4 +103,4 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.hiren/.profile
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+autoload -U compinit && compinit

@@ -3,11 +3,11 @@
 git_vim() {
   local files targets
   if [ -z "$@" ]; then
-    files=$(git status --short --porcelain | cut -c4-) || return
+    files=$(git status --short --porcelain | cut -c4- | file-must-exist) || return
   else
-    files=$(git diff --name-only $@) || return
+    files=$(git diff --name-only $@ | file-must-exist) || return
   fi
-  targets=$(echo "$files" | fzf -m) || return
+  targets=$(echo "$files" | fzf -m --preview="preview {}") || return
   echo $targets &&
   vim -p $(echo "$targets")
 }

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# set input according to arguments
+[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+
+cat $input | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'
