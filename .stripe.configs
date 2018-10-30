@@ -8,6 +8,8 @@ export PATH="/Users/hiren/stripe/henson/bin:$PATH"
 
 export PATH="/Users/hiren/.rbenv/shims:$PATH"
 export PATH="/Users/hiren/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 export PATH="/Users/hiren/stripe/password-vault/bin:$PATH"
 export PATH="/Users/hiren/stripe/space-commander/bin:$PATH"
 
