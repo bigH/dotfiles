@@ -13,7 +13,7 @@ set showcmd
 syntax enable
 
 " 20 tabs max per vim session
-set tabpagemax=20
+set tabpagemax=50
 
 " Who doesn't like autoindent?
 set autoindent
@@ -258,8 +258,8 @@ nnoremap <silent> <Space><Space> :wa<Enter>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
-map N Nzz
-map n nzz
+map <silent> N Nzz
+map <silent> n nzz
 
 " NOT NEEDED if mapping Caps Lock to Escape
 "" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
@@ -267,11 +267,11 @@ map n nzz
 " inoremap <Esc> <NOP>
 
 " Disable Ex-Mode and map Q to quit
-map Q :q<CR>
+map <silent> Q :q<CR>
 
 " Avoid deleting text while inserting that cannot be recovered
-inoremap <c-u> <c-g>u<c-u>
-inoremap <c-w> <c-g>u<c-w>
+inoremap <silent> <c-u> <c-g>u<c-u>
+inoremap <silent> <c-w> <c-g>u<c-w>
 
 " 'S' maps to <C-W>
 nmap <silent> S <C-W>
@@ -351,6 +351,7 @@ filetype plugin on
 "{{{ Color Scheme toggle
 
 let color_scheme_mode = 0 " 0 = dark, 1 = light
+set background=dark
 
 func! ColorSchemeLightDark()
   if g:color_scheme_mode == 0
@@ -379,10 +380,10 @@ colorscheme solarized
 " -- fzf --
 
 " Map `\o` to FZF file lister (Ctrl-T for new tab)
-map <leader>o :Files<CR>
+map <silent> <leader>o :Files<CR>
 
 " Map `\O` to FZF git file lister (Ctrl-T for new tab)
-map <leader>O :GFiles?<CR>
+map <silent> <leader>O :GFiles?<CR>
 
 " -- vim-rooter --
 
@@ -441,8 +442,8 @@ let g:tagbar_previewwin_pos = "aboveleft"
 
 " -- git-gutter --
 
-nmap <C-J> :GitGutterNextHunk<CR>zz
-nmap <C-K> :GitGutterPrevHunk<CR>zz
+nmap <silent> <C-J> :GitGutterNextHunk<CR>zz
+nmap <silent> <C-K> :GitGutterPrevHunk<CR>zz
 
 " -- IDE Feel --
 
