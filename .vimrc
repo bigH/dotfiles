@@ -183,23 +183,29 @@ autocmd BufReadPost *
 "}}}
 
 
-"{{{ Line Number and Paste Toggle
+"{{{ Line Number and Paste Cycle
 
 let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
 func! Paste_on_off()
   if g:paste_mode == 0
+    nnoremap <silent> k k
+    nnoremap <silent> j j
     sign unplace *
     set paste
     set nonumber
     set norelativenumber
     let g:paste_mode = 1
   elseif g:paste_mode == 1
+    nnoremap <silent> k gk
+    nnoremap <silent> j gj
     set nopaste
     set number
     set norelativenumber
     let g:paste_mode = 2
   else
+    nnoremap <silent> k gk
+    nnoremap <silent> j gj
     set nopaste
     set nonumber
     set relativenumber
@@ -216,6 +222,10 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 
 
 "{{{ Key Mappings
+
+" Alt-Enter - insert a new-line here
+nnoremap <silent>  i<CR><Esc>
+nnoremap <silent> <M-CR> i<CR><Esc>
 
 " Sane Y
 nnoremap <silent> Y y$
@@ -348,7 +358,7 @@ filetype plugin on
 "}}}
 
 
-"{{{ Color Scheme toggle
+"{{{ Color Scheme Toggle
 
 let color_scheme_mode = 0 " 0 = dark, 1 = light
 set background=dark

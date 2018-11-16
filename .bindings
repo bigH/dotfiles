@@ -1,0 +1,19 @@
+# Modify fzf keydings to match ctrlp.vim
+bindkey '^P' fzf-file-widget
+bindkey '^N' fzf-cd-widget
+
+# Ctrl-B/F : back / forward by word
+bindkey '^b' backward-word
+bindkey '^f' forward-word
+
+# Ctrl-Space : git status
+bindkey -s '^ ' 'git status --short^M'
+
+# alt-x : insert last command result
+zmodload -i zsh/parameter
+insert-last-command-output() {
+  LBUFFER+="$(eval $history[$((HISTCMD-1))])"
+}
+zle -N insert-last-command-output
+bindkey '^[x' insert-last-command-output
+

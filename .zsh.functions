@@ -32,9 +32,13 @@ bip() {
   echo brew install $(echo $targets | cut -d ' ' -f2-)
 }
 
-# TODO - check arguments
 # lines [from] [to] - for piping only
+line() {
+  lines $1 $1
+}
+
+# line [number] - for piping only
 lines() {
-  head -$(echo "$2" | bc) | tail -$(echo "$2 - $1 + 1" | bc)
+  head -n $2 | tail -n +$1
 }
 

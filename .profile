@@ -9,3 +9,4 @@ export DOT_FILES_DIR=~/.hiren
 . $DOT_FILES_DIR/.zsh.functions
 . $DOT_FILES_DIR/.ctags.functions
 . $DOT_FILES_DIR/.ctags.configs
+. $DOT_FILES_DIR/.bindings

@@ -3,7 +3,3 @@
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export FZF_DEFAULT_COMMAND='find .'
 
-# Modify fzf keydings to match ctrlp.vim
-bindkey '^P' fzf-file-widget
-bindkey '^N' fzf-cd-widget
-

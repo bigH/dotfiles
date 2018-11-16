@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+
+NEWLINE=$'\n'
+
+lines() {
+  head -n $2 | tail -n +$1
+}
+
+git_bisect_diff() {
+  local log_data \
+        current_commit \
+        branch \
+        files \
+        current_files \
+        current_num_files \
+        alt_range_begin \
+        alt_range_end \
+        range_begin \
+        range_end \
+        midpoint \
+        ret_val_left \
+        ret_val_right \
+        complete
+
+  log_data=""
+  current_commit=$(git rev-parse HEAD)
+
+  log() {
+    echo "$@"
+    log_data="$log_data$NEWLINE$@"
+  }
+
+  end_and_print_log() {
+    echo ""
+    echo "resetting..."
+    git reset --hard
+    echo ""
+    echo "cleaning..."
+    git clean -df
+    echo ""
+    echo "checking out $current_commit..."
+    git checkout $current_commit
+    echo ""
+    echo "---- LOG ----"
+    echo ""
+    echo "$log_data"
+  }
+
+  branch="$1"
+  command_to_run="$2"
+  echo "branch = $branch"
+  echo "command_to_run = $command_to_run"
+
+  files=$(git diff "$branch" --name-only)
+  # echo "files = $files"
+
+  range_begin=1
+  range_end=$(echo "$files" | wc -l)
+  echo "range_begin = $range_begin"
+  echo "range_end = $range_end"
+
+  while [ $range_begin -lt $range_end ]; do
+
+    echo ""
+    echo "-- iteration --"
+    log "beginning process - range $range_begin to $range_end"
+    echo ""
+
+    midpoint=$(echo "($range_begin + $range_end) / 2" | bc)
+    echo "midpoint = $midpoint"
+
+    alt_range_begin=$(echo "$midpoint + 1" | bc)
+    alt_range_end="$range_end"
+    echo "alt_range_begin = $range_begin"
+    echo "alt_range_end = $range_end"
+
+    range_end="$midpoint"
+    echo "range_begin = $range_begin"
+    echo "range_end = $range_end"
+
+    echo ""
+    echo "  -- left split ($range_begin to $range_end) --"
+    echo ""
+
+    echo "resetting..."
+    git reset --hard
+    git checkout $current_commit
+    echo ""
+    current_files=$(echo "$files" | lines $range_begin $range_end)
+    current_num_files=$(echo $current_files | wc -l)
+    echo "checking out $range_begin to $range_end ($current_num_files) files..."
+    git checkout "$branch" -- $(echo $current_files | tr '\n' ' ')
+
+    sh -c "$command_to_run"
+    ret_val_left=$?
+    echo "returned $ret_val_left for $range_begin to $range_end files"
+
+    if [ $ret_val_left -eq 0 ]; then
+      log "success for range $range_begin to $range_end"
+    else
+      log "FAILURE for range $range_begin to $range_end"
+    fi
+
+    echo ""
+    echo "  -- right split ($alt_range_begin to $alt_range_end) --"
+    echo ""
+
+    echo "resetting..."
+    git reset --hard
+    git checkout $current_commit
+    echo ""
+    current_files=$(echo "$files" | lines $alt_range_begin $alt_range_end)
+    current_num_files=$(echo $current_files | wc -l)
+    echo "checking out $alt_range_begin to $alt_range_end ($current_num_files) files..."
+    git checkout "$branch" -- $(echo $current_files | tr '\n' ' ')
+
+    sh -c "$command_to_run"
+    ret_val_right=$?
+    echo "returned $ret_val_right for $alt_range_begin to $alt_range_end files"
+
+    if [ $ret_val_right -eq 0 ]; then
+      log "success for range $alt_range_begin to $alt_range_end"
+    else
+      log "FAILURE for range $alt_range_begin to $alt_range_end"
+    fi
+
+    if [ $ret_val_left -ne 0 ] && [ $ret_val_right -ne 0 ]; then
+      log ""
+      log "ERROR: found FAILURE in both [$range_begin to $range_end] and [$alt_range_begin to $range_end]"
+      echo ""
+      echo "$log_data"
+      exit 1
+    fi
+
+    if [ $ret_val_left -eq 0 ] && [ $ret_val_right -eq 0 ]; then
+      log ""
+      log "ERROR: found SUCCESS in both [$range_begin to $range_end] and [$alt_range_begin to $range_end]"
+      end_and_print_log
+      exit 1
+    fi
+
+    if [ $ret_val_right -ne 0 ]; then
+      range_begin=$alt_range_begin
+      range_end=$alt_range_end
+    fi
+  done
+
+  if [ $range_begin -eq $range_end ]; then
+    echo ""
+    winning_file=$(echo "$files" | lines $range_begin $range_end)
+    log "Found file: $winning_file"
+    end_and_print_log
+    exit 0
+  else
+    echo ""
+    log "Invalid range to end on: $range_begin to $range_end"
+    end_and_print_log
+    exit 0
+  fi
+}
+
+git_bisect_diff "$@"

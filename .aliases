@@ -1,3 +1,7 @@
+# misspellings
+alias gti="git"
+alias igt="git"
+
 # always open vim with tabs
 alias vim="vim -p"
 
@@ -6,3 +10,5 @@ alias cp="cp -v"
 alias mv="mv -v"
 alias rm="rm -v"
 
+# ls override from oh-my-zsh
+alias ls="gls --color=always -G"
