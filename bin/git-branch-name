@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+git_branch_name() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+git_branch_name
+

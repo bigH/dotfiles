@@ -11,4 +11,6 @@ alias mv="mv -v"
 alias rm="rm -v"
 
 # ls override from oh-my-zsh
-alias ls="gls --color=always -G"
+if [[ "$OSTYPE" == "darwin" ]]; then
+  alias ls="gls --color=always -G"
+fi
