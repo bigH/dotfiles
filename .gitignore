@@ -1,5 +1,6 @@
 .vim/
 .DS_Store
+.env_context
 git-wtf/
 dircolors-solarized/
 solarized/

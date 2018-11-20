@@ -1,12 +1,24 @@
 export DOT_FILES_DIR=~/.hiren
 
-. $DOT_FILES_DIR/.local.configs
-. $DOT_FILES_DIR/.stripe.configs
+export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
-. $DOT_FILES_DIR/.aliases
-. $DOT_FILES_DIR/.fzf.functions
-. $DOT_FILES_DIR/.fzf.configs
-. $DOT_FILES_DIR/.zsh.functions
-. $DOT_FILES_DIR/.ctags.functions
-. $DOT_FILES_DIR/.ctags.configs
-. $DOT_FILES_DIR/.bindings
+source $DOT_FILES_DIR/.colors
+source $DOT_FILES_DIR/.local.configs
+
+if [ "$DOT_FILES_ENV" = "stripe" ]; then
+  source $DOT_FILES_DIR/.stripe.configs
+else
+  source $DOT_FILES_DIR/.default.configs
+fi
+
+source $DOT_FILES_DIR/.aliases
+source $DOT_FILES_DIR/.fzf.functions
+source $DOT_FILES_DIR/.fzf.configs
+source $DOT_FILES_DIR/.zsh.functions
+if [ "$DOT_FILES_ENV" = "stripe" ]; then
+  source $DOT_FILES_DIR/.stripe.ctags.functions
+else
+  # source $DOT_FILES_DIR/.ctags.functions
+fi
+source $DOT_FILES_DIR/.ctags.configs
+source $DOT_FILES_DIR/.bindings

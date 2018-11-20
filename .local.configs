@@ -9,4 +9,9 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # Setup `dircolors`
-eval `dircolors ~/$DOT_FILES_DIR/dircolors-solarized/dircolors.ansi-light`
+eval `dircolors $DOT_FILES_DIR/dircolors-solarized/dircolors.ansi-light`
+
+# Add `linuxbrew` to path if present
+if [ -d '/home/linuxbrew/.linuxbrew/bin' ]; then
+  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+fi
