@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+### WARNING _ THIS NEEDS WORK
 # ~/.osx — http://mths.be/osx
 
 # Ask for the administrator password upfront
@@ -12,10 +13,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # General UI/UX                                                               #
 ###############################################################################
 # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "bigh-webs-macbook"
-sudo scutil --set HostName "bigh-webs-macbook"
-sudo scutil --set LocalHostName "bigh-webs-macbook"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "bigh-webs-macbook"
+sudo scutil --set ComputerName "$HOST"
+sudo scutil --set HostName "$HOST"
+sudo scutil --set LocalHostName "$HOST"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$HOST"
 
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
@@ -28,9 +29,6 @@ defaults write com.apple.systemuiserver menuExtras -array \
 	"/System/Library/CoreServices/Menu Extras/AirPort.menu" \
 	"/System/Library/CoreServices/Menu Extras/Battery.menu" \
 	"/System/Library/CoreServices/Menu Extras/Clock.menu"
-
-# Set highlight color to green
-defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
 
 # Set sidebar icon size to medium
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2

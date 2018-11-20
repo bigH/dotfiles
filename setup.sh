@@ -53,8 +53,8 @@ link_if_possible ~/.hiren/.vimrc ~/.vimrc
 link_if_possible ~/.hiren/.vim ~/.vim
 
 echo ""
-
 echo "Installing ViM plugins ..."
+
 vim +PluginInstall +qall
 
 echo ""
@@ -78,6 +78,21 @@ link_if_possible ~/.hiren/.zshrc ~/.zshrc
 
 echo ""
 echo "ZSH Setup Complete!"
+echo ""
+
+echo 'Installing `git-wtf` ...'
+git clone https://github.com/michaelklishin/git-wtf.git ~/.hiren/git-wtf
+echo ""
+
+echo 'Installing `solarized` ...'
+git clone https://github.com/altercation/solarized.git ~/.hiren/solarized
+echo ""
+
+echo 'Installing `dircolors-solarized` ...'
+git clone https://github.com/seebi/dircolors-solarized.git ~/.hiren/dircolors-solarized
+echo ""
+
+link_if_possible ~/.hiren/git-wtf/git-wtf ~/.hiren/bin/git-wtf
 echo ""
 
 link_if_possible ~/.hiren/.gitignore_global ~/.gitignore_global

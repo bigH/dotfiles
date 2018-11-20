@@ -360,8 +360,9 @@ filetype plugin on
 
 "{{{ Color Scheme Toggle
 
-let color_scheme_mode = 0 " 0 = dark, 1 = light
-set background=dark
+" choosing light permanently
+let color_scheme_mode = 1 " 0 = dark, 1 = light
+set background=light
 
 func! ColorSchemeLightDark()
   if g:color_scheme_mode == 0
@@ -385,7 +386,9 @@ inoremap <silent> <F12> <Esc>:call ColorSchemeLightDark()<CR>a
 " -- vim-colors-solarized --
 
 " Use correct vim colors in solarized
-colorscheme solarized
+if !empty(globpath(&rtp, 'colors/solarized.vim'))
+  colorscheme solarized
+endif
 
 " -- fzf --
 
