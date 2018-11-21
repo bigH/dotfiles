@@ -121,8 +121,8 @@ set showmode
 set relativenumber
 
 " Don't allow cursor to be at edges
-set scrolloff=1
-set sidescrolloff=5
+set scrolloff=5
+set sidescrolloff=20
 
 " Delete comment character when joining lines
 set formatoptions+=j
@@ -224,8 +224,7 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 "{{{ Key Mappings
 
 " Alt-Enter - insert a new-line here
-nnoremap <silent>  i<CR><Esc>
-nnoremap <silent> <M-CR> i<CR><Esc>
+nnoremap <silent> <leader><CR> i<CR><Esc>
 
 " Sane Y
 nnoremap <silent> Y y$
@@ -263,8 +262,8 @@ nnoremap <silent> j gj
 " Map <Space><Space> to save
 nnoremap <silent> <Space><Space> :wa<Enter>
 
-" Map <C-[> to go back in the tag lookup (like <C-T>)
-" nnoremap <silent> <C-[> <C-T>
+" Map <C-\> to `go to definition` in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -455,8 +454,13 @@ let g:tagbar_previewwin_pos = "aboveleft"
 
 " -- git-gutter --
 
-nmap <silent> <C-J> :GitGutterNextHunk<CR>zz
-nmap <silent> <C-K> :GitGutterPrevHunk<CR>zz
+nmap <silent> <C-J> <Plug>(ale_next_wrap)
+nmap <silent> <C-K> <Plug>(ale_previous_wrap)
+
+" -- git-gutter --
+
+nmap <silent> <leader>j :GitGutterNextHunk<CR>zz
+nmap <silent> <leader>k :GitGutterPrevHunk<CR>zz
 
 " -- IDE Feel --
 
@@ -473,8 +477,12 @@ nmap <silent> <F4> :wincmd w<CR>
 imap <silent> <F4> <Esc>:wincmd w<CR>a
 
 " F5 re-enables syntax
-nmap <silent> <F5> :tabdo syntax enable<CR>
-imap <silent> <F5> <Esc>:tabdo syntax enable<CR>a
+nmap <silent> <F5> :syntax enable<CR>
+imap <silent> <F5> <Esc>:syntax enable<CR>a
+
+" Ctrl-F5 re-enables syntax in all tabs
+nmap <silent> <C-F5> :tabdo syntax enable<CR>
+imap <silent> <C-F5> <Esc>:tabdo syntax enable<CR>a
 
 " F6 closes both
 nmap <silent> <F6> :NERDTreeClose<CR>:TagbarClose<CR>
