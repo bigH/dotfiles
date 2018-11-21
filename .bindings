@@ -1,15 +1,16 @@
-# Modify fzf keydings to match ctrlp.vim
+# Ctrl-P - select file to paste
 bindkey '^P' fzf-file-widget
+# Ctrl-N - select directory to paste
 bindkey '^N' fzf-cd-widget
 
-# Ctrl-B/F : back / forward by word
+# Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
-# Ctrl-Space : git status
+# Ctrl-Space - git status
 bindkey -s '^ ' 'git status --short^M'
 
-# alt-x : insert last command result
+# Alt-X - insert last command result
 zmodload -i zsh/parameter
 insert-last-command-output() {
   LBUFFER+="$(eval $history[$((HISTCMD-1))])"
@@ -17,3 +18,5 @@ insert-last-command-output() {
 zle -N insert-last-command-output
 bindkey '^[x' insert-last-command-output
 
+# Ctrl-V - edit the command line in vim
+bindkey '^v' edit-command-line
