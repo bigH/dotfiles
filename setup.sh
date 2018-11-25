@@ -1,13 +1,15 @@
 #!/bin/bash
 
-source $HOME/.hiren/.colors
-touch $HOME/.hiren/.env_context
+export DOT_FILES_DIR=$HOME/.hiren
+
+source $DOT_FILES_DIR/.colors
+touch $DOT_FILES_DIR/.env_context
 
 if [ $# -eq 1 ]; then
-  echo "$1" > $HOME/.hiren/.env_context
+  echo "$1" > $DOT_FILES_DIR/.env_context
 fi
 
-export DOT_FILES_ENV="$(cat $HOME/.hiren/.env_context)"
+export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
 if ! command -v zsh >/dev/null 2>&1; then
   printf "${RED}Zsh is not installed!${NORMAL} Please install zsh first!\n"
@@ -62,22 +64,22 @@ function link_if_possible {
 
 echo ""
 
-mkdir_if_not_exists $HOME/.hiren/.vim/tmp
-mkdir_if_not_exists $HOME/.hiren/.vim/backup
-mkdir_if_not_exists $HOME/.hiren/.vim/bundle
-mkdir_if_not_exists $HOME/.hiren/.vim/undodir
+mkdir_if_not_exists $DOT_FILES_DIR/.vim/tmp
+mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
+mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle
+mkdir_if_not_exists $DOT_FILES_DIR/.vim/undodir
 
 echo ""
 
-if [ ! -d "$HOME/.hiren/.vim/bundle/Vundle.vim" ]; then
+if [ ! -d "$DOT_FILES_DIR/.vim/bundle/Vundle.vim" ]; then
   echo "Cloning Vundle for ViM ..."
-  git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.hiren/.vim/bundle/Vundle.vim
+  git clone https://github.com/VundleVim/Vundle.vim.git $DOT_FILES_DIR/.vim/bundle/Vundle.vim
 fi
 
 echo ""
 
-link_if_possible $HOME/.hiren/.vimrc $HOME/.vimrc
-link_if_possible $HOME/.hiren/.vim $HOME/.vim
+link_if_possible $DOT_FILES_DIR/.vimrc $HOME/.vimrc
+link_if_possible $DOT_FILES_DIR/.vim $HOME/.vim
 
 echo ""
 echo "Installing ViM plugins ..."
@@ -100,37 +102,37 @@ echo 'Installing `zsh-syntax-highlighting` ...'
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 echo ""
 
-link_if_possible $HOME/.hiren/.zshrc $HOME/.zshrc
+link_if_possible $DOT_FILES_DIR/.zshrc $HOME/.zshrc
 
 echo ""
 echo "ZSH Setup ${GREEN}Complete${NORMAL}!"
 echo ""
 
 echo 'Installing `git-wtf` ...'
-git clone https://github.com/michaelklishin/git-wtf.git $HOME/.hiren/git-wtf
+git clone https://github.com/michaelklishin/git-wtf.git $DOT_FILES_DIR/git-wtf
 echo ""
 
 echo 'Installing `solarized` ...'
-git clone https://github.com/altercation/solarized.git $HOME/.hiren/solarized
+git clone https://github.com/altercation/solarized.git $DOT_FILES_DIR/solarized
 echo ""
 
 echo 'Installing `dircolors-solarized` ...'
-git clone https://github.com/seebi/dircolors-solarized.git $HOME/.hiren/dircolors-solarized
+git clone https://github.com/seebi/dircolors-solarized.git $DOT_FILES_DIR/dircolors-solarized
 echo ""
 
-link_if_possible $HOME/.hiren/git-wtf/git-wtf $HOME/.hiren/bin/git-wtf
+link_if_possible $DOT_FILES_DIR/git-wtf/git-wtf $DOT_FILES_DIR/bin/git-wtf
 echo ""
 
-if [ "$DOT_FILES_ENV" = "stripe" ]; then
-  link_if_possible $HOME/.hiren/.stripe.gitignore_global $HOME/.gitignore_global
-  link_if_possible $HOME/.hiren/.stripe.gitconfig $HOME/.gitconfig
+if [ ! -z "$DOT_FILES_ENV" ]; then
+  link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global $HOME/.gitignore_global
+  link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig $HOME/.gitconfig
 else
-  link_if_possible $HOME/.hiren/.gitignore_global $HOME/.gitignore_global
-  link_if_possible $HOME/.hiren/.gitconfig $HOME/.gitconfig
+  link_if_possible $DOT_FILES_DIR/.gitignore_global $HOME/.gitignore_global
+  link_if_possible $DOT_FILES_DIR/.gitconfig $HOME/.gitconfig
 fi
 
-link_if_possible $HOME/.hiren/.ackrc $HOME/.ackrc
-link_if_possible $HOME/.hiren/bin $HOME/bin
+link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
+link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 
 echo ""
 

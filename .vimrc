@@ -54,9 +54,6 @@ set directory=~/.vim/tmp
 " Save undo-history
 set undodir=~/.vim/undodir
 
-" Remember commands
-set history=1000
-
 " Indent wrapped lines up to the same level
 if exists('&breakindent')
   set breakindent
@@ -488,9 +485,16 @@ imap <silent> <C-F5> <Esc>:tabdo syntax enable<CR>a
 nmap <silent> <F6> :NERDTreeClose<CR>:TagbarClose<CR>
 imap <silent> <F6> <Esc>:NERDTreeClose<CR>:TagbarClose<CR>a
 
-" -- vim-textobj-rubyblock --
+"}}}
 
+
+"{{{ Must Be At End
+
+" required for vim-textobj-rubyblock to work
 runtime macros/matchit.vim
+
+" Remember commands
+set history=1000
 
 "}}}
 

@@ -101,6 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-source ~/.hiren/.profile
+
+export DOT_FILES_DIR=$HOME/.hiren
+
+source $DOT_FILES_DIR/.profile
 
 autoload -U compinit && compinit

@@ -3,15 +3,15 @@
 # That matches how "git config --global" edits the file.
 
 [user]
-  name = "Hiren Hiranandani"
-  email = "hiren@stripe.com"
+	name = "Hiren Hiranandani"
+	email = "hiren@stripe.com"
 
 [push]
-  default = simple
+	default = simple
 
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
 [core]
-  preloadindex = true
+	preloadindex = true
 
 [color]
 	ui = true

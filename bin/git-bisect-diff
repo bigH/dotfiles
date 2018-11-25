@@ -66,13 +66,13 @@ git_bisect_diff() {
     log "beginning process - range $range_begin to $range_end"
     echo ""
 
-    midpoint=$(echo "($range_begin + $range_end) / 2" | bc)
+    midpoint=$(echo "$range_begin + (($range_end - $range_begin) / 2)" | bc)
     echo "midpoint = $midpoint"
 
     alt_range_begin=$(echo "$midpoint + 1" | bc)
     alt_range_end="$range_end"
-    echo "alt_range_begin = $range_begin"
-    echo "alt_range_end = $range_end"
+    echo "alt_range_begin = $alt_range_begin"
+    echo "alt_range_end = $alt_range_end"
 
     range_end="$midpoint"
     echo "range_begin = $range_begin"
