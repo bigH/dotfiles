@@ -449,7 +449,7 @@ let g:tagbar_previewwin_pos = "aboveleft"
 " Automatically preview highlighted tag (can be annoying)
 " let g:tagbar_autopreview = 1
 
-" -- git-gutter --
+" -- ale --
 
 nmap <silent> <C-J> <Plug>(ale_next_wrap)
 nmap <silent> <C-K> <Plug>(ale_previous_wrap)
@@ -458,6 +458,13 @@ nmap <silent> <C-K> <Plug>(ale_previous_wrap)
 
 nmap <silent> <leader>j :GitGutterNextHunk<CR>zz
 nmap <silent> <leader>k :GitGutterPrevHunk<CR>zz
+
+" Always show signcolumn
+if exists('&signcolumn')  " Vim 7.4.2201
+  set signcolumn=yes
+else
+  let g:gitgutter_sign_column_always = 1
+endif
 
 " -- IDE Feel --
 

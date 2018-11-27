@@ -8,6 +8,7 @@ export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 unlink $HOME/.ackrc
 unlink $HOME/.gitignore_global
 unlink $HOME/.gitconfig
+unlink $HOME/.pryrc
 unlink $HOME/.vimrc
 unlink $HOME/.zshrc
 unlink $DOT_FILES_DIR/bin/git-wtf

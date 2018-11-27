@@ -42,3 +42,13 @@ lines() {
   head -n $2 | tail -n +$1
 }
 
+# Strip escape codes/sequences [$1: input, $2: target variable]
+strip_escape_codes() {
+  sed -E "s/[[:cntrl:]]\[[0-9]{1,3}m//g"
+}
+
+# numbers
+numbers() {
+  cat -n -
+}
+
