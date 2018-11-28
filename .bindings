@@ -8,7 +8,7 @@ bindkey '^b' backward-word
 bindkey '^f' forward-word
 
 # Ctrl-Space - git status
-bindkey -s '^ ' 'git status --short^M'
+bindkey -s '^ ' 'git st^M'
 
 # Alt-X - insert last command result
 zmodload -i zsh/parameter

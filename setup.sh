@@ -135,6 +135,10 @@ link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
 link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 
+if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
+  link_if_possible $DOT_FILES_DIR/$DOT_FILES_ENV-bin $HOME/$DOT_FILES_ENV-bin
+fi
+
 echo ""
 
 echo ""

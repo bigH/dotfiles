@@ -1,6 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # set input according to arguments
-[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+if [ $# -ge 1 ]; then
+  for i in $*; do
+    echo $i
+  done | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'
+else
+  cat - | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'
+fi
 
-cat $input | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'

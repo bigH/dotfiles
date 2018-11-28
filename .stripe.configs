@@ -1,3 +1,6 @@
+# Add Home `stripe-bin`
+export PATH="$HOME/stripe-bin:$PATH"
+
 ### BEGIN STRIPE
 source ~/.stripe_profile
 ### END STRIPE
