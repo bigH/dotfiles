@@ -2,5 +2,6 @@
 .DS_Store
 .env_context
 git-wtf/
+bin/git-wtf
 dircolors-solarized/
 solarized/
