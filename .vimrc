@@ -180,7 +180,18 @@ autocmd BufReadPost *
 "}}}
 
 
+"{{{ Cycle <C-J> and <C-K> functionality
+" TODO: create a cycle for <C-J> and <C-K> functionality to do:
+" - ale hunks
+" - git hunks
+" - ruby methods/classes
+" - ruby methods/class bodies
+
+"}}}
+
+
 "{{{ Line Number and Paste Cycle
+" TODO: some commands work on tabs, some don't
 
 let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
@@ -220,8 +231,9 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 
 "{{{ Key Mappings
 
-" Alt-Enter - insert a new-line here
-nnoremap <silent> <leader><CR> i<CR><Esc>
+" Alt-Enter or <Leader><CR>- insert a new-line here
+nnoremap <silent> <CR> i<CR><Esc>
+nnoremap <silent> <Leader><CR> i<CR><Esc>
 
 " Sane Y
 nnoremap <silent> Y y$
@@ -389,10 +401,10 @@ endif
 " -- fzf --
 
 " Map `\o` to FZF file lister (Ctrl-T for new tab)
-map <silent> <leader>o :Files<CR>
+map <silent> <Leader>o :Files<CR>
 
 " Map `\O` to FZF git file lister (Ctrl-T for new tab)
-map <silent> <leader>O :GFiles?<CR>
+map <silent> <Leader>O :GFiles?<CR>
 
 " -- vim-rooter --
 
@@ -456,25 +468,26 @@ nmap <silent> <C-K> <Plug>(ale_previous_wrap)
 
 " -- git-gutter --
 
-nmap <silent> <leader>j :GitGutterNextHunk<CR>zz
-nmap <silent> <leader>k :GitGutterPrevHunk<CR>zz
-
-" Always show signcolumn
-if exists('&signcolumn')  " Vim 7.4.2201
-  set signcolumn=yes
-else
-  let g:gitgutter_sign_column_always = 1
-endif
+nmap <silent> <Leader>j :GitGutterNextHunk<CR>zz
+nmap <silent> <Leader>k :GitGutterPrevHunk<CR>zz
 
 " -- IDE Feel --
 
-" F2 opens NERDTree
-nmap <silent> <F2> :NERDTreeFind<CR>
-imap <silent> <F2> <Esc>:NERDTreeFind<CR>a
+" F1 opens NERDTree
+nmap <silent> <F1> :NERDTreeFind<CR>
+imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
 
-" F3 opens Tagbar
-nmap <silent> <F3> :TagbarOpen<CR>
-imap <silent> <F3> <Esc>:TagbarOpen<CR>a
+" Ctrl-F1 closes NERDTree
+nmap <silent> <C-F1> :NERDTreeClose<CR>
+imap <silent> <C-F1> <Esc>:NERDTreeClose<CR>a
+
+" F2 opens Tagbar
+nmap <silent> <F2> :TagbarOpen<CR>
+imap <silent> <F2> <Esc>:TagbarOpen<CR>a
+
+" Ctrl-F2 closes Tagbar
+nmap <silent> <C-F2> :TagbarClose<CR>
+imap <silent> <C-F2> <Esc>:TagbarClose<CR>a
 
 " F4 focus rotation
 nmap <silent> <F4> :wincmd w<CR>
@@ -487,10 +500,6 @@ imap <silent> <F5> <Esc>:syntax enable<CR>a
 " Ctrl-F5 re-enables syntax in all tabs
 nmap <silent> <C-F5> :tabdo syntax enable<CR>
 imap <silent> <C-F5> <Esc>:tabdo syntax enable<CR>a
-
-" F6 closes both
-nmap <silent> <F6> :NERDTreeClose<CR>:TagbarClose<CR>
-imap <silent> <F6> <Esc>:NERDTreeClose<CR>:TagbarClose<CR>a
 
 "}}}
 

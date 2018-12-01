@@ -4552,21 +4552,21 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>3168 272 705 280 1440 102 2560 1440 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>530 496 620 392 0 0 1680 1027 </string>
+	<string>970 788 620 392 0 0 2560 1417 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1171 -496 606 469 -1440 -622 1440 2537 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>789 872 796 486 0 0 2560 1440 </string>
+	<string>-1152 1122 796 486 -1440 -767 1440 2537 </string>
 	<key>NSWindow Frame com.apple.typography_panel_Monaco</key>
 	<string>296 562 260 56 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 80 2560 1337 0 0 2560 1417 </string>
-	<key>NSWindow Frame iTerm Window 1</key>
 	<string>-1440 -43 1440 1813 -1440 -767 1440 2537 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>0 80 1510 1337 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>-1441 -674 1440 616 -1440 -767 1440 2537 </string>
+	<string>0 80 1510 1337 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>-1440 140 1440 1775 -1440 -622 1440 2537 </string>
+	<string>63 80 1501 947 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -6128,7 +6128,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-11-19T18:53:11Z</date>
+	<date>2018-11-30T09:33:01Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -6146,7 +6146,7 @@
 	<key>ThreeFingerEmulates</key>
 	<true/>
 	<key>TimeBetweenBlinks</key>
-	<real>0.30000001192092896</real>
+	<real>0.20000000298023224</real>
 	<key>UseBorder</key>
 	<false/>
 	<key>WindowNumber</key>
@@ -6156,7 +6156,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.2.5</string>
+	<string>3.2.6</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

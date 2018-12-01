@@ -1,7 +1,14 @@
 # retag - build tag file again
 retag() {
-  echo "retagging pay-server..."
-  cd ~/stripe/pay-server
+  DIR=$1
+  if [ -z "$" ]; then
+    echo "WARN: no argument provided.. assuming 'pay-server'"
+    DIR=pay-server
+  fi
+
+  echo "retagging $DIR ..."
+  cd ~/stripe/$DIR
   ripper-tags -f .tags -R --exclude=vendor --exclude=node_modules --exclude=puppet-config --exclude=build/autoloader --exclude=ruby-typer
   echo "done."
 }
+
