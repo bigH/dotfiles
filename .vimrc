@@ -279,9 +279,9 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <silent> N Nzz
 map <silent> n nzz
 
-" NOT NEEDED if mapping Caps Lock to Escape
-"" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
-" inoremap jj <Esc>
+" Remap Escape to train myself
+" inoremap jk <Esc>
+" inoremap kj <Esc>
 " inoremap <Esc> <NOP>
 
 " Disable Ex-Mode and map Q to quit
@@ -352,6 +352,8 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'sheerun/vim-polyglot'
+" Plugin 'trevordmiller/nova-vim'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -397,6 +399,10 @@ inoremap <silent> <F12> <Esc>:call ColorSchemeLightDark()<CR>a
 if !empty(globpath(&rtp, 'colors/solarized.vim'))
   colorscheme solarized
 endif
+" if !empty(globpath(&rtp, 'colors/nova.vim'))
+"   colorscheme nova
+"   let g:airline_theme='nova'
+" endif
 
 " -- fzf --
 

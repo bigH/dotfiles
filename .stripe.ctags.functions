@@ -1,7 +1,7 @@
 # retag - build tag file again
 retag() {
   DIR=$1
-  if [ -z "$" ]; then
+  if [ -z "$1" ]; then
     echo "WARN: no argument provided.. assuming 'pay-server'"
     DIR=pay-server
   fi

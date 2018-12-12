@@ -23,3 +23,4 @@ export PATH="/Users/hiren/stripe/henson/bin:$PATH"
 . /Users/hiren/.rbenvrc
 . ~/.stripe-repos.sh
 
+export PATH="/usr/local/opt/bison/bin:$PATH"

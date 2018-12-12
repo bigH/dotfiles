@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git_remaster() {
+  THROWAWAY="throwaway-$RANDOM"
+  git checkout -b $THROWAWAY
+  git branch -D master
+  git checkout -b master origin/master
+  git branch -D $THROWAWAY
+}
+
+git_remaster

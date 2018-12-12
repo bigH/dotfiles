@@ -1,0 +1,705 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<feed xmlns:apps='http://schemas.google.com/apps/2006' xmlns='http://www.w3.org/2005/Atom'>
+  <title>Mail Filters</title>
+  <id>tag:mail.google.com,2008:filters:</id>
+  <updated>2018-12-11T20:13:06Z</updated>
+  <author>
+    <name>Andreas Fuchs</name>
+    <email>asf@boinkor.net</email>
+  </author>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='incidents'></apps:property>
+    <apps:property name='hasTheWord' value='list:incidents@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:incidents@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='incidents'></apps:property>
+    <apps:property name='hasTheWord' value='list:product-infra-911@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:product-infra-911@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='incidents'></apps:property>
+    <apps:property name='hasTheWord' value='list:product-infrastructure-911@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:product-infrastructure-911@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='all'></apps:property>
+    <apps:property name='hasTheWord' value='list:all@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:all@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:not-shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:not-shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value=''></apps:property>
+    <apps:property name='hasTheWord' value='list:pj-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value=''></apps:property>
+    <apps:property name='hasTheWord' value='list:state@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='class-of-17-sep-2018'></apps:property>
+    <apps:property name='hasTheWord' value='list:class-of-17-sep-2018@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:class-of-17-sep-2018@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='spinup-class'></apps:property>
+    <apps:property name='hasTheWord' value='list:class-of-9-17-2018@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:class-of-9-17-2018@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='internal-comms'></apps:property>
+    <apps:property name='hasTheWord' value='list:internal-comms-archive@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:internal-comms-archive@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='data-model-notes'></apps:property>
+    <apps:property name='hasTheWord' value='list:data-model-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:data-model-notes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-announce@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-announce@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-notes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity-911'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-911@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-911@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-archive@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-archive@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-ask-archive@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-ask-archive@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity/bots'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-bots@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-bots@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-notes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-team@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity-team@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev-productivity'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev-productivity@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='dev'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:dev@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:fixed@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:fixed@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-2018-planning@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-2018-planning@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng-archive@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng-archive@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng-managers@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng-managers@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-eng@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-multi-region-team@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-multi-region-team@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-multi-region@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-multi-region@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-notes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-pillar-tech-leads@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-pillar-tech-leads@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='planning'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-planning@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-planning@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='foundation'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-staff@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:foundation-staff@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:load-shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:load-shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='org'></apps:property>
+    <apps:property name='hasTheWord' value='list:us-stripes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:us-stripes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='org'></apps:property>
+    <apps:property name='hasTheWord' value='list:org-notes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:org-notes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='org'></apps:property>
+    <apps:property name='hasTheWord' value='list:org@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:org@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='payments-ptls'></apps:property>
+    <apps:property name='hasTheWord' value='list:payments-ptls@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:payments-ptls@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='onboarding-announce'></apps:property>
+    <apps:property name='hasTheWord' value='list:onboarding-announce@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:onboarding-announce@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='ruby-app-infra-internal'></apps:property>
+    <apps:property name='hasTheWord' value='list:ruby-app-infra-internal@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='ruby-platform-internal'></apps:property>
+    <apps:property name='hasTheWord' value='list:ruby-platform-internal@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='ruby-users'></apps:property>
+    <apps:property name='hasTheWord' value='list:ruby-users@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:ruby-users@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='sf'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-social@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-social@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='sf'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-stripes@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-stripes@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='sf'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-events@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:sf-events@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='shipping'></apps:property>
+    <apps:property name='hasTheWord' value='list:traffic-shipped@stripe.com'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='shouldArchive' value='true'></apps:property>
+    <apps:property name='hasTheWord' value='list:traffic-shipped@stripe.com'></apps:property>
+    <apps:property name='doesNotHaveTheWord' value='(to:hiren@stripe.com OR to:pj-notes@stripe.com OR to:state@stripe.com OR to:ruby-app-infra-internal@stripe.com OR to:ruby-platform-internal@stripe.com)'></apps:property>
+  </entry>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <content></content>
+    <apps:property name='label' value='hiren'></apps:property>
+    <apps:property name='hasTheWord' value='to:hiren@stripe.com'></apps:property>
+  </entry>
+</feed>

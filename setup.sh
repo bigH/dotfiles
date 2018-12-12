@@ -12,7 +12,7 @@ fi
 export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
 if ! command -v zsh >/dev/null 2>&1; then
-  printf "${RED}Zsh is not installed!${NORMAL} Please install zsh first!\n"
+  printf "${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!\n"
   exit
 fi
 
@@ -25,9 +25,23 @@ if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
   # Else, suggest the user do so manually.
   else
     printf "I can't change your shell automatically because this system does not have chsh.\n"
-    printf "${RED}Please manually change your default shell to zsh!${NORMAL}\n"
+    printf "${BOLD}Please manually change your default shell to zsh!${NORMAL}\n"
   fi
 fi
+
+function mk_expected_dir {
+  if [ $# -eq 1 ]; then
+    if [ ! -d "$1" ]; then
+      echo "${GREEN}Creating${NORMAL}: $1 ..."
+      mkdir -p $1
+    else
+      echo "${GREEN}Directory already present${NORMAL}: $1 ..."
+    fi
+  else
+    echo "${BOLD}ERROR${NORMAL}: mk_expected_dir requires 1 arguments"
+    exit 1
+  fi
+}
 
 function mkdir_if_not_exists {
   if [ $# -eq 1 ]; then
@@ -36,10 +50,10 @@ function mkdir_if_not_exists {
       mkdir -p $1
     else
       echo "Directory already present: $1 ..."
-      echo "${YELLOW}WARN${NORMAL}: Skipping directory creation $1..."
+      echo "${BOLD}WARN${NORMAL}: Skipping directory creation $1..."
     fi
   else
-    echo "${RED}ERROR${NORMAL}: mkdir_if_not_exists requires 1 arguments"
+    echo "${BOLD}ERROR${NORMAL}: mkdir_if_not_exists requires 1 arguments"
     exit 1
   fi
 }
@@ -48,16 +62,16 @@ function link_if_possible {
   if [ $# -eq 2 ]; then
     if [ -L "$2" ]; then
       echo "Link already present: ?? -> $2 ..."
-      echo "${YELLOW}WARN${NORMAL}: Skipping linking $1 -> $2..."
+      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2..."
     elif [ -e "$2" ]; then
       echo "File/Directory present at $2 ..."
-      echo "${YELLOW}WARN${NORMAL}: Skipping linking $1 -> $2..."
+      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2..."
     else
       echo "${GREEN}Linking${NORMAL}: $1 -> $2..."
       ln -s "$1" "$2"
     fi
   else
-    echo "${RED}ERROR${NORMAL}: link_if_possible requires 2 arguments"
+    echo "${BOLD}ERROR${NORMAL}: link_if_possible requires 2 arguments"
     exit 1
   fi
 }
@@ -130,9 +144,16 @@ else
   link_if_possible $DOT_FILES_DIR/.gitignore_global $HOME/.gitignore_global
   link_if_possible $DOT_FILES_DIR/.gitconfig $HOME/.gitconfig
 fi
+echo ""
+
+mk_expected_dir $HOME/.config/nvim
+link_if_possible $DOT_FILES_DIR/.nvim.init.vim $HOME/.config/nvim/init.vim
+echo ""
 
 link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
 link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
+echo ""
+
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then

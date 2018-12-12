@@ -58,12 +58,3 @@ fvh() {
   vim $* $(echo ${files//\~/$HOME})
 }
 
-## RANDOM
-
-# chrome_mem - see how much memory chrome is using
-chrome_mem() {
-  local chrome_usage total_usage
-  chrome_usage=$(ps -ev | grep -i chrome | awk '{print $12}' | awk '{for(i=1;i<=NF;i++)s+=$i}END{print s}') &&
-  total_usage=$(ps -ev | awk '{print $12}' | awk '{for(i=1;i<=NF;i++)s+=$i}END{print s}') &&
-  echo "Chrome: $chrome_usage of $total_usage"
-}

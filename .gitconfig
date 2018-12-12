@@ -23,6 +23,8 @@
 	algorithm = patience
 
 [alias]
+# Allow `blame`
+	blame = annotate
 # Show Status in Summary Form
 	st = status --short
 # List History
@@ -49,5 +51,5 @@
 	showconfig = "!cat ~/.gitconfig"
 # Print Aliases
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
-# Print Aliases
+# No Pager
 	n = "!git --no-pager"

@@ -11,6 +11,7 @@ unlink $HOME/.gitconfig
 unlink $HOME/.pryrc
 unlink $HOME/.vimrc
 unlink $HOME/.zshrc
+unlink $HOME/.config/nvim/init.vim
 unlink $DOT_FILES_DIR/bin/git-wtf
 
 # unlink directories

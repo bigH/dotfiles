@@ -25,6 +25,13 @@ git_bisect_diff() {
   log_data=""
   current_commit=$(git rev-parse HEAD)
 
+  OPTIMISTIC="FALSE"
+  if [ "$1" = "--optimistic" ]; then
+    echo '-- optimistic mode --'
+    OPTIMISTIC="TRUE"
+    shift
+  fi
+
   log() {
     echo "$@"
     log_data="$log_data$NEWLINE$@"
@@ -97,8 +104,14 @@ git_bisect_diff() {
 
     if [ $ret_val_left -eq 0 ]; then
       log "success for range $range_begin to $range_end"
+      range_begin="$alt_range_begin"
+      range_end="$alt_range_end"
     else
       log "FAILURE for range $range_begin to $range_end"
+    fi
+
+    if [ "$OPTIMISTIC" = "TRUE" ]; then
+      continue
     fi
 
     echo ""
@@ -126,7 +139,7 @@ git_bisect_diff() {
 
     if [ $ret_val_left -ne 0 ] && [ $ret_val_right -ne 0 ]; then
       log ""
-      log "ERROR: found FAILURE in both [$range_begin to $range_end] and [$alt_range_begin to $range_end]"
+      log "ERROR: found FAILURE in both [$range_begin to $range_end] and [$alt_range_begin to $alt_range_end]"
       echo ""
       echo "$log_data"
       exit 1
@@ -134,7 +147,7 @@ git_bisect_diff() {
 
     if [ $ret_val_left -eq 0 ] && [ $ret_val_right -eq 0 ]; then
       log ""
-      log "ERROR: found SUCCESS in both [$range_begin to $range_end] and [$alt_range_begin to $range_end]"
+      log "ERROR: found SUCCESS in both [$range_begin to $range_end] and [$alt_range_begin to $alt_range_end]"
       end_and_print_log
       exit 1
     fi
