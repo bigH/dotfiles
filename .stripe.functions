@@ -53,7 +53,7 @@ latest_masters() {
     cd $PS_ALT_DIR
     git checkout master --quiet
     git pull --quiet
-    REVS=$(git rev-list -20 HEAD)
+    REVS=$(git rev-list -25 HEAD)
     while read -r SHA; do
       build_status $SHA $PS
     done <<< "$REVS"
@@ -65,7 +65,7 @@ watch_master() {
   while true; do
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
     latest_masters
-    sleep 20
+    sleep 60
   done
 }
 

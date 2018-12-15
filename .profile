@@ -23,3 +23,5 @@ if [ ! -z "$DOT_FILES_ENV" ]; then
 fi
 source $DOT_FILES_DIR/.ctags.configs
 source $DOT_FILES_DIR/.bindings
+
+source $DOT_FILES_DIR/.pure_setup

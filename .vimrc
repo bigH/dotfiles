@@ -353,7 +353,7 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'sheerun/vim-polyglot'
-" Plugin 'trevordmiller/nova-vim'
+Plugin 'morhetz/gruvbox'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -370,9 +370,9 @@ filetype plugin on
 
 "{{{ Color Scheme Toggle
 
-" choosing light permanently
+" choosing dark default
 let color_scheme_mode = 1 " 0 = dark, 1 = light
-set background=light
+set background=dark
 
 func! ColorSchemeLightDark()
   if g:color_scheme_mode == 0
@@ -391,18 +391,18 @@ inoremap <silent> <F12> <Esc>:call ColorSchemeLightDark()<CR>a
 "}}}
 
 
-"{{{ Plugin Configurations
+"{{{ Colors
 
-" -- vim-colors-solarized --
-
-" Use correct vim colors in solarized
-if !empty(globpath(&rtp, 'colors/solarized.vim'))
-  colorscheme solarized
+" Use correct vim colors
+if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
+  colorscheme gruvbox
+  let g:airline_theme='gruvbox'
 endif
-" if !empty(globpath(&rtp, 'colors/nova.vim'))
-"   colorscheme nova
-"   let g:airline_theme='nova'
-" endif
+
+"}}}
+
+
+"{{{ Plugin Configurations
 
 " -- fzf --
 

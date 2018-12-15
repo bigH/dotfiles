@@ -3,7 +3,8 @@ alias gti="git"
 alias igt="git"
 
 # always open vim with tabs
-alias vim="vim -p"
+alias vim="nvim -p"
+alias vi="nvim -p"
 
 # manipulate files verbosely (print log of what happened)
 alias cp="cp -v"

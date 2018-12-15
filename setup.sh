@@ -116,6 +116,10 @@ echo 'Installing `zsh-syntax-highlighting` ...'
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 echo ""
 
+echo 'Installing `pure` ...'
+git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure
+echo ""
+
 link_if_possible $DOT_FILES_DIR/.zshrc $HOME/.zshrc
 
 echo ""
@@ -124,14 +128,6 @@ echo ""
 
 echo 'Installing `git-wtf` ...'
 git clone https://github.com/michaelklishin/git-wtf.git $DOT_FILES_DIR/git-wtf
-echo ""
-
-echo 'Installing `solarized` ...'
-git clone https://github.com/altercation/solarized.git $DOT_FILES_DIR/solarized
-echo ""
-
-echo 'Installing `dircolors-solarized` ...'
-git clone https://github.com/seebi/dircolors-solarized.git $DOT_FILES_DIR/dircolors-solarized
 echo ""
 
 link_if_possible $DOT_FILES_DIR/git-wtf/git-wtf $DOT_FILES_DIR/bin/git-wtf
@@ -161,7 +157,6 @@ if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
 fi
 
 echo ""
-
 echo ""
 
 echo '  -- Recommendations:'

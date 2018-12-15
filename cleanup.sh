@@ -25,8 +25,7 @@ rm -f $HOME/bin
 
 # cleanings
 rm -rf $DOT_FILES_DIR/.vim
+rm -rf $DOT_FILES_DIR/pure
 rm -rf $DOT_FILES_DIR/git-wtf
-rm -rf $DOT_FILES_DIR/solarized
-rm -rf $DOT_FILES_DIR/dircolors-solarized
 rm -rf $HOME/.oh-my-zsh
 
