@@ -53,3 +53,6 @@
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
 # No Pager
 	n = "!git --no-pager"
+
+[url "git://github.com/ghc/packages-"]
+	insteadOf = git://github.com/ghc/packages/

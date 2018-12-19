@@ -150,6 +150,8 @@ link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
 link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
 echo ""
 
+link_if_possible $DOT_FILES_DIR/nice-noise-loops $HOME/nice-noise-loops
+
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then

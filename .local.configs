@@ -1,6 +1,9 @@
 # Add Local `bin`
 export PATH="/usr/local/bin:$PATH"
 
+# Add Cabal `bin`
+export PATH="$HOME/.cabal/bin:$PATH"
+
 # Add Home `bin`
 export PATH="$HOME/bin:$PATH"
 

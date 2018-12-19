@@ -354,6 +354,10 @@ Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'morhetz/gruvbox'
+Plugin 'elaforge/fast-tags'
+Plugin 'neovimhaskell/haskell-vim'
+Plugin 'meck/vim-brittany'
+" Plugin 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -371,7 +375,7 @@ filetype plugin on
 "{{{ Color Scheme Toggle
 
 " choosing dark default
-let color_scheme_mode = 1 " 0 = dark, 1 = light
+let color_scheme_mode = 0 " 0 = dark, 1 = light
 set background=dark
 
 func! ColorSchemeLightDark()
@@ -404,6 +408,41 @@ endif
 
 "{{{ Plugin Configurations
 
+" -- vim-brittany --
+
+let g:brittany_on_save = 1
+
+" -- haskell-vim --
+
+" to enable highlighting of `forall`
+let g:haskell_enable_quantification = 1
+
+" to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_recursivedo = 1
+
+" to enable highlighting of `proc`
+let g:haskell_enable_arrowsyntax = 1
+
+" to enable highlighting of `pattern`
+let g:haskell_enable_pattern_synonyms = 1
+
+" to enable highlighting of type roles
+let g:haskell_enable_typeroles = 1
+
+" to enable highlighting of `static`
+let g:haskell_enable_static_pointers = 1
+
+" to enable highlighting of backpack keywords
+let g:haskell_backpack = 1
+
+" -- fast-tags --
+
+augroup tags
+au BufWritePost *.hs silent !init-tags %
+au BufWritePost *.hsc silent !init-tags %
+augroup END
+
+
 " -- fzf --
 
 " Map `\o` to FZF file lister (Ctrl-T for new tab)
@@ -429,6 +468,7 @@ let g:NERDDefaultAlign = 'left'
 
 " Execution configs
 let g:ale_linters = {}
+" let g:ale_linters['haskell'] = ['hlint', 'hdevtools', 'hfmt']
 let g:ale_linters['ruby'] = ['rubocop']
 let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_linters['javascript'] = ['eslint', 'flow']
@@ -520,4 +560,9 @@ set history=1000
 
 "}}}
 
+
+" set guicursor=n-v-c:block-Cursor
+" set guicursor+=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+" set guicursor+=n-v-c:blinkon0
+" set guicursor+=i:blinkwait10
 

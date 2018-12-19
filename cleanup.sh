@@ -16,12 +16,12 @@ unlink $DOT_FILES_DIR/bin/git-wtf
 
 # unlink directories
 rm -f $HOME/.vim
+rm -f $HOME/nice-noise-loops
+rm -f $HOME/bin
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   rm -f $HOME/$DOT_FILES_ENV-bin
 fi
-
-rm -f $HOME/bin
 
 # cleanings
 rm -rf $DOT_FILES_DIR/.vim

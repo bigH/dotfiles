@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require 'pry'
+
+def transform_command(command)
+  output_cmd = command
+
+  # rm trailing times:
+  output_cmd = output_cmd.gsub(/\d+:\d+:\d+(\.\d+)? /, '')
+
+  # one line
+  output_cmd = output_cmd.gsub("\\\n", ' ')
+
+  # add sudo
+  output_cmd = "sudo #{output_cmd}"
+
+  # add -it and entrypoint
+  output_cmd = output_cmd.sub("docker run", "docker run -it --entrypoint=/bin/bash")
+
+  # rm cidfile
+  output_cmd = output_cmd.gsub(/--cidfile [^\s]+/, '')
+
+  output_cmd
+end
+
+if __FILE__ == $0
+  if ARGV[0].nil?
+    puts <<~STOP
+    To run, pass the docker run command as a here document, e.g.:
+
+    ```
+    convert-docker-run "$(cat <<END
+    00:00:12.029 docker run \\
+    00:00:12.029 --env=BUILD_NUMBER=11385 \\
+    00:00:12.029 --env=BUILD_ROLE=leader \\
+    00:00:12.029 --env=CIBOT_BUILD_TOKEN=bui_CPTgPRYFgchK2d \\
+    00:00:12.029 --env=GIT_BRANCH=master \\
+    00:00:12.030 --env=GIT_COMMIT=f71aac2385f026215c85f36a2828c0e8f9cb305a \\
+    00:00:12.030 --env=JENKINS_URL=https://jenkins-2017-12-14.northwest.corp.stripe.com/ \\
+    00:00:12.030 --env=JOB_NAME=stripe-internal-pay-server \\
+    00:00:12.030 --env=LANG=en_US.UTF-8 \\
+    00:00:12.030 --env=LIGHTSTEP_URL=https://app.lightstep.com/stripe-prod \\
+    END)"
+    ```
+
+    STOP
+    exit(0)
+  end
+
+  puts(transform_command(ARGV[0]))
+end
+

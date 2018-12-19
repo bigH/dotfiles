@@ -26,6 +26,7 @@
 --ignore-directory=is:node_modules
 --ignore-directory=is:CMakeFiles
 --ignore-directory=is:.metadata
+--ignore-directory=is:vendor
 --ignore-file=ext:bak
 --ignore-file=match:/~$/
 --ignore-file=match:/^#.+#$/
