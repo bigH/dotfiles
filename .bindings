@@ -7,8 +7,20 @@ bindkey '^N' fzf-cd-widget
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
+# Ctrl-B/F - back / forward by word
+bindkey '^[b' emacs-backward-word
+bindkey '^[f' emacs-forward-word
+
 # Ctrl-Space - git status
-bindkey -s '^ ' 'git st^M'
+bindkey -s '^ ' '^U^Kgit st^M'
+
+# Alt-Space - insert `git branch-name`
+zmodload -i zsh/parameter
+insert-git-branch-name() {
+  LBUFFER+=`git branch-name`
+}
+zle -N insert-git-branch-name
+bindkey '^[ ' insert-git-branch-name
 
 # Alt-X - insert last command result
 zmodload -i zsh/parameter

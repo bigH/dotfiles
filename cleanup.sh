@@ -16,6 +16,7 @@ unlink $DOT_FILES_DIR/bin/git-wtf
 
 # unlink directories
 rm -f $HOME/.vim
+rm -f $HOME/home
 rm -f $HOME/nice-noise-loops
 rm -f $HOME/bin
 

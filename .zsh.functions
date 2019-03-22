@@ -32,6 +32,16 @@ bip() {
   echo brew install $(echo $targets | cut -d ' ' -f2-)
 }
 
+# first_line [file]
+first_line() {
+  head -n 1
+}
+
+# last_line [file]
+last_line() {
+  tail -n 1
+}
+
 # lines [from] [to] - for piping only
 line() {
   lines $1 $1

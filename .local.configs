@@ -4,17 +4,30 @@ export PATH="/usr/local/bin:$PATH"
 # Add Cabal `bin`
 export PATH="$HOME/.cabal/bin:$PATH"
 
+# Add go `bin`
+export PATH="$HOME/go/bin:$PATH"
+
 # Add Home `bin`
 export PATH="$HOME/bin:$PATH"
 
-# Add `coreutils`
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# Add `coreutils` - maybe not good for stripe
+# export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+# export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # Setup `dircolors`
-eval `dircolors $DOT_FILES_DIR/gruvbox.dircolors`
+# `dircolors` isn't on the path
+eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
 
 # Add `linuxbrew` to path if present
 if [ -d '/home/linuxbrew/.linuxbrew/bin' ]; then
   export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+fi
+
+# Add `bison`
+if [ -d '/usr/local/opt/bison/bin' ]; then
+  export PATH="/usr/local/opt/bison/bin:$PATH"
+fi
+
+if [ -d '/usr/local/opt/bison/lib' ]; then
+  export LDFLAGS="-L/usr/local/opt/bison/lib"
 fi

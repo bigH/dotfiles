@@ -1,6 +1,7 @@
 # misspellings
-alias gti="git"
-alias igt="git"
+alias g="git"
+alias gn="git --no-pager"
+alias gitn="git --no-pager"
 
 # always open vim with tabs
 alias vim="nvim -p"

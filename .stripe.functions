@@ -1,30 +1,35 @@
 # watch_build
 print_build() {
-  if [ -z "$1" ]; then
-    echo "ERROR: no arguments provided.\n\nUsage: print_build <ref> [repo]"
-    exit 1
-  else
-    echo "WARNING: no repo provided. assuming 'pay-server'.."
-    PS="stripe-internal/pay-server"
-    pay ci:status --ref $1 --repo ${2:-$PS} 2>&1 | grep -v typer-dev
-  fi
+  PS="stripe-internal/pay-server"
+  HEAD="$(git branch-name)"
+
+  REF="${1:-$HEAD}"
+  REPO="${2:-$PS}"
+
+  pay ci:status --ref $REF --repo $REPO 2>&1 | grep -v typer-dev | grep -v yard
 }
 
 # watch_build
 watch_build() {
-  if [ -z "$1" ]; then
-    echo "ERROR: no arguments provided.\n\nUsage: print_build <ref> [repo]"
-    exit 1
-  else
-    echo "WARNING: no repo provided. assuming 'pay-server'.."
-    PS="stripe-internal/pay-server"
-    watch -n 20 "pay ci:status --ref $1 --repo ${2:-$PS} 2>&1 | grep -v typer-dev"
-  fi
+  PS="stripe-internal/pay-server"
+  HEAD="$(git branch-name)"
+
+  REF="${1:-$HEAD}"
+  REPO="${2:-$PS}"
+
+  watch -n 20 "pay ci:status --ref $REF --repo $REPO 2>&1 | grep -v typer-dev | grep -v yard"
+  print_build $REF $REPO
 }
 
 # build_status
 build_status() {
-  STATUS_OUTPUT=`pay ci:status --ref $1 --repo ${2:-$PS} 2>&1 | grep -v typer-dev`
+  PS="stripe-internal/pay-server"
+  HEAD="$(git branch-name)"
+
+  REF="${1:-$HEAD}"
+  REPO="${2:-$PS}"
+
+  STATUS_OUTPUT=`pay ci:status --ref $REF --repo $REPO 2>&1 | grep -v typer-dev | grep -v yard`
   STATUS_LINE=`echo $STATUS_OUTPUT | cut -d'|' -f3 | grep -v 'Status' | grep -v '^+' | xargs -n1 echo`
   SUMMARY="${YELLOW} ??? ${NORMAL}"
   if [[ "${STATUS_LINE}" == *"FAILED"* ]]; then
@@ -45,7 +50,7 @@ build_status() {
   fi
 }
 
-# latest_masters
+# latest_masters - pay-server only
 latest_masters() {
   PS_ALT_DIR="$HOME/stripe/pay-server-alt"
   PS="stripe-internal/pay-server"
@@ -60,7 +65,7 @@ latest_masters() {
   )
 }
 
-# watch_master
+# latest_masters - pay-server only
 watch_master() {
   while true; do
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -

@@ -7,45 +7,16 @@ fzfe() {
 
 ## CD
 
-# fd - cd to selected directory
-fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m --preview="ls -l {}") &&
-    echo cd "$dir" &&
-    cd "$dir"
-}
-
-# fda - including hidden directories
-fda() {
+# fzd - including hidden directories
+fzd() {
   local dir
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m --preview="ls -l {}") &&
     echo cd "$dir" &&
     cd "$dir"
 }
 
-# cdf - cd into the directory of the selected file
-fdc() {
-  local file
-  local dir
-  file=$(fzf +m -q "$1") &&
-    dir=$(dirname "$file") &&
-    echo cd "$dir" &&
-    cd "$dir"
-}
-
-## VIM
-
-# fv - mult-select to choose files to edit
-fv() {
-  local files
-  files=$(fzf -m --preview="preview {}") &&
-    echo $files | paste -sd ' ' - &&
-    vim $* $(echo $files | paste -sd ' ' -)
-}
-
 # fvh - open files in ~/.viminfo
-fvh() {
+fzv() {
   local files
   files=$(
     grep '^>' ~/.viminfo | cut -c3- |

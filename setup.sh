@@ -78,6 +78,10 @@ function link_if_possible {
 
 echo ""
 
+mk_expected_dir $DOT_FILES_DIR/.local/share/fzf-history
+
+echo ""
+
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/tmp
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle
@@ -150,6 +154,8 @@ link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
 link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
 echo ""
 
+link_if_possible $DOT_FILES_DIR $HOME/home
+
 link_if_possible $DOT_FILES_DIR/nice-noise-loops $HOME/nice-noise-loops
 
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
@@ -163,7 +169,12 @@ echo ""
 
 echo '  -- Recommendations:'
 echo ''
-echo '     `brew install fzf ag ccat coreutils ctags`'
+echo '     `brew install fzf ag ccat coreutils ctags cabal ghc`'
+echo '     `cabal install cabal-install Cabal`'
+echo '     `cabal install happy alex fast-tags hindent stylish-hashell hlint`'
+echo '     `gem install ripper-tags`'
+echo ''
+echo '     ... you may require `sudo`'
 echo '     ... there may be more'
 echo ''
 echo '     `~/.hiren/.osx`'

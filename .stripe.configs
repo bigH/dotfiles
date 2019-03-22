@@ -24,3 +24,8 @@ export PATH="/Users/hiren/stripe/henson/bin:$PATH"
 . ~/.stripe-repos.sh
 
 export PATH="/usr/local/opt/bison/bin:$PATH"
+
+# zsh completion for `pay`
+autoload bashcompinit
+bashcompinit
+source $HOME/stripe/pay-server/dev/out/pay-completion-wrapper

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
 	<title>Mail Filters</title>
-	<id>tag:mail.google.com,2008:filters:3082598740243093903,3748042645242702919,397959341599117491,9095259564001851768</id>
-	<updated>2018-12-11T18:58:32Z</updated>
+	<id>tag:mail.google.com,2008:filters:7958341545777577993,9136955146604573063,1782335453291838340,7369024896988503407</id>
+	<updated>2018-12-20T17:29:58Z</updated>
 	<author>
 		<name>Hiren Hiranandani</name>
 		<email>hiren@stripe.com</email>
@@ -9,33 +9,8 @@
 	<entry>
 		<category term='filter'></category>
 		<title>Mail Filter</title>
-		<id>tag:mail.google.com,2008:filter:397959341599117491</id>
-		<updated>2018-12-11T18:58:32Z</updated>
-		<content></content>
-		<apps:property name='subject' value='Accepted:'/>
-		<apps:property name='shouldMarkAsRead' value='true'/>
-		<apps:property name='shouldArchive' value='true'/>
-		<apps:property name='sizeOperator' value='s_sl'/>
-		<apps:property name='sizeUnit' value='s_smb'/>
-	</entry>
-	<entry>
-		<category term='filter'></category>
-		<title>Mail Filter</title>
-		<id>tag:mail.google.com,2008:filter:3082598740243093903</id>
-		<updated>2018-12-11T18:58:32Z</updated>
-		<content></content>
-		<apps:property name='from' value='noreply@git.corp.stripe.com'/>
-		<apps:property name='subject' value='[stripe-internal/pay-server]'/>
-		<apps:property name='shouldMarkAsRead' value='true'/>
-		<apps:property name='shouldArchive' value='true'/>
-		<apps:property name='sizeOperator' value='s_sl'/>
-		<apps:property name='sizeUnit' value='s_smb'/>
-	</entry>
-	<entry>
-		<category term='filter'></category>
-		<title>Mail Filter</title>
-		<id>tag:mail.google.com,2008:filter:3748042645242702919</id>
-		<updated>2018-12-11T18:58:32Z</updated>
+		<id>tag:mail.google.com,2008:filter:1782335453291838340</id>
+		<updated>2018-12-20T17:29:58Z</updated>
 		<content></content>
 		<apps:property name='from' value='observability-bots+incidents@stripe.com'/>
 		<apps:property name='doesNotHaveTheWord' value='L1'/>
@@ -47,11 +22,36 @@
 	<entry>
 		<category term='filter'></category>
 		<title>Mail Filter</title>
-		<id>tag:mail.google.com,2008:filter:9095259564001851768</id>
-		<updated>2018-12-11T18:58:32Z</updated>
+		<id>tag:mail.google.com,2008:filter:7369024896988503407</id>
+		<updated>2018-12-20T17:29:58Z</updated>
 		<content></content>
-		<apps:property name='from' value='from:(jamesiry@stripe.com) OR from:(scottmac@stripe.com) OR from:(willl larson@stripe.com) OR from:(dps@stripe.com) OR from:(patrick@stripe.com) OR from:(q@stripe.com)'/>
+		<apps:property name='from' value='from:(jamesiry@stripe.com) OR from:(scottmac@stripe.com) OR from:(larson@stripe.com) OR from:(taleena@stripe.com) OR from:(dps@stripe.com) OR from:(patrick@stripe.com) OR from:(q@stripe.com)'/>
 		<apps:property name='label' value='_leaders'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:7958341545777577993</id>
+		<updated>2018-12-20T17:29:58Z</updated>
+		<content></content>
+		<apps:property name='subject' value='Accepted:'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:9136955146604573063</id>
+		<updated>2018-12-20T17:29:58Z</updated>
+		<content></content>
+		<apps:property name='from' value='noreply@git.corp.stripe.com'/>
+		<apps:property name='subject' value='[stripe-internal/pay-server]'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldArchive' value='true'/>
 		<apps:property name='sizeOperator' value='s_sl'/>
 		<apps:property name='sizeUnit' value='s_smb'/>
 	</entry>
