@@ -1,8 +1,12 @@
 # Add Local `bin`
 export PATH="/usr/local/bin:$PATH"
 
-# Add Cabal `bin`
-export PATH="$HOME/.cabal/bin:$PATH"
+# Add Haskell configs
+if [ -f $HOME/.ghcup/env ]; then
+  source $HOME/.ghcup/env
+else
+  export PATH="$HOME/.cabal/bin:$PATH"
+fi
 
 # Add go `bin`
 export PATH="$HOME/go/bin:$PATH"
@@ -16,7 +20,9 @@ export PATH="$HOME/bin:$PATH"
 
 # Setup `dircolors`
 # `dircolors` isn't on the path
-eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
+if [ -f /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
+  eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
+fi
 
 # Add `linuxbrew` to path if present
 if [ -d '/home/linuxbrew/.linuxbrew/bin' ]; then

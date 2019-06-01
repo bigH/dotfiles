@@ -102,7 +102,7 @@ link_if_possible $DOT_FILES_DIR/.vim $HOME/.vim
 echo ""
 echo "Installing ViM plugins ..."
 
-vim +PluginInstall +qall
+nvim +PluginInstall +qall
 
 echo ""
 echo "ViM Setup ${GREEN}Complete${NORMAL}!"
