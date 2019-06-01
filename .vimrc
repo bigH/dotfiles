@@ -18,6 +18,9 @@ set tabpagemax=50
 " Who doesn't like autoindent?
 set autoindent
 
+" No auto directory change
+set noautochdir
+
 " Use english for spellchecking, but don't spellcheck by default
 if version >= 700
    set spl=en spell
@@ -25,6 +28,7 @@ if version >= 700
 endif
 
 " Cool tab completion stuff
+set path+=**
 set wildmenu
 set wildmode=list:longest,full
 
@@ -63,8 +67,7 @@ endif
 set mouse=a
 
 " Put tags in the `.tags` file - `$PROJECT_ROOT/.tags`
-" (because of `vim-rooter`)
-set tags=.tags;/
+set tags=.tags
 
 " Use a new tab when opening quickfix items
 set switchbuf+=usetab,newtab
@@ -122,6 +125,7 @@ set showmode
 
 " Show relative numbers on the left side
 set relativenumber
+set number
 
 " Don't allow cursor to be at edges
 set scrolloff=5
@@ -213,6 +217,7 @@ func! Paste_on_off()
     set paste
     set nonumber
     set norelativenumber
+    set nolist
     let g:paste_mode = 1
   elseif g:paste_mode == 1
     nnoremap <silent> k gk
@@ -220,13 +225,15 @@ func! Paste_on_off()
     set nopaste
     set number
     set norelativenumber
+    set list
     let g:paste_mode = 2
   else
     nnoremap <silent> k gk
     nnoremap <silent> j gj
     set nopaste
-    set nonumber
+    set number
     set relativenumber
+    set list
     let g:paste_mode = 0
   endif
   return
@@ -283,6 +290,7 @@ nnoremap <silent> <Space><Space> :wa<Enter>
 
 " Map <C-\> to `go to definition` in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map g<C-\> :tab split<CR>g<C-]>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -358,7 +366,6 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'kana/vim-surround'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-Plugin 'airblade/vim-rooter'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdtree'
@@ -374,6 +381,7 @@ Plugin 'elaforge/fast-tags'
 Plugin 'neovimhaskell/haskell-vim'
 Plugin 'alx741/vim-hindent'
 Plugin 'parsonsmatt/intero-neovim'
+Plugin '907th/vim-auto-save'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -418,6 +426,28 @@ if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
   colorscheme gruvbox
   let g:airline_theme='gruvbox'
 endif
+
+"}}}
+
+
+"{{{ Custom Things
+
+" Ruby-specific things
+augroup rubyThings
+  au!
+
+  " binding.pry on next line
+  au FileType ruby nnoremap <leader>bp orequire 'pry'; binding.pry<Esc>
+
+  " binding.pry on previous line
+  au FileType ruby nnoremap <leader>BP Orequire 'pry'; binding.pry<Esc>
+augroup END
+
+" Folding things
+augroup foldingThings
+  au BufReadPre * setlocal foldmethod=indent
+  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+augroup END
 
 "}}}
 
@@ -545,7 +575,7 @@ augroup END
 
 " -- fast-tags --
 
-augroup tags
+augroup haskellTags
 au BufWritePost *.hs silent !init-tags %
 au BufWritePost *.hsc silent !init-tags %
 augroup END
@@ -560,16 +590,14 @@ let g:fzf_action = {
   \ 'ctrl-h':  'botright split',
   \ 'ctrl-v':  'vertical botright split' }
 
-" Map `\o` to FZF file lister (Ctrl-T for new tab)
+" Map `\t` to FZF tag finder
+map <silent> <Leader>t :Tags<CR>
+
+" Map `\o` to FZF file lister
 map <silent> <Leader>o :Files<CR>
 
-" Map `\O` to FZF git file lister (Ctrl-T for new tab)
+" Map `\O` to FZF git file lister
 map <silent> <Leader>O :GFiles?<CR>
-
-" -- vim-rooter --
-
-" Only respect .git dir
-let g:rooter_patterns = ['.git/']
 
 " -- nerdcommenter --
 
@@ -672,6 +700,23 @@ map <C-k> :cp<CR>
 "}}}
 
 
+"{{{ Cursor Stuff
+
+" change cursor color in insert mode
+if &term =~ "xterm" || &term =~ 'rxvt' || &term =~ 'screen'
+  let &t_SI = "\<Esc>]12;#CCCCCC\x7"
+  let &t_EI = "\<Esc>]12;#999999\x7"
+endif
+
+" below didn't work
+" set guicursor=n-v-c:block-Cursor
+" set guicursor+=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
+" set guicursor+=n-v-c:blinkon0
+" set guicursor+=i:blinkwait10
+
+"}}}
+
+
 "{{{ Must Be At End
 
 " required for vim-textobj-rubyblock to work
@@ -682,9 +727,4 @@ set history=1000
 
 "}}}
 
-
-" set guicursor=n-v-c:block-Cursor
-" set guicursor+=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
-" set guicursor+=n-v-c:blinkon0
-" set guicursor+=i:blinkwait10
 

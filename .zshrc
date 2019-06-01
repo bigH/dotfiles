@@ -70,6 +70,8 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+autoload -U compinit && compinit
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration

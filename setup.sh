@@ -120,6 +120,10 @@ echo 'Installing `zsh-syntax-highlighting` ...'
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 echo ""
 
+echo 'Installing `zsh-completions` ...'
+git clone git://github.com/zsh-users/zsh-completions.git $HOME/.oh-my-zsh/custom/plugins/zsh-completions
+echo ""
+
 echo 'Installing `pure` ...'
 git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure
 echo ""
@@ -150,6 +154,7 @@ mk_expected_dir $HOME/.config/nvim
 link_if_possible $DOT_FILES_DIR/.nvim.init.vim $HOME/.config/nvim/init.vim
 echo ""
 
+link_if_possible $DOT_FILES_DIR/.alacritty.yml $HOME/.alacritty.yml
 link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
 link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
 echo ""

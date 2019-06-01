@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+git_pr() {
+  CURRENT_BRANCH="$(git branch-name)"
+  BRANCH_NAME="${1:-$CURRENT_BRANCH}"
+  open "https://git.corp.stripe.com/stripe-internal/pay-server/pull/new/$BRANCH_NAME"
+}
+
+git_pr "$@"

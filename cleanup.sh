@@ -5,6 +5,7 @@ export DOT_FILES_DIR=$HOME/.hiren
 export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
 # unlinks
+unlink $HOME/.alacritty.yml
 unlink $HOME/.ackrc
 unlink $HOME/.gitignore_global
 unlink $HOME/.gitconfig

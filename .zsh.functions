@@ -52,18 +52,45 @@ lines() {
   head -n $2 | tail -n +$1
 }
 
-# Strip escape codes/sequences [$1: input, $2: target variable]
-strip_escape_codes() {
-  sed -E "s/[[:cntrl:]]\[[0-9]{1,3}m//g"
-}
-
-# numbers
+# numbers - for piping only
 numbers() {
   cat -n -
 }
 
-# watcher
-watcher() {
+# shuf - for piping only
+shuf() {
+  perl -MList::Util=shuffle -e 'print shuffle<STDIN>'
+}
 
-  COMMAND="$@"
+# every
+every () {
+  if [ -z "$1" ]
+  then
+    echo 'ERROR: specify the `n` in `nth`.'
+  else
+    re='^[0-9]+$'
+    if ! [[ $1 =~ $re ]] ; then
+      echo 'ERROR: argument must be a number.'
+    else
+      NUM=$1
+      shift
+      if [ "$#" -eq 0 ]; then
+        perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")'
+      else
+        while [ "$#" -ne 0 ]; do
+          perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")' $1
+          shift
+        done
+      fi
+    fi
+  fi
+}
+
+# status
+status() {
+  if [ -d .git ]; then
+    g st
+  else
+    ll
+  fi
 }

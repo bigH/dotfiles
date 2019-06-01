@@ -1,4 +1,16 @@
-# watch_build
+# force_build
+force_build() {
+  PS="stripe-internal/pay-server"
+  HEAD="$(git rev-parse HEAD)"
+
+  REF="${1:-$HEAD}"
+
+  git branch --no-track trying-$1 $1
+  git push origin trying-$1
+  watch_build trying-$1
+}
+
+# print_build
 print_build() {
   PS="stripe-internal/pay-server"
   HEAD="$(git branch-name)"
@@ -52,20 +64,18 @@ build_status() {
 
 # latest_masters - pay-server only
 latest_masters() {
-  PS_ALT_DIR="$HOME/stripe/pay-server-alt"
   PS="stripe-internal/pay-server"
+  PS_DIR="$HOME/stripe/pay-server"
   (
-    cd $PS_ALT_DIR
-    git checkout master --quiet
-    git pull --quiet
-    REVS=$(git rev-list -25 HEAD)
+    git fetch origin --quiet
+    REVS=$(git rev-list -25 origin/master)
     while read -r SHA; do
       build_status $SHA $PS
     done <<< "$REVS"
   )
 }
 
-# latest_masters - pay-server only
+# watch_master - pay-server only
 watch_master() {
   while true; do
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -

@@ -23,9 +23,18 @@ fzv() {
     while read line; do
       [ -f "${line/\~/$HOME}" ] && echo "$line"
     done |
-    fzf -m -1 --preview='sh -c preview\ $(echo {} |  sed "s/~/\$HOME/" )'
+    fzf -m -1 --preview='bat --style=numbers --color=always {}'
   ) &&
   echo $files | paste -sd ' ' - &&
   vim $* $(echo ${files//\~/$HOME})
 }
 
+# fvg - open files that have occurrences of search term
+fzvg() {
+  if [ -z "$1" ]; then
+    echo "ERROR: no argument provided."
+  else
+    ARGV=$1
+    vim $(rg -il $ARGV | fzf -0 -1 -m --ansi --preview "cat {} | rg $ARGV --context 3") "+tabdo /$ARGV"
+  fi
+}

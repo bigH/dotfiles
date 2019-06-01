@@ -2,9 +2,7 @@
 
 if [ "$#" -ne 1 ]; then
   echo "ERROR: exactly one argument required."
-elif [ ! -f "$1" ]; then
-  echo "ERROR: '$1' does not exist or is not a file."
-else
+elif [ -f "$1" ]; then
   FILE=$(basename -- "$1")
   EXT=$(echo "$FILE" | sed 's/^.*\.//')
 
@@ -23,5 +21,9 @@ else
       exit 1
       ;;
   esac
+elif [ -d "$1" ]; then
+  gls --color=always -G "$1"
+else
+  echo "ERROR: '$1' does not exist or is not a file."
 fi
 

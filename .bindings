@@ -12,7 +12,7 @@ bindkey '^[b' emacs-backward-word
 bindkey '^[f' emacs-forward-word
 
 # Ctrl-Space - git status
-bindkey -s '^ ' '^U^Kgit st^M'
+bindkey -s '^ ' '^U^Kstatus^M'
 
 # Alt-Space - insert `git branch-name`
 zmodload -i zsh/parameter

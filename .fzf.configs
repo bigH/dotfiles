@@ -1,5 +1,30 @@
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-export FZF_DEFAULT_COMMAND='find .'
+# Use fd instead of the default find command for listing path candidates.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
 
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+# use `fd`
+export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude ".git" .'
+
+# use `preview`
+export FZF_CTRL_T_OPTS='--preview='"'"'[[ $(file --mime {}) =~ binary ]] &&
+                                         echo {} is a binary file ||
+                                       [[ $(file --mime {}) =~ directory ]] &&
+                                         gls --color=always -G {} ||
+                                       (bat --style=numbers --color=always {} ||
+                                         highlight -O ansi -l {} ||
+                                         coderay {} ||
+                                         rougify {} ||
+                                         cat {})'"'"
+
+# use `ls`
+export FZF_ALT_C_OPTS="--preview='gls --color=always -G'"
