@@ -84,3 +84,17 @@ watch_master() {
   done
 }
 
+# lint
+lint() {
+  if [ -d .git ]; then
+    status
+    if [ -e scripts/bin/lint ]; then
+      hr
+      scripts/bin/lint -N
+    else
+      echo "${RED}ERROR${NORMAL}: 'scripts/bin/lint' not found!"
+    fi
+  else
+    echo "${RED}ERROR${NORMAL}: not a .git directory!"
+  fi
+}

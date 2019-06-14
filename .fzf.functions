@@ -21,7 +21,7 @@ fzv() {
   files=$(
     grep '^>' ~/.viminfo | cut -c3- |
     while read line; do
-      [ -f "${line/\~/$HOME}" ] && echo "$line"
+      [ -e "${line/\~/$HOME}" ] && echo "$line"
     done |
     fzf -m -1 --preview='bat --style=numbers --color=always {}'
   ) &&

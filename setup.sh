@@ -87,6 +87,17 @@ mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/undodir
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo ""
+
+  echo "Installing iTerm2 shell integration ..."
+  curl -L https://iterm2.com/misc/install_shell_integration.sh | bash
+
+  echo ""
+  echo "iTerm2 Setup ${GREEN}Complete${NORMAL}!"
+  echo ""
+fi
+
 echo ""
 
 if [ ! -d "$DOT_FILES_DIR/.vim/bundle/Vundle.vim" ]; then
@@ -177,7 +188,7 @@ echo ''
 echo '     `brew install fzf ag ccat coreutils ctags cabal ghc`'
 echo '     `cabal install cabal-install Cabal`'
 echo '     `cabal install happy alex fast-tags hindent stylish-hashell hlint`'
-echo '     `gem install ripper-tags`'
+echo '     `[rbenv exec] gem install ripper-tags`'
 echo ''
 echo '     ... you may require `sudo`'
 echo '     ... there may be more'
@@ -185,5 +196,13 @@ echo ''
 echo '     `~/.hiren/.osx`'
 echo '     ... sets up OS X in a nice way'
 echo ''
+# TODO build/test this stuff
+if [ ! -z "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
+  echo "  -- ${DOT_FILES_ENV^^} specific:"
+  echo ''
+  echo "     You can run \`~/.hiren/setup.$DOT_FILES_ENV.sh\`"
+  echo '     ... sets up the devbox in a nice way'
+  echo ''
+fi
 echo 'Done!'
 echo ''

@@ -1,10 +1,14 @@
 # misspellings
 alias g="git"
 alias gn="git --no-pager"
+alias gd="git diff"
+alias gnd="git --no-pager diff"
+alias gds="git diff --staged"
+alias gnds="git --no-pager diff --staged"
 
 # always open vim with tabs
-alias vim="nvim -p"
-alias vi="nvim -p"
+alias vim="nvim"
+alias vi="nvim"
 
 # manipulate files verbosely (print log of what happened)
 alias cp="cp -v"

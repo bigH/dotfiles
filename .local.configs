@@ -2,7 +2,7 @@
 export PATH="/usr/local/bin:$PATH"
 
 # Add Haskell configs
-if [ -f $HOME/.ghcup/env ]; then
+if [ -e $HOME/.ghcup/env ]; then
   source $HOME/.ghcup/env
 else
   export PATH="$HOME/.cabal/bin:$PATH"
@@ -20,7 +20,7 @@ export PATH="$HOME/bin:$PATH"
 
 # Setup `dircolors`
 # `dircolors` isn't on the path
-if [ -f /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
+if [ -e /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
   eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
 fi
 
@@ -40,4 +40,17 @@ fi
 
 if [ -d "$HOME/.cargo/env" ]; then
   source $HOME/.cargo/env
+fi
+
+if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then
+  export PATH="/usr/local/Cellar/emacs/26.2/bin:$PATH"
+fi
+
+if [ -d '/usr/local/opt/llvm/bin/' ]; then
+  export PATH="/usr/local/opt/llvm/bin/:$PATH"
+fi
+
+# Add iTerm2 things
+if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
+  source "${HOME}/.iterm2_shell_integration.zsh"
 fi

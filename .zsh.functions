@@ -94,3 +94,15 @@ status() {
     ll
   fi
 }
+
+# horizontal rule [hr]
+er() {
+  echo ""
+  echo "$@"
+  $@
+}
+
+# horizontal rule [hr]
+hr() {
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+}

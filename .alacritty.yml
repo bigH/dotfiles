@@ -2,8 +2,7 @@ window:
   decorations: full
 
 scrolling:
-  # intend to use this for vim only, so no scrollback
-  history: 0
+  history: 100000
   multiplier: 3
   auto_scroll: false
 
@@ -99,6 +98,9 @@ key_bindings:
   - { key: Q,        mods: Command,       action: Quit                         }
   - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
+  - { key: H,        mods: Command,       chars: "H"                           }
+  - { key: L,        mods: Command,       chars: "L"                           }
+  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
   - { key: Key0,     mods: Command,       action: ResetFontSize                }
   - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
   - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
@@ -171,7 +173,7 @@ mouse:
 
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: "./-,│`|:\"' ()[]{}<>"
   save_to_clipboard: true
 
 dynamic_title: true
@@ -183,7 +185,8 @@ cursor:
 live_config_reload: true
 
 shell:
-  program: /bin/zsh
+  program: login
+  args: ["-fp", "hiren"]
 
 # ---- TODO -- still on it..
 

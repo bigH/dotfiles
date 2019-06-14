@@ -1,4 +1,4 @@
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use fd instead of the default find command for listing path candidates.
 _fzf_compgen_path() {

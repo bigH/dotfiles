@@ -12,9 +12,6 @@ set showcmd
 " Set syntax highlighting to always on
 syntax enable
 
-" 20 tabs max per vim session
-set tabpagemax=50
-
 " Who doesn't like autoindent?
 set autoindent
 
@@ -44,9 +41,6 @@ set ignorecase
 " set visualbell, to silence the annoying audible bell
 set vb
 
-" When I close a tab, remove the buffer
-set nohidden
-
 " Set off the other paren
 highlight MatchParen ctermbg=4
 
@@ -69,8 +63,12 @@ set mouse=a
 " Put tags in the `.tags` file - `$PROJECT_ROOT/.tags`
 set tags=.tags
 
+" use ctags from brew if present
+" TODO let g:tagbar_ctags_bin="/usr/local/Cellar/ctags/5.8_1/bin/ctags"
+
+" TODO is this fine for buffers
 " Use a new tab when opening quickfix items
-set switchbuf+=usetab,newtab
+" set switchbuf+=usetab,newtab
 
 "}}}
 
@@ -130,6 +128,9 @@ set number
 " Don't allow cursor to be at edges
 set scrolloff=5
 set sidescrolloff=20
+
+" Automatically set scroll
+autocmd BufEnter * set scroll=2
 
 " Delete comment character when joining lines
 set formatoptions+=j
@@ -205,7 +206,6 @@ autocmd BufReadPost *
 
 
 "{{{ Line Number and Paste Cycle
-" TODO: some commands work on tabs, some don't
 
 let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
@@ -222,6 +222,7 @@ func! Paste_on_off()
   elseif g:paste_mode == 1
     nnoremap <silent> k gk
     nnoremap <silent> j gj
+    retab
     set nopaste
     set number
     set norelativenumber
@@ -230,6 +231,7 @@ func! Paste_on_off()
   else
     nnoremap <silent> k gk
     nnoremap <silent> j gj
+    retab
     set nopaste
     set number
     set relativenumber
@@ -251,35 +253,42 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 " Alt-Enter or <Leader><CR> - insert a new-line here
 nnoremap <silent> <CR> i<CR><Esc>
 nnoremap <silent> <Leader><CR> i<CR><Esc>
+nnoremap <silent> <M-CR> i<CR><Esc>
 
 " Sane Y
 nnoremap <silent> Y y$
 
-" Next Tab - unfocus NERDTree
-nmap <silent> <Left> :wincmd l<CR>:tabprevious<CR>
-imap <silent> <Left> <Esc>:wincmd l<CR>:tabprevious<CR>
-nmap <silent> H :wincmd l<CR>:tabprevious<CR>
+" Prevent mis-types of below from triggering orignal vim commands
+nnoremap <silent> s <Nop>
+nnoremap <silent> S <Nop>
 
-" Previous Tab - unfocus NERDTree
-nmap <silent> <Right> :wincmd l<CR>:tabnext<CR>
-imap <silent> <Right> <Esc>:wincmd l<CR>:tabnext<CR>
-nmap <silent> L :wincmd l<CR>:tabnext<CR>
+" Split Naturally
+set splitbelow
+set splitright
 
-" First Tab - unfocus NERDTree
-nmap <silent> <Up> :wincmd l<CR>:tabfirst<CR>
-imap <silent> <Up> <Esc>:wincmd l<CR>:tabfirst<CR>
+" Move between windows
+nmap <silent> sh :wincmd h<CR>
+nmap <silent> sj :wincmd j<CR>
+nmap <silent> sk :wincmd k<CR>
+nmap <silent> sl :wincmd l<CR>
 
-" Previous Tab - unfocus NERDTree
-nmap <silent> <Down> :wincmd l<CR>:tablast<CR>
-imap <silent> <Down> <Esc>:wincmd l<CR>:tablast<CR>
+" Split Windows
+nmap <silent> SH :vsplit<CR>:wincmd h<CR>
+nmap <silent> SJ :split<CR>
+nmap <silent> SK :split<CR>:wincmd k<CR>
+nmap <silent> SL :vsplit<CR>
 
-" Move Tab Left
-nmap <silent> <S-Left> :tabm -1<CR>
-imap <silent> <S-Left> <Esc>:tabm -1<CR>
+" Move Buffers
+nmap <silent> <C-H> :bfirst!<CR>
+nmap <silent> H :bprevious!<CR>
+nmap <silent> L :bnext!<CR>
+nmap <silent> <C-L> :blast!<CR>
 
-" Move Tab Right
-nmap <silent> <S-Right> :tabm +1<CR>
-imap <silent> <S-Right> <Esc>:tabm +1<CR>
+" Remap Arrow Keys
+map <Up> <Nop>
+map <Down> <Nop>
+map <Left> <Nop>
+map <Right> <Nop>
 
 " Up and down are more logical with g..
 nnoremap <silent> k gk
@@ -288,9 +297,11 @@ nnoremap <silent> j gj
 " Map <Space><Space> to save
 nnoremap <silent> <Space><Space> :wa<Enter>
 
-" Map <C-\> to `go to definition` in a new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-map g<C-\> :tab split<CR>g<C-]>
+" Tag Navigation with Preview Window
+imap <silent> <C-\> <Esc>:exec("ptag ".expand("<cword>"))<CR>
+nmap <silent> <C-\> :exec("ptag ".expand("<cword>"))<CR>
+nmap <silent> <M-H> :ptprevious<CR>
+nmap <silent> <M-L> :ptnext<CR>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -303,17 +314,14 @@ map <silent> n nzz
 " inoremap <Esc> <NOP>
 
 " Disable Ex-Mode and map Q to quit
-map <silent> Q :q<CR>
+map <silent> Q :bdelete<CR>
 
 " Avoid deleting text while inserting that cannot be recovered
 inoremap <silent> <c-u> <c-g>u<c-u>
 inoremap <silent> <c-w> <c-g>u<c-w>
 
-" 'S' maps to <C-W>
-nmap <silent> S <C-W>
-
 " Map Esc in `terminal`
-:tnoremap <Esc> <C-\><C-n>
+noremap <Esc> <C-\><C-n>
 
 " TODO Map <C-Backspace> to delte previous word - didn't work
 " imap <silent> <C-BS> <C-W>
@@ -382,6 +390,8 @@ Plugin 'neovimhaskell/haskell-vim'
 Plugin 'alx741/vim-hindent'
 Plugin 'parsonsmatt/intero-neovim'
 Plugin '907th/vim-auto-save'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'junegunn/goyo.vim'
 
 " Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
@@ -437,17 +447,17 @@ augroup rubyThings
   au!
 
   " binding.pry on next line
-  au FileType ruby nnoremap <leader>bp orequire 'pry'; binding.pry<Esc>
+  au FileType ruby nnoremap <leader>pry orequire 'pry'; binding.pry<Esc>
 
-  " binding.pry on previous line
-  au FileType ruby nnoremap <leader>BP Orequire 'pry'; binding.pry<Esc>
+  " not implemented error on next line
+  au FileType ruby nnoremap <leader>nie oraise NotImplementedError.new("Implement #{__method__} in #{self.class}")<Esc>
 augroup END
 
 " Folding things
-augroup foldingThings
-  au BufReadPre * setlocal foldmethod=indent
-  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-augroup END
+" augroup foldingThings
+"   au BufReadPre * setlocal foldmethod=indent
+"   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+" augroup END
 
 "}}}
 
@@ -584,11 +594,11 @@ augroup END
 
 " Customize fzf to use tabs for <Enter>
 let g:fzf_action = {
-  \ 'ctrl-m': 'tabedit',
-  \ 'ctrl-o': 'e',
+  \ 'ctrl-m': 'e!',
+  \ 'ctrl-o': 'e!',
   \ 'ctrl-t': 'tabedit',
-  \ 'ctrl-h':  'botright split',
-  \ 'ctrl-v':  'vertical botright split' }
+  \ 'ctrl-h': 'botright split',
+  \ 'ctrl-v': 'vertical botright split' }
 
 " Map `\t` to FZF tag finder
 map <silent> <Leader>t :Tags<CR>
@@ -627,8 +637,15 @@ let g:ale_open_list = 1
 " Set it to not show `? for help`
 let NERDTreeMinimalUI = 1
 
+" Auto-remove buffer of file just deleted
+let NERDTreeAutoDeleteBuffer = 1
+
+" TODO Open Automatically - maybe this is useful if using Windows instead of Tabs
+" autocmd FileType * nested :NERDTreeFind
+
 " -- airline --
 
+" TODO
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = ''
 let g:airline#extensions#tabline#tabs_label = ''
@@ -637,6 +654,9 @@ let g:airline#extensions#tabline#tabs_label = ''
 
 " Remove help from tagbar
 let g:tagbar_compact = 1
+
+" Stop auto-focus
+let g:tagbar_autofocus = 0
 
 " Set icon characters
 let g:tagbar_iconchars = ['▸', '▾']
@@ -648,7 +668,39 @@ let g:tagbar_autoshowtag = 1
 let g:tagbar_previewwin_pos = "aboveleft"
 
 " Automatically preview highlighted tag (can be annoying)
-" let g:tagbar_autopreview = 1
+let g:tagbar_autopreview = 1
+
+" TODO Open Automatically - maybe this is useful if using Windows instead of Tabs
+" autocmd FileType * nested :call tagbar#autoopen()
+
+" ruby support
+if executable('ripper-tags')
+  let g:tagbar_type_ruby = {
+      \ 'kinds'      : ['m:modules',
+                      \ 'c:classes',
+                      \ 'C:constants',
+                      \ 'F:singleton methods',
+                      \ 'f:methods',
+                      \ 'a:aliases'],
+      \ 'kind2scope' : { 'c' : 'class',
+                        \ 'm' : 'class' },
+      \ 'scope2kind' : { 'class' : 'c' },
+      \ 'ctagsbin'   : 'ripper-tags',
+      \ 'ctagsargs'  : ['-f', '-']
+  \ }
+else
+  let g:tagbar_type_ruby = {
+      \ 'kinds' : [
+          \ 'm:modules',
+          \ 'c:classes',
+          \ 'd:describes',
+          \ 'C:contexts',
+          \ 'f:methods',
+          \ 'F:singleton methods'
+      \ ]
+  \ }
+
+endif
 
 " -- ale --
 
@@ -667,6 +719,8 @@ command! -bang -nargs=* Ag
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
 
+nmap <silent> <Leader>f :Rg<CR>
+
 " -- IDE Feel --
 
 " F1 opens NERDTree
@@ -681,21 +735,23 @@ imap <silent> <F2> <Esc>:TagbarOpen<CR>a
 nmap <silent> <F3> :TagbarClose<CR>:NERDTreeClose<CR>
 imap <silent> <F3> <Esc>:TagbarClose<CR>:NERDTreeClose<CR>a
 
-" F4 focus rotation
-nmap <silent> <F4> :wincmd w<CR>
-imap <silent> <F4> <Esc>:wincmd w<CR>a
-
-" F5 re-enables syntax
-nmap <silent> <F5> :syntax enable<CR>
-imap <silent> <F5> <Esc>:syntax enable<CR>a
-
-" Ctrl-F5 re-enables syntax in all tabs
-nmap <silent> <C-F5> :tabdo syntax enable<CR>
-imap <silent> <C-F5> <Esc>:tabdo syntax enable<CR>a
+" F4 and <Leader>b
+nmap <silent> <F4> :Buffers<CR>
+nmap <silent> <Leader>b <Esc>:Buffers<CR>
+imap <silent> <F4> <Esc>:Buffers<CR>
 
 " Navigate Quickfixes with <C-J/L>
 map <C-j> :cn<CR>
 map <C-k> :cp<CR>
+
+" NoOp L/H/C-H/C-L in NERDTree
+function! NoOp()
+endfunction
+
+autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NoOp', 'override': 1 })
+autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NoOp', 'override': 1 })
+autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NoOp', 'override': 1 })
+autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NoOp', 'override': 1 })
 
 "}}}
 
@@ -703,16 +759,11 @@ map <C-k> :cp<CR>
 "{{{ Cursor Stuff
 
 " change cursor color in insert mode
+" TODO does this work?
 if &term =~ "xterm" || &term =~ 'rxvt' || &term =~ 'screen'
   let &t_SI = "\<Esc>]12;#CCCCCC\x7"
   let &t_EI = "\<Esc>]12;#999999\x7"
 endif
-
-" below didn't work
-" set guicursor=n-v-c:block-Cursor
-" set guicursor+=i-ci:ver30-iCursor-blinkwait300-blinkon200-blinkoff150
-" set guicursor+=n-v-c:blinkon0
-" set guicursor+=i:blinkwait10
 
 "}}}
 

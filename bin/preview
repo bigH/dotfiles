@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ]; then
   echo "ERROR: exactly one argument required."
-elif [ -f "$1" ]; then
+elif [ -e "$1" ]; then
   FILE=$(basename -- "$1")
   EXT=$(echo "$FILE" | sed 's/^.*\.//')
 
