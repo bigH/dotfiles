@@ -87,17 +87,6 @@ mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/undodir
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  echo ""
-
-  echo "Installing iTerm2 shell integration ..."
-  curl -L https://iterm2.com/misc/install_shell_integration.sh | bash
-
-  echo ""
-  echo "iTerm2 Setup ${GREEN}Complete${NORMAL}!"
-  echo ""
-fi
-
 echo ""
 
 if [ ! -d "$DOT_FILES_DIR/.vim/bundle/Vundle.vim" ]; then
@@ -111,9 +100,9 @@ link_if_possible $DOT_FILES_DIR/.vimrc $HOME/.vimrc
 link_if_possible $DOT_FILES_DIR/.vim $HOME/.vim
 
 echo ""
-echo "Installing ViM plugins ..."
 
-nvim +PluginInstall +qall
+echo "Linking UltiSnips"
+link_if_possible $DOT_FILES_DIR/UltiSnips $HOME/.vim/UltiSnips
 
 echo ""
 echo "ViM Setup ${GREEN}Complete${NORMAL}!"
@@ -181,6 +170,22 @@ if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
 fi
 
 echo ""
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Installing iTerm2 shell integration ..."
+  curl -L https://iterm2.com/misc/install_shell_integration.sh | bash
+
+  echo ""
+  echo "iTerm2 Setup ${GREEN}Complete${NORMAL}!"
+  echo ""
+fi
+
+echo ""
+
+echo "Installing ViM plugins ..."
+zsh -c 'nvim +PluginInstall +qall'
+
+echo ""
 echo ""
 
 echo '  -- Recommendations:'
@@ -198,7 +203,7 @@ echo '     ... sets up OS X in a nice way'
 echo ''
 # TODO build/test this stuff
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
-  echo "  -- ${DOT_FILES_ENV^^} specific:"
+  echo "  -- $DOT_FILES_ENV specific:"
   echo ''
   echo "     You can run \`~/.hiren/setup.$DOT_FILES_ENV.sh\`"
   echo '     ... sets up the devbox in a nice way'

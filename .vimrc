@@ -51,6 +51,7 @@ set directory=~/.vim/tmp
 
 " Save undo-history
 set undodir=~/.vim/undodir
+set undofile
 
 " Indent wrapped lines up to the same level
 if exists('&breakindent')
@@ -69,6 +70,12 @@ set tags=.tags
 " TODO is this fine for buffers
 " Use a new tab when opening quickfix items
 " set switchbuf+=usetab,newtab
+
+" Auto read files when they change
+set autoread
+
+" Force it on focus changes
+au FocusGained * :checktime
 
 "}}}
 
@@ -294,14 +301,12 @@ map <Right> <Nop>
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
+" TODO do I even use this?
 " Map <Space><Space> to save
 nnoremap <silent> <Space><Space> :wa<Enter>
 
 " Tag Navigation with Preview Window
-imap <silent> <C-\> <Esc>:exec("ptag ".expand("<cword>"))<CR>
-nmap <silent> <C-\> :exec("ptag ".expand("<cword>"))<CR>
-nmap <silent> <M-H> :ptprevious<CR>
-nmap <silent> <M-L> :ptnext<CR>
+nmap <silent> K :exec("ptag ".expand("<cword>"))<CR>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -391,9 +396,17 @@ Plugin 'alx741/vim-hindent'
 Plugin 'parsonsmatt/intero-neovim'
 Plugin '907th/vim-auto-save'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'zackhsi/fzf-tags'
+Plugin 'vimtaku/hl_matchit.vim'
+" Plugin 'SirVer/UltiSnips'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-endwise'
+Plugin 'Townk/vim-autoclose'
+Plugin 'ntpeters/vim-better-whitespace'
+
+" Plugin that provides a concentration writing mode
 Plugin 'junegunn/goyo.vim'
 
-" Plugin 'vim-ruby/vim-ruby'
 " Plugin 'pangloss/vim-javascript'
 " Plugin 'mxw/vim-jsx'
 
@@ -590,6 +603,11 @@ au BufWritePost *.hs silent !init-tags %
 au BufWritePost *.hsc silent !init-tags %
 augroup END
 
+" -- fzf-tags --
+
+" Replace <C-]> with fuzzy tag finder when more than one occurence of tag
+nmap <silent> <C-]> <Plug>(fzf_tags)
+
 " -- fzf --
 
 " Customize fzf to use tabs for <Enter>
@@ -600,14 +618,20 @@ let g:fzf_action = {
   \ 'ctrl-h': 'botright split',
   \ 'ctrl-v': 'vertical botright split' }
 
+" Map `\s` to FZF using `UltiSnips`
+nmap <silent> <Leader>s :Snippets<CR>
+
+" Map `\f` to FZF using `ripgrep`
+nmap <silent> <Leader>f :Rg<CR>
+
 " Map `\t` to FZF tag finder
-map <silent> <Leader>t :Tags<CR>
+nmap <silent> <Leader>t :Tags<CR>
 
 " Map `\o` to FZF file lister
-map <silent> <Leader>o :Files<CR>
+nmap <silent> <Leader>o :Files<CR>
 
 " Map `\O` to FZF git file lister
-map <silent> <Leader>O :GFiles?<CR>
+nmap <silent> <Leader>O :GFiles?<CR>
 
 " -- nerdcommenter --
 
@@ -702,7 +726,26 @@ else
 
 endif
 
-" -- ale --
+" -- vim-ruby --
+
+" access modifiers align with definitions
+let g:ruby_indent_access_modifier_style = 'normal'
+
+" indent blocks
+let g:ruby_indent_block_style = 'do'
+
+" highlight ruby operators
+let ruby_operators = 1
+let ruby_pseudo_operators = 1
+
+" folding
+" let ruby_fold = 1
+
+" set up folding to not fold everything
+" let ruby_foldable_groups = 'def class module'
+
+" set up folding to fold most things
+" let ruby_foldable_groups = 'def class module do begin case for'
 
 " -- git-gutter --
 
@@ -719,8 +762,6 @@ command! -bang -nargs=* Ag
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
 
-nmap <silent> <Leader>f :Rg<CR>
-
 " -- IDE Feel --
 
 " F1 opens NERDTree
@@ -732,8 +773,8 @@ nmap <silent> <F2> :TagbarOpen<CR>
 imap <silent> <F2> <Esc>:TagbarOpen<CR>a
 
 " F3 closes Tagbar & NERDTree
-nmap <silent> <F3> :TagbarClose<CR>:NERDTreeClose<CR>
-imap <silent> <F3> <Esc>:TagbarClose<CR>:NERDTreeClose<CR>a
+nmap <silent> <F3> :TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>
+imap <silent> <F3> <Esc>:TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>a
 
 " F4 and <Leader>b
 nmap <silent> <F4> :Buffers<CR>
@@ -772,6 +813,12 @@ endif
 
 " required for vim-textobj-rubyblock to work
 runtime macros/matchit.vim
+
+" enable `end` highlighting and paren highlighting
+let g:hl_matchit_enable_on_vim_startup = 1
+
+" use `top speed` setting
+let g:hl_matchit_speed_level = 1
 
 " Remember commands
 set history=1000

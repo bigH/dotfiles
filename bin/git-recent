@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+git_recent() {
+  DEFAULT_NUM_BRANCHES="10"
+  NUM_BRANCHES="${1:-$DEFAULT_NUM_BRANCHES}"
+  git branch --sort=-committerdate | head -n $NUM_BRANCHES
+}
+
+git_recent "$@"
+

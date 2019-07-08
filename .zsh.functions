@@ -89,6 +89,9 @@ every () {
 # status
 status() {
   if [ -d .git ]; then
+    g wtf
+    echo ""
+    echo "git status:"
     g st
   else
     ll

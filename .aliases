@@ -6,7 +6,11 @@ alias gnd="git --no-pager diff"
 alias gds="git diff --staged"
 alias gnds="git --no-pager diff --staged"
 
-# always open vim with tabs
+# useful kill commands
+alias k="kill"
+alias k9="kill -9"
+
+# always use nvim
 alias vim="nvim"
 alias vi="nvim"
 

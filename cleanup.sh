@@ -7,15 +7,17 @@ export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 # unlinks
 unlink $HOME/.alacritty.yml
 unlink $HOME/.ackrc
+unlink $HOME/.config/nvim/init.vim
 unlink $HOME/.gitignore_global
 unlink $HOME/.gitconfig
 unlink $HOME/.pryrc
 unlink $HOME/.vimrc
 unlink $HOME/.zshrc
-unlink $HOME/.config/nvim/init.vim
+
 unlink $DOT_FILES_DIR/bin/git-wtf
 
 # unlink directories
+rm -f $HOME/.vim/UltiSnips
 rm -f $HOME/.vim
 rm -f $HOME/home
 rm -f $HOME/nice-noise-loops
