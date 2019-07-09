@@ -1,6 +1,20 @@
-# misspellings
+# misspellings of git
+alias gti=git
+alias igt=git
+alias itg=git
+
+# git
 alias g="git"
 alias gn="git --no-pager"
+
+# git: pushing
+alias gs="git st"
+
+# git: pushing
+# see ./bin/gpu
+alias gp="git push"
+
+# git: diffing
 alias gd="git diff"
 alias gnd="git --no-pager diff"
 alias gds="git diff --staged"

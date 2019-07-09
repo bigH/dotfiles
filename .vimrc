@@ -77,6 +77,10 @@ set autoread
 " Force it on focus changes
 au FocusGained * :checktime
 
+" Setup Python
+let g:python2_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 "}}}
 
 

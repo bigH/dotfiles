@@ -3,6 +3,9 @@ bindkey '^P' fzf-file-widget
 # Ctrl-N - select directory to paste
 bindkey '^N' fzf-cd-widget
 
+# Ctrl-? - select from to run using $(..) (TODO)
+# bindkey XXX fzf-cd-widget
+
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word
 bindkey '^f' forward-word
