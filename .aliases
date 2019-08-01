@@ -10,6 +10,10 @@ alias gn="git --no-pager"
 # git: pushing
 alias gs="git st"
 
+# git: stash listing
+alias gsl="git stash list"
+alias gsls="git stash list--stat"
+
 # git: log
 alias gl="git log"
 alias gll="git log --stat"

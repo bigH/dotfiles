@@ -270,13 +270,16 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 
 "{{{ Key Mappings
 
-" Alt-Enter or <Leader><CR> - insert a new-line here
+" Alt-Enter or <leader><CR> - insert a new-line here
 nnoremap <silent> <CR> i<CR><Esc>
-nnoremap <silent> <Leader><CR> i<CR><Esc>
+nnoremap <silent> <leader><CR> i<CR><Esc>
 nnoremap <silent> <M-CR> i<CR><Esc>
 
 " Sane Y
 nnoremap <silent> Y y$
+
+" Duplicate Selection
+vnoremap <silent> <leader>d "dy"dP
 
 " Copy to system clipboard
 noremap <silent> <leader>y "+y
@@ -352,9 +355,9 @@ nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 " Map Esc in `terminal`
 noremap <Esc> <C-\><C-n>
 
-" Map <Leader>E to move to end of a match
-onoremap <silent> <Leader>E //e<CR>
-nnoremap <silent> <Leader>E //e<CR>
+" Map <leader>E to move to end of a match
+onoremap <silent> <leader>E //e<CR>
+nnoremap <silent> <leader>E //e<CR>
 
 " Avoid deleting text while inserting that cannot be recovered
 " NB: <c-g> allows invoking insert commands (in this case, u for undo)
@@ -667,22 +670,22 @@ command! RecentFiles call fzf#run({
 \  'down':    '40%'})
 
 " Map `\s` to FZF using `UltiSnips`
-nmap <silent> <Leader>s :Snippets<CR>
+nmap <silent> <leader>s :Snippets<CR>
 
 " Map `\f` to FZF using `ripgrep`
-nmap <silent> <Leader>f :Lines<CR>
+nmap <silent> <leader>f :Lines<CR>
 
 " Map `\t` to FZF tag finder
-nmap <silent> <Leader>t :Tags<CR>
+nmap <silent> <leader>t :Tags<CR>
 
 " Map `\e` to FZF file lister
-nmap <silent> <Leader>e :Files<CR>
+nmap <silent> <leader>e :Files<CR>
 
 " Map `\o` to FZF file lister
-nmap <silent> <Leader>o :RecentFiles<CR>
+nmap <silent> <leader>o :RecentFiles<CR>
 
 " Map `\O` to FZF git file lister
-nmap <silent> <Leader>O :GFiles?<CR>
+nmap <silent> <leader>O :GFiles?<CR>
 
 " Set history directory
 let g:fzf_history_dir = '~/.local/share/fzf-history'
@@ -813,8 +816,9 @@ let ruby_pseudo_operators = 1
 
 " -- git-gutter --
 
-nmap <silent> <Leader>j :GitGutterNextHunk<CR>zz
-nmap <silent> <Leader>k :GitGutterPrevHunk<CR>zz
+" TODO write a better modal list move method
+nmap <silent> <leader>j :GitGutterNextHunk<CR>zz
+nmap <silent> <leader>k :GitGutterPrevHunk<CR>zz
 
 " -- IDE Feel --
 
@@ -830,9 +834,9 @@ imap <silent> <F2> <Esc>:TagbarOpen<CR>a
 nmap <silent> <F3> :TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>
 imap <silent> <F3> <Esc>:TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>a
 
-" F4 and <Leader>b
+" F4 and <leader>b
 nmap <silent> <F4> :Buffers<CR>
-nmap <silent> <Leader>b <Esc>:Buffers<CR>
+nmap <silent> <leader>b <Esc>:Buffers<CR>
 imap <silent> <F4> <Esc>:Buffers<CR>
 
 " Navigate Quickfixes with <C-J/L>
