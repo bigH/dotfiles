@@ -1,5 +1,8 @@
 window:
   decorations: full
+  padding:
+    x: 5
+    y: 5
 
 scrolling:
   history: 100000

@@ -18,6 +18,9 @@ export PATH="$HOME/bin:$PATH"
 # export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
+# Turn RUST_BACKTRACE on
+export RUST_BACKTRACE=1
+
 # Setup `dircolors`
 # `dircolors` isn't on the path
 if [ -e /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then

@@ -56,6 +56,15 @@ set undofile
 " Indent wrapped lines up to the same level
 if exists('&breakindent')
   set breakindent
+
+  " shift wrapped content 2 spaces and use showbreak below
+  set breakindentopt=shift:6,sbr
+
+  " use the >> to indicate wrapping
+  set showbreak=>>>>
+
+  " break at words
+  set linebreak
 endif
 
 " Use the mouse
@@ -141,7 +150,7 @@ set scrolloff=5
 set sidescrolloff=20
 
 " Automatically set scroll
-autocmd BufEnter * set scroll=2
+autocmd BufEnter * set scroll=5
 
 " Delete comment character when joining lines
 set formatoptions+=j
@@ -269,13 +278,26 @@ nnoremap <silent> <M-CR> i<CR><Esc>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Prevent mis-types of below from triggering orignal vim commands
+" Copy to system clipboard
+noremap <silent> <leader>y "+y
+noremap <silent> <leader>Y "+y$
+
+" Prevent (mis|slow)-types of below from triggering orignal vim commands
 nnoremap <silent> s <Nop>
 nnoremap <silent> S <Nop>
 
 " Split Naturally
 set splitbelow
 set splitright
+
+" Kill current split
+nmap <silent> ss :close<CR>
+
+" Make current split the only
+nmap <silent> SS :only<CR>
+
+" TODO ss/SS/[sS].? - closing and managing splits is painful - it'd be nice to
+" close preview and such easily
 
 " Move between windows
 nmap <silent> sh :wincmd h<CR>
@@ -305,11 +327,12 @@ map <Right> <Nop>
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
-" TODO do I even use this?
+" TODO do I even use this anymore?
 " Map <Space><Space> to save
 nnoremap <silent> <Space><Space> :wa<Enter>
 
 " Tag Navigation with Preview Window
+" TODO do I even use this
 nmap <silent> K :exec("ptag ".expand("<cword>"))<CR>
 
 " Search mappings: These will make it so that going to the next one in a
@@ -322,18 +345,27 @@ map <silent> n nzz
 " inoremap kj <Esc>
 " inoremap <Esc> <NOP>
 
-" Disable Ex-Mode and map Q to quit
-map <silent> Q :bdelete<CR>
-
-" Avoid deleting text while inserting that cannot be recovered
-inoremap <silent> <c-u> <c-g>u<c-u>
-inoremap <silent> <c-w> <c-g>u<c-w>
+" Disable Ex-Mode and map Q to close buffers
+source ~/.hiren/vim_custom/kill_buffer_not_split.vimrc
+nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
 " Map Esc in `terminal`
 noremap <Esc> <C-\><C-n>
 
-" TODO Map <C-Backspace> to delte previous word - didn't work
-" imap <silent> <C-BS> <C-W>
+" Map <Leader>E to move to end of a match
+onoremap <silent> <Leader>E //e<CR>
+nnoremap <silent> <Leader>E //e<CR>
+
+" Avoid deleting text while inserting that cannot be recovered
+" NB: <c-g> allows invoking insert commands (in this case, u for undo)
+" This somehow enables history tracking during these insert operations
+inoremap <silent> <c-u> <c-g>u<c-u>
+inoremap <silent> <c-w> <c-g>u<c-w>
+
+" Map <M-Backspace> to delte previous word
+" NB: we don't want `nore`, because ..
+" <C-W> is mapped in a way that works with this (see right above)
+imap <silent> <M-BS> <C-W>
 
 "}}}
 
@@ -358,9 +390,10 @@ command! WS w !sudo tee %
 "}}}
 
 
-"{{{ Custom Plugin Ganks
+"{{{ Custom Personal Stuff
 
 source ~/.hiren/vim_custom/visual_star.vimrc
+source ~/.hiren/vim_custom/stacktrace_browser.vimrc
 
 "}}}
 
@@ -402,7 +435,8 @@ Plugin '907th/vim-auto-save'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'zackhsi/fzf-tags'
 Plugin 'vimtaku/hl_matchit.vim'
-" Plugin 'SirVer/UltiSnips'
+Plugin 'SirVer/UltiSnips'
+Plugin 'honza/vim-snippets'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-endwise'
 Plugin 'Townk/vim-autoclose'
@@ -460,7 +494,7 @@ endif
 "{{{ Custom Things
 
 " Ruby-specific things
-augroup rubyThings
+augroup RubyThings
   au!
 
   " binding.pry on next line
@@ -471,7 +505,7 @@ augroup rubyThings
 augroup END
 
 " Folding things
-" augroup foldingThings
+" augroup FoldingThings
 "   au BufReadPre * setlocal foldmethod=indent
 "   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 " augroup END
@@ -550,7 +584,7 @@ function! HaskellFormat(which) abort
 endfunction
 
 " Key bindings
-augroup haskellStylish
+augroup HaskellStylish
   au!
   " Just hindent
   au FileType haskell nnoremap <leader>hi :Hindent<CR>
@@ -578,7 +612,7 @@ let g:intero_window_size = 15
 set updatetime=1000
 
 
-augroup interoMaps
+augroup InteroMaps
   au!
 
   au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
@@ -602,7 +636,7 @@ augroup END
 
 " -- fast-tags --
 
-augroup haskellTags
+augroup HaskellTags
 au BufWritePost *.hs silent !init-tags %
 au BufWritePost *.hsc silent !init-tags %
 augroup END
@@ -611,6 +645,9 @@ augroup END
 
 " Replace <C-]> with fuzzy tag finder when more than one occurence of tag
 nmap <silent> <C-]> <Plug>(fzf_tags)
+
+" Map <C-\> to do this with vsplit
+map <C-\> :vsplit<CR><Plug>(fzf_tags)
 
 " -- fzf --
 
@@ -622,20 +659,33 @@ let g:fzf_action = {
   \ 'ctrl-h': 'botright split',
   \ 'ctrl-v': 'vertical botright split' }
 
+" Open old-files
+command! RecentFiles call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
 " Map `\s` to FZF using `UltiSnips`
 nmap <silent> <Leader>s :Snippets<CR>
 
 " Map `\f` to FZF using `ripgrep`
-nmap <silent> <Leader>f :Rg<CR>
+nmap <silent> <Leader>f :Lines<CR>
 
 " Map `\t` to FZF tag finder
 nmap <silent> <Leader>t :Tags<CR>
 
+" Map `\e` to FZF file lister
+nmap <silent> <Leader>e :Files<CR>
+
 " Map `\o` to FZF file lister
-nmap <silent> <Leader>o :Files<CR>
+nmap <silent> <Leader>o :RecentFiles<CR>
 
 " Map `\O` to FZF git file lister
 nmap <silent> <Leader>O :GFiles?<CR>
+
+" Set history directory
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " -- nerdcommenter --
 
@@ -650,15 +700,25 @@ let g:NERDDefaultAlign = 'left'
 " Execution configs
 let g:ale_linters = {}
 let g:ale_linters['ruby'] = ['rubocop']
-let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_linters['javascript'] = ['eslint', 'flow']
 let g:ale_linters['haskell'] = ['stack-ghc-mod', 'hlint']
+
+let g:ale_fixers = ['rubocop']
+
+" Use `bundle`
+let g:ale_ruby_rubocop_executable = 'bundle'
 
 " Don't lint while typing
 let g:ale_lint_on_text_changed = 'never'
 
 " Show the full list of lint errors
 let g:ale_open_list = 1
+
+" Enable `ale` airline stuff
+let g:airline#extensions#ale#enabled = 1
+
+" Fix on Save (TODO)
+" let g:ale_fix_on_save = 1
 
 " -- nerd-tree --
 
@@ -756,16 +816,6 @@ let ruby_pseudo_operators = 1
 nmap <silent> <Leader>j :GitGutterNextHunk<CR>zz
 nmap <silent> <Leader>k :GitGutterPrevHunk<CR>zz
 
-" -- fzf.vim --
-
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
 " -- IDE Feel --
 
 " F1 opens NERDTree
@@ -797,6 +847,23 @@ autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NoOp', 'ove
 autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NoOp', 'override': 1 })
 autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NoOp', 'override': 1 })
 autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NoOp', 'override': 1 })
+
+" Desired `hi` in comments
+augroup Todos
+    au!
+    au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|NB):/
+          \ containedin=.*Comment,vimCommentTitle
+augroup END
+hi def link MyTodo Todo
+
+"}}}
+
+
+"{{{ Environment-Specific
+
+if filereadable(expand($DOT_FILES_DIR) . '/.' . expand($DOT_FILES_ENV) . '.vimrc')
+  execute 'source' (expand($DOT_FILES_DIR) . '/.' . expand($DOT_FILES_ENV) . '.vimrc')
+endif
 
 "}}}
 

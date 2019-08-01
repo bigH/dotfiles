@@ -1,8 +1,7 @@
 #!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
-
-export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
+source $DOT_FILES_DIR/util.sh
 
 # unlinks
 unlink $HOME/.alacritty.yml

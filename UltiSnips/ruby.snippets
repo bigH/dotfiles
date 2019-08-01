@@ -1,0 +1,26 @@
+priority -50
+
+#
+# Global functions
+#
+
+global !p
+
+import subprocess
+
+def param_list_for_sig(sig_text, snip):
+	snip += str(subprocess.Popen(['__ultisnip_sig_param_list', sig_text], shell=True, stdout=subprocess.PIPE).stdout.read())
+
+endglobal
+
+#
+# Snippets
+#
+
+snippet defs "sig {...} def ...(...)"
+sig {$2}
+def ${1:function_name}`!p param_list_for_sig(t[2], snip)`
+$0
+end
+endsnippet
+

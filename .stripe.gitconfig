@@ -13,6 +13,7 @@
 [core]
 	preloadindex = true
 	excludesfile = ~/.gitignore_global
+	editor = /usr/local/bin/nvim
 
 [color]
 	ui = true

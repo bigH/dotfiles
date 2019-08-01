@@ -8,7 +8,7 @@ retag() {
 
   echo "retagging $DIR ..."
   cd ~/stripe/$DIR
-  ripper-tags -f .tags -R --exclude=vendor --exclude=node_modules --exclude=puppet-config --exclude=build/autoloader --exclude=ruby-typer
+  ripper-tags -f .tags -R --exclude=node_modules --exclude=puppet-config --exclude=build/autoloader --exclude=ruby-typer
   echo "done."
 }
 

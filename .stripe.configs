@@ -1,3 +1,6 @@
+# Set `neovim` as EDITOR
+export EDITOR=/usr/local/bin/nvim
+
 # Add Home `stripe-bin`
 export PATH="$HOME/stripe-bin:$PATH"
 
@@ -29,3 +32,6 @@ export PATH="/usr/local/opt/bison/bin:$PATH"
 autoload bashcompinit
 bashcompinit
 source $HOME/stripe/pay-server/dev/out/pay-completion-wrapper
+
+# nodenv
+eval "$(nodenv init -)"

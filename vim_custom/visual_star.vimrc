@@ -1,3 +1,8 @@
+if exists('g:visual_star')
+  finish
+endif
+let g:visual_star = 1
+
 " get content of visual selection
 function! s:GetVisualSelection()
     let [line_start, column_start] = getpos("'<")[1:2]
@@ -32,3 +37,7 @@ command! -range VstarP :call s:PrevHl()
 
 vnoremap * :VstarN<CR>
 vnoremap # :VstarP<CR>
+
+" TODO it'd be nicec to be able to append alternative search terms to the
+" search, like if `/\\VFoo` was the search term, selecting `Bar` and hitting
+" `*` or `#` could make it `/\\V(Foo|Bar)` or whatever the equivalent

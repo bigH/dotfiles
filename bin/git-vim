@@ -9,7 +9,7 @@ git_vim() {
   fi
   targets=$(echo "$files" | fzf -m --preview="bat --style=numbers --color=always {}") || return
   echo "$targets" &&
-  vim $targets
+  $EDITOR $targets
 }
 
 git_vim "$@"

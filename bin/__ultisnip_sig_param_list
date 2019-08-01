@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+require 'rubocop'
+require 'parser/ruby25'
+
+def puts_no_newline(str)
+  print str
+  $stdout.flush
+end
+
+def extract_params_send(root)
+  if root.send_type? && root.children[1] == :params
+    root.children[2].children.map {|c| c.children[0].value.to_s}
+  elsif root.children[0].send_type?
+    extract_params_send(root.children[0])
+  else
+    nil
+  end
+end
+
+if ARGV.size == 1
+  buffer = Parser::Source::Buffer.new('(string)')
+  buffer.source = ARGV.first
+
+  builder = RuboCop::AST::Builder.new
+  parser = Parser::Ruby25.new(builder)
+  root_node = parser.parse(buffer)
+
+  begin
+    params = extract_params_send(root_node)
+
+    if params.nil? || params.empty?
+      puts_no_newline ""
+    else
+      puts_no_newline "(#{params.join(', ')})"
+    end
+  rescue
+    puts_no_newline ""
+  end
+else
+  puts_no_newline ""
+end

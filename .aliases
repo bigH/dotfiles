@@ -10,9 +10,15 @@ alias gn="git --no-pager"
 # git: pushing
 alias gs="git st"
 
+# git: log
+alias gl="git log"
+alias gll="git log --stat"
+alias gpom="git pull origin master-passing-tests"
+alias gprom="git pull --rebase origin master-passing-tests"
+
 # git: pushing
-# see ./bin/gpu
-alias gp="git push"
+# see ~/bin/gpu
+# see ~/bin/gp
 
 # git: diffing
 alias gd="git diff"

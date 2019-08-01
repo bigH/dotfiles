@@ -3,8 +3,14 @@ bindkey '^P' fzf-file-widget
 # Ctrl-N - select directory to paste
 bindkey '^N' fzf-cd-widget
 
-# Ctrl-? - select from to run using $(..) (TODO)
-# bindkey XXX fzf-cd-widget
+fzf-viminfo-widget() {
+  LBUFFER="${LBUFFER}$(__fsel_ctrl_o)"
+  local ret=$?
+  zle reset-prompt
+  return $ret
+}
+zle     -N   fzf-viminfo-widget
+bindkey '^O' fzf-viminfo-widget
 
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word
@@ -35,3 +41,5 @@ bindkey '^[x' insert-last-command-output
 
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line
+
+# TODO Ctrl-? - select from to run using $(..)
