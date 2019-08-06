@@ -26,7 +26,7 @@ fzvg() {
 }
 
 # CTRL-O - Paste the selected file path(s) into the command line
-__fsel_ctrl_o() {
+__fsel_viminfo() {
   local cmd="$FZF_CTRL_O_COMMAND"
   setopt localoptions pipefail 2> /dev/null
   eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read item; do

@@ -4,13 +4,23 @@ bindkey '^P' fzf-file-widget
 bindkey '^N' fzf-cd-widget
 
 fzf-viminfo-widget() {
-  LBUFFER="${LBUFFER}$(__fsel_ctrl_o)"
+  LBUFFER="${LBUFFER}$(__fsel_viminfo)"
   local ret=$?
   zle reset-prompt
   return $ret
 }
 zle     -N   fzf-viminfo-widget
 bindkey '^O' fzf-viminfo-widget
+
+# TODO
+# fzf-git-diff-widget() {
+#   LBUFFER="${LBUFFER}$(__fsel_git_diff)"
+#   local ret=$?
+#   zle reset-prompt
+#   return $ret
+# }
+# zle     -N   fzf-git-diff-widget
+# bindkey '^T' fzf-git-diff-widget
 
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word

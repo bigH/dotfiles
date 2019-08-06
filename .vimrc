@@ -90,6 +90,10 @@ au FocusGained * :checktime
 let g:python2_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
+" Update time is used by CursorHold events as well as to write swap file
+" This setting is kind of fast, but it makes HighlightCursorWord work nicely
+set updatetime=200
+
 "}}}
 
 
@@ -212,15 +216,48 @@ autocmd BufReadPost *
 
 
 "{{{ Cycle <C-J> and <C-K> functionality
-" TODO: create a cycle for <C-J> and <C-K> functionality to do:
-" - ale hunks
-" - git hunks
-" - ruby methods/classes
-" - ruby methods/class bodies
 
-" may be un-needed because it uses quickfix window
-" nmap <silent> <C-J> <Plug>(ale_next_wrap)
-" nmap <silent> <C-K> <Plug>(ale_previous_wrap)
+" 0 = methods
+" 1 = quickfix
+" 2 = git hunks
+let g:jk_mode = 0
+
+" Navigate methods by default
+nmap <silent> <C-J> ]m
+nmap <silent> <C-K> [m
+
+func! JKModeRotate()
+  if g:jk_mode == 0
+    " Navigate quick-fix
+    nmap <C-j> :cn<CR>
+    nmap <C-k> :cp<CR>
+    echo "QuickFix Mode"
+    let g:jk_mode = 1
+  elseif g:jk_mode == 1
+    " Navigate quick-fix
+    nmap <silent> <C-J> :GitGutterNextHunk<CR>zz
+    nmap <silent> <C-K> :GitGutterPrevHunk<CR>zz
+    echo "Git Hunk Mode"
+    let g:jk_mode = 2
+  elseif g:jk_mode == 2
+    " Navigate classes
+    nmap <silent> <C-J> ]]
+    nmap <silent> <C-K> [[
+    echo "Class Mode"
+    let g:jk_mode = 3
+  else
+    " Navigate methods
+    nmap <silent> <C-J> ]m
+    nmap <silent> <C-K> [m
+    echo "Method Mode"
+    let g:jk_mode = 0
+  endif
+  return
+endfunc
+
+" Paste Mode!  Dang! <F10>
+
+nnoremap <silent> <leader>] :call JKModeRotate()<CR>
 
 "}}}
 
@@ -396,6 +433,7 @@ command! WS w !sudo tee %
 "{{{ Custom Personal Stuff
 
 source ~/.hiren/vim_custom/visual_star.vimrc
+source ~/.hiren/vim_custom/highlight_cursor_word.vimrc
 source ~/.hiren/vim_custom/stacktrace_browser.vimrc
 
 "}}}
@@ -439,7 +477,6 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'zackhsi/fzf-tags'
 Plugin 'vimtaku/hl_matchit.vim'
 Plugin 'SirVer/UltiSnips'
-Plugin 'honza/vim-snippets'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-endwise'
 Plugin 'Townk/vim-autoclose'
@@ -490,28 +527,6 @@ if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
   colorscheme gruvbox
   let g:airline_theme='gruvbox'
 endif
-
-"}}}
-
-
-"{{{ Custom Things
-
-" Ruby-specific things
-augroup RubyThings
-  au!
-
-  " binding.pry on next line
-  au FileType ruby nnoremap <leader>pry orequire 'pry'; binding.pry<Esc>
-
-  " not implemented error on next line
-  au FileType ruby nnoremap <leader>nie oraise NotImplementedError.new("Implement #{__method__} in #{self.class}")<Esc>
-augroup END
-
-" Folding things
-" augroup FoldingThings
-"   au BufReadPre * setlocal foldmethod=indent
-"   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-" augroup END
 
 "}}}
 
@@ -612,8 +627,6 @@ let g:intero_type_on_hover = 1
 let g:intero_window_size = 15
 
 " OPTIONAL: Make the update time shorter, so the type info will trigger faster.
-set updatetime=1000
-
 
 augroup InteroMaps
   au!
@@ -668,9 +681,6 @@ command! RecentFiles call fzf#run({
 \  'sink':    'e',
 \  'options': '-m -x +s',
 \  'down':    '40%'})
-
-" Map `\s` to FZF using `UltiSnips`
-nmap <silent> <leader>s :Snippets<CR>
 
 " Map `\f` to FZF using `ripgrep`
 nmap <silent> <leader>f :Lines<CR>
@@ -731,15 +741,27 @@ let NERDTreeMinimalUI = 1
 " Auto-remove buffer of file just deleted
 let NERDTreeAutoDeleteBuffer = 1
 
-" TODO Open Automatically - maybe this is useful if using Windows instead of Tabs
-" autocmd FileType * nested :NERDTreeFind
-
 " -- airline --
 
 " TODO
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = ''
 let g:airline#extensions#tabline#tabs_label = ''
+
+" -- vim-textobj-user --
+
+" custom text object for ruby constant
+call textobj#user#plugin('constant', {
+\   'constant': {
+\     'pattern': '\C\<\([_A-Z]\+[a-z]*\)\+\(::\([_A-Z]\+[a-z]*\)\+\)*\>',
+\     'select': ['arc', 'irc'],
+\   },
+\ })
+
+" -- vim-textobj-rubyblock --
+
+" use longer mappings `ro`, `rl`, `rc`, `rd`, `rr`
+let g:textobj_ruby_more_mappings = 1
 
 " -- tagbar --
 
@@ -759,10 +781,10 @@ let g:tagbar_autoshowtag = 1
 let g:tagbar_previewwin_pos = "aboveleft"
 
 " Automatically preview highlighted tag (can be annoying)
-let g:tagbar_autopreview = 1
+let g:tagbar_autopreview = 0
 
-" TODO Open Automatically - maybe this is useful if using Windows instead of Tabs
-" autocmd FileType * nested :call tagbar#autoopen()
+" Don't sort alphabetically
+let g:tagbar_sort = 0
 
 " ruby support
 if executable('ripper-tags')
@@ -839,18 +861,27 @@ nmap <silent> <F4> :Buffers<CR>
 nmap <silent> <leader>b <Esc>:Buffers<CR>
 imap <silent> <F4> <Esc>:Buffers<CR>
 
-" Navigate Quickfixes with <C-J/L>
-map <C-j> :cn<CR>
-map <C-k> :cp<CR>
-
-" NoOp L/H/C-H/C-L in NERDTree
+" NoOp function for use below
 function! NoOp()
 endfunction
 
-autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NoOp', 'override': 1 })
-autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NoOp', 'override': 1 })
-autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NoOp', 'override': 1 })
-autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NoOp', 'override': 1 })
+" NoOp L/H/C-H/C-L in NERDTree
+augroup NERDTree
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NoOp', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NoOp', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NoOp', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NoOp', 'override': 1 })
+augroup END
+
+" NoOp L/H/C-H/C-L in Tagbar
+augroup TagBar
+  autocmd!
+  autocmd FileType tagbar nnoremap <buffer> H <Nop>
+  autocmd FileType tagbar nnoremap <buffer> L <Nop>
+  autocmd FileType tagbar nnoremap <buffer> <C-H> <Nop>
+  autocmd FileType tagbar nnoremap <buffer> <C-H> <Nop>
+augroup END
+
 
 " Desired `hi` in comments
 augroup Todos
@@ -859,6 +890,37 @@ augroup Todos
           \ containedin=.*Comment,vimCommentTitle
 augroup END
 hi def link MyTodo Todo
+
+"}}}
+
+
+"{{{ Session Management
+
+" Automatically load last session when no args given
+autocmd VimEnter *
+         \ call system('tail -n1000 ~/.vim/sessions/index > ~/.vim/sessions/index.truncated') |
+         \ call system('mv ~/.vim/sessions/index.truncated ~/.vim/sessions/index') |
+         \ if argc() == 0 |
+         \   execute 'source' '~/.vim/sessions/last-session' |
+         \ endif
+         " \   call fzf#run({'source':  'cat ~/.vim/sessions/index',
+         " \                 'sink':    'source',
+         " \                 'options': '',
+         " \                 'down':    '40%'}) |
+
+" Automatically load last session when no args given
+autocmd VimLeave *
+         \ execute 'mksession!' '~/.vim/sessions/last-session' |
+         \ let g:session_file = 'session-' . strftime('%Y-%m-%d') . '-' . strftime('%H-%M-%S') |
+         \ execute 'mksession' ('~/.vim/sessions/' . g:session_file) |
+         \ let g:branch = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'") |
+         \ let g:date_time = strftime('%Y.%m.%d %H:%M:%S') |
+         \ let g:current_directory = trim(system('pwd')) |
+         \ let g:content = g:current_directory . '\t' . g:branch . '\t' . g:date_time . '\t' . g:session_file |
+         \ let g:session_index = '~/.vim/sessions/index' |
+         \ call system('touch ' . g:session_index) |
+         \ call system('echo "' . g:content . '" >> ' . g:session_index)
+
 
 "}}}
 

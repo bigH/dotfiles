@@ -27,6 +27,7 @@ mk_expected_dir $DOT_FILES_DIR/.local/share/fzf-history
 
 echo ""
 
+mkdir_if_not_exists $DOT_FILES_DIR/.vim/sessions
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/tmp
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle

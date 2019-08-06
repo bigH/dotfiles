@@ -6,9 +6,6 @@
 	name = "Hiren Hiranandani"
 	email = "hiren@stripe.com"
 
-[push]
-	default = simple
-
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
 [core]
 	preloadindex = true
@@ -20,7 +17,7 @@
 	ui = true
 
 [push]
-	default = matching
+	default = upstream
 
 [diff]
 	algorithm = patience

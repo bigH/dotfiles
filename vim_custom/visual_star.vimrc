@@ -3,8 +3,8 @@ if exists('g:visual_star')
 endif
 let g:visual_star = 1
 
-" get content of visual selection
-function! s:GetVisualSelection()
+" get content of visual selection as string
+function! s:GetVisualSelectionAsString()
     let [line_start, column_start] = getpos("'<")[1:2]
     let [line_end, column_end] = getpos("'>")[1:2]
     let lines = getline(line_start, line_end)
@@ -18,10 +18,14 @@ endfunction
 
 " next
 function! s:NextHl()
-    let search = s:GetVisualSelection()
-    let @/ = escape(search, '\\/.*$^~[]')
-    let pattern = "normal! /\\V" . search . "\<cr>"
-    execute pattern
+    try
+        let search = s:GetVisualSelection()
+        let @/ = escape(search, '\\/.*$^~[]')
+        let pattern = "normal! /\\V" . search . "\<cr>"
+        execute pattern
+    catch /.*/
+        echo "Couldn't Search for Visual Star"
+    endtry
 endfunction
 
 " prev

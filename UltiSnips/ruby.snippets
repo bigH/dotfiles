@@ -8,8 +8,43 @@ global !p
 
 import subprocess
 
-def param_list_for_sig(sig_text, snip):
-	snip += str(subprocess.Popen(['__ultisnip_sig_param_list', sig_text], shell=True, stdout=subprocess.PIPE).stdout.read())
+# TODO
+def param_list_for_multi_line_sig(arglist, index, snip):
+  if arglist[index]:
+    paramlist = ''
+    first = True
+    for arg in str(arglist[index]).split(','):
+      if first:
+        paramlist = arg.strip() + ': T.untyped'
+        first = False
+      else:
+        paramlist = paramlist + ', ' + arg.strip() + ': T.untyped'
+    snip += '  params(' + paramlist + ')'
+  else:
+    snip += '  '
+
+def param_list_for_single_line_sig(arglist, index, snip):
+  if arglist[index]:
+    paramlist = ''
+    first = True
+    for arg in str(arglist[index]).split(','):
+      if first:
+        paramlist = arg.strip() + ': T.untyped'
+        first = False
+      else:
+        paramlist = paramlist + ', ' + arg.strip() + ': T.untyped'
+    snip += 'params(' + paramlist + ')'
+  else:
+    snip += ''
+
+def write_instance_vars(arglist, snip):
+  args = str(arglist).split(',')
+  for arg in args:
+    name = arg.strip().replace(':', ' ').split(' ', 1)[0]
+    if name:
+      snip += '  @{} = {}'.format(name, name)
+    else:
+      snip += ''
 
 endglobal
 
@@ -17,10 +52,31 @@ endglobal
 # Snippets
 #
 
-snippet defs "sig {...} def ...(...)"
-sig {$2}
-def ${1:function_name}`!p param_list_for_sig(t[2], snip)`
-$0
+snippet pry "require + binding.pry"
+require 'pry'; binding.pry
+endsnippet
+
+snippet sigd "sig do .."
+sig do`!p param_list_for_multi_line_sig(t, 3, snip)`$4
+end
+def ${1:function_name}${2:(${3:*args})}
+  $0
 end
 endsnippet
 
+snippet sigg "sig {...}"
+sig{`!p param_list_for_single_line_sig(t, 3, snip)`}
+def ${1:function_name}${2:(${3:*args})}
+  $0
+end
+endsnippet
+
+snippet begin "begin ... rescue ... end"
+begin
+  $1
+rescue
+  $0
+end
+endsnippet
+
+# vim: set ts=2 sw=2 expandtab:

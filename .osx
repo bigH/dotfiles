@@ -171,6 +171,7 @@ launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/nul
 defaults write -app "Google Chrome" NSUserKeyEquivalents '{
 "Select Previous Tab"="@h";
 "Select Next Tab"="@l";
+"Open Location..."="@k";
 }'
 
 ###############################################################################

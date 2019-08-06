@@ -4,46 +4,55 @@ alias igt=git
 alias itg=git
 
 # git
-alias g="git"
-alias gn="git --no-pager"
+alias g='git'
+alias gn='git --no-pager'
 
-# git: pushing
-alias gs="git st"
+# commit wip
+alias wip='git commit -a -m WIP'
 
-# git: stash listing
-alias gsl="git stash list"
-alias gsls="git stash list--stat"
+# git push
+alias gs='git st'
 
-# git: log
-alias gl="git log"
-alias gll="git log --stat"
-alias gpom="git pull origin master-passing-tests"
-alias gprom="git pull --rebase origin master-passing-tests"
+# git show
+alias gsh='git show'
 
-# git: pushing
-# see ~/bin/gpu
-# see ~/bin/gp
+# git stash list
+alias gsl='git stash list'
+alias gsls='git stash list --stat'
 
-# git: diffing
-alias gd="git diff"
-alias gnd="git --no-pager diff"
-alias gds="git diff --staged"
-alias gnds="git --no-pager diff --staged"
+# git log
+alias gl='git log'
+alias gll='git log --stat'
+
+# git pull
+alias gpom='git pull origin master-passing-tests'
+alias gprom='git pull --rebase origin master-passing-tests'
+
+# git push
+alias gp='git push origin $(git branch-name)'
+alias gpf='git push --force origin $(git branch-name)'
+alias gpu='git push -u origin $(git branch-name)'
+
+# git diff
+alias gd='git diff'
+alias gnd='git --no-pager diff'
+alias gds='git diff --staged'
+alias gnds='git --no-pager diff --staged'
 
 # useful kill commands
-alias k="kill"
-alias k9="kill -9"
+alias k='kill'
+alias k9='kill -9'
 
 # always use nvim
-alias vim="nvim"
-alias vi="nvim"
+alias vim='nvim'
+alias vi='nvim'
 
 # manipulate files verbosely (print log of what happened)
-alias cp="cp -v"
-alias mv="mv -v"
-alias rm="rm -v"
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
 
 # ls override from oh-my-zsh
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  alias ls="gls --color=always -G"
+if [[ '$OSTYPE' == 'darwin'* ]]; then
+  alias ls='gls --color=always -G'
 fi

@@ -3,7 +3,11 @@ if exists('g:stacktrace_browser')
 endif
 let g:stacktrace_browser = 1
 
-function! s:ModalActiveWindows()
-  " TODO
-  " Plan: create a scratch window for pasting stacktrace
+" get content of visual selection
+function! s:GetVisualSelectionAsArray()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    return getline(line_start, line_end)
 endfunction
+
+" TODO complete this
