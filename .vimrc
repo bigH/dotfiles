@@ -229,26 +229,28 @@ nmap <silent> <C-K> [m
 func! JKModeRotate()
   if g:jk_mode == 0
     " Navigate quick-fix
+    map <C-j> <Nop>
+    map <C-k> <Nop>
     nmap <C-j> :cn<CR>
     nmap <C-k> :cp<CR>
     echo "QuickFix Mode"
     let g:jk_mode = 1
   elseif g:jk_mode == 1
-    " Navigate quick-fix
-    nmap <silent> <C-J> :GitGutterNextHunk<CR>zz
-    nmap <silent> <C-K> :GitGutterPrevHunk<CR>zz
+    " Navigate git hunks
+    map <silent> <C-J> :GitGutterNextHunk<CR>zz
+    map <silent> <C-K> :GitGutterPrevHunk<CR>zz
     echo "Git Hunk Mode"
     let g:jk_mode = 2
   elseif g:jk_mode == 2
     " Navigate classes
-    nmap <silent> <C-J> ]]
-    nmap <silent> <C-K> [[
+    map <silent> <C-J> ]]
+    map <silent> <C-K> [[
     echo "Class Mode"
     let g:jk_mode = 3
   else
     " Navigate methods
-    nmap <silent> <C-J> ]m
-    nmap <silent> <C-K> [m
+    map <silent> <C-J> ]m
+    map <silent> <C-K> [m
     echo "Method Mode"
     let g:jk_mode = 0
   endif
