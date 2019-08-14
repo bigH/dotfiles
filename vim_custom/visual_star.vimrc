@@ -19,7 +19,7 @@ endfunction
 " next
 function! s:NextHl()
     try
-        let search = s:GetVisualSelection()
+        let search = s:GetVisualSelectionAsString()
         let @/ = escape(search, '\\/.*$^~[]')
         let pattern = "normal! /\\V" . search . "\<cr>"
         execute pattern
@@ -30,10 +30,14 @@ endfunction
 
 " prev
 function! s:PrevHl()
-    let search = s:GetVisualSelection()
-    let @/ = escape(search, '\\/.*$^~[]')
-    let pattern = "normal! ?\\V" . search . "\<cr>"
-    execute pattern
+    try
+        let search = s:GetVisualSelectionAsString()
+        let @/ = escape(search, '\\/.*$^~[]')
+        let pattern = "normal! ?\\V" . search . "\<cr>"
+        execute pattern
+    catch /.*/
+        echo "Couldn't Search for Visual Star"
+    endtry
 endfunction
 
 command! -range VstarN :call s:NextHl()

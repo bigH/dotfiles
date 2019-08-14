@@ -10,6 +10,7 @@ unlink $HOME/.config/nvim/init.vim
 unlink $HOME/.gitignore_global
 unlink $HOME/.gitconfig
 unlink $HOME/.pryrc
+unlink $HOME/.tigrc
 unlink $HOME/.vimrc
 unlink $HOME/.zshrc
 

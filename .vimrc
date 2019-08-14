@@ -20,8 +20,8 @@ set noautochdir
 
 " Use english for spellchecking, but don't spellcheck by default
 if version >= 700
-   set spl=en spell
-   set nospell
+  set spl=en spell
+  set nospell
 endif
 
 " Cool tab completion stuff
@@ -394,15 +394,17 @@ nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 " Map Esc in `terminal`
 noremap <Esc> <C-\><C-n>
 
-" Map <leader>E to move to end of a match
-onoremap <silent> <leader>E //e<CR>
-nnoremap <silent> <leader>E //e<CR>
-
 " Avoid deleting text while inserting that cannot be recovered
-" NB: <c-g> allows invoking insert commands (in this case, u for undo)
-" This somehow enables history tracking during these insert operations
 inoremap <silent> <c-u> <c-g>u<c-u>
 inoremap <silent> <c-w> <c-g>u<c-w>
+
+" Make undo work more incrementally
+inoremap . .<C-g>u
+inoremap ! !<C-g>u
+inoremap ? ?<C-g>u
+inoremap : :<C-g>u
+inoremap ; ;<C-g>u
+inoremap , ,<C-g>u
 
 " Map <M-Backspace> to delte previous word
 " NB: we don't want `nore`, because ..
@@ -684,7 +686,19 @@ command! RecentFiles call fzf#run({
 \  'options': '-m -x +s',
 \  'down':    '40%'})
 
-" Map `\f` to FZF using `ripgrep`
+" command! FzfFindInDirectory call fzf#vim#grep(
+"   \   'rg --column --line-number --no-heading --color=always --smart-case '.
+"   \   shellescape(<q-args>).' '.
+"   \   substitute(g:NERDTreeFileNode.GetSelected().path.str(), getcwd() . "/" , "", ""),
+"   \   0,
+"   \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
+
+" " Make `\f` search in a given directory using fzf#run
+" augroup NERDTree
+"   autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<Leader>f', 'callback': 'FzfFindInDirectory', 'override': 1 })
+" augroup END
+
+" Map `\f` to FZF search all open files
 nmap <silent> <leader>f :Lines<CR>
 
 " Map `\t` to FZF tag finder
@@ -903,12 +917,11 @@ autocmd VimEnter *
          \ call system('tail -n1000 ~/.vim/sessions/index > ~/.vim/sessions/index.truncated') |
          \ call system('mv ~/.vim/sessions/index.truncated ~/.vim/sessions/index') |
          \ if argc() == 0 |
-         \   execute 'source' '~/.vim/sessions/last-session' |
+         \   call fzf#run({'source':  'cat ~/.vim/sessions/index',
+         \                 'sink':    'source',
+         \                 'options': '',
+         \                 'down':    '40%'}) |
          \ endif
-         " \   call fzf#run({'source':  'cat ~/.vim/sessions/index',
-         " \                 'sink':    'source',
-         " \                 'options': '',
-         " \                 'down':    '40%'}) |
 
 " Automatically load last session when no args given
 autocmd VimLeave *

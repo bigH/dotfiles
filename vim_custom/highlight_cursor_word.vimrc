@@ -39,8 +39,6 @@ endfunction
 
 augroup HighlightCursorWordGroup
     autocmd!
-    au CursorMoved * call <sid>NoHighlightCursorWordNow()
-    au CursorMovedI * call <sid>NoHighlightCursorWordNow()
     au CursorHold * call <sid>HighlightCursorWordNow()
     au CursorHoldI * call <sid>HighlightCursorWordNow()
 augroup END
