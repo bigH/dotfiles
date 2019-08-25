@@ -35,3 +35,10 @@ source $HOME/stripe/pay-server/dev/out/pay-completion-wrapper
 
 # nodenv
 eval "$(nodenv init -)"
+
+# sc completion
+complete -C /Users/hiren/stripe/space-commander/bin/commands/sc-complete _sc
+for cmd in "${HOME}"/stripe/space-commander/bin/*; do
+  complete -C "${HOME}"/stripe/space-commander/bin/commands/sc-complete "$(basename "$cmd")"
+done
+complete -C '/usr/local/bin/aws_completer' sc-aws

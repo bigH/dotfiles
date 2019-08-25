@@ -1,4 +1,4 @@
-priority -50
+priority -60
 
 #
 # Global functions
@@ -78,4 +78,15 @@ rescue
 end
 endsnippet
 
+snippet oldd "debug with Opus::Log.debug"
+Opus::Log.debug("HIRENDEBUG: ${1:foo} = #{`!p snip.rv = t[1] if t[1] else ""`}")
+endsnippet
+
+snippet olid "debug with Opus::Log.info"
+Opus::Log.info("HIRENDEBUG: ${1:foo} = #{`!p snip.rv = t[1] if t[1] else ""`}")
+endsnippet
+
+snippet todo "# TODO(...) ...."
+# TODO:(hiren,`!v strftime('%Y-%m-%d')`) $0
+endsnippet
 # vim: set ts=2 sw=2 expandtab:

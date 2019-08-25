@@ -67,6 +67,9 @@ if exists('&breakindent')
   set linebreak
 endif
 
+" Turn off wrapping - can be turned on and will automatically use above config as needed
+set nowrap
+
 " Use the mouse
 set mouse=a
 
@@ -270,6 +273,7 @@ let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
 func! Paste_on_off()
   if g:paste_mode == 0
+    call NoIncrementalUndo()
     nnoremap <silent> k k
     nnoremap <silent> j j
     sign unplace *
@@ -279,6 +283,7 @@ func! Paste_on_off()
     set nolist
     let g:paste_mode = 1
   elseif g:paste_mode == 1
+    call IncrementalUndo()
     nnoremap <silent> k gk
     nnoremap <silent> j gj
     retab
@@ -288,6 +293,7 @@ func! Paste_on_off()
     set list
     let g:paste_mode = 2
   else
+    call IncrementalUndo()
     nnoremap <silent> k gk
     nnoremap <silent> j gj
     retab
@@ -399,12 +405,25 @@ inoremap <silent> <c-u> <c-g>u<c-u>
 inoremap <silent> <c-w> <c-g>u<c-w>
 
 " Make undo work more incrementally
-inoremap . .<C-g>u
-inoremap ! !<C-g>u
-inoremap ? ?<C-g>u
-inoremap : :<C-g>u
-inoremap ; ;<C-g>u
-inoremap , ,<C-g>u
+function! IncrementalUndo()
+  inoremap . .<C-g>u
+  inoremap ! !<C-g>u
+  inoremap ? ?<C-g>u
+  inoremap : :<C-g>u
+  inoremap ; ;<C-g>u
+  inoremap , ,<C-g>u
+endfunction
+
+function! NoIncrementalUndo()
+  iunmap .
+  iunmap !
+  iunmap ?
+  iunmap :
+  iunmap ;
+  iunmap ,
+endfunction
+
+call IncrementalUndo()
 
 " Map <M-Backspace> to delte previous word
 " NB: we don't want `nore`, because ..
@@ -467,7 +486,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tmhedberg/matchit'
 Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'adriaanzon/vim-textobj-matchit'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'sheerun/vim-polyglot'
@@ -481,13 +500,19 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'zackhsi/fzf-tags'
 Plugin 'vimtaku/hl_matchit.vim'
 Plugin 'SirVer/UltiSnips'
+Plugin 'honza/vim-snippets'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-endwise'
 Plugin 'Townk/vim-autoclose'
 Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'sgur/vim-textobj-parameter'
+Plugin 'beloglazov/vim-textobj-quotes'
 
 " Plugin that provides a concentration writing mode
 Plugin 'junegunn/goyo.vim'
+
+" doesn't work properly
+" Plugin 'terryma/vim-multiple-cursors'
 
 " Plugin 'pangloss/vim-javascript'
 " Plugin 'mxw/vim-jsx'
@@ -681,22 +706,27 @@ let g:fzf_action = {
 
 " Open old-files
 command! RecentFiles call fzf#run({
-\  'source':  v:oldfiles,
-\  'sink':    'e',
-\  'options': '-m -x +s',
-\  'down':    '40%'})
+      \  'source':  v:oldfiles,
+      \  'sink':    'e',
+      \  'options': '-m -x +s',
+      \  'down':    '40%'})
 
-" command! FzfFindInDirectory call fzf#vim#grep(
-"   \   'rg --column --line-number --no-heading --color=always --smart-case '.
-"   \   shellescape(<q-args>).' '.
-"   \   substitute(g:NERDTreeFileNode.GetSelected().path.str(), getcwd() . "/" , "", ""),
-"   \   0,
-"   \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
+function! FzfFindInDirectoryFunction()
+  wincmd l
+  call fzf#vim#grep(
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.
+        \   shellescape(<q-args>).' '.
+        \   substitute(g:NERDTreeFileNode.GetSelected().path.str(), getcwd() . "/" , "", ""),
+        \   0,
+        \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
+endfunction
 
-" " Make `\f` search in a given directory using fzf#run
-" augroup NERDTree
-"   autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<Leader>f', 'callback': 'FzfFindInDirectory', 'override': 1 })
-" augroup END
+command! FzfFindInDirectory call FzfFindInDirectoryFunction()
+
+" Make `\f` search in a given directory using fzf#run
+augroup NERDTree
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<Leader>f', 'callback': 'FzfFindInDirectoryFunction', 'override': 1 })
+augroup END
 
 " Map `\f` to FZF search all open files
 nmap <silent> <leader>f :Lines<CR>
@@ -712,6 +742,15 @@ nmap <silent> <leader>o :RecentFiles<CR>
 
 " Map `\O` to FZF git file lister
 nmap <silent> <leader>O :GFiles?<CR>
+
+" Augmenting Rg command using fzf#vim#with_preview function
+"   :Rg  - Start fzf with hidden preview window that can be enabled with "?" key
+"   :Rg! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Rg
+  \ call fzf#vim#rg(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
 
 " Set history directory
 let g:fzf_history_dir = '~/.local/share/fzf-history'
@@ -766,18 +805,9 @@ let g:airline#extensions#tabline#tabs_label = ''
 
 " -- vim-textobj-user --
 
-" custom text object for ruby constant
-call textobj#user#plugin('constant', {
-\   'constant': {
-\     'pattern': '\C\<\([_A-Z]\+[a-z]*\)\+\(::\([_A-Z]\+[a-z]*\)\+\)*\>',
-\     'select': ['arc', 'irc'],
-\   },
-\ })
+source ~/.hiren/vim_custom/text_objects.vimrc
 
-" -- vim-textobj-rubyblock --
-
-" use longer mappings `ro`, `rl`, `rc`, `rd`, `rr`
-let g:textobj_ruby_more_mappings = 1
+let g:vim_textobj_parameter_mapping = ','
 
 " -- tagbar --
 
@@ -877,25 +907,42 @@ nmap <silent> <F4> :Buffers<CR>
 nmap <silent> <leader>b <Esc>:Buffers<CR>
 imap <silent> <F4> <Esc>:Buffers<CR>
 
-" NoOp function for use below
-function! NoOp()
+" functions for use below to make NERDTree switch windows in the editor region
+function! NERDBPrev()
+  execute 'wincmd' 'l'
+  execute 'bprev'
 endfunction
 
-" NoOp L/H/C-H/C-L in NERDTree
+function! NERDBFirst()
+  execute 'wincmd' 'l'
+  execute 'bfirst'
+endfunction
+
+function! NERDBNext()
+  execute 'wincmd' 'l'
+  execute 'bnext'
+endfunction
+
+function! NERDBLast()
+  execute 'wincmd' 'l'
+  execute 'blast'
+endfunction
+
+" L/H/C-H/C-L in NERDTree
 augroup NERDTree
-  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NoOp', 'override': 1 })
-  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NoOp', 'override': 1 })
-  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NoOp', 'override': 1 })
-  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NoOp', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NERDBPrev', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NERDBFirst', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NERDBNext', 'override': 1 })
+  autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NERDBLast', 'override': 1 })
 augroup END
 
-" NoOp L/H/C-H/C-L in Tagbar
+" L/H/C-H/C-L in Tagbar
 augroup TagBar
   autocmd!
-  autocmd FileType tagbar nnoremap <buffer> H <Nop>
-  autocmd FileType tagbar nnoremap <buffer> L <Nop>
-  autocmd FileType tagbar nnoremap <buffer> <C-H> <Nop>
-  autocmd FileType tagbar nnoremap <buffer> <C-H> <Nop>
+  autocmd FileType tagbar nnoremap <buffer> H :wincmd h<CR>:bprev<CR>
+  autocmd FileType tagbar nnoremap <buffer> <C-H> :wincmd h<CR>:bfirst<CR>
+  autocmd FileType tagbar nnoremap <buffer> L :wincmd h<CR>:bnext<CR>
+  autocmd FileType tagbar nnoremap <buffer> <C-L> :wincmd h<CR>:blast<CR>
 augroup END
 
 
@@ -963,7 +1010,7 @@ endif
 
 "{{{ Must Be At End
 
-" required for vim-textobj-rubyblock to work
+" needed for 'vim-textobj-matchit'
 runtime macros/matchit.vim
 
 " enable `end` highlighting and paren highlighting
