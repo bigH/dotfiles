@@ -4,7 +4,7 @@ export DOT_FILES_DIR=$HOME/.hiren
 source $DOT_FILES_DIR/util.sh
 
 if ! command -v zsh >/dev/null 2>&1; then
-  printf "${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!\n"
+  printf "${RED}${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!\n"
   exit
 fi
 
@@ -12,7 +12,7 @@ TEST_CURRENT_SHELL=$(expr "$SHELL" : '.*/\(.*\)')
 if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
   # If this platform provides a "chsh" command (not Cygwin), do it, man!
   if hash chsh >/dev/null 2>&1; then
-    printf "${BLUE}Time to change your default shell to zsh!${NORMAL}\n"
+    printf "${BLUE}${BOLD}Time to change your default shell to zsh!${NORMAL}\n"
     chsh -s $(grep /zsh$ /etc/shells | tail -1) $USER
   # Else, suggest the user do so manually.
   else
@@ -51,7 +51,7 @@ echo "Linking UltiSnips"
 link_if_possible $DOT_FILES_DIR/UltiSnips $HOME/.vim/UltiSnips
 
 echo ""
-echo "ViM Setup ${GREEN}Complete${NORMAL}!"
+echo "ViM Setup ${GREEN}${BOLD}Complete${NORMAL}!"
 echo ""
 
 echo 'Installing `oh-my-zsh` ...'
@@ -77,7 +77,7 @@ echo ""
 link_if_possible $DOT_FILES_DIR/.zshrc $HOME/.zshrc
 
 echo ""
-echo "ZSH Setup ${GREEN}Complete${NORMAL}!"
+echo "ZSH Setup ${GREEN}${BOLD}Complete${NORMAL}!"
 echo ""
 
 echo 'Installing `git-wtf` ...'
@@ -87,6 +87,7 @@ echo ""
 link_if_possible $DOT_FILES_DIR/git-wtf/git-wtf $DOT_FILES_DIR/bin/git-wtf
 echo ""
 
+echo "${DOT_FILES_ENV_DISPLAY} git configurations"
 if [ ! -z "$DOT_FILES_ENV" ]; then
   link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global $HOME/.gitignore_global
   link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig $HOME/.gitconfig
@@ -94,6 +95,8 @@ else
   link_if_possible $DOT_FILES_DIR/.gitignore_global $HOME/.gitignore_global
   link_if_possible $DOT_FILES_DIR/.gitconfig $HOME/.gitconfig
 fi
+echo ""
+link_if_possible $DOT_FILES_DIR/.rgignore $HOME/.rgignore
 echo ""
 
 mk_expected_dir $HOME/.config/nvim
@@ -113,6 +116,8 @@ link_if_possible $DOT_FILES_DIR/nice-noise-loops $HOME/nice-noise-loops
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
+  echo ""
+  echo "${DOT_FILES_ENV_DISPLAY} bin directory"
   link_if_possible $DOT_FILES_DIR/$DOT_FILES_ENV-bin $HOME/$DOT_FILES_ENV-bin
 fi
 
@@ -130,12 +135,12 @@ fi
 echo ""
 
 echo "Installing ViM plugins ..."
-zsh -c 'nvim +PluginInstall +qall'
+zsh -c "nvim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall"
 
 echo ""
 echo ""
 
-echo '  -- Recommendations:'
+echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"
 echo ''
 echo '     `brew install fzf ag ccat coreutils ctags cabal ghc`'
 echo '     `cabal install cabal-install Cabal`'
@@ -150,7 +155,7 @@ echo '     ... sets up OS X in a nice way'
 echo ''
 # TODO build/test this stuff
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
-  echo "  -- $DOT_FILES_ENV specific:"
+  echo "  $DOT_FILES_ENV_DISPLAY:"
   echo ''
   echo "     You can run \`~/.hiren/setup.$DOT_FILES_ENV.sh\`"
   echo '     ... sets up the devbox in a nice way'

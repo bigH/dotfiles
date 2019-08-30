@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # jj - list autojump directories
 jj() {
   autojump -s

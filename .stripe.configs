@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Set `neovim` as EDITOR
 export EDITOR=/usr/local/bin/nvim
 

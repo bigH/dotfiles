@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # find ctags directory using brew
 if [[ "$OSTYPE" == "darwin"* ]]; then
   CTAGS_HOME=`brew info ctags | grep /usr/local/Cellar | cut -d' ' -f1`

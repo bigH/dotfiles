@@ -1,10 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-# TODO use the stuff below
-autoload -U colors;
-colors
-
-# bash friendly defaults
 if which tput >/dev/null 2>&1; then
   ncolors=$(tput colors)
 fi

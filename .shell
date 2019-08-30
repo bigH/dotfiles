@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # General zshzle options
 # cd by just typing in a directory name
 setopt autocd

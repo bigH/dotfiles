@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # force_build
 force_build() {
   PS="stripe-internal/pay-server"

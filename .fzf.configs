@@ -1,3 +1,5 @@
+#!/bin/bash
+
 [ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use fd instead of the default find command for listing path candidates.

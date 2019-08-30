@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # retag - build tag file again
 retag() {
   DIR=$1

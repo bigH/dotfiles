@@ -2,7 +2,7 @@
 
 export DOT_FILES_DIR=$HOME/.hiren
 
-source $DOT_FILES_DIR/.colors
+source $DOT_FILES_DIR/bash.colors.sh
 touch $DOT_FILES_DIR/.env_context
 
 if [ $# -eq 1 ]; then
@@ -10,6 +10,11 @@ if [ $# -eq 1 ]; then
 fi
 
 export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
+if [ -z "$DOT_FILES_ENV" ]; then
+  export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}DEFAULT${NORMAL}]"
+else
+  export DOT_FILES_ENV_DISPLAY="[${CYAN}${BOLD}$(echo "$DOT_FILES_ENV" | tr a-z A-Z)${NORMAL}]"
+fi
 
 function mk_expected_dir {
   if [ $# -eq 1 ]; then

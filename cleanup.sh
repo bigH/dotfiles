@@ -8,6 +8,7 @@ unlink $HOME/.alacritty.yml
 unlink $HOME/.ackrc
 unlink $HOME/.config/nvim/init.vim
 unlink $HOME/.gitignore_global
+unlink $HOME/.rgignore
 unlink $HOME/.gitconfig
 unlink $HOME/.pryrc
 unlink $HOME/.tigrc
@@ -33,3 +34,4 @@ rm -rf $DOT_FILES_DIR/pure
 rm -rf $DOT_FILES_DIR/git-wtf
 rm -rf $HOME/.oh-my-zsh
 
+echo "Done."

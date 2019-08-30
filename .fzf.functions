@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## FZF Helpers
 
 # fzfe - echo's to stderr all files selected
