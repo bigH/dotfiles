@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # retag - build tag file again
 retag() {

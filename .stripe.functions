@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # force_build
 force_build() {

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # General zshzle options
 # cd by just typing in a directory name
