@@ -3,36 +3,30 @@ bindkey '^P' fzf-file-widget
 # Ctrl-N - select directory to paste
 bindkey '^N' fzf-cd-widget
 
-fzf-viminfo-widget() {
-  LBUFFER="${LBUFFER}$(__fsel_viminfo)"
-  local ret=$?
-  zle reset-prompt
-  return $ret
-}
-zle     -N   fzf-viminfo-widget
-bindkey '^O' fzf-viminfo-widget
+# TODO doesn't work
+# Alt-O - open files differing from particular commit
+fzf-gfi-gh-widget() { local result=$(gfi $(gh) | join-lines); zle reset-prompt; LBUFFER+=$result }
+zle -N fzf-gfi-gh-widget
+bindkey '^[o' fzf-gfi-gh-widget
 
-# TODO
-# fzf-git-diff-widget() {
-#   LBUFFER="${LBUFFER}$(__fsel_git_diff)"
-#   local ret=$?
-#   zle reset-prompt
-#   return $ret
-# }
-# zle     -N   fzf-git-diff-widget
-# bindkey '^T' fzf-git-diff-widget
+# Ctrl-O - open files differing from merge-base
+fzf-gfi-widget() { local result=$(gfi | join-lines); zle reset-prompt; LBUFFER+=$result }
+zle -N fzf-gfi-widget
+bindkey '^O' fzf-gfi-widget
 
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
-# Ctrl-B/F - back / forward by word
+# Alt-B/F - back / forward by word
 bindkey '^[b' emacs-backward-word
 bindkey '^[f' emacs-forward-word
 
+# TODO doesn't work
 # Ctrl-Space - git status
 bindkey -s '^ ' '^U^Kstatus^M'
 
+# TODO doesn't work
 # Alt-Space - insert `git branch-name`
 zmodload -i zsh/parameter
 insert-git-branch-name() {
@@ -41,6 +35,7 @@ insert-git-branch-name() {
 zle -N insert-git-branch-name
 bindkey '^[ ' insert-git-branch-name
 
+# TODO doesn't work
 # Alt-X - insert last command result
 zmodload -i zsh/parameter
 insert-last-command-output() {

@@ -25,28 +25,22 @@ fzvg() {
   fi
 }
 
-# CTRL-O - Paste the selected file path(s) into the command line
-__fsel_viminfo() {
-  local cmd="$FZF_CTRL_O_COMMAND"
-  setopt localoptions pipefail 2> /dev/null
-  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read item; do
-    # all this is because `(q)` causes `~` to be turned into `\~`, but we also want to make sure to support escaped paths, like `foo bar` turn into `foo\ bar`
-    echo -n $(echo -n "${(q)item}" | sed -e 's/\\~/~/g')' '
-  done
-  local ret=$?
-  echo
-  return $ret
-}
-
-# Will return non-zero status if the current directory is not managed by git
-is_in_git_repo() {
-  git rev-parse HEAD > /dev/null 2>&1
+# Select file from git status
+gfi() {
+  is_in_git_repo || return
+  MERGE_BASE=$(git merge-base HEAD origin/master)
+  REF="${1:-$MERGE_BASE}"
+  git diff $REF --name-only |
+  fzf --height 90% --reverse -m --ansi --nth 2..,.. \
+    --preview "(git diff $REF -- {-1} | diff-so-fancy)" |
+  cut -c4- | sed 's/.* -> //'
 }
 
 # Select commit from git history
 gh() {
-  REF="${1:-$HEAD}"
   is_in_git_repo || return
+  REF="${1:-HEAD}"
+  MERGE_BASE=$(git merge-base HEAD origin/master)
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always $REF |
   fzf --height 90% --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
     --header 'Press CTRL-S to toggle sort' \

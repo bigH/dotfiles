@@ -13,10 +13,10 @@ fi
 
 source $DOT_FILES_DIR/.aliases
 
-source $DOT_FILES_DIR/.fzf.configs
-
-source $DOT_FILES_DIR/.fzf.functions
 source $DOT_FILES_DIR/.zsh.functions
+
+source $DOT_FILES_DIR/.fzf.configs
+source $DOT_FILES_DIR/.fzf.functions
 if [ ! -z "$DOT_FILES_ENV" ]; then
   source $DOT_FILES_DIR/.$DOT_FILES_ENV.functions
 fi
