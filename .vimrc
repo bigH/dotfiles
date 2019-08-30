@@ -41,9 +41,6 @@ set ignorecase
 " set visualbell, to silence the annoying audible bell
 set vb
 
-" Set off the other paren
-highlight MatchParen ctermbg=4
-
 " Move backups and temps into home directory
 set backup
 set backupdir=~/.vim/backup
@@ -96,6 +93,9 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Update time is used by CursorHold events as well as to write swap file
 " This setting is kind of fast, but it makes HighlightCursorWord work nicely
 set updatetime=200
+
+" Highlight cursor line
+set cursorline
 
 "}}}
 
@@ -484,10 +484,9 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
-Plugin 'tmhedberg/matchit'
 Plugin 'kana/vim-textobj-user'
-Plugin 'adriaanzon/vim-textobj-matchit'
 Plugin 'majutsushi/tagbar'
+Plugin 'andymass/vim-matchup'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'morhetz/gruvbox'
@@ -498,7 +497,6 @@ Plugin 'parsonsmatt/intero-neovim'
 Plugin '907th/vim-auto-save'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'zackhsi/fzf-tags'
-Plugin 'vimtaku/hl_matchit.vim'
 Plugin 'SirVer/UltiSnips'
 Plugin 'honza/vim-snippets'
 Plugin 'vim-ruby/vim-ruby'
@@ -507,6 +505,7 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'sgur/vim-textobj-parameter'
 Plugin 'beloglazov/vim-textobj-quotes'
+Plugin 'nathanaelkane/vim-indent-guides'
 
 " Plugin that provides a concentration writing mode
 Plugin 'junegunn/goyo.vim'
@@ -954,6 +953,16 @@ augroup Todos
 augroup END
 hi def link MyTodo Todo
 
+" -- vim-indent-guides --
+
+" enable at start-up
+let g:indent_guides_enable_on_vim_startup = 1
+
+" configure colors
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=NONE
+
 "}}}
 
 
@@ -1009,15 +1018,6 @@ endif
 
 
 "{{{ Must Be At End
-
-" needed for 'vim-textobj-matchit'
-runtime macros/matchit.vim
-
-" enable `end` highlighting and paren highlighting
-let g:hl_matchit_enable_on_vim_startup = 1
-
-" use `top speed` setting
-let g:hl_matchit_speed_level = 1
 
 " Remember commands
 set history=1000

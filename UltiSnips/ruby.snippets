@@ -78,6 +78,10 @@ rescue
 end
 endsnippet
 
+snippet pd "debug with puts"
+puts "HIRENDEBUG: ${1:foo} = #{`!p snip.rv = t[1] if t[1] else ""`}"
+endsnippet
+
 snippet oldd "debug with Opus::Log.debug"
 Opus::Log.debug("HIRENDEBUG: ${1:foo} = #{`!p snip.rv = t[1] if t[1] else ""`}")
 endsnippet
@@ -89,4 +93,13 @@ endsnippet
 snippet todo "# TODO(...) ...."
 # TODO:(hiren,`!v strftime('%Y-%m-%d')`) $0
 endsnippet
+
+snippet must "surround with `T.must`"
+T.must(${0:${VISUAL:_}})
+endsnippet
+
+snippet si "surround with `#{...}`"
+#{${0:${VISUAL:_}}}
+endsnippet
+
 # vim: set ts=2 sw=2 expandtab:

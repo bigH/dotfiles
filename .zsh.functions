@@ -106,3 +106,10 @@ er() {
 hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 }
+
+# join lines ito one
+join-lines() {
+  SEP=${1:- }
+  paste -s -d"$SEP" -
+}
+

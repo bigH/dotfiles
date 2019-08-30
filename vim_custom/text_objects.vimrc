@@ -8,7 +8,7 @@ let g:custom_text_objects = 1
 call textobj#user#plugin('constant', {
 \   'constant': {
 \     'pattern': '\C\<\([_A-Z]\+[a-z]*\)\+\(::\([_A-Z]\+[a-z]*\)\+\)*\>',
-\     'select': ['aR', 'iR'],
+\     'select': ['ar', 'ir'],
 \   },
 \ })
 

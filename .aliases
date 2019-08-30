@@ -1,3 +1,30 @@
+# ls override from oh-my-zsh
+if [[ '$OSTYPE' == 'darwin'* ]]; then
+  alias ls='gls -p --color=always -G --group-directories-first'
+fi
+
+# manipulate files verbosely (print log of what happened)
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
+
+# tree
+alias tree="tree --dirsfirst"
+
+# useful kill commands
+alias k='kill'
+alias k9='kill -9'
+
+# always use nvim
+alias vim='nvim'
+alias vi='nvim'
+
+# chrome memory
+alias chromem="ps -ev | grep -i chrome | awk '{print $12}' | paste -s -d'+' - | bc"
+
+# rg - better colors
+alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
+
 # misspellings of git
 alias gti=git
 alias igt=git
@@ -9,6 +36,22 @@ alias gn='git --no-pager'
 
 # commit wip
 alias wip='git commit -a -m WIP'
+
+# -- git shortcuts
+
+# git checkout
+alias gco="git checkout"
+alias gcob="git checkout -b"
+
+# git add
+alias ga="git add"
+alias gap="git add --patch"
+
+# git commit
+alias gc="git commit"
+alias gca="git commit -a"
+alias gcm="git commit -m"
+alias gcam="git commit -am"
 
 # git push
 alias gs='git st'
@@ -39,20 +82,3 @@ alias gnd='git --no-pager diff'
 alias gds='git diff --staged'
 alias gnds='git --no-pager diff --staged'
 
-# useful kill commands
-alias k='kill'
-alias k9='kill -9'
-
-# always use nvim
-alias vim='nvim'
-alias vi='nvim'
-
-# manipulate files verbosely (print log of what happened)
-alias cp='cp -v'
-alias mv='mv -v'
-alias rm='rm -v'
-
-# ls override from oh-my-zsh
-if [[ '$OSTYPE' == 'darwin'* ]]; then
-  alias ls='gls --color=always -G'
-fi
