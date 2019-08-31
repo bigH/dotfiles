@@ -9,11 +9,12 @@ if [ $# -eq 1 ]; then
   echo "$1" > $DOT_FILES_DIR/.env_context
 fi
 
-export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
+export DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/.env_context")"
 if [ -z "$DOT_FILES_ENV" ]; then
-  export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}DEFAULT${NORMAL}]"
+  export DOT_FILES_ENV_DISPLAY="[${NORMAL}${BOLD}DEFAULT${NORMAL}]"
 else
-  export DOT_FILES_ENV_DISPLAY="[${CYAN}${BOLD}$(echo "$DOT_FILES_ENV" | tr a-z A-Z)${NORMAL}]"
+  DOT_FILES_ENV_CAPITALIZED="$(echo "$DOT_FILES_ENV" | tr '[:lower:]' '[:upper:]')"
+  export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}${DOT_FILES_ENV_CAPITALIZED}${NORMAL}]"
 fi
 
 function mk_expected_dir {

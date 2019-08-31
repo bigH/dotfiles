@@ -17,12 +17,29 @@ fzd() {
     cd "$dir"
 }
 
-# View the history of a file
+# View the history of a file [-d|--diff] for diff only
 ghist() {
-  [ -z "$1" ] && echo "ERR: History for which file?" && return 1
-  git log  --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always "$1" |
-  fzf --ansi --no-height --preview "git show {2}:\"$1\" | bat -p --color always -l \"\${\$(basename $1)##*.}\"" |
-  true
+  DIFF=false
+  CHECK_PATH=""
+  for ARG in "$@"; do
+    if [ "$ARG" = "-d" ] || [ "$arg" = "--diff" ]; then
+      DIFF=true
+    elif [ -f "$ARG" ]; then
+      CHECK_PATH="$ARG"
+    fi
+  done
+
+  if [ -f "$CHECK_PATH" ]; then
+    if [ "$DIFF" = true ]; then
+      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATH" |
+      fzf --multi --ansi --no-height --preview "git diff {2}~ {2} -- \"$CHECK_PATH\" | diff-so-fancy" |
+      true
+    else
+      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATH" |
+      fzf --multi --ansi --no-height --preview "git show {2}:\"$CHECK_PATH\" | bat -p --color always -l \"\${\$(basename $CHECK_PATH)##*.}\"" |
+      true
+    fi
+  fi
 }
 
 # Select file from git status
@@ -32,8 +49,7 @@ gfi() {
   REF="${1:-$MERGE_BASE}"
   git diff $REF --name-only |
   fzf --no-height --reverse -m --ansi --nth 2..,.. \
-    --preview "(git diff $REF -- {-1} | diff-so-fancy)" |
-  cut -c4- | sed 's/.* -> //'
+    --preview "(git diff $REF -- {-1} | diff-so-fancy)"
 }
 
 # Select commit from git history
