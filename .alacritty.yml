@@ -132,6 +132,7 @@ key_bindings:
   - { key: Back,                          chars: "\x7f"                        }
   - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
   - { key: N,        mods: Command,       action: SpawnNewInstance             }
+  - { key: Space,    mods: Control,       chars: "\x00"                        }
   - { key: A,        mods: Alt,           chars: "\x1ba"                       }
   - { key: B,        mods: Alt,           chars: "\x1bb"                       }
   - { key: C,        mods: Alt,           chars: "\x1bc"                       }

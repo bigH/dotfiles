@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# TODO maybe remove - just an example
+collect_trace() {
+  if [ -z "$1" ]; then
+    echo "require PID"
+    exit 1
+  fi
+  echo '['
+  grep "\"pid\":$1," /tmp/opus_simple_trace.json
+}

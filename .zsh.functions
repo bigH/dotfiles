@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # jj - list autojump directories
 jj() {
@@ -113,6 +113,11 @@ hr() {
 join-lines() {
   SEP=${1:- }
   paste -s -d"$SEP" -
+}
+
+# `which` with `ls -l $(which)`
+wh() {
+  # TODO
 }
 
 # status represents if `git` commands will work

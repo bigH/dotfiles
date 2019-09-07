@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # retag - build tag file again
 retag() {
@@ -10,6 +10,7 @@ retag() {
 
   echo "retagging $DIR ..."
   cd ~/stripe/$DIR
+  bundle install --path=vendor/bundle-local --binstubs=.binstubs
   ripper-tags -f .tags-building -R --exclude=node_modules --exclude=puppet-config --exclude=build/autoloader --exclude=ruby-typer
   mv -f .tags-building .tags
   echo "done."

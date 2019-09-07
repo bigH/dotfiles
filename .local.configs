@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Add Local `bin`
 export PATH="/usr/local/bin:$PATH"
@@ -43,14 +43,20 @@ if [ -d '/usr/local/opt/bison/lib' ]; then
   export LDFLAGS="-L/usr/local/opt/bison/lib"
 fi
 
+# Add `cargo`
 if [ -d "$HOME/.cargo/env" ]; then
   source $HOME/.cargo/env
 fi
 
+# Add `made-bin`
+export PATH="$DOT_FILES_DIR/made-bin:$PATH"
+
+# Add `emacs`
 if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then
   export PATH="/usr/local/Cellar/emacs/26.2/bin:$PATH"
 fi
 
+# Add `llvm`
 if [ -d '/usr/local/opt/llvm/bin/' ]; then
   export PATH="/usr/local/opt/llvm/bin/:$PATH"
 fi
@@ -58,4 +64,9 @@ fi
 # Add iTerm2 things
 if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
   source "${HOME}/.iterm2_shell_integration.zsh"
+fi
+
+# Add `rg` completion to
+if [ -e "$DOT_FILES_DIR/ripgrep/complete" ]; then
+  fpath+="$DOT_FILES_DIR/ripgrep/complete"
 fi

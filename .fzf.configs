@@ -1,13 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-[ -e ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Auto-completion
+[[ $- == *i* ]] && source "$DOT_FILES_DIR/fzf/shell/completion.zsh" 2> /dev/null
 
-# Use fd instead of the default find command for listing path candidates.
+# Key bindings
+source "$DOT_FILES_DIR/fzf/shell/key-bindings.zsh"
+
+# Use `fd` instead of the default find command for listing path candidates.
 _fzf_compgen_path() {
   fd --hidden --follow --exclude ".git" . "$1"
 }
 
-# Use fd to generate the list for directory completion
+# Use `fd` to generate the list for directory completion
 _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }

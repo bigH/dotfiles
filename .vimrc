@@ -35,6 +35,18 @@ set hlsearch
 " Show search matches while typing
 set incsearch
 
+" Show :s and potentially other commands while typing
+if exists('&inccommand')
+  set inccommand=split
+endif
+
+" Get rid of obnoxious '-' characters in folds & diffs
+set fillchars=fold:\ ,
+set fillchars+=diff:\ ,
+
+" Show column whenever textwidth is set
+set colorcolumn=+0
+
 " Ignore case in search
 set ignorecase
 
@@ -83,8 +95,13 @@ set tags=.tags
 " Auto read files when they change
 set autoread
 
-" Force it on focus changes
-au FocusGained * :checktime
+" Reload edited files.
+augroup improved_autoread
+  autocmd FocusGained * checktime
+  autocmd FocusGained * GitGutterAll
+  autocmd BufEnter * checktime
+  autocmd BufEnter * GitGutterAll
+augroup end
 
 " Setup Python
 let g:python2_host_prog = '/usr/local/bin/python'
@@ -153,8 +170,8 @@ set relativenumber
 set number
 
 " Don't allow cursor to be at edges
-set scrolloff=5
-set sidescrolloff=20
+set scrolloff=3
+set sidescrolloff=15
 
 " Automatically set scroll
 autocmd BufEnter * set scroll=5
@@ -169,7 +186,36 @@ set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 "}}}
 
 
+"{{{ Core Mappings
+
+" <space> is usually a motion meaning the same as 'l' (one letter forward)
+" Much more useful if we make it be <leader>!
+" (Uses map instead of mapleader so that this doesn't affect insert mode.)
+nmap <space> <leader>
+nmap \ <nop>
+
+" <CR> is easier for me to hit on my keyboard than :
+noremap <CR> :
+
+" <leader><leader> to save
+noremap <leader><leader> :w<CR>
+
+"}}}
+
+
 "{{{ Auto Commands
+
+" Defaults for certain files
+augroup FiletypeSettings
+  " Always use tabs in gitconfig
+  au FileType gitconfig setlocal noexpandtab
+
+  " Wrap long lines in quickfix windows
+  au FileType qf setlocal wrap
+
+  " Set cursorline in quickfix windows
+  au FileType qf setlocal cursorline
+augroup END
 
 " Rehighlight syntax on resize (maybe it works?)
 " autocmd VimResized * syntax enable
@@ -220,49 +266,130 @@ autocmd BufReadPost *
 
 "{{{ Cycle <C-J> and <C-K> functionality
 
-" 0 = methods
+" 0 = git hunks
 " 1 = quickfix
-" 2 = git hunks
+" 2 = loc-list
+" 3 = methods
+" 4 = classes
 let g:jk_mode = 0
 
-" Navigate methods by default
-nmap <silent> <C-J> ]m
-nmap <silent> <C-K> [m
-
-func! JKModeRotate()
-  if g:jk_mode == 0
-    " Navigate quick-fix
-    map <C-j> <Nop>
-    map <C-k> <Nop>
-    nmap <C-j> :cn<CR>
-    nmap <C-k> :cp<CR>
-    echo "QuickFix Mode"
-    let g:jk_mode = 1
-  elseif g:jk_mode == 1
-    " Navigate git hunks
-    map <silent> <C-J> :GitGutterNextHunk<CR>zz
-    map <silent> <C-K> :GitGutterPrevHunk<CR>zz
-    echo "Git Hunk Mode"
-    let g:jk_mode = 2
-  elseif g:jk_mode == 2
-    " Navigate classes
-    map <silent> <C-J> ]]
-    map <silent> <C-K> [[
-    echo "Class Mode"
-    let g:jk_mode = 3
+func! COpenIfApplicable()
+  " close the other one
+  lclose
+  if len(getqflist()) == 0
+    cclose
   else
-    " Navigate methods
-    map <silent> <C-J> ]m
-    map <silent> <C-K> [m
-    echo "Method Mode"
-    let g:jk_mode = 0
+    copen
+    wincmd k
   endif
-  return
 endfunc
 
-" Paste Mode!  Dang! <F10>
+func! LOpenIfApplicable()
+  " close the other one
+  cclose
+  if len(getloclist(winnr())) == 0
+    lclose
+  else
+    lopen
+    wincmd k
+  endif
+endfunc
 
-nnoremap <silent> <leader>] :call JKModeRotate()<CR>
+func! CloseBothLists()
+  cclose
+  lclose
+endfunc
+
+func! JKModeApply()
+  if g:jk_mode == 0
+    call CloseBothLists()
+    echo "=> Git Hunk Mode"
+  elseif g:jk_mode == 1
+    call COpenIfApplicable()
+    echo "=> QuickFix Mode"
+  elseif g:jk_mode == 2
+    call LOpenIfApplicable()
+    wincmd k
+    echo "=> Loc List Mode"
+  elseif g:jk_mode == 3
+    call CloseBothLists()
+    echo "=> Method Mode"
+  else
+    call CloseBothLists()
+    echo "=> Class Mode"
+  endif
+endfunc
+
+func! Modulus(n,m)
+  return ((a:n % a:m) + a:m) % a:m
+endfunc
+
+func! JKModeRotate(direction)
+  let g:jk_mode = Modulus(g:jk_mode + a:direction, 5)
+  call JKModeApply()
+endfunc
+
+func! JKModeJ()
+  " TODO doesn't work
+  " normal ml
+  " match Search /\%'.line('.').'l/
+  if g:jk_mode == 1
+    try
+      cnext
+    catch /.*/
+      " ignore the error
+    endtry
+  elseif g:jk_mode == 2
+    try
+      lnext
+    catch /.*/
+      " ignore the error
+    endtry
+  elseif g:jk_mode == 3
+    normal ]m
+  elseif g:jk_mode == 4
+    normal ]]
+  else
+    GitGutterNextHunk
+  endif
+  " TODO doesn't work
+  " match Search /\%'.line('.').'l/
+endfunc
+
+func! JKModeK()
+  normal ml
+  match Search /\%'.line('.').'l/
+  if g:jk_mode == 1
+    try
+      cprevious
+    catch /.*/
+      " ignore the error
+    endtry
+  elseif g:jk_mode == 2
+    try
+      lprevious
+    catch /.*/
+      " ignore the error
+    endtry
+  elseif g:jk_mode == 3
+    normal [m
+  elseif g:jk_mode == 4
+    normal [[
+  else
+    GitGutterPrevHunk
+  endif
+endfunc
+
+" Rotate modes
+nnoremap <silent> ]<leader>] :call JKModeRotate(1)<CR>
+nnoremap <silent> <leader>] :call JKModeRotate(1)<CR>
+nnoremap <silent> [<leader>[ :call JKModeRotate(-1)<CR>
+nnoremap <silent> <leader>[ :call JKModeRotate(-1)<CR>
+
+" Use current mode
+nmap <silent> <C-J> :call JKModeJ()<CR>
+nmap <silent> <C-K> :call JKModeK()<CR>
+
 
 "}}}
 
@@ -313,6 +440,36 @@ nnoremap <silent> <F10> :call Paste_on_off()<CR>
 "}}}
 
 
+"{{{ Terminal Mappings (neovim-only)
+if has('nvim')
+  " TODO
+
+  " Defaults for certain files
+  augroup TerminalSettings
+    " Terminal Defaults
+    au TermOpen * setlocal nonumber
+    au TermOpen * setlocal norelativenumber
+    au TermOpen * setlocal scrolloff=0
+    au TermOpen * startinsert
+
+    " Auto-Close
+    au TermClose * q
+
+    " Handle <Esc>
+    au TermOpen * tnoremap <Esc> <C-\><C-n>
+    au FileType fzf tunmap <Esc>
+
+    " Window Switching
+    au TermOpen * tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>
+    au TermOpen * tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>
+    au TermOpen * tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>
+    au TermOpen * tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>
+  augroup END
+
+endif
+"}}}
+
+
 "{{{ Key Mappings
 
 " Alt-Enter or <leader><CR> - insert a new-line here
@@ -353,6 +510,18 @@ nmap <silent> sj :wincmd j<CR>
 nmap <silent> sk :wincmd k<CR>
 nmap <silent> sl :wincmd l<CR>
 
+" Move between windows using <M-H/J/K/L> keys
+nmap <silent> <M-h> :wincmd h<CR>
+nmap <silent> <M-j> :wincmd j<CR>
+nmap <silent> <M-k> :wincmd k<CR>
+nmap <silent> <M-l> :wincmd l<CR>
+
+" Move between windows using <M-H/J/K/L> keys
+imap <silent> <M-h> :wincmd h<CR>
+imap <silent> <M-j> :wincmd j<CR>
+imap <silent> <M-k> :wincmd k<CR>
+imap <silent> <M-l> :wincmd l<CR>
+
 " Split Windows
 nmap <silent> SH :vsplit<CR>:wincmd h<CR>
 nmap <silent> SJ :split<CR>
@@ -371,22 +540,28 @@ map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
 
+" Move in insert mode using <C-H/J/K/L> keys
+inoremap <silent> <C-H> <Left>
+inoremap <silent> <C-J> <Down>
+inoremap <silent> <C-K> <Up>
+inoremap <silent> <C-L> <Right>
+
+" Use <M-J/K> when in insert mode to handle <C-J/K>
+inoremap <silent> <M-j> <Esc><C-J>I
+inoremap <silent> <M-k> <Esc><C-K>I
+
 " Up and down are more logical with g..
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
-" TODO do I even use this anymore?
-" Map <Space><Space> to save
-nnoremap <silent> <Space><Space> :wa<Enter>
-
-" Tag Navigation with Preview Window
-" TODO do I even use this
-nmap <silent> K :exec("ptag ".expand("<cword>"))<CR>
+" Turn of `K`
+" TODO consider setting keywordprg
+nmap <silent> K <Nop>
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
-map <silent> N Nzz
-map <silent> n nzz
+nmap <silent> N Nzz
+nmap <silent> n nzz
 
 " Remap Escape to train myself
 " inoremap jk <Esc>
@@ -397,38 +572,45 @@ map <silent> n nzz
 source ~/.hiren/vim_custom/kill_buffer_not_split.vimrc
 nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
-" Map Esc in `terminal`
-noremap <Esc> <C-\><C-n>
-
 " Avoid deleting text while inserting that cannot be recovered
 inoremap <silent> <c-u> <c-g>u<c-u>
 inoremap <silent> <c-w> <c-g>u<c-w>
 
 " Make undo work more incrementally
-function! IncrementalUndo()
+func! IncrementalUndo()
   inoremap . .<C-g>u
   inoremap ! !<C-g>u
   inoremap ? ?<C-g>u
   inoremap : :<C-g>u
   inoremap ; ;<C-g>u
   inoremap , ,<C-g>u
-endfunction
+endfunc
 
-function! NoIncrementalUndo()
+func! NoIncrementalUndo()
   iunmap .
   iunmap !
   iunmap ?
   iunmap :
   iunmap ;
   iunmap ,
-endfunction
+endfunc
 
 call IncrementalUndo()
 
+" -- pop-up-menu bindings
+" inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+" inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
+" inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
+
+" -- `macOS` emulation
 " Map <M-Backspace> to delte previous word
 " NB: we don't want `nore`, because ..
 " <C-W> is mapped in a way that works with this (see right above)
 imap <silent> <M-BS> <C-W>
+
+" -- TODO easier navigation in insert mode
+" imap <silent> <C-H>
 
 " -- `bash` emulation
 imap <silent> <C-A> <Esc>I
@@ -475,6 +657,14 @@ source ~/.hiren/vim_plugin_install.vimrc
 "}}}
 
 
+"{{{ Vundle
+
+" TODO make this use `$DOT_FILE_ENV`
+" source ~/.hiren/.stripe.vimrc
+
+"}}}
+
+
 "{{{ Color Scheme Toggle
 
 " choosing dark default
@@ -511,137 +701,13 @@ endif
 
 "{{{ Plugin Configurations
 
-" -- vim-hindent --
-
-" indent on saving (turn it off in preference of custom prettying)
-let g:hindent_on_save = 0
-
-" indent size
-let g:hindent_indent_size = 2
-
-" line length
-let g:hindent_line_length = 100
-
-" where the hindent command is
-let g:hindent_command = "stack exec -- hindent"
-
-" -- haskell-vim --
-
-" Align 'then' two spaces after 'if'
-let g:haskell_indent_if = 2
-
-" Indent 'where' block two spaces under previous body
-let g:haskell_indent_before_where = 2
-
-" Allow a second case indent style (see haskell-vim README)
-let g:haskell_indent_case_alternative = 1
-
-" Only next under 'let' if there's an equals sign
-let g:haskell_indent_let_no_in = 0
-
-" to enable highlighting of `forall`
-let g:haskell_enable_quantification = 1
-
-" to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_recursivedo = 1
-
-" to enable highlighting of `proc`
-let g:haskell_enable_arrowsyntax = 1
-
-" to enable highlighting of `pattern`
-let g:haskell_enable_pattern_synonyms = 1
-
-" to enable highlighting of type roles
-let g:haskell_enable_typeroles = 1
-
-" to enable highlighting of `static`
-let g:haskell_enable_static_pointers = 1
-
-" to enable highlighting of backpack keywords
-let g:haskell_backpack = 1
-
-" -- stylish-haskell --
-
-" Helper function, called below with mappings
-" TODO BufWritePre *.hs HaskellFormat
-" TODO Haskell Format should be smart enough to apply stylish-haskell iff a
-" `stylish-conf` is present
-" TODO does it make sense to apply stylish-haskell on load and hindent on save
-"  - then possibly apply stylish-haskell again to make the file editing
-"  experience how you want it
-function! HaskellFormat(which) abort
-  if a:which ==# 'hindent' || a:which ==# 'both'
-    :Hindent
-  endif
-  if a:which ==# 'stylish' || a:which ==# 'both'
-    silent! exe 'undojoin'
-    silent! exe 'keepjumps %!stylish-haskell'
-  endif
-endfunction
-
-" Key bindings
-augroup HaskellStylish
-  au!
-  " Just hindent
-  au FileType haskell nnoremap <leader>hi :Hindent<CR>
-  " Just stylish-haskell
-  au FileType haskell nnoremap <leader>hs :call HaskellFormat('stylish')<CR>
-  " First hindent, then stylish-haskell
-  au FileType haskell nnoremap <leader>hf :call HaskellFormat('both')<CR>
-augroup END
-
-" ----- parsonsmatt/intero-neovim -----
-
-" Prefer starting Intero manually (faster startup times)
-let g:intero_start_immediately = 1
-
-" Use ALE (works even when not using Intero)
-let g:intero_use_neomake = 0
-
-" Enable type information on hover (when holding cursor at point for ~1 second).
-let g:intero_type_on_hover = 1
-
-" Change the intero window size; default is 10.
-let g:intero_window_size = 15
-
-" OPTIONAL: Make the update time shorter, so the type info will trigger faster.
-
-augroup InteroMaps
-  au!
-
-  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
-  au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
-  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
-  au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
-  au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
-
-  au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
-  au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
-  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
-
-  au FileType haskell map <leader>t <Plug>InteroGenericType
-  au FileType haskell map <leader>T <Plug>InteroType
-  au FileType haskell nnoremap <silent> <leader>it :InteroTypeInsert<CR>
-
-  au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
-  au FileType haskell nnoremap <silent> <leader>iu :InteroUses<CR>
-  au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
-augroup END
-
-" -- fast-tags --
-
-augroup HaskellTags
-au BufWritePost *.hs silent !init-tags %
-au BufWritePost *.hsc silent !init-tags %
-augroup END
-
 " -- fzf-tags --
 
 " Replace <C-]> with fuzzy tag finder when more than one occurence of tag
 nmap <silent> <C-]> <Plug>(fzf_tags)
 
 " Map <C-\> to do this with vsplit
-map <C-\> :vsplit<CR><Plug>(fzf_tags)
+nmap <C-\> :vsplit<CR><Plug>(fzf_tags)
 
 " -- fzf --
 
@@ -660,7 +726,7 @@ command! RecentFiles call fzf#run({
       \  'options': '-m -x +s',
       \  'down':    '40%'})
 
-function! FzfFindInDirectoryFunction()
+func! FzfFindInDirectoryfunc()
   wincmd l
   call fzf#vim#grep(
         \   'rg --column --line-number --no-heading --color=always --smart-case '.
@@ -668,7 +734,7 @@ function! FzfFindInDirectoryFunction()
         \   substitute(g:NERDTreeFileNode.GetSelected().path.str(), getcwd() . "/" , "", ""),
         \   0,
         \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
-endfunction
+endfunc
 
 command! FzfFindInDirectory call FzfFindInDirectoryFunction()
 
@@ -704,15 +770,11 @@ command! -bang -nargs=* Rg
 " Set history directory
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" -- nerdcommenter --
-
-" Add spaces after comment phrase
-let g:NERDSpaceDelims = 1
-
-" Comment in the same column
-let g:NERDDefaultAlign = 'left'
-
 " -- ale --
+
+" Symbols to use
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '▲'
 
 " Execution configs
 let g:ale_linters = {}
@@ -729,7 +791,7 @@ let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_lint_on_text_changed = 'never'
 
 " Show the full list of lint errors
-let g:ale_open_list = 1
+" let g:ale_open_list = 1
 
 " Enable `ale` airline stuff
 let g:airline#extensions#ale#enabled = 1
@@ -747,7 +809,7 @@ let NERDTreeAutoDeleteBuffer = 1
 
 " -- airline --
 
-" TODO
+" TODO go back to tabs
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffers_label = ''
 let g:airline#extensions#tabline#tabs_label = ''
@@ -757,6 +819,9 @@ let g:airline#extensions#tabline#tabs_label = ''
 source ~/.hiren/vim_custom/text_objects.vimrc
 
 let g:vim_textobj_parameter_mapping = ','
+
+" -- tagbar --
+
 
 " -- tagbar --
 
@@ -794,7 +859,7 @@ if executable('ripper-tags')
                         \ 'm' : 'class' },
       \ 'scope2kind' : { 'class' : 'c' },
       \ 'ctagsbin'   : 'ripper-tags',
-      \ 'ctagsargs'  : ['-f', '-']
+      \ 'ctagsargs'  : '--fields=+n -f -'
   \ }
 else
   let g:tagbar_type_ruby = {
@@ -831,12 +896,6 @@ let ruby_pseudo_operators = 1
 " set up folding to fold most things
 " let ruby_foldable_groups = 'def class module do begin case for'
 
-" -- git-gutter --
-
-" TODO write a better modal list move method
-nmap <silent> <leader>j :GitGutterNextHunk<CR>zz
-nmap <silent> <leader>k :GitGutterPrevHunk<CR>zz
-
 " -- IDE Feel --
 
 " F1 opens NERDTree
@@ -857,25 +916,25 @@ nmap <silent> <leader>b <Esc>:Buffers<CR>
 imap <silent> <F4> <Esc>:Buffers<CR>
 
 " functions for use below to make NERDTree switch windows in the editor region
-function! NERDBPrev()
+func! NERDBPrev()
   execute 'wincmd' 'l'
   execute 'bprev'
-endfunction
+endfunc
 
-function! NERDBFirst()
+func! NERDBFirst()
   execute 'wincmd' 'l'
   execute 'bfirst'
-endfunction
+endfunc
 
-function! NERDBNext()
+func! NERDBNext()
   execute 'wincmd' 'l'
   execute 'bnext'
-endfunction
+endfunc
 
-function! NERDBLast()
+func! NERDBLast()
   execute 'wincmd' 'l'
   execute 'blast'
-endfunction
+endfunc
 
 " L/H/C-H/C-L in NERDTree
 augroup NERDTree

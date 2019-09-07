@@ -22,3 +22,54 @@ endfunction
 command! ShFilesFromStacktrace call ShFilesFromStacktrace()
 
 "}}}
+
+
+"{{{ Pay Test support
+
+" TODO test that this works
+function! s:PayTest(additional_params)
+  let pay_test_command = 'pay test ' . expand('%') . a:additional_params
+  " TODO may have to add more here to ensure terminal ends
+  execute 'vsplit | terminal ' . pay_test_command
+endfunction
+
+if fnamemodify(getcwd(), ':p') == $HOME.'/stripe/pay-server/'
+  nnoremap <leader>ptf :call <SID>PayTest('')<CR>
+  nnoremap <leader>ptvf :call <SID>PayTest('--show-output --show-full-stacktrace')<CR>
+  nnoremap <leader>ptl :call <SID>PayTest('-l ' . line('.'))<CR>
+  nnoremap <leader>ptvl :call <SID>PayTest('--show-output --show-full-stacktrace -l ' . line('.'))<CR>
+end
+
+"}}}
+
+
+"{{{
+
+" let g:LanguageClient_diagnosticsDisplay = {
+"       \     1: {
+"       \         "name": "Error",
+"       \         "texthl": "ALEError",
+"       \         "signText": "✘",
+"       \         "signTexthl": "Error",
+"       \     },
+"       \     2: {
+"       \         "name": "Warning",
+"       \         "texthl": "ALEWarning",
+"       \         "signText": "▲",
+"       \         "signTexthl": "Todo",
+"       \     },
+"       \     3: {
+"       \         "name": "Information",
+"       \         "texthl": "ALEError",
+"       \         "signText": "✘",
+"       \         "signTexthl": "Error",
+"       \     },
+"       \     4: {
+"       \         "name": "Hint",
+"       \         "texthl": "ALEWarning",
+"       \         "signText": "➤",
+"       \         "signTexthl": "Todo",
+"       \     },
+"       \ }
+
+"}}}

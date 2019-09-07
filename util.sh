@@ -17,6 +17,20 @@ else
   export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}${DOT_FILES_ENV_CAPITALIZED}${NORMAL}]"
 fi
 
+function clean_dir {
+  if [ $# -eq 1 ]; then
+    if [ ! -d "$1" ]; then
+      echo "${GREEN}Creating${NORMAL}: $1 ..."
+      mkdir -p "$1"
+    else
+      rm -rf "$1/*"
+    fi
+  else
+    echo "${BOLD}ERROR${NORMAL}: clean_dir requires 1 arguments"
+    exit 1
+  fi
+}
+
 function mk_expected_dir {
   if [ $# -eq 1 ]; then
     if [ ! -d "$1" ]; then

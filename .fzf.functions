@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ## FZF Helpers
 
@@ -9,36 +9,33 @@ fzfe() {
 
 ## CD
 
-# fzd - including hidden directories
-fzd() {
+# fcd - including hidden directories
+fcd() {
   local dir
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m --preview="ls -l {}") &&
     echo cd "$dir" &&
     cd "$dir"
 }
 
-# View the history of a file [-d|--diff] for diff only
+# View the history of a file interactively [-d|--diff] for diff only
 ghist() {
   DIFF=false
-  CHECK_PATH=""
-  for ARG in "$@"; do
-    if [ "$ARG" = "-d" ] || [ "$arg" = "--diff" ]; then
-      DIFF=true
-    elif [ -f "$ARG" ]; then
-      CHECK_PATH="$ARG"
-    fi
-  done
+  CHECK_PATHS="$@"
+  if [ "$1" = "-d" ] || [ "$1" = "--diff" ]; then
+    DIFF=true
+    shift
+    CHECK_PATHS="$@"
+  fi
 
-  if [ -f "$CHECK_PATH" ]; then
-    if [ "$DIFF" = true ]; then
-      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATH" |
-      fzf --multi --ansi --no-height --preview "git diff {2}~ {2} -- \"$CHECK_PATH\" | diff-so-fancy" |
-      true
-    else
-      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATH" |
-      fzf --multi --ansi --no-height --preview "git show {2}:\"$CHECK_PATH\" | bat -p --color always -l \"\${\$(basename $CHECK_PATH)##*.}\"" |
-      true
-    fi
+  # TODO this doesn't work with > 1 args
+  if [ "$DIFF" = true ] || [ "$#" -gt "1" ]; then
+    git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- $CHECK_PATHS |
+    fzf --multi --ansi --no-height --preview "git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy" |
+    true
+  else
+    git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATHS" |
+    fzf --multi --ansi --no-height --preview "git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"" |
+    true
   fi
 }
 

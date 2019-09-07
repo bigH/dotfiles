@@ -1,7 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Set `neovim` as EDITOR
-export EDITOR=/usr/local/bin/nvim
+if [[ -f "/usr/local/bin/nvim" ]]; then
+  export EDITOR=/usr/local/bin/nvim
+else
+  export EDITOR=/usr/bin/vim
+fi
 
 # Add Home `stripe-bin`
 export PATH="$HOME/stripe-bin:$PATH"

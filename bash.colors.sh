@@ -13,14 +13,4 @@ if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
   export WHITE="$(tput setaf 7)"
   export BOLD="$(tput bold)"
   export NORMAL="$(tput sgr0)"
-else
-  export RED=""
-  export GREEN=""
-  export YELLOW=""
-  export BLUE=""
-  export MAGENTA=""
-  export CYAN=""
-  export WHITE=""
-  export BOLD=""
-  export NORMAL=""
 fi

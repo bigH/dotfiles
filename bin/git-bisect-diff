@@ -19,8 +19,7 @@ git_bisect_diff() {
         range_end \
         midpoint \
         ret_val_left \
-        ret_val_right \
-        complete
+        ret_val_right
 
   log_data=""
   current_commit=$(git rev-parse HEAD)

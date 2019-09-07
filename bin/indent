@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# set input according to arguments
+if [ $# -ge 1 ]; then
+  for i in $*; do
+    cat $i | sed 's/^/  /'
+  done
+else
+  cat - | sed 's/^/  /'
+fi
+
