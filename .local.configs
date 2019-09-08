@@ -62,8 +62,10 @@ if [ -d '/usr/local/opt/llvm/bin/' ]; then
 fi
 
 # Add iTerm2 things
-if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
-  source "${HOME}/.iterm2_shell_integration.zsh"
+if [[ "$SHELL" == *'zsh' ]]; then
+  if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
+    source "${HOME}/.iterm2_shell_integration.zsh"
+  fi
 fi
 
 # Add `rg` completion to

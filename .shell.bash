@@ -17,12 +17,8 @@ shopt -s cdspell
 shopt -s cmdhist
 # Do not autocomplete when accidentally pressing Tab on an empty line. (It takes forever and yields "Display all 15 gazillion possibilites?")
 shopt -s no_empty_cmd_completion
-# **/thing works properly
-shopt -s globstar
 # Include .* in *
 shopt -s dotglob
-# Ignore case in patterns
-shopt -s nocaseglob
 # Ignore case in patterns
 shopt -s nocaseglob
 

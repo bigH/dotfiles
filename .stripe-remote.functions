@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# TODO maybe remove - just an example
+# TODO remove - just an example
 collect_trace() {
   if [ -z "$1" ]; then
     echo "require PID"
