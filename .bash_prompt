@@ -21,12 +21,10 @@ function prompt_command() {
   local USER_PROMPT="${USER_COLOR}${USER}${NORMAL}"
 
   local HOSTNAME_HEAD="$HOSTNAME"
-  local HOSTNAME_TAIL=""
 
   # Split the hostname if applicable
   if [[ "$HOSTNAME" == *'.'* ]]; then
     HOSTNAME_HEAD="${HOSTNAME%%.*}"
-    HOSTNAME_TAIL=".${HOSTNAME#*.}"
   fi
 
   # Show hostname inside SSH session
