@@ -23,11 +23,6 @@ bindkey '^f' forward-word
 bindkey '^[b' emacs-backward-word
 bindkey '^[f' emacs-forward-word
 
-# TODO doesn't work
-# Ctrl-Space - git status
-bindkey -s '^ ' '^U^Kstatus^M'
-
-# TODO doesn't work
 # Alt-Space - insert `git branch-name`
 zmodload -i zsh/parameter
 insert-git-branch-name() {
@@ -46,7 +41,6 @@ bindkey '^[x' insert-last-command-output
 
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line
-
 
 fixup-rg-command-for-cmd-substitution() {
   if [ -z "$1" ]; then

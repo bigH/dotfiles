@@ -133,6 +133,7 @@ key_bindings:
   - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
   - { key: N,        mods: Command,       action: SpawnNewInstance             }
   - { key: Space,    mods: Control,       chars: "\x00"                        }
+  - { key: Space,    mods: Alt,           chars: "\x1b "                       }
   - { key: A,        mods: Alt,           chars: "\x1ba"                       }
   - { key: B,        mods: Alt,           chars: "\x1bb"                       }
   - { key: C,        mods: Alt,           chars: "\x1bc"                       }
@@ -207,8 +208,6 @@ live_config_reload: true
 shell:
   program: login
   args: ["-fp", "hiren"]
-
-# ---- TODO -- still on it..
 
 debug:
   # Should display the render timer

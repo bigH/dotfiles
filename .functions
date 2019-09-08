@@ -54,8 +54,7 @@ shuf() {
 
 # every
 every () {
-  if [ -z "$1" ]
-  then
+  if [ -z "$1" ]; then
     echo 'ERROR: specify the `n` in `nth`.'
     exit 1
   else
@@ -78,13 +77,9 @@ every () {
   fi
 }
 
-# status
-status() {
-  if [ -d .git ]; then
-    g st
-  else
-    ll
-  fi
+# a
+a() {
+  is-in-git-repo && g st || ll
 }
 
 # horizontal rule [hr]
@@ -100,12 +95,15 @@ join-lines() {
 
 # `which` with `ls -l $(which)`
 wh() {
-  # TODO
-  echo ""
+  if [ -z "$1" ]; then
+    echo 'ERROR: specify the command.'
+    elif
+    test -f "$(which "$1")" || which "$1" && k
+  fi
 }
 
 # status represents if `git` commands will work
-is_in_git_repo() {
+is-in-git-repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
 

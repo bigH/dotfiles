@@ -1,13 +1,12 @@
 #!/bin/sh
 
-# zsh color things
+# `zsh` color things
 if [[ "$SHELL" == *'zsh' ]]; then
   autoload -U colors;
   colors
-  # TODO use the stuff below
 fi
 
-# bash friendly defaults
+# Defaults
 if which tput >/dev/null 2>&1; then
   ncolors=$(tput colors)
 fi
@@ -39,5 +38,6 @@ else
   export INVERT=""
   export NORMAL=""
 fi
-# In case it's mispelled
+
+# Mispelling
 export GREY="$GRAY"

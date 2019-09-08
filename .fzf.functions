@@ -20,6 +20,8 @@ fcd() {
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   # View the history of a file interactively [-d|--diff] for diff only
   ghist() {
+    is-in-git-repo || return
+
     DIFF=false
     CHECK_PATHS="$@"
     if [ "$1" = "-d" ] || [ "$1" = "--diff" ]; then
@@ -28,23 +30,26 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       CHECK_PATHS="$@"
     fi
 
-    # TODO this doesn't work with > 1 args
     if [ "$DIFF" = true ] || [ "$#" -gt "1" ]; then
-      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- $CHECK_PATHS |
-      fzf --multi --ansi --no-height --preview "git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy" |
-      true
+      # For some reason, eval makes this work. otherwise, the `fzf` list never populates
+      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
+            fzf --multi --ansi --no-height --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
+            true"
     else
-      git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --color=always -- "$CHECK_PATHS" |
-      fzf --multi --ansi --no-height --preview "git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"" |
-      true
+      # Using eval only for consistency
+      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- \"$CHECK_PATHS\" |\
+            fzf --multi --ansi --no-height --preview \"git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"\" |\
+            true"
     fi
   }
 
   # Select file from git status
   gfi() {
-    is_in_git_repo || return
+    is-in-git-repo || return
+
     MERGE_BASE=$(git merge-base HEAD origin/master)
     REF="${1:-$MERGE_BASE}"
+
     git diff $REF --name-only |
     fzf --no-height --reverse -m --ansi --nth 2..,.. \
       --preview "(git diff $REF -- {-1} | diff-so-fancy)"
@@ -52,9 +57,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # Select commit from git history
   gh() {
-    is_in_git_repo || return
+    is-in-git-repo || return
+
     REF="${1:-HEAD}"
     MERGE_BASE=$(git merge-base HEAD origin/master)
+
     git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always $REF |
     fzf --no-height --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
       --header 'Press CTRL-S to toggle sort' \
