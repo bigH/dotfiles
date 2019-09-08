@@ -39,3 +39,5 @@ else
   export INVERT=""
   export NORMAL=""
 fi
+# In case it's mispelled
+export GREY="$GRAY"

@@ -12,7 +12,9 @@ case $(id -u) in
 esac
 
 # Symbols
-PROMPT_SYMBOL="❯"
+USER_HOST_DELIMITER="$(printf "\xE2\x91\x8A")"
+HOST_PATH_DELIMITER="$(printf "\xE2\x8B\xAF") "
+PROMPT_SYMBOL="$(printf "\xE2\x9D\xAF")"
 
 function prompt_command() {
   # Only show username if not default
@@ -28,10 +30,7 @@ function prompt_command() {
   fi
 
   # Show hostname inside SSH session
-  local HOST_PROMPT="@ ${YELLOW}${BOLD}${NORMAL}${NORMAL}${YELLOW}${HOSTNAME_TAIL}${NORMAL}"
-
-  # Show delimiter if user or host visible
-  local LOGIN_DELIMITER=":"
+  local HOST_PROMPT="${USER_HOST_DELIMITER} ${YELLOW}${BOLD}${HOSTNAME_HEAD}${NORMAL}"
 
   # Substitute `~`
   local WORKING_DIR=$(pwd)
@@ -44,11 +43,11 @@ function prompt_command() {
   local WORKING_DIR_LAST="$WORKING_DIR"
   if [[ "$WORKING_DIR" == *'/'* ]]; then
     WORKING_DIR_LAST="${WORKING_DIR##*/}"
-    WORKING_DIR_INIT="${WORKING_DIR%/*}/"
+    WORKING_DIR_INIT="${WORKING_DIR%/*}${WHITE}/"
   fi
 
   # Format prompt
-  FIRST_LINE="${USER_PROMPT} ${HOST_PROMPT}${LOGIN_DELIMITER}${WHITE}${WORKING_DIR_INIT}${BOLD}${WORKING_DIR_LAST}${NORMAL}"
+  FIRST_LINE="${USER_PROMPT} ${HOST_PROMPT} ${HOST_PATH_DELIMITER} ${GRAY}${WORKING_DIR_INIT}${BOLD}${WORKING_DIR_LAST}${NORMAL}"
 
   # Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
   # $? is a status of last command, should be processed every time prompt prints
