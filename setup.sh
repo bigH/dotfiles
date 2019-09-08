@@ -156,7 +156,6 @@ echo ""
 echo "     \`~/.hiren/.osx\`"
 echo "     ... sets up OS X in a nice way"
 echo ""
-# TODO build/test this stuff
 if [ ! -z "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
   echo "  $DOT_FILES_ENV_DISPLAY:"
   echo ""
