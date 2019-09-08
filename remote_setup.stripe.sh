@@ -64,9 +64,10 @@ devbox_echo "${BLUE}${BOLD}Installing \`rg\`${NORMAL}"
 print_symbol_for_status "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 echo ""
 
-devbox_echo "${BLUE}${BOLD}Installing \`fd\`${NORMAL}"
-print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
-echo ""
+# fails to build on devbox
+# devbox_echo "${BLUE}${BOLD}Installing \`fd\`${NORMAL}"
+# print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
+# echo ""
 
 devbox_echo "${BLUE}${BOLD}Installing \`bat\`${NORMAL}"
 print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
