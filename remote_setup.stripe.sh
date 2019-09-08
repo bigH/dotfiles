@@ -23,17 +23,16 @@ devbox_echo "${BLUE}${BOLD}..random directories..${NORMAL}"; echo ""
 
 chmod +x $DOT_FILES_DIR/*.sh
 chmod +x $DOT_FILES_DIR/bin/*
-rm -rf $DOT_FILES_DIR/made-bin
 mk_expected_dir $DOT_FILES_DIR/.local/share/fzf-history
 mk_or_clean_dir $DOT_FILES_DIR/logs
 
 echo ""
-devbox_echo "${BLUE}${BOLD}Cleanup \`made-bin\` directory${NORMAL}"; echo ""
+devbox_echo "${BLUE}${BOLD}\`made-bin\` directory${NORMAL}"; echo ""
 
 mk_or_clean_dir $DOT_FILES_DIR/made-bin
 
 echo ""
-devbox_echo "${BLUE}${BOLD}Cleanup \`vim\` directories${NORMAL}"; echo ""
+devbox_echo "${BLUE}${BOLD}\`.vim\` sub-directories${NORMAL}"; echo ""
 
 mk_or_clean_dir $DOT_FILES_DIR/.vim/sessions
 mk_or_clean_dir $DOT_FILES_DIR/.vim/tmp

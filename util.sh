@@ -17,21 +17,6 @@ else
   export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}${DOT_FILES_ENV_CAPITALIZED}${NORMAL}]"
 fi
 
-function mk_or_clean_dir {
-  if [ $# -eq 1 ]; then
-    if [ ! -d "$1" ]; then
-      echo "${GREEN}Creating${NORMAL}: $1 ..."
-      mkdir -p "$1"
-    else
-      echo "${GREEN}Cleaning${NORMAL}: $1 ..."
-      rm -rf "$1/*"
-    fi
-  else
-    echo "${RED}${BOLD}ERROR${NORMAL}: \`clean_dir\` requires 1 arguments"
-    exit 1
-  fi
-}
-
 function print_symbol_for_status {
   PRINT_PREFIX=""
   if [ $# -eq 0 ]; then
@@ -56,6 +41,21 @@ function print_symbol_for_status {
     else
       printf " [${RED}${BOLD}${PRINT_PREFIX}\xE2\x9C\x98${NORMAL}]"
     fi
+  fi
+}
+
+function mk_or_clean_dir {
+  if [ $# -eq 1 ]; then
+    if [ ! -d "$1" ]; then
+      echo "${GREEN}Creating${NORMAL}: $1 ..."
+      mkdir -p "$1"
+    else
+      echo "${GREEN}Cleaning${NORMAL}: $1 ..."
+      rm -rf "$1/*"
+    fi
+  else
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`clean_dir\` requires 1 arguments"
+    exit 1
   fi
 }
 
