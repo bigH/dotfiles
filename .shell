@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 # General zshzle options
 # cd by just typing in a directory name

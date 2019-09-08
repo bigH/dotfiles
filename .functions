@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 # jj - list autojump directories
-jj() {
-  autojump -s
-}
+if type autojump >/dev/null 2>&1; then
+  jj() {
+    autojump -s
+  }
+fi
 
 # portcheck - check if a port is available
 portcheck () {
@@ -18,20 +20,6 @@ portcheck () {
       lsof -n -i4TCP:$1 | grep LISTEN
     fi
   fi
-}
-
-# TODO - this doesn't work - 2 commands `bcip` and `bip`
-# bip - install (one or multiple) selected application(s)
-# (mnemonic [B]rew [I]nstall [P]lugin)
-bip() {
-  local apps casks targets
-  apps=$(brew search | awk '{print "\x1b[31;1mbrew\x1b[m " $1}') &&
-  casks=$(brew search --casks 2>/dev/null | awk '{print "\x1b[34;1mcask\x1b[m " $1}') &&
-  targets=$(
-    (echo "$apps"; echo "$casks") |
-    fzf --ansi -m -d " " -n 2 --preview="echo $(echo {} | awk 'if ($1 == "brew") print "brew info $2"; else print "brew cask info $2"')"
-  ) &&
-  echo brew install $(echo $targets | cut -d ' ' -f2-)
 }
 
 # first_line [file]
@@ -69,10 +57,12 @@ every () {
   if [ -z "$1" ]
   then
     echo 'ERROR: specify the `n` in `nth`.'
+    exit 1
   else
     re='^[0-9]+$'
     if ! [[ $1 =~ $re ]] ; then
       echo 'ERROR: argument must be a number.'
+      exit 2
     else
       NUM=$1
       shift
@@ -95,13 +85,6 @@ status() {
   else
     ll
   fi
-}
-
-# horizontal rule [hr]
-er() {
-  echo ""
-  echo "$@"
-  $@
 }
 
 # horizontal rule [hr]

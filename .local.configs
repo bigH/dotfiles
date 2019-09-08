@@ -68,5 +68,7 @@ fi
 
 # Add `rg` completion to
 if [ -e "$DOT_FILES_DIR/ripgrep/complete" ]; then
-  fpath+="$DOT_FILES_DIR/ripgrep/complete"
+  if [[ "$SHELL" == *'zsh' ]]; then
+    fpath+="$DOT_FILES_DIR/ripgrep/complete"
+  fi
 fi

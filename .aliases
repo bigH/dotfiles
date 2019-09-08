@@ -31,64 +31,65 @@ alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d
 # rg - better colors
 alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
 
-# git
-alias g='git'
-alias gn='git --no-pager'
+if [ -z "$DISABLE_GIT_THINGS" ]; then
+  # git
+  alias g='git'
+  alias gn='git --no-pager'
 
-# misspellings of git
-alias gti=g
-alias igt=g
-alias itg=g
+  # misspellings of git
+  alias gti=g
+  alias igt=g
+  alias itg=g
 
-# commit wip
-alias wip='g commit -a -m WIP'
+  # commit wip
+  alias wip='g commit -a -m WIP'
 
-# -- git shortcuts
+  # -- git shortcuts
 
-# git checkout
-alias gco="g checkout"
-alias gcob="g checkout -b"
+  # git checkout
+  alias gco="g checkout"
+  alias gcob="g checkout -b"
 
-# git add
-alias ga="g add"
-alias gap="g add --patch"
+  # git add
+  alias ga="g add"
+  alias gap="g add --patch"
 
-# git commit
-alias gc="g commit"
-alias gca="g commit -a"
-alias gcm="g commit -m"
-alias gcam="g commit -am"
-alias gcamend="g commit --amend --no-edit"
-alias gcane="g commit --amend --no-edit"
+  # git commit
+  alias gc="g commit"
+  alias gca="g commit -a"
+  alias gcm="g commit -m"
+  alias gcam="g commit -am"
+  alias gcamend="g commit --amend --no-edit"
+  alias gcane="g commit --amend --no-edit"
 
-# git push
-alias gs='g st'
+  # git push
+  alias gs='g st'
 
-# git show
-alias gsh='g show'
+  # git show
+  alias gsh='g show'
 
-# git stash list
-alias gsl='g stash list'
-alias gsls='g stash list --stat'
+  # git stash list
+  alias gsl='g stash list'
+  alias gsls='g stash list --stat'
 
-# git log
-alias gl='g log'
-alias gll='g log --stat'
-alias glm='gn log $(git merge-base HEAD origin/master)..HEAD'
-alias gllm='gn log --stat $(git merge-base HEAD origin/master)..HEAD'
+  # git log
+  alias gl='g log'
+  alias gll='g log --stat'
+  alias glm='gn log $(git merge-base HEAD origin/master)..HEAD'
+  alias gllm='gn log --stat $(git merge-base HEAD origin/master)..HEAD'
 
-# git pull
-alias gpom='g pull origin master-passing-tests'
-alias gprom='g pull --rebase origin master-passing-tests'
+  # git pull
+  alias gpom='g pull origin master-passing-tests'
+  alias gprom='g pull --rebase origin master-passing-tests'
 
-# git push
-alias gp='g push origin $(g branch-name)'
-alias gpf='g push --force origin $(g branch-name)'
-alias gpu='g push -u origin $(g branch-name)'
+  # git push
+  alias gp='g push origin $(g branch-name)'
+  alias gpf='g push --force origin $(g branch-name)'
+  alias gpu='g push -u origin $(g branch-name)'
 
-# git diff
-alias gd='g diff'
-alias gnd='gn diff'
-alias gds='g diff --staged'
-alias gnds='gn diff --staged'
-
+  # git diff
+  alias gd='g diff'
+  alias gnd='gn diff'
+  alias gds='g diff --staged'
+  alias gnds='gn diff --staged'
+fi

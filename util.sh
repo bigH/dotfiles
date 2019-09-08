@@ -31,6 +31,33 @@ function clean_dir {
   fi
 }
 
+function print_symbol_for_status {
+  PRINT_PREFIX=""
+  if [ $# -eq 0 ]; then
+    echo ""
+    echo "!! -- ERROR: \`print_symbol_for_status\` requires 1 or 2 parameters, 0 provided -- !!"
+  elif [ $# -ge 3 ]; then
+    echo ""
+    echo "!! -- ERROR: \`print_symbol_for_status\` requires 1 or 2 parameters, $# provided -- !!"
+  else
+    if [ $# -eq 1 ]; then
+      COMMAND_TO_EXECUTE="$1"
+    elif [ $# -eq 2 ]; then
+      PRINT_PREFIX="$1: "
+      COMMAND_TO_EXECUTE="$2"
+    fi
+
+    bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
+    STATUS="$?"
+
+    if [ $STATUS -eq 0 ]; then
+      printf " [${PRINT_PREFIX}${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
+    else
+      printf " [${RED}${BOLD}${PRINT_PREFIX}\xE2\x9C\x98${NORMAL}]"
+    fi
+  fi
+}
+
 function mk_expected_dir {
   if [ $# -eq 1 ]; then
     if [ ! -d "$1" ]; then
@@ -52,7 +79,7 @@ function mkdir_if_not_exists {
       mkdir -p $1
     else
       echo "Directory already present: $1 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping directory creation $1..."
+      echo "${BOLD}WARN${NORMAL}: Skipping directory creation $1 ..."
     fi
   else
     echo "${BOLD}ERROR${NORMAL}: mkdir_if_not_exists requires 1 arguments"
@@ -64,12 +91,12 @@ function link_if_possible {
   if [ $# -eq 2 ]; then
     if [ -L "$2" ]; then
       echo "Link already present: ?? -> $2 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2..."
+      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
     elif [ -e "$2" ]; then
       echo "File/Directory present at $2 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2..."
+      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
     else
-      echo "${GREEN}Linking${NORMAL}: $1 -> $2..."
+      echo "${GREEN}Linking${NORMAL}: $1 -> $2 ..."
       ln -s "$1" "$2"
     fi
   else

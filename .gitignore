@@ -3,13 +3,11 @@
 .env_context
 .oh-my-zsh/
 pure/
-git-wtf/
 fzf/
 ripgrep/
 bat/
 fd/
 logs/
 made-bin/
-bin/git-wtf
 dircolors-solarized/
 solarized/

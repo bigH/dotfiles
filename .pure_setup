@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 export DOT_FILES_DIR=$HOME/.hiren
 
 . $DOT_FILES_DIR/pure/async.zsh
