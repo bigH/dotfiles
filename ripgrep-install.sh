@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd $DOT_FILES_DIR/ripgrep
 rm -rf target/*
 cargo clean -q

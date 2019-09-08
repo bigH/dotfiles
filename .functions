@@ -8,7 +8,7 @@ if type autojump >/dev/null 2>&1; then
 fi
 
 # portcheck - check if a port is available
-portcheck () {
+portcheck() {
   if [ -z "$1" ]
   then
     echo "ERROR: specify port number."
@@ -101,6 +101,7 @@ join-lines() {
 # `which` with `ls -l $(which)`
 wh() {
   # TODO
+  echo ""
 }
 
 # status represents if `git` commands will work

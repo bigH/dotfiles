@@ -200,6 +200,10 @@ noremap <CR> :
 " <leader><leader> to save
 noremap <leader><leader> :w<CR>
 
+" Re-indent when pasting
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
 "}}}
 
 

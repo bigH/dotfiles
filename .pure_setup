@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-export DOT_FILES_DIR=$HOME/.hiren
-
-. $DOT_FILES_DIR/pure/async.zsh
-. $DOT_FILES_DIR/pure/pure.zsh
-
-PROMPT='%F{white}%* '$PROMPT

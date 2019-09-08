@@ -17,16 +17,17 @@ else
   export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}${DOT_FILES_ENV_CAPITALIZED}${NORMAL}]"
 fi
 
-function clean_dir {
+function mk_or_clean_dir {
   if [ $# -eq 1 ]; then
     if [ ! -d "$1" ]; then
       echo "${GREEN}Creating${NORMAL}: $1 ..."
       mkdir -p "$1"
     else
+      echo "${GREEN}Cleaning${NORMAL}: $1 ..."
       rm -rf "$1/*"
     fi
   else
-    echo "${BOLD}ERROR${NORMAL}: clean_dir requires 1 arguments"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`clean_dir\` requires 1 arguments"
     exit 1
   fi
 }
@@ -35,10 +36,10 @@ function print_symbol_for_status {
   PRINT_PREFIX=""
   if [ $# -eq 0 ]; then
     echo ""
-    echo "!! -- ERROR: \`print_symbol_for_status\` requires 1 or 2 parameters, 0 provided -- !!"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`print_symbol_for_status\` requires 1 or 2 parameters, 0 provided"
   elif [ $# -ge 3 ]; then
     echo ""
-    echo "!! -- ERROR: \`print_symbol_for_status\` requires 1 or 2 parameters, $# provided -- !!"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`print_symbol_for_status\` requires 1 or 2 parameters, $# provided"
   else
     if [ $# -eq 1 ]; then
       COMMAND_TO_EXECUTE="$1"
@@ -67,7 +68,7 @@ function mk_expected_dir {
       echo "${GREEN}Directory already present${NORMAL}: $1 ..."
     fi
   else
-    echo "${BOLD}ERROR${NORMAL}: mk_expected_dir requires 1 arguments"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`mk_expected_dir\` requires 1 arguments"
     exit 1
   fi
 }
@@ -78,11 +79,11 @@ function mkdir_if_not_exists {
       echo "${GREEN}Creating${NORMAL}: $1 ..."
       mkdir -p $1
     else
-      echo "Directory already present: $1 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping directory creation $1 ..."
+      echo "${GREEN}Directory already present${NORMAL}: $1 ..."
+      echo "${BOLD}${YELLOW}WARN${NORMAL}: Skipping directory creation $1 ..."
     fi
   else
-    echo "${BOLD}ERROR${NORMAL}: mkdir_if_not_exists requires 1 arguments"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`mkdir_if_not_exists\` requires 1 arguments"
     exit 1
   fi
 }
@@ -91,16 +92,16 @@ function link_if_possible {
   if [ $# -eq 2 ]; then
     if [ -L "$2" ]; then
       echo "Link already present: ?? -> $2 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
+      echo "${BOLD}${YELLOW}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
     elif [ -e "$2" ]; then
       echo "File/Directory present at $2 ..."
-      echo "${BOLD}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
+      echo "${BOLD}${YELLOW}WARN${NORMAL}: Skipping linking $1 -> $2 ..."
     else
       echo "${GREEN}Linking${NORMAL}: $1 -> $2 ..."
       ln -s "$1" "$2"
     fi
   else
-    echo "${BOLD}ERROR${NORMAL}: link_if_possible requires 2 arguments"
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`link_if_possible\` requires 2 arguments"
     exit 1
   fi
 }

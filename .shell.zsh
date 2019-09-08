@@ -9,10 +9,6 @@ setopt nomatch
 setopt no_case_glob
 # commands preceded with '#' aren't run
 setopt interactive_comments
-# immediately invoke completion
-# setopt menu_complete
-
-# export MENU_COMPLETE=1
 
 # load zmv - the pattern renamer/mover/copier in zsh
 autoload -Uz zmv

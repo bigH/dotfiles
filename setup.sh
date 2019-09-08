@@ -4,7 +4,7 @@ export DOT_FILES_DIR=$HOME/.hiren
 source $DOT_FILES_DIR/util.sh
 
 if ! command -v zsh >/dev/null 2>&1; then
-  printf "${RED}${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!\n"
+  echo "${RED}${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!"
   exit
 fi
 
@@ -89,6 +89,8 @@ echo ""
 
 printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
+echo ""
+
 echo ""
 
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"

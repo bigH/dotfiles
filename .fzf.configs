@@ -16,34 +16,42 @@ if [ ! -z "$COMPLETEABLE_SHELL_TYPE" ]; then
   # Key bindings
   source "$DOT_FILES_DIR/fzf/shell/key-bindings.$COMPLETEABLE_SHELL_TYPE"
 
-  # Use `fd` instead of the default find command for listing path candidates.
-  _fzf_compgen_path() {
-    fd --hidden --follow --exclude ".git" . "$1"
-  }
-
-  # Use `fd` to generate the list for directory completion
-  _fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude ".git" . "$1"
-  }
-
   export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
-  # use `fd`
-  export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude ".git" .'
-  export FZF_CTRL_T_COMMAND='fd --hidden --follow --exclude ".git" .'
-  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude ".git" .'
+  if type fd >/dev/null 2>&1; then
+    # Use `fd` instead of the default find command for listing path candidates.
+    _fzf_compgen_path() {
+      fd --hidden --follow --exclude ".git" . "$1"
+    }
 
-  # use `preview`
+    # Use `fd` to generate the list for directory completion
+    _fzf_compgen_dir() {
+      fd --type d --hidden --follow --exclude ".git" . "$1"
+    }
+
+    # use `fd`
+    export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude ".git" .'
+    export FZF_CTRL_T_COMMAND='fd --hidden --follow --exclude ".git" .'
+    export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude ".git" .'
+  fi
+
+  if type gls >/dev/null 2>&1; then
+    # use `gls` if present (on OS X)
+    export DIR_PREVIEW_COMMAND="gls --color=always -G"
+  else
+    # use `ls` otherwise
+    export FZF_ALT_C_OPTS="ls --color=always -G"
+  fi
+
+  # use `ls` to preview directories
+  export FZF_ALT_C_OPTS="--preview='$DIR_PREVIEW_COMMAND'"
+
+  # binary -> display indication of this
+  # directory -> use `$DIR_PREVIEW_COMMAND`
+  # files -> `bat` is installed on all my machines
   export FZF_CTRL_T_OPTS='--preview='"'"'[[ $(file --mime {}) =~ binary ]] &&
-                                          echo {} is a binary file ||
-                                        [[ $(file --mime {}) =~ directory ]] &&
-                                          gls --color=always -G {} ||
-                                        (bat --style=numbers --color=always {} ||
-                                          highlight -O ansi -l {} ||
-                                          coderay {} ||
-                                          rougify {} ||
-                                          cat {})'"'"
-
-  # use `ls`
-  export FZF_ALT_C_OPTS="--preview='gls --color=always -G'"
+                                           echo {} is a binary file ||
+                                         [[ $(file --mime {}) =~ directory ]] &&
+                                           '"$DIR_PREVIEW_COMMAND"' {} ||
+                                         bat --style=numbers --color=always {}'"'"
 fi

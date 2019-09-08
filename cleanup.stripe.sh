@@ -9,8 +9,9 @@ if ! type pay >/dev/null 2>&1; then
 fi
 
 PAY_HOST="$(pay show-host)"
-echo "(local) ${BLUE}${BOLD}Running \`remote_cleanup.stripe.sh\`...${NORMAL}"
-ssh "$PAY_HOST" '$HOME/.hiren/remote_cleanup.stripe.sh' | sed 's/^/  /'
-echo "(local) ${BLUE}${BOLD}Done.${NORMAL}"
+echo "${BLUE}${BOLD}Running \`remote_cleanup.stripe.sh\`...${NORMAL}"
+ssh -t "$PAY_HOST" '$HOME/.hiren/remote_cleanup.stripe.sh' | $DOT_FILES_DIR/bin/indent
+echo ""
+echo "${BLUE}${BOLD}Done.${NORMAL}"
 echo ""
 

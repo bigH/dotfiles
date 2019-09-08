@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd $DOT_FILES_DIR/fzf
 rm -rf target/*
 rm -f bin/fzf

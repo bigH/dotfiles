@@ -2,11 +2,11 @@
 .DS_Store
 .env_context
 .oh-my-zsh/
-pure/
 fzf/
 ripgrep/
 bat/
 fd/
+pure/
 logs/
 made-bin/
 dircolors-solarized/

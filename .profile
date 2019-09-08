@@ -15,7 +15,9 @@ fi
 source $DOT_FILES_DIR/.local.configs
 
 if [[ "$SHELL" == *'zsh' ]]; then
-  source $DOT_FILES_DIR/.shell
+  source $DOT_FILES_DIR/.shell.zsh
+elif [[ "$SHELL" == *'bash' ]]; then
+  source $DOT_FILES_DIR/.shell.bash
 fi
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
@@ -51,5 +53,7 @@ if [[ "$SHELL" == *'zsh' ]]; then
 fi
 
 if [[ "$SHELL" == *'zsh' ]]; then
-  source $DOT_FILES_DIR/.pure_setup
+  source $DOT_FILES_DIR/.zsh_prompt
+elif [[ "$SHELL" == *'bash' ]]; then
+  source $DOT_FILES_DIR/.bash_prompt
 fi
