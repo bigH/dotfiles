@@ -200,10 +200,6 @@ noremap <CR> :
 " <leader><leader> to save
 noremap <leader><leader> :w<CR>
 
-" Re-indent when pasting
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
 "}}}
 
 
@@ -334,9 +330,7 @@ func! JKModeRotate(direction)
 endfunc
 
 func! JKModeJ()
-  " TODO doesn't work
-  " normal ml
-  " match Search /\%'.line('.').'l/
+  " TODO highlight previous line when you move lines
   if g:jk_mode == 1
     try
       cnext
@@ -356,13 +350,9 @@ func! JKModeJ()
   else
     GitGutterNextHunk
   endif
-  " TODO doesn't work
-  " match Search /\%'.line('.').'l/
 endfunc
 
 func! JKModeK()
-  normal ml
-  match Search /\%'.line('.').'l/
   if g:jk_mode == 1
     try
       cprevious
@@ -412,6 +402,7 @@ func! Paste_on_off()
     set nonumber
     set norelativenumber
     set nolist
+    let g:break_here_should_reformat=0
     let g:paste_mode = 1
   elseif g:paste_mode == 1
     call IncrementalUndo()
@@ -422,6 +413,7 @@ func! Paste_on_off()
     set number
     set norelativenumber
     set list
+    let g:break_here_should_reformat=1
     let g:paste_mode = 2
   else
     call IncrementalUndo()
@@ -432,6 +424,7 @@ func! Paste_on_off()
     set number
     set relativenumber
     set list
+    let g:break_here_should_reformat=1
     let g:paste_mode = 0
   endif
   return
@@ -491,7 +484,28 @@ vnoremap <silent> <leader>d "dy"dP
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>Y "+y$
 
+" Re-indent when pasting
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+" TODO seems done, just test it
+" source ~/.hiren/vim_custom/change_and_highlight.vimrc
+
+" K is stupid - use it to un-J and re-align (turned on and off by paste
+" toggler)
+let g:break_here_should_reformat=1
+function! BreakHere()
+	s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
+	call histdel("/", -1)
+  if g:break_here_should_reformat
+    normal mk=k'k
+  endif
+endfunction
+
+nnoremap <silent> K :call BreakHere()<CR>
+
 " Prevent (mis|slow)-types of below from triggering orignal vim commands
+" NB: Later get re-mapped to using `vim-surround`
 nnoremap <silent> s <Nop>
 nnoremap <silent> S <Nop>
 
@@ -500,19 +514,12 @@ set splitbelow
 set splitright
 
 " Kill current split
-nmap <silent> ss :close<CR>
+nmap <silent> <M-x> :close<CR>
+imap <silent> <M-x> <Esc>:close<CR>
 
 " Make current split the only
-nmap <silent> SS :only<CR>
-
-" TODO ss/SS/[sS].? - closing and managing splits is painful - it'd be nice to
-" close preview and such easily
-
-" Move between windows
-nmap <silent> sh :wincmd h<CR>
-nmap <silent> sj :wincmd j<CR>
-nmap <silent> sk :wincmd k<CR>
-nmap <silent> sl :wincmd l<CR>
+nmap <silent> <M-X> :only<CR>
+imap <silent> <M-X> <Esc>:only<CR>
 
 " Move between windows using <M-H/J/K/L> keys
 nmap <silent> <M-h> :wincmd h<CR>
@@ -521,16 +528,22 @@ nmap <silent> <M-k> :wincmd k<CR>
 nmap <silent> <M-l> :wincmd l<CR>
 
 " Move between windows using <M-H/J/K/L> keys
-imap <silent> <M-h> :wincmd h<CR>
-imap <silent> <M-j> :wincmd j<CR>
-imap <silent> <M-k> :wincmd k<CR>
-imap <silent> <M-l> :wincmd l<CR>
+imap <silent> <M-h> <Esc>:wincmd h<CR>
+imap <silent> <M-j> <Esc>:wincmd j<CR>
+imap <silent> <M-k> <Esc>:wincmd k<CR>
+imap <silent> <M-l> <Esc>:wincmd l<CR>
 
-" Split Windows
-nmap <silent> SH :vsplit<CR>:wincmd h<CR>
-nmap <silent> SJ :split<CR>
-nmap <silent> SK :split<CR>:wincmd k<CR>
-nmap <silent> SL :vsplit<CR>
+" Split windows using <M-S-H/J/K/L> keys
+nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>
+nmap <silent> <M-J> :split<CR>
+nmap <silent> <M-K> :split<CR>:wincmd k<CR>
+nmap <silent> <M-L> :vsplit<CR>
+
+" Split windows using <M-S-H/J/K/L> keys
+imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>
+imap <silent> <M-J> <Esc>:split<CR>
+imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>
+imap <silent> <M-L> <Esc>:vsplit<CR>
 
 " Move Buffers
 nmap <silent> <C-H> :bfirst!<CR>
@@ -558,10 +571,6 @@ inoremap <silent> <M-k> <Esc><C-K>I
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
-" Turn of `K`
-" TODO consider setting keywordprg
-nmap <silent> K <Nop>
-
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nmap <silent> N Nzz
@@ -573,6 +582,7 @@ nmap <silent> n nzz
 " inoremap <Esc> <NOP>
 
 " Disable Ex-Mode and map Q to close buffers
+" TODO plugify
 source ~/.hiren/vim_custom/kill_buffer_not_split.vimrc
 nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
@@ -647,9 +657,13 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
+" TODO plugify
 source ~/.hiren/vim_custom/visual_star.vimrc
 source ~/.hiren/vim_custom/highlight_cursor_word.vimrc
+" TODO doesn't work
 source ~/.hiren/vim_custom/stacktrace_browser.vimrc
+" TODO not done
+" source ~/.hiren/vim_custom/change_and_highlight.vimrc
 
 "}}}
 
@@ -824,8 +838,47 @@ source ~/.hiren/vim_custom/text_objects.vimrc
 
 let g:vim_textobj_parameter_mapping = ','
 
-" -- tagbar --
+" -- vim-surround --
 
+autocmd FileType ruby let b:surround_{char2nr("-")} = "do \r end"
+autocmd FileType ruby let b:surround_{char2nr("i")} = "if \r end"
+autocmd FileType ruby let b:surround_{char2nr("u")} = "unless \r end"
+autocmd FileType ruby let b:surround_{char2nr("b")} = "begin \r end"
+
+let g:surround_no_mappings = 1
+let g:surround_indent = 1
+
+nmap ds <Plug>Dsurround
+nmap cs <Plug>Csurround
+nmap cS <Plug>CSurround
+nmap s  <Plug>Ysurround
+nmap S  <Plug>YSurround
+nmap ss <Plug>Yssurround
+nmap Ss <Plug>YSsurround
+nmap SS <Plug>YSsurround
+xmap s  <Plug>VSurround
+xmap S  <Plug>VgSurround
+
+" -- vim-commentary --
+
+xmap cm <Plug>Commentary
+nmap cm <Plug>Commentary
+omap cm <Plug>Commentary
+
+" -- splitjoin.vom --
+
+let g:splitjoin_curly_brace_padding = 0
+let g:splitjoin_trailing_comma = 1
+
+let g:splitjoin_ruby_hanging_args = 0
+let g:splitjoin_ruby_curly_braces = 0
+let g:splitjoin_ruby_options_as_arguments = 1
+
+let g:splitjoin_split_mapping = ''
+let g:splitjoin_join_mapping = ''
+
+nmap sj :SplitjoinSplit<cr>
+nmap sk :SplitjoinJoin<cr>
 
 " -- tagbar --
 
@@ -884,7 +937,7 @@ endif
 " access modifiers align with definitions
 let g:ruby_indent_access_modifier_style = 'normal'
 
-" indent blocks
+" indent blocks properly
 let g:ruby_indent_block_style = 'do'
 
 " highlight ruby operators
@@ -1037,4 +1090,11 @@ set history=1000
 
 "}}}
 
-
+" TODO Ideas:
+" - a 'verb' that behaves like `c` but basically searches for what was deleted
+"   so you can `n.` your way to changing the entire file.
+" - a surround and pre-pend type utility to turn `foo` into `x { foo }` or the
+"   'do'/'end' variant
+" - a `ub` motion like `t`, but one character before that:
+"   `|let xyz = abc` -> `cub=` will change the `let xyz`, where as `ct=`
+"   includes the ` `

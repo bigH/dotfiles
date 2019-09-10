@@ -20,7 +20,10 @@
 	default = upstream
 
 [diff]
+# use `patience` so diffs are more exact
 	algorithm = patience
+# use indentHeuristic so diffs are more pleasing
+	indentHeuristic = true
 
 # making GHC build happy...
 [url "git://github.com/ghc/packages-"]

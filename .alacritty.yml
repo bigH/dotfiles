@@ -41,7 +41,7 @@ draw_bold_text_with_bright_colors: true
 colors:
   # Default colors
   primary:
-    background: '0x32302f'
+    background: '0x272727'
     foreground: '0xd5c4a1'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
@@ -134,6 +134,16 @@ key_bindings:
   - { key: N,        mods: Command,       action: SpawnNewInstance             }
   - { key: Space,    mods: Control,       chars: "\x00"                        }
   - { key: Space,    mods: Alt,           chars: "\x1b "                       }
+  - { key: Key1,     mods: Alt,           chars: "\x1b1"                       }
+  - { key: Key2,     mods: Alt,           chars: "\x1b2"                       }
+  - { key: Key3,     mods: Alt,           chars: "\x1b3"                       }
+  - { key: Key4,     mods: Alt,           chars: "\x1b4"                       }
+  - { key: Key5,     mods: Alt,           chars: "\x1b5"                       }
+  - { key: Key6,     mods: Alt,           chars: "\x1b6"                       }
+  - { key: Key7,     mods: Alt,           chars: "\x1b7"                       }
+  - { key: Key8,     mods: Alt,           chars: "\x1b8"                       }
+  - { key: Key9,     mods: Alt,           chars: "\x1b9"                       }
+  - { key: Key0,     mods: Alt,           chars: "\x1b0"                       }
   - { key: A,        mods: Alt,           chars: "\x1ba"                       }
   - { key: B,        mods: Alt,           chars: "\x1bb"                       }
   - { key: C,        mods: Alt,           chars: "\x1bc"                       }
@@ -160,6 +170,7 @@ key_bindings:
   - { key: X,        mods: Alt,           chars: "\x1bx"                       }
   - { key: Y,        mods: Alt,           chars: "\x1by"                       }
   - { key: Z,        mods: Alt,           chars: "\x1bz"                       }
+  - { key: Period,   mods: Alt,           chars: "\x1b."                       }
 
 
 mouse_bindings:

@@ -7,11 +7,16 @@ function devbox_echo() {
 echo ""
 
 unlink $HOME/.rgignore
-unlink $HOME/.pryrc
+unlink $HOME/.ackrc
+unlink $HOME/.inputrc
 unlink $HOME/.vimrc
 
 rm -f $HOME/.vim/UltiSnips
 rm -f $HOME/.vim
+
+devbox_echo "${BLUE}${BOLD}Restoring old \`.pryrc\`${NORMAL}"; echo ""
+
+mv -f $HOME/.pryrc-bak $HOME/.pryrc
 
 devbox_echo "${BLUE}${BOLD}Removing \`.hiren\`${NORMAL}"; echo ""
 

@@ -87,10 +87,20 @@ hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 }
 
-# join lines ito one
+# join lines into one, with provided separator character
 join-lines() {
-  SEP=${1:- }
-  paste -s -d"$SEP" -
+  SEP="$1"
+
+  # length includes new-line so off-by-one
+  LENGTH_OF_SEP="$(echo "$SEP" | wc -c)"
+
+  if [ $LENGTH_OF_SEP -eq 1 ]; then
+    paste -s -d' ' -
+  elif [ $LENGTH_OF_SEP -eq 2 ]; then
+    paste -s -d"$SEP" -
+  else
+    paste -s -d"%" - | sed "s/%/$SEP/g"
+  fi
 }
 
 # `which` with `ls -l $(which)`

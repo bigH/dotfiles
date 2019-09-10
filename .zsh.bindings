@@ -1,17 +1,35 @@
 #!/usr/bin/env zsh
 
+# expand _only_ aliases that I want to expand
+# function expand-alias() {
+#   zle _expand_alias
+#   zle self-insert
+# }
+# zle -N expand-alias
+# bindkey -M main '^i' expand-alias
+
 # Ctrl-P - select file to paste
 bindkey '^P' fzf-file-widget
 # Ctrl-N - select directory to paste
 bindkey '^N' fzf-cd-widget
 
+# Ctrl-H - find commit SHA(s)
+fzf-gh-widget() { local result=$(gh | join-lines); LBUFFER+=$result }
+zle -N fzf-gh-widget
+bindkey '^H' fzf-gh-widget
+
+# Alt-H - commit SHA range
+fzf-gh-widget() { local result=$(gh | tac | join-lines '..'); LBUFFER+=$result }
+zle -N fzf-gh-widget
+bindkey '^H' fzf-gh-widget
+
 # Alt-O - open files differing from particular commit
-fzf-gfi-gh-widget() { local result=$(gfi $(gh) | join-lines); zle reset-prompt; LBUFFER+=$result }
+fzf-gfi-gh-widget() { local result=$(gfi $(gh) | join-lines); LBUFFER+=$result }
 zle -N fzf-gfi-gh-widget
 bindkey '^[o' fzf-gfi-gh-widget
 
 # Ctrl-O - open files differing from merge-base
-fzf-gfi-widget() { local result=$(gfi | join-lines); zle reset-prompt; LBUFFER+=$result }
+fzf-gfi-widget() { local result=$(gfi | join-lines); LBUFFER+=$result }
 zle -N fzf-gfi-widget
 bindkey '^O' fzf-gfi-widget
 
