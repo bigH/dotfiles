@@ -488,8 +488,9 @@ noremap <silent> <leader>Y "+y$
 nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
-" TODO seems done, just test it
-" source ~/.hiren/vim_custom/change_and_highlight.vimrc
+" Re-indent when pasting
+vnoremap p p=']<C-o>
+vnoremap P P=']<C-o>
 
 " K is stupid - use it to un-J and re-align (turned on and off by paste
 " toggler)
