@@ -119,9 +119,6 @@ set cursorline
 
 "{{{ Text Formatting
 
-" show whitespace? list/nolist
-set nolist
-
 " 2 space 'tabs'
 set tabstop=2
 
@@ -135,7 +132,10 @@ set expandtab
 set nosmarttab
 
 " show tabs if present
+" TODO this doesn't work????? in fact doing `:set list` doesn't work
+" interactively??? WTF!?!?!?
 set list
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
 " backspace should eat all
 set backspace=indent,eol,start

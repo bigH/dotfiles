@@ -5355,6 +5355,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0xd-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>11</integer>
+			<key>Text</key>
+			<string>0x0d</string>
+		</dict>
 		<key>0xf700-0x300000</key>
 		<dict>
 			<key>Action</key>
@@ -5548,9 +5555,9 @@
 	<key>NSWindow Frame com.apple.typography_panel_Monaco</key>
 	<string>296 562 260 56 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 515 745 502 0 0 1680 1027 </string>
+	<string>0 515 745 502 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 113 1440 635 0 0 1680 1027 </string>
+	<string>0 75 1440 673 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>-1440 -241 1440 1775 -1440 -1003 1440 2537 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -6448,9 +6455,9 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {1680, 1050}}</string>
+		<string>{{-1440, -1003}, {1440, 2560}}</string>
 		<key>topLeft</key>
-		<string>{268, 757}</string>
+		<string>{-1171, -408}</string>
 	</dict>
 	<key>NoSyncHaveUsedCopyMode</key>
 	<true/>
@@ -6459,7 +6466,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>72F91B71-F9AF-4958-BDDA-0B6EA711F8BE</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>33</integer>
+	<integer>39</integer>
 	<key>NoSyncNeverAskAboutSettingAlternateMouseScroll</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
@@ -7285,7 +7292,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-09-10T19:48:19Z</date>
+	<date>2019-09-11T20:20:22Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>

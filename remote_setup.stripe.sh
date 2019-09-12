@@ -72,6 +72,7 @@ chmod +x $DOT_FILES_DIR/bin/*
 chmod +x $DOT_FILES_DIR/*-bin/*
 echo ""
 
+# TODO make this work
 devbox_echo "${BLUE}${BOLD}Setup \`$DOT_FILES_DIR/.pryrc\`${NORMAL}"; echo ""
 if ! grep "begin .hiren generated" .pryrc >/dev/null 2>&1; then
   cp -f $HOME/.pryrc $HOME/.pryrc-bak
@@ -85,6 +86,7 @@ if ! grep "begin .hiren generated" .pryrc >/dev/null 2>&1; then
   } >> $HOME/.pryrc
 fi
 
+# TODO make this work
 devbox_echo "${BLUE}${BOLD}Setup \`$DOT_FILES_DIR/.profile\`${NORMAL}"; echo ""
 if ! grep "DOT_FILES_DIR" .profile >/dev/null 2>&1; then
   cp -f $HOME/.profile $HOME/.profile-bak

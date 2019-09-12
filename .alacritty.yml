@@ -95,7 +95,7 @@ key_bindings:
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
   - { key: H,        mods: Command,       chars: "H"                           }
   - { key: L,        mods: Command,       chars: "L"                           }
-  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
+  - { key: Return,   mods: Command|Shift, action: ToggleFullscreen             }
   - { key: Key0,     mods: Command,       action: ResetFontSize                }
   - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
   - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
@@ -207,8 +207,7 @@ key_bindings:
   - { key: Key7,     mods: Command,       chars: "\x1b7\x1b. "                 }
   - { key: Key8,     mods: Command,       chars: "\x1b8\x1b. "                 }
   - { key: Key9,     mods: Command,       chars: "\x1b9\x1b. "                 }
-  - { key: Key0,     mods: Command,       chars: "\x1b0\x1b. "                 }
-    # TODO map Cmd-KeyX as above to the same character combi" nations in iTerm
+    # TODO map Cmd-KeyX as above to the same character combinations in iTerm
 
 mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
