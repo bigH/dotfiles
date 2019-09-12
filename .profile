@@ -29,6 +29,11 @@ else
 fi
 
 source $DOT_FILES_DIR/.aliases
+if [ ! -z "$DOT_FILES_ENV" ]; then
+  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.aliases" ]; then
+    source $DOT_FILES_DIR/.$DOT_FILES_ENV.aliases
+  fi
+fi
 
 source $DOT_FILES_DIR/.functions
 

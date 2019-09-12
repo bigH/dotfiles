@@ -93,6 +93,8 @@ echo ""
 
 echo ""
 
+# TODO change this setup to append to existing file (and create an empty one if it exists)
+# TODO what happens if the file's changed after you've patched it
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
 link_if_possible $DOT_FILES_DIR/.zshrc $HOME/.zshrc
 link_if_possible $DOT_FILES_DIR/.oh-my-zsh $HOME/.oh-my-zsh

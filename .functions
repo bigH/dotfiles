@@ -108,20 +108,47 @@ wh() {
   if [ -z "$1" ]; then
     echo 'ERROR: specify the command.'
   else
-    echo "${MAGENTA}which $1${NORMAL}:"
-    which "$1" | indent
-    PATH_TO_COMMAND="$(which "$1")"
-    if [ -L "$PATH_TO_COMMAND" ]; then
+    if [ -L "$1" ]; then
+      echo "${CYAN} -- found a symlink -- ${NORMAL}"
       if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "${GRAY}(using \`readlink-f\` to support OS X)${NORMAL}"
       fi
-      echo "${MAGENTA}readlink -f \`which $1\`${NORMAL}:"
-      readlink-f "$PATH_TO_COMMAND" | indent
-    elif [ -f "$PATH_TO_COMMAND" ]; then
-      echo "${MAGENTA}ls -l \`which $1\`${NORMAL}:"
-      ls -l "$PATH_TO_COMMAND" | indent
+      echo "${MAGENTA}readlink -f '$1'${NORMAL}:"
+      echo ""
+      PATH_TO_FILE="$(readlink-f "$1")"
+      echo "$PATH_TO_FILE" | indent
+      echo ""
+      wh "$PATH_TO_FILE"
+    elif [ -f "$1" ]; then
+      echo "${CYAN} -- found a file -- ${NORMAL}"
+      echo "${MAGENTA}ls -l '$1'${NORMAL}:"
+      echo ""
+      ls -l "$1" | indent
+    elif [ -d "$1" ]; then
+      echo "${CYAN} -- found a directory -- ${NORMAL}"
+      echo "${MAGENTA}ls -ld '$1'${NORMAL}:"
+      echo ""
+      ls -ld "$1" | indent
+      echo ""
+      echo "${GRAY}(directory listing)${NORMAL}"
+      echo "${MAGENTA}ls '$1'${NORMAL}:"
+      echo ""
+      ls "$1"
+    else
+      echo "${MAGENTA}which '$1'${NORMAL}:"
+      which "$1" | indent
+      PATH_TO_COMMAND="$(which "$1")"
+      if [ -e "$PATH_TO_COMMAND" ]; then
+        echo ""
+        wh "$PATH_TO_COMMAND"
+      fi
     fi
   fi
+}
+
+# TODO re-sources any new `.` files
+re-source() {
+  echo "TODO"
 }
 
 # status represents if `git` commands will work

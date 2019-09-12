@@ -13,6 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
 
+" -- GENERAL --
 " status line and other edgy niceties
 Plugin 'vim-airline/vim-airline'
 
@@ -46,9 +47,15 @@ Plugin 'honza/vim-snippets'
 " linting integration
 Plugin 'dense-analysis/ale'
 
+" -- LANGUAGES --
+" ruby language pack
 " motions `[` and `]` support ruby; `[ai][mM]` for methods and classes
 Plugin 'vim-ruby/vim-ruby'
+" puppet language pack
+" TODO
+Plugin 'rodjek/vim-puppet'
 
+" -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 Plugin 'tpope/vim-endwise'
 

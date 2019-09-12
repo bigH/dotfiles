@@ -149,7 +149,10 @@ set shiftround
 "{{{ Highlighting
 
 highlight ExtraWhitespace ctermbg=red guibg=red
+highlight Comment cterm=italic gui=italic
+
 au ColorScheme * highlight ExtraWhitespace guibg=red
+
 au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
@@ -444,23 +447,23 @@ if has('nvim')
   " Defaults for certain files
   augroup TerminalSettings
     " Terminal Defaults
-    au TermOpen * setlocal nonumber
-    au TermOpen * setlocal norelativenumber
-    au TermOpen * setlocal scrolloff=0
-    au TermOpen * startinsert
+    au TermOpen * if &buftype == 'terminal' |
+          \   setlocal nonumber |
+          \   setlocal norelativenumber |
+          \   setlocal scrolloff=0 |
+          \   startinsert |
+          \   tnoremap <Esc> <C-\><C-n> |
+          \   tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>i |
+          \   tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>i |
+          \   tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>i |
+          \   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
+          \ endif
 
     " Auto-Close
     au TermClose * q
 
     " Handle <Esc>
-    au TermOpen * tnoremap <Esc> <C-\><C-n>
     au FileType fzf tunmap <Esc>
-
-    " Window Switching
-    au TermOpen * tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>
-    au TermOpen * tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>
-    au TermOpen * tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>
-    au TermOpen * tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>
   augroup END
 
 endif
@@ -488,7 +491,7 @@ noremap <silent> <leader>Y "+y$
 nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
-" Re-indent when pasting
+" Re-indent when pasting in visual mode
 vnoremap p p=']<C-o>
 vnoremap P P=']<C-o>
 
@@ -529,10 +532,10 @@ nmap <silent> <M-k> :wincmd k<CR>
 nmap <silent> <M-l> :wincmd l<CR>
 
 " Move between windows using <M-H/J/K/L> keys
-imap <silent> <M-h> <Esc>:wincmd h<CR>
-imap <silent> <M-j> <Esc>:wincmd j<CR>
-imap <silent> <M-k> <Esc>:wincmd k<CR>
-imap <silent> <M-l> <Esc>:wincmd l<CR>
+imap <silent> <M-h> <Esc>:wincmd h<CR>i
+imap <silent> <M-j> <Esc>:wincmd j<CR>i
+imap <silent> <M-k> <Esc>:wincmd k<CR>i
+imap <silent> <M-l> <Esc>:wincmd l<CR>i
 
 " Split windows using <M-S-H/J/K/L> keys
 nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>
@@ -541,10 +544,10 @@ nmap <silent> <M-K> :split<CR>:wincmd k<CR>
 nmap <silent> <M-L> :vsplit<CR>
 
 " Split windows using <M-S-H/J/K/L> keys
-imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>
-imap <silent> <M-J> <Esc>:split<CR>
-imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>
-imap <silent> <M-L> <Esc>:vsplit<CR>
+imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>i
+imap <silent> <M-J> <Esc>:split<CR>i
+imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>i
+imap <silent> <M-L> <Esc>:vsplit<CR>i
 
 " Move Buffers
 nmap <silent> <C-H> :bfirst!<CR>
@@ -587,36 +590,41 @@ nmap <silent> n nzz
 source ~/.hiren/vim_custom/kill_buffer_not_split.vimrc
 nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
-" Avoid deleting text while inserting that cannot be recovered
-inoremap <silent> <c-u> <c-g>u<c-u>
-inoremap <silent> <c-w> <c-g>u<c-w>
+" " Avoid deleting text while inserting that cannot be recovered
+" inoremap <silent> <c-u> <c-g>u<c-u>
+" inoremap <silent> <c-w> <c-g>u<c-w>
 
 " Make undo work more incrementally
 func! IncrementalUndo()
-  inoremap . .<C-g>u
-  inoremap ! !<C-g>u
-  inoremap ? ?<C-g>u
-  inoremap : :<C-g>u
-  inoremap ; ;<C-g>u
-  inoremap , ,<C-g>u
+  " inoremap . .<C-g>u
+  " inoremap ! !<C-g>u
+  " inoremap ? ?<C-g>u
+  " inoremap : :<C-g>u
+  " inoremap ; ;<C-g>u
+  " inoremap , ,<C-g>u
 endfunc
 
 func! NoIncrementalUndo()
-  iunmap .
-  iunmap !
-  iunmap ?
-  iunmap :
-  iunmap ;
-  iunmap ,
+  " iunmap .
+  " iunmap !
+  " iunmap ?
+  " iunmap :
+  " iunmap ;
+  " iunmap ,
 endfunc
 
 call IncrementalUndo()
 
-" -- pop-up-menu bindings
-" inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
-" inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
-" inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
-" inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
+" -- pop-up-menu <CR> to accept option
+function! PopUpAccept()
+  if pumvisible()
+    return "\<C-y>"
+  else
+    return "\<CR>"
+  endif
+endfunction
+
+inoremap <expr> <CR> PopUpAccept()
 
 " -- `macOS` emulation
 " Map <M-Backspace> to delte previous word
@@ -662,9 +670,9 @@ command! WS w !sudo tee %
 source ~/.hiren/vim_custom/visual_star.vimrc
 source ~/.hiren/vim_custom/highlight_cursor_word.vimrc
 " TODO doesn't work
-source ~/.hiren/vim_custom/stacktrace_browser.vimrc
+" source ~/.hiren/vim_custom/stacktrace_browser.vimrc
 " TODO not done
-" source ~/.hiren/vim_custom/change_and_highlight.vimrc
+source ~/.hiren/vim_custom/change_repeat.vimrc
 
 "}}}
 
@@ -731,12 +739,13 @@ nmap <C-\> :vsplit<CR><Plug>(fzf_tags)
 " -- fzf --
 
 " Customize fzf to use tabs for <Enter>
+" TODO many of these don't work
 let g:fzf_action = {
   \ 'ctrl-m': 'e!',
   \ 'ctrl-o': 'e!',
   \ 'ctrl-t': 'tabedit',
-  \ 'ctrl-h': 'botright split',
-  \ 'ctrl-v': 'vertical botright split' }
+  \ 'ctrl-h': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " Open old-files
 command! RecentFiles call fzf#run({
@@ -745,15 +754,39 @@ command! RecentFiles call fzf#run({
       \  'options': '-m -x +s',
       \  'down':    '40%'})
 
+" TODO make this work
 func! FzfFindInDirectoryfunc()
   wincmd l
   call fzf#vim#grep(
         \   'rg --column --line-number --no-heading --color=always --smart-case '.
-        \   shellescape(<q-args>).' '.
-        \   substitute(g:NERDTreeFileNode.GetSelected().path.str(), getcwd() . "/" , "", ""),
+        \   shellescape(<q-args>).' ',
         \   0,
         \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
 endfunc
+
+" Augmenting Ag command using fzf#vim#with_preview function
+"   * fzf#vim#with_preview([[options], [preview window], [toggle keys...]])
+"     * For syntax-highlighting, Ruby and any of the following tools are required:
+"       - Bat: https://github.com/sharkdp/bat
+"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+"       - CodeRay: http://coderay.rubychan.de/
+"       - Rouge: https://github.com/jneen/rouge
+"
+"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+"   :Ag! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
 command! FzfFindInDirectory call FzfFindInDirectoryFunction()
 
@@ -776,15 +809,6 @@ nmap <silent> <leader>o :RecentFiles<CR>
 
 " Map `\O` to FZF git file lister
 nmap <silent> <leader>O :GFiles?<CR>
-
-" Augmenting Rg command using fzf#vim#with_preview function
-"   :Rg  - Start fzf with hidden preview window that can be enabled with "?" key
-"   :Rg! - Start fzf in fullscreen and display the preview window above
-command! -bang -nargs=* Rg
-  \ call fzf#vim#rg(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
 
 " Set history directory
 let g:fzf_history_dir = '~/.local/share/fzf-history'
@@ -862,6 +886,8 @@ xmap S  <Plug>VgSurround
 
 " -- vim-commentary --
 
+" TODO I don't like this because in visual mode, `c` now waits to see if `m`
+" is provided
 xmap cm <Plug>Commentary
 nmap cm <Plug>Commentary
 omap cm <Plug>Commentary

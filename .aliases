@@ -1,8 +1,15 @@
+#!/usr/bin/env bash
+
+# TODO not sure if this is a good idea?
+# make it so everything works properly when switching shells
+# bash='SHELL=/bin/bash bash'
+# zsh='SHELL=/bin/zsh bash'
+
 # ls override from oh-my-zsh
 if type gls >/dev/null 2>&1; then
-  alias ls='gls -p --color=always -G --group-directories-first'
+  alias ls='gls -p --color=auto -G --group-directories-first'
 else
-  alias ls='ls -p --color=always -G --group-directories-first'
+  alias ls='ls -p --color=auto -G --group-directories-first'
 fi
 
 # manipulate files verbosely (print log of what happened)
@@ -27,6 +34,9 @@ fi
 
 # chrome memory
 alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d"+" - | bc'
+
+# chrome memory
+alias jh='cd $DOT_FILES_DIR'
 
 # rg - better colors
 alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"

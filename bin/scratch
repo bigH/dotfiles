@@ -5,33 +5,44 @@ TYPE="${1:-pry}"
 case $TYPE in
   pry)
     TYPE='rb'
-    PROGRAM='pry'
+    POTENTIAL_PROGRAM='pry'
     ;;
   pay)
     TYPE='rb'
-    PROGRAM='pay console'
+    POTENTIAL_PROGRAM='pay console'
     ;;
   ssh)
     TYPE='sh'
-    PROGRAM='pay ssh'
+    POTENTIAL_PROGRAM='pay ssh'
     ;;
   devbox)
     TYPE='sh'
-    PROGRAM='pay ssh'
+    POTENTIAL_PROGRAM='pay ssh'
     ;;
 esac
 
-NAME=$(echo "$PROGRAM.$(date +%s).$TYPE" | tr ' ' '_')
-PATTERN=$(echo "$PROGRAM.*.$TYPE" | tr ' ' '_')
-FILE_PATH="$DOT_FILES_DIR/.vim/scratch/$NAME"
-OLD_FILE_PATH="$(find $DOT_FILES_DIR/.vim/scratch -name "$PATTERN" | sort -nr | head -1)"
+case $TYPE in
+  rb)
+    HEADER='#!/usr/bin/env ruby'
+    ;;
+  sh)
+    HEADER='#!/usr/bin/env bash'
+    ;;
+esac
 
-if [ -f "$OLD_FILE_PATH" ]; then
-  echo "Found '$OLD_FILE_PATH', Creating '$FILE_PATH'..."
-  cp "$OLD_FILE_PATH" "$FILE_PATH"
+if [ -z "$2" ]; then
+  PROGRAM="$POTENTIAL_PROGRAM"
 else
-  echo "No old file found. Creating '$FILE_PATH'..."
-  touch "$FILE_PATH"
+  PROGRAM="$2"
 fi
 
-nvim -u "$DOT_FILES_DIR/.scratch.vimrc" "$FILE_PATH" "+vsplit | terminal $PROGRAM" "+wincmd h"
+DATE_TIME="$(date +"%Y%m%d-%H%M%S")"
+FILE_NAME=$(echo "scratch.$DATE_TIME.$TYPE" | tr ' ' '_')
+FILE_PATH="$DOT_FILES_DIR/.vim/scratch/$FILE_NAME"
+
+echo "Creating '$FILE_PATH'..."
+touch "$FILE_PATH"
+echo "$HEADER" >> "$FILE_PATH"
+echo "" >> "$FILE_PATH"
+
+nvim -u "$DOT_FILES_DIR/.scratch.vimrc" "$FILE_PATH" "+vsplit | terminal $PROGRAM" "+wincmd h" "+cd $DOT_FILES_DIR/.vim/scratch"
