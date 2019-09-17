@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Set Google Chrome history location
+export GOOGLE_CHROME_HISTORY_LOCATION="$HOME/Library/Application Support/Google/Chrome/Profile 1/History"
 # Set `neovim` as EDITOR
 if [[ -f "/usr/local/bin/nvim" ]]; then
   export EDITOR=/usr/local/bin/nvim

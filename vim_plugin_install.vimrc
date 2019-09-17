@@ -83,23 +83,26 @@ Plugin 'kana/vim-textobj-user'
 " adds motion to select indent level (`ii`) or do so ignoring `\n` (`ai`)
 Plugin 'kana/vim-textobj-indent'
 
-" adds `ie` and `ae` to select entire buffer
+" adds `ie` or `ae` to select entire buffer
 Plugin 'kana/vim-textobj-entire'
 
 " adds `al` and `il` to select a line with and without indent (respectively)
 Plugin 'kana/vim-textobj-line'
 
 " adds a `i,` and `a,` motion for parameters (works on kwargs)
-Plugin 'sgur/vim-textobj-parameter'
+Plugin 'b4winckler/vim-angry'
+
+" adds `%`, `[aigz[]]%`
+Plugin 'andymass/vim-matchup'
+
+" adds a `iv` and `av` motion for variable segments (camel or snake case)
+Plugin 'Julian/vim-textobj-variable-segment'
 
 " adds a `iq` and `aq` motion to cover `[ai][`'"]`
 Plugin 'beloglazov/vim-textobj-quotes'
 
 " adds highlighting to indicate indent level
 Plugin 'nathanaelkane/vim-indent-guides'
-
-" `%` cycles through linked control structure keywords (`if`/`elsif`/`else`)
-Plugin 'adelarsq/vim-matchit'
 
 " `sj` to join and `sk` to split - supports various ruby awesomeness
 Plugin 'AndrewRadev/splitjoin.vim'
@@ -108,13 +111,13 @@ Plugin 'AndrewRadev/splitjoin.vim'
 " items are exchanged
 Plugin 'tommcdo/vim-exchange'
 
-" `g<l|L><motion><character|/patter>` to align by padding left (`l`) or right
+" `g<l|L><motion><character|/pattern>` to align by padding left (`l`) or right
 " (`L`) of the
 Plugin 'tommcdo/vim-lion'
 
 " nvim-only plugins
 if has('nvim')
-  " TODO I don't use this yet
+  " For LSP support
   Plugin 'autozimu/LanguageClient-neovim'
 endif
 

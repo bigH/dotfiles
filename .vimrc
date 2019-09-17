@@ -667,27 +667,29 @@ command! WS w !sudo tee %
 "{{{ Custom Personal Stuff
 
 " TODO plugify
-source ~/.hiren/vim_custom/visual_star.vimrc
-source ~/.hiren/vim_custom/highlight_cursor_word.vimrc
-" TODO doesn't work
-" source ~/.hiren/vim_custom/stacktrace_browser.vimrc
+execute "source" $DOT_FILES_DIR . "/vim_custom/visual_star.vimrc"
+execute "source" $DOT_FILES_DIR . "/vim_custom/highlight_cursor_word.vimrc"
+execute "source" $DOT_FILES_DIR . "/vim_custom/duplicate.vimrc"
+
 " TODO not done
-source ~/.hiren/vim_custom/change_repeat.vimrc
+execute "source" $DOT_FILES_DIR . "/vim_custom/change_repeat.vimrc"
+
+" TODO doesn't work
+" execute "source" $DOT_FILES_DIR . "/vim_custom/stacktrace_browser.vimrc"
 
 "}}}
 
 
 "{{{ Vundle
 
-source ~/.hiren/vim_plugin_install.vimrc
+execute "source" $DOT_FILES_DIR . "/vim_plugin_install.vimrc"
 
 "}}}
 
 
 "{{{ Vundle
 
-" TODO make this use `$DOT_FILE_ENV`
-" source ~/.hiren/.stripe.vimrc
+execute "source" $DOT_FILES_DIR . "/.stripe.vimrc"
 
 "}}}
 
@@ -861,7 +863,20 @@ let g:airline#extensions#tabline#tabs_label = ''
 
 source ~/.hiren/vim_custom/text_objects.vimrc
 
-let g:vim_textobj_parameter_mapping = ','
+" -- vim-angry [textobj] --
+
+let g:angry_disable_maps = 1
+
+vmap <silent> a, <Plug>AngryOuterPrefix
+omap <silent> a, <Plug>AngryOuterPrefix
+vmap <silent> i, <Plug>AngryInnerPrefix
+omap <silent> i, <Plug>AngryInnerPrefix
+
+" TODO keep or not
+" vmap <silent> aA <Plug>AngryOuterSuffix
+" omap <silent> aA <Plug>AngryOuterSuffix
+" vmap <silent> iA <Plug>AngryInnerSuffix
+" omap <silent> iA <Plug>AngryInnerSuffix
 
 " -- vim-surround --
 
@@ -892,7 +907,7 @@ xmap cm <Plug>Commentary
 nmap cm <Plug>Commentary
 omap cm <Plug>Commentary
 
-" -- splitjoin.vom --
+" -- splitjoin.vim --
 
 let g:splitjoin_curly_brace_padding = 0
 let g:splitjoin_trailing_comma = 1
@@ -901,6 +916,7 @@ let g:splitjoin_ruby_hanging_args = 0
 let g:splitjoin_ruby_curly_braces = 0
 let g:splitjoin_ruby_options_as_arguments = 1
 
+" `splitjoin` docs say to do this. nbd.
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
 
@@ -1125,3 +1141,4 @@ set history=1000
 " - a `ub` motion like `t`, but one character before that:
 "   `|let xyz = abc` -> `cub=` will change the `let xyz`, where as `ct=`
 "   includes the ` `
+" - a mapping for <C-A/X> that moves to the nearest number and changes it

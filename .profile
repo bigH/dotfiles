@@ -6,19 +6,7 @@ export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
 source $DOT_FILES_DIR/.colors
 
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.profile" ]; then
-    source $DOT_FILES_DIR/.$DOT_FILES_ENV.profile
-  fi
-fi
-
 source $DOT_FILES_DIR/.local.configs
-
-if [[ "$SHELL" == *'zsh' ]]; then
-  source $DOT_FILES_DIR/.shell.zsh
-elif [[ "$SHELL" == *'bash' ]]; then
-  source $DOT_FILES_DIR/.shell.bash
-fi
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.configs" ]; then
@@ -59,6 +47,8 @@ fi
 
 if [[ "$SHELL" == *'zsh' ]]; then
   source $DOT_FILES_DIR/.zsh_prompt
+  source $DOT_FILES_DIR/.shell.zsh
 elif [[ "$SHELL" == *'bash' ]]; then
   source $DOT_FILES_DIR/.bash_prompt
+  source $DOT_FILES_DIR/.shell.bash
 fi

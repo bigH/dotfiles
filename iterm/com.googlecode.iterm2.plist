@@ -5362,6 +5362,13 @@
 			<key>Text</key>
 			<string>0x0d</string>
 		</dict>
+		<key>0xd-0x120000</key>
+		<dict>
+			<key>Action</key>
+			<integer>23</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
 		<key>0xf700-0x300000</key>
 		<dict>
 			<key>Action</key>
@@ -5546,6 +5553,8 @@
 	<string>0 153 224 280 0 0 1680 1027 </string>
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>3168 272 705 280 1440 102 2560 1440 </string>
+	<key>NSWindow Frame ProfilesPanel</key>
+	<string>945 157 735 382 0 0 1680 1050 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 494 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
@@ -5555,11 +5564,11 @@
 	<key>NSWindow Frame com.apple.typography_panel_Monaco</key>
 	<string>296 562 260 56 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 515 745 502 0 0 1680 1050 </string>
+	<string>0 74 1080 953 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 75 1440 673 0 0 1680 1027 </string>
+	<string>0 75 1080 673 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>-1440 -241 1440 1775 -1440 -1003 1440 2537 </string>
+	<string>0 548 745 502 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>0 97 1440 930 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -6466,7 +6475,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>72F91B71-F9AF-4958-BDDA-0B6EA711F8BE</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>39</integer>
+	<integer>40</integer>
 	<key>NoSyncNeverAskAboutSettingAlternateMouseScroll</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
@@ -7219,6 +7228,7 @@
 	</array>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>./proto/payserver/events/ledger/monster</string>
 		<string>APIR</string>
 		<string>insert</string>
 		<string>smart-case</string>
@@ -7228,7 +7238,6 @@
 		<string>Initialize</string>
 		<string>Inti</string>
 		<string>sinatra</string>
-		<string>sinart</string>
 	</array>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>559156129.76861</real>
@@ -7292,7 +7301,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-09-11T20:20:22Z</date>
+	<date>2019-09-12T21:15:28Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>

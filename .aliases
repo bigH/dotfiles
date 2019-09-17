@@ -74,6 +74,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # git push
   alias gs='g st'
+  alias gsf='g st | cut -c4-'
+  alias gst='ls -t $(g st | cut -c4-)'
+  alias gstr='ls -tr $(g st | cut -c4-)'
 
   # git show
   alias gsh='g show'
@@ -99,7 +102,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # git diff
   alias gd='g diff'
+  alias gdm='g diff $(g merge-base HEAD origin/master)'
   alias gnd='gn diff'
+  alias gndm='gn diff $(g merge-base HEAD origin/master)'
   alias gds='g diff --staged'
   alias gnds='gn diff --staged'
 fi
