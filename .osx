@@ -168,11 +168,11 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
 # Use Cmd-H & Cmd-L to switch tabs in chrome
-defaults write -app "Google Chrome" NSUserKeyEquivalents '{
-"Select Previous Tab"="@h";
-"Select Next Tab"="@l";
-"Open Location..."="@k";
-}'
+# defaults write -app "Google Chrome" NSUserKeyEquivalents '{
+#   "Select Previous Tab"="@h";
+#   "Select Next Tab"="@l";
+#   "Open Location..."="@k";
+# }'
 
 ###############################################################################
 # Screen                                                                      #

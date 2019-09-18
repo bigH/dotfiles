@@ -70,7 +70,7 @@ latest_masters() {
   PS_DIR="$HOME/stripe/pay-server"
   (
     git fetch origin --quiet
-    REVS=$(git rev-list -25 origin/master)
+    REVS=$(git rev-list -45 origin/master)
     while read -r SHA; do
       build_status $SHA $PS
     done <<< "$REVS"
