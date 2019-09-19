@@ -69,7 +69,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gca="g commit -a"
   alias gcm="g commit -m"
   alias gcam="g commit -am"
-  alias gcamend="g commit --amend --no-edit"
+  alias gcamend="g commit --amend"
   alias gcane="g commit --amend --no-edit"
 
   # git push
@@ -107,4 +107,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gndm='gn diff $(g merge-base HEAD origin/master)'
   alias gds='g diff --staged'
   alias gnds='gn diff --staged'
+
+  # git vim/vim-all
+  alias gv='g vim'
+  alias gva='g vim-all'
 fi
