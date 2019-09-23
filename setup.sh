@@ -28,8 +28,9 @@ mkdir_if_not_exists $DOT_FILES_DIR/.vim/undodir
 mkdir_if_not_exists $DOT_FILES_DIR/.vim/scratch
 echo ""
 
-printf "${BLUE}${BOLD}Install \`bundle/Vundle\`${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/VundleVim/Vundle.vim.git $DOT_FILES_DIR/.vim/bundle/Vundle.vim"
+printf "${BLUE}${BOLD}Download \`vim-plug\`${NORMAL}"
+print_symbol_for_status "nvim" "curl -fLo $DOT_FILES_DIR/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+print_symbol_for_status "vim" "curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 echo ""
 echo ""
 
@@ -143,7 +144,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
-zsh -c 'nvim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall'
+if type nvim >/dev/null 2>&1; then
+  zsh -c 'nvim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall'
+else
+  zsh -c 'vim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall'
+fi
 echo ""
 
 echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"

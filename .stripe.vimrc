@@ -62,7 +62,7 @@ endif
 
 if has('nvim')
   if g:is_pay_server == 1
-    " let g:LanguageClient_serverCommands.ruby = ['pay', 'exec', 'scripts/bin/typecheck', '--lsp']
+    let g:LanguageClient_serverCommands.ruby = ['pay', 'exec', 'scripts/bin/typecheck', '--lsp']
   endif
 
   let g:LanguageClient_diagnosticsDisplay = {
@@ -92,14 +92,14 @@ if has('nvim')
         \     },
         \ }
 
-  " augroup LanguageClient
-  "   au!
+  augroup LanguageClient
+    au!
 
-  "   au filetype ruby nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-  "   au filetype ruby nnoremap <silent> <C-Space> :call LanguageClient#textDocument_contextMenu()<CR>
-  "   au filetype ruby nnoremap <silent> <leader>t :call LanguageClient#textDocument_definition()<CR>
-  "   au filetype ruby nnoremap <silent> <leader>r :call LanguageClient#textDocument_references()<CR> :lopen<CR>
-  " augroup END
+    au filetype ruby nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    au filetype ruby nnoremap <silent> <C-Space> :call LanguageClient#textDocument_contextMenu()<CR>
+    au filetype ruby nnoremap <silent> <F5> :call LanguageClient#textDocument_definition()<CR>
+    au filetype ruby nnoremap <silent> <F6> :call LanguageClient#textDocument_references()<CR> :lopen<CR>
+  augroup END
 endif
 
 "}}}

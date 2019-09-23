@@ -3,6 +3,9 @@
 set fileencodings=utf-8
 set encoding=utf-8
 
+" Enable hidden buffers
+set hidden
+
 " Necesary  for lots of cool vim things
 set nocompatible
 
@@ -113,6 +116,10 @@ set updatetime=200
 
 " Highlight cursor line
 set cursorline
+
+" File-type specific stuff on
+filetype on
+filetype plugin on
 
 "}}}
 
@@ -506,6 +513,7 @@ function! BreakHere()
   endif
 endfunction
 
+" TODO figure out how to use LSP to give hover info instead
 nnoremap <silent> K :call BreakHere()<CR>
 
 " Prevent (mis|slow)-types of below from triggering orignal vim commands
@@ -684,10 +692,14 @@ execute "source" $DOT_FILES_DIR . "/vim_custom/change_repeat.vimrc"
 
 execute "source" $DOT_FILES_DIR . "/vim_plugin_install.vimrc"
 
+" initialize this mapping for later use
+let g:LanguageClient_serverCommands = {}
+
 "}}}
 
 
-"{{{ Vundle
+"{{{ Stripe-specific
+" TODO replace with use of $DOT_FILES_ENV
 
 execute "source" $DOT_FILES_DIR . "/.stripe.vimrc"
 
