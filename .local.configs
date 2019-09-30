@@ -16,10 +16,6 @@ export PATH="$HOME/go/bin:$PATH"
 # Add Home `bin`
 export PATH="$HOME/bin:$PATH"
 
-# Add `coreutils` - maybe not good for stripe
-# export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-# export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
 # Turn RUST_BACKTRACE on
 export RUST_BACKTRACE=1
 
@@ -59,6 +55,13 @@ fi
 # Add `llvm`
 if [ -d '/usr/local/opt/llvm/bin/' ]; then
   export PATH="/usr/local/opt/llvm/bin/:$PATH"
+fi
+
+if [ -x '/usr/libexec/java_home' ]; then
+  JAVA_HOME="$(/usr/libexec/java_home)"
+  if [ -n"$JAVA_HOME" ]; then
+    export JAVA_HOME
+  fi
 fi
 
 # Add iTerm2 things

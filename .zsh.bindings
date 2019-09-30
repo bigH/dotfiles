@@ -60,28 +60,23 @@ bindkey '^[x' insert-last-command-output
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line
 
-fixup-rg-command-for-cmd-substitution() {
-  if [ -z "$1" ]; then
-    echo "$1"
-  elif [[ "$1" == *'rg'* ]]; then
-    # add `-l` to `rg` command if simple and not present
-    if [[ "$1" == *' -l '* ]]; then
-      echo "$1"
-    elif [[ "$1" == *' --files-without-match '* ]]; then
-      echo "$1"
-    elif [[ "$1" == *'$(rg'* ]]; then
-      # too complex to fix-up
+fixup-command-for-cmd-substitution() {
+  if [[ "$1" == *'rg'* ]]; then
+    if [[ "$1" == *'$(rg'* ]] || [[ "$1" == *' -l '* ]] || [[ "$1" == *' --files-without-match '* ]]; then
+      # too complex or already containing flag needed
       echo "$1"
     else
       echo "$1" | sed 's/rg/rg -l/'
     fi
+  else
+    echo "$1"
   fi
 }
 
 # Alt-V - `vim $(...)` around
 insert-last-command-with-vim() {
   BUFFER='vim $('
-  BUFFER+="$(fixup-rg-command-for-cmd-substitution "$history[$((HISTCMD-1))]")"
+  BUFFER+="$(fixup-command-for-cmd-substitution "$history[$((HISTCMD-1))]")"
   BUFFER+=')'
   CURSOR=$(echo "$#BUFFER - 1" | bc)
 }
@@ -91,7 +86,7 @@ bindkey '^[v' insert-last-command-with-vim
 # Alt-R - `rg $(... -l)` around
 insert-last-command-with-rg() {
   BUFFER='rg  -- $('
-  BUFFER+="$(fixup-rg-command-for-cmd-substitution "$history[$((HISTCMD-1))]")"
+  BUFFER+="$(fixup-command-for-cmd-substitution "$history[$((HISTCMD-1))]")"
   BUFFER+=')'
   CURSOR=3
 }

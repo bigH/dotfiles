@@ -45,4 +45,4 @@ touch "$FILE_PATH"
 echo "$HEADER" >> "$FILE_PATH"
 echo "" >> "$FILE_PATH"
 
-nvim -u "$DOT_FILES_DIR/.scratch.vimrc" "$FILE_PATH" "+vsplit | terminal $PROGRAM" "+wincmd h" "+cd $DOT_FILES_DIR/.vim/scratch"
+nvim -u "$DOT_FILES_DIR/vim_apps/scratch.vimrc" "$FILE_PATH" "+vsplit | terminal $PROGRAM" "+wincmd h" "+cd $DOT_FILES_DIR/.vim/scratch"

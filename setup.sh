@@ -102,7 +102,7 @@ link_if_possible $DOT_FILES_DIR/.oh-my-zsh $HOME/.oh-my-zsh
 echo ""
 
 echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"
-if [ ! -z "$DOT_FILES_ENV" ]; then
+if [ -n "$DOT_FILES_ENV" ]; then
   link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global $HOME/.gitignore_global
   link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig $HOME/.gitconfig
 else
@@ -130,7 +130,7 @@ echo "${BLUE}${BOLD}\`bin\` directory${NORMAL}"
 link_if_possible $DOT_FILES_DIR/bin $HOME/bin
 echo ""
 
-if [ ! -z "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
+if [ -n "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
   echo "${BLUE}${BOLD}$DOT_FILES_ENV-bin directory${NORMAL}"
   link_if_possible $DOT_FILES_DIR/$DOT_FILES_ENV-bin $HOME/$DOT_FILES_ENV-bin
   echo ""
@@ -145,9 +145,9 @@ fi
 
 echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
 if type nvim >/dev/null 2>&1; then
-  zsh -c 'nvim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall'
+  zsh -c 'nvim -u $DOT_FILES_DIR/vim/vim_plugin_install.vimrc +PluginInstall +qall'
 else
-  zsh -c 'vim -u $DOT_FILES_DIR/vim_plugin_install.vimrc +PluginInstall +qall'
+  zsh -c 'vim -u $DOT_FILES_DIR/vim/vim_plugin_install.vimrc +PluginInstall +qall'
 fi
 echo ""
 
@@ -164,7 +164,7 @@ echo ""
 echo "     \`~/.hiren/.osx\`"
 echo "     ... sets up OS X in a nice way"
 echo ""
-if [ ! -z "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
+if [ -n "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
   echo "  $DOT_FILES_ENV_DISPLAY:"
   echo ""
   echo "     For \`$DOT_FILES_ENV\` context specific install, try:"
