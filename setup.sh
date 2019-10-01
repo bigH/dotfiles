@@ -1,7 +1,7 @@
 #/!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
-source $DOT_FILES_DIR/util.sh
+source "$DOT_FILES_DIR/util.sh"
 
 if ! command -v zsh >/dev/null 2>&1; then
   echo "${RED}${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!"
@@ -15,17 +15,23 @@ if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
   exit 1
 fi
 
+echo "${BLUE}${BOLD}..random directories..${NORMAL}"
+mk_expected_dir "$DOT_FILES_DIR/.local/share/fzf-history"
+mk_expected_dir "$DOT_FILES_DIR/.local/nvim"
+mk_expected_dir "$DOT_FILES_DIR/logs"
+echo ""
+
 echo "${BLUE}${BOLD}\`made-bin\` directory${NORMAL}"
-mkdir_if_not_exists $DOT_FILES_DIR/made-bin
+mkdir_if_not_exists "$DOT_FILES_DIR/made-bin"
 echo ""
 
 echo "${BLUE}${BOLD}Cleanup \`vim\` directories${NORMAL}"
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/sessions
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/tmp
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/backup
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/bundle
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/undodir
-mkdir_if_not_exists $DOT_FILES_DIR/.vim/scratch
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/sessions"
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/tmp"
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/backup"
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/bundle"
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/undodir"
+mkdir_if_not_exists "$DOT_FILES_DIR/.vim/scratch"
 echo ""
 
 printf "${BLUE}${BOLD}Download \`vim-plug\`${NORMAL}"
@@ -34,21 +40,17 @@ print_symbol_for_status "vim" "curl -fLo ~/.local/share/nvim/site/autoload/plug.
 echo ""
 echo ""
 
-echo "${BLUE}${BOLD}\`.vim\` and \`.vimrc\`${NORMAL}"
-link_if_possible $DOT_FILES_DIR/.vimrc $HOME/.vimrc
-link_if_possible $DOT_FILES_DIR/.vim $HOME/.vim
+echo "${BLUE}${BOLD}\`.vim[rc]\` and \`coc-settings.json\`${NORMAL}"
+link_if_possible "$DOT_FILES_DIR/.vimrc" "$HOME/.vimrc"
+link_if_possible "$DOT_FILES_DIR/.vim" "$HOME/.vim"
+link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$DOT_FILES_DIR/.local/nvim/coc-settings.json"
 echo ""
 
 echo "${BLUE}${BOLD}Linking UltiSnips${NORMAL}"
-link_if_possible $DOT_FILES_DIR/UltiSnips $HOME/.vim/UltiSnips
+link_if_possible "$DOT_FILES_DIR/UltiSnips" "$HOME/.vim/UltiSnips"
 echo ""
 
 echo "ViM Setup ${BLUE}${BOLD}Complete${NORMAL}!"
-echo ""
-
-echo "${BLUE}${BOLD}..random directories..${NORMAL}"
-mk_expected_dir $DOT_FILES_DIR/.local/share/fzf-history
-mk_expected_dir $DOT_FILES_DIR/logs
 echo ""
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
@@ -97,42 +99,42 @@ echo ""
 # TODO change this setup to append to existing file (and create an empty one if it exists)
 # TODO what happens if the file's changed after you've patched it
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
-link_if_possible $DOT_FILES_DIR/.zshrc $HOME/.zshrc
-link_if_possible $DOT_FILES_DIR/.oh-my-zsh $HOME/.oh-my-zsh
+link_if_possible "$DOT_FILES_DIR/.zshrc" "$HOME/.zshrc"
+link_if_possible "$DOT_FILES_DIR/.oh-my-zsh" "$HOME/.oh-my-zsh"
 echo ""
 
 echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"
 if [ -n "$DOT_FILES_ENV" ]; then
-  link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global $HOME/.gitignore_global
-  link_if_possible $DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig $HOME/.gitconfig
+  link_if_possible "$DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global" "$HOME/.gitignore_global"
+  link_if_possible "$DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig" "$HOME/.gitconfig"
 else
-  link_if_possible $DOT_FILES_DIR/.gitignore_global $HOME/.gitignore_global
-  link_if_possible $DOT_FILES_DIR/.gitconfig $HOME/.gitconfig
+  link_if_possible "$DOT_FILES_DIR/.gitignore_global" "$HOME/.gitignore_global"
+  link_if_possible "$DOT_FILES_DIR/.gitconfig" "$HOME/.gitconfig"
 fi
 echo ""
 
 echo "${BLUE}${BOLD}vim -> neovim${NORMAL}"
-mk_expected_dir $HOME/.config/nvim
-link_if_possible $DOT_FILES_DIR/.nvim.init.vim $HOME/.config/nvim/init.vim
+mk_expected_dir "$HOME/.config/nvim"
+link_if_possible "$DOT_FILES_DIR/.nvim.init.vim" "$HOME/.config/nvim/init.vim"
 echo ""
 
 echo "${BLUE}${BOLD}Miscellany ...${NORMAL}"
-link_if_possible $DOT_FILES_DIR/.rgignore $HOME/.rgignore
-link_if_possible $DOT_FILES_DIR/.alacritty.yml $HOME/.alacritty.yml
-link_if_possible $DOT_FILES_DIR/.ackrc $HOME/.ackrc
-link_if_possible $DOT_FILES_DIR/.inputrc $HOME/.inputrc
-link_if_possible $DOT_FILES_DIR/.pryrc $HOME/.pryrc
-link_if_possible $DOT_FILES_DIR/.tigrc $HOME/.tigrc
-link_if_possible $DOT_FILES_DIR/nice-noise-loops $HOME/nice-noise-loops
+link_if_possible "$DOT_FILES_DIR/.rgignore" "$HOME/.rgignore"
+link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.alacritty.yml"
+link_if_possible "$DOT_FILES_DIR/.ackrc" "$HOME/.ackrc"
+link_if_possible "$DOT_FILES_DIR/.inputrc" "$HOME/.inputrc"
+link_if_possible "$DOT_FILES_DIR/.pryrc" "$HOME/.pryrc"
+link_if_possible "$DOT_FILES_DIR/.tigrc" "$HOME/.tigrc"
+link_if_possible "$DOT_FILES_DIR/nice-noise-loops" "$HOME/nice-noise-loops"
 echo ""
 
 echo "${BLUE}${BOLD}\`bin\` directory${NORMAL}"
-link_if_possible $DOT_FILES_DIR/bin $HOME/bin
+link_if_possible "$DOT_FILES_DIR/bin" "$HOME/bin"
 echo ""
 
-if [ -n "$DOT_FILES_ENV" ] && [ -e $DOT_FILES_DIR/$DOT_FILES_ENV-bin ]; then
+if [ -n "$DOT_FILES_ENV" ] && [ -e "$DOT_FILES_DIR/$DOT_FILES_ENV-bin" ]; then
   echo "${BLUE}${BOLD}$DOT_FILES_ENV-bin directory${NORMAL}"
-  link_if_possible $DOT_FILES_DIR/$DOT_FILES_ENV-bin $HOME/$DOT_FILES_ENV-bin
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV-bin" "$HOME/$DOT_FILES_ENV-bin"
   echo ""
 fi
 

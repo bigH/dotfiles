@@ -108,7 +108,8 @@ PlugMemoize 'derekwyatt/vim-scala'
 
 " -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
-PlugMemoize 'tpope/vim-endwise'
+" NB: this plugin remaps <CR> and causes weird issues when using <C-P>
+" PlugMemoize 'tpope/vim-endwise'
 
 " surround things with `()`, etc.
 PlugMemoize 'tpope/vim-surround'

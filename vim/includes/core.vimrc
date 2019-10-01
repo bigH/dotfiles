@@ -333,6 +333,10 @@ imap <silent> <C-E> <Esc>A
 imap <silent> <C-B> <Esc>bi
 imap <silent> <C-F> <Esc>wi
 
+" use <CR> to select from pop-up menu
+" NB: this mapping conflicts with endwise, which also remaps `<CR>`
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 "}}}
 
 

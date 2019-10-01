@@ -382,10 +382,25 @@ if IsPluginLoaded('nathanaelkane/vim-indent-guides')
   autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=NONE
 endif
 
-"}}}
-
 " -- vim-scala --
+
 if IsPluginLoaded('derekwyatt/vim-scala')
   au BufRead,BufNewFile *.sbt set filetype=scala
+endif
+
+" -- coc.nvim --
+
+if IsPluginLoaded('neoclide/coc.nvim')
+  " Better display for messages
+  set cmdheight=2
+
+  " don't give |ins-completion-menu| messages.
+  set shortmess+=c
+
+  " always show signcolumns
+  set signcolumn=yes
+
+  " support comments in json
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 endif
 

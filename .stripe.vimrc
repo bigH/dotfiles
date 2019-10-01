@@ -60,7 +60,7 @@ endif
 
 "{{{
 
-if has('nvim')
+if IsPluginLoaded('autozimu/LanguageClient-neovim')
   if g:is_pay_server == 1
     let g:LanguageClient_serverCommands.ruby = ['pay', 'exec', 'scripts/bin/typecheck', '--lsp']
   endif

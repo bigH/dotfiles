@@ -7,6 +7,7 @@ export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 source $DOT_FILES_DIR/.colors
 
 source $DOT_FILES_DIR/.local.configs
+source $DOT_FILES_DIR/.journal.configs
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.configs" ]; then

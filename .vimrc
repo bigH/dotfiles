@@ -81,15 +81,6 @@ nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 "}}}
 
 
-"{{{ Workaround Mappings
-
-" -- pop-up-menu <CR> to accept option
-" TODO never works (but works when entered interactively)
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-
-"}}}
-
-
 "{{{ Load ENV_SPECIFIC things
 
 if filereadable($DOT_FILES_DIR . "/." . $DOT_FILES_ENV . ".vimrc")

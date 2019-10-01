@@ -20,7 +20,7 @@ set norelativenumber
 
 function! s:IsWeekday()
   let day = strftime('%a')
-  if day ==? 'sat' || day? == 'sun'
+  if day == 'sat' || day == 'sun'
     return 0
   else
     return 1
@@ -94,5 +94,22 @@ augroup SetupLoader
   autocmd BufWritePost * call s:RefreshJournal()
   autocmd FocusGained * call s:RefreshJournal()
 augroup END
+
+"}}}
+
+
+"{{{ Mappings
+
+" Move between windows using <M-H/J/K/L> keys
+nmap <silent> <M-h> :wincmd h<CR>
+nmap <silent> <M-j> :wincmd j<CR>
+nmap <silent> <M-k> :wincmd k<CR>
+nmap <silent> <M-l> :wincmd l<CR>
+
+" Move between windows using <M-H/J/K/L> keys
+imap <silent> <M-h> <Esc>:wincmd h<CR>i
+imap <silent> <M-j> <Esc>:wincmd j<CR>i
+imap <silent> <M-k> <Esc>:wincmd k<CR>i
+imap <silent> <M-l> <Esc>:wincmd l<CR>i
 
 "}}}
