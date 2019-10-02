@@ -59,7 +59,11 @@ function! TodoPath()
 endfunction
 
 function! DailyJournalPath()
-  return WeekdayFile('journal')
+  let file = WeekdayFile('journal')
+  if !filereadable(l:file)
+    call system('ruby ' . $JOURNAL_PATH . '/templates/journal.rb > ' . l:file)
+  endif
+  return l:file
 endfunction
 
 function! NotesPath()
