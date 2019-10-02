@@ -43,7 +43,7 @@ echo ""
 echo "${BLUE}${BOLD}\`.vim[rc]\` and \`coc-settings.json\`${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/.vimrc" "$HOME/.vimrc"
 link_if_possible "$DOT_FILES_DIR/.vim" "$HOME/.vim"
-link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$DOT_FILES_DIR/.local/nvim/coc-settings.json"
+link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.local/nvim/coc-settings.json"
 echo ""
 
 echo "${BLUE}${BOLD}Linking UltiSnips${NORMAL}"

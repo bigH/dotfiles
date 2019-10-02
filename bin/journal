@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+$EDITOR -u "$DOT_FILES_DIR/vim/apps/journal.vimrc"

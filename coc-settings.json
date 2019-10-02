@@ -1,4 +1,7 @@
 {
+  "suggest.noselect": false,
+  "suggest.acceptSuggestionOnCommitCharacter": true,
+  "suggest.triggerAfterInsertEnter": false,
   "suggest.autoTrigger": "trigger",
   "languageserver": {
     "metals": {

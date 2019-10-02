@@ -6,7 +6,6 @@ source "$DOT_FILES_DIR/util.sh"
 # unlinks
 unlink "$HOME/.alacritty.yml"
 unlink "$HOME/.ackrc"
-unlink "$HOME/.config/nvim/init.vim"
 unlink "$HOME/.gitignore_global"
 unlink "$HOME/.rgignore"
 unlink "$HOME/.gitconfig"
@@ -15,6 +14,10 @@ unlink "$HOME/.pryrc"
 unlink "$HOME/.tigrc"
 unlink "$HOME/.vimrc"
 unlink "$HOME/.zshrc"
+
+# unlink, but directory can remain
+unlink "$HOME/.config/nvim/init.vim"
+unlink "$HOME/.local/nvim/coc-settings.json"
 
 # unlink directories
 rm -f "$HOME/.vim/UltiSnips"

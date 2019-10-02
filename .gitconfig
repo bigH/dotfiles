@@ -34,13 +34,13 @@
 # Show Status in Summary Form
 	st = status --short
 # List History
-	ls = log --graph --oneline --abbrev-commit --decorate --all
+	ls = "log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\""
 # List History in Long Format
-	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	ls = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --numstat"
 # List History with Relative Dates
-	ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+	ld = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --date=relative"
 # List History with Short Format
-	le = log --oneline --decorate
+	le = "log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate"
 # List a File's Log
 	filelog = log -u
 # Last Commit Diff
