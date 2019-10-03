@@ -1,3 +1,9 @@
 #!/bin/zsh
 
-$EDITOR -u "$DOT_FILES_DIR/vim/apps/journal.vimrc"
+if [ -z "$JOURNAL_PATH" ]; then
+  echo 'ERROR: no $JOURNAL_PATH'
+elif [ -d "$JOURNAL_PATH" ]; then
+  $EDITOR -u "$DOT_FILES_DIR/vim/apps/journal.vimrc"
+else
+  echo "ERROR: '$JOURNAL_PATH' not a directory"
+fi

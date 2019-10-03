@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Add `journal` path
-if [ -d "$HOME/.hiren.journal" ]; then
-  export JOURNAL_PATH="$HOME/.hiren.journal"
+if [ -d "$HOME/.journal" ]; then
+  export JOURNAL_PATH="$HOME/.journal"
 
-  if [ -e "$JOURNAL_PATH/.journal.init" ]; then
-    source "$JOURNAL_PATH/.journal.init"
+  if [ -e "$JOURNAL_PATH/system/journal.init" ]; then
+    source "$JOURNAL_PATH/system/journal.init"
   fi
 fi
 

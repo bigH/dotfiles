@@ -48,20 +48,17 @@ function! WeekdayFile(pattern)
 endfunction
 
 function! TodoPath()
-  let last_file = LastFileWritten('todo')
-  let current_file = WeekdayFile('todo')
-  if l:current_file == l:last_file
-    return l:last_file
-  else
-    call system('cp "' . l:last_file . '" "' . l:current_file . '"')
-    return l:last_file
+  let l:file = WeekdayFile('todo')
+  if !filereadable(l:file)
+    call system('ruby ' . $JOURNAL_PATH . '/system/todo.rb > ' . l:file)
   endif
+  return l:file
 endfunction
 
 function! DailyJournalPath()
-  let file = WeekdayFile('journal')
+  let l:file = WeekdayFile('journal')
   if !filereadable(l:file)
-    call system('ruby ' . $JOURNAL_PATH . '/templates/journal.rb > ' . l:file)
+    call system('ruby ' . $JOURNAL_PATH . '/system/journal.rb > ' . l:file)
   endif
   return l:file
 endfunction
@@ -89,11 +86,22 @@ function! RefreshJournal()
 endfunction
 
 function! LoadJournal()
+  syntax enable
+  filetype on
+  filetype plugin on
+
   execute 'cd' $JOURNAL_PATH
   call AutoSaveToggle()
+
   execute 'edit' TodoPath()
+  execute 'filetype' 'detect'
   execute 'vsplit' DailyJournalPath()
+  execute 'filetype' 'detect'
   execute 'vsplit' NotesPath()
+  execute 'filetype' 'detect'
+
+  execute 'wincmd' 'h'
+  execute 'wincmd' 'h'
 endfunction
 
 "}}}

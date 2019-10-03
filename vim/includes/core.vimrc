@@ -304,14 +304,6 @@ vnoremap <silent> <leader>d "dy"dP
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>Y "+y$
 
-" Re-indent when pasting
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
-" Re-indent when pasting in visual mode
-vnoremap p p=']<C-o>
-vnoremap P P=']<C-o>
-
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>
 

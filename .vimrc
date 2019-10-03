@@ -33,6 +33,19 @@ endif
 "}}}
 
 
+"{{{ Pasting Only Useful in Code
+
+" Re-indent when pasting
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+" Re-indent when pasting in visual mode
+vnoremap p p=']<C-o>
+vnoremap P P=']<C-o>
+
+"}}}
+
+
 "{{{ Window Management
 
 " Kill current split
