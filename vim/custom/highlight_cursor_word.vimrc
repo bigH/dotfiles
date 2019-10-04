@@ -31,7 +31,7 @@ function! s:HighlightCursorWordNow()
     endif
 
     try
-        let w:HighlightCursorWordMatchId = matchadd('HighlightCursorWordHighlight', '\<'.s:wordUnderCursor.'\>')
+        let w:HighlightCursorWordMatchId = matchadd('HighlightCursorWordHighlight', '\<'.s:wordUnderCursor.'\>', -1)
     catch /.*/
         echo "Couldn't HighlightCursorWordNow"
     endtry
