@@ -18,53 +18,20 @@ set norelativenumber
 
 "{{{ Paths
 
-function! IsWeekday()
-  let day = strftime('%a')
-  if day == 'Sat' || day == 'Sun'
-    return 0
-  else
-    return 1
-  endif
-endfunction
-
 function! LastFileWritten(pattern)
   return trim(system('ls -t ' . $JOURNAL_PATH . '/' . a:pattern . '-* | head -1'))
 endfunction
 
-function! DailyFile(pattern)
-  return ($JOURNAL_PATH . '/' . a:pattern . '-' . strftime('%Y-%m-%d') . '.md')
-endfunction
-
-function! MonthlyFile(pattern)
-  return ($JOURNAL_PATH . '/' . a:pattern . '-' . strftime('%Y-%m') . '.md')
-endfunction
-
-function! WeekdayFile(pattern)
-  if IsWeekday()
-    return DailyFile(a:pattern)
-  else
-    return LastFileWritten(a:pattern)
-  endif
-endfunction
-
 function! TodoPath()
-  let l:file = WeekdayFile('todo')
-  if !filereadable(l:file)
-    call system('ruby ' . $JOURNAL_PATH . '/system/todo.rb > ' . l:file)
-  endif
-  return l:file
+  return LastFileWritten('todo')
 endfunction
 
 function! DailyJournalPath()
-  let l:file = WeekdayFile('journal')
-  if !filereadable(l:file)
-    call system('ruby ' . $JOURNAL_PATH . '/system/journal.rb > ' . l:file)
-  endif
-  return l:file
+  return LastFileWritten('journal')
 endfunction
 
 function! NotesPath()
-  return MonthlyFile('notes')
+  return LastFileWritten('notes')
 endfunction
 
 "}}}
@@ -91,7 +58,8 @@ function! LoadJournal()
   filetype plugin on
 
   execute 'cd' $JOURNAL_PATH
-  call AutoSaveToggle()
+
+  call system($JOURNAL_PATH . '/system/rejournal.sh')
 
   execute 'edit' TodoPath()
   execute 'filetype' 'detect'
@@ -99,6 +67,8 @@ function! LoadJournal()
   execute 'filetype' 'detect'
   execute 'vsplit' NotesPath()
   execute 'filetype' 'detect'
+
+  call AutoSaveToggle()
 
   execute 'wincmd' 'h'
   execute 'wincmd' 'h'
