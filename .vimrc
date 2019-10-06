@@ -36,12 +36,12 @@ endif
 "{{{ Pasting Only Useful in Code
 
 " Re-indent when pasting
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
+nnoremap p p=`]
+nnoremap P P=`]
 
 " Re-indent when pasting in visual mode
-vnoremap p p=']<C-o>
-vnoremap P P=']<C-o>
+vnoremap p p=']
+vnoremap P P=']
 
 "}}}
 
