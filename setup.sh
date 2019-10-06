@@ -147,18 +147,18 @@ fi
 
 echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
 if type nvim >/dev/null 2>&1; then
-  zsh -c 'nvim -u $DOT_FILES_DIR/vim/vim_plugin_install.vimrc +PluginInstall +qall'
+  zsh -c 'nvim -u $DOT_FILES_DIR/vim/includes/plugins.vimrc +PlugUpdate +qall'
 else
-  zsh -c 'vim -u $DOT_FILES_DIR/vim/vim_plugin_install.vimrc +PluginInstall +qall'
+  zsh -c 'vim -u $DOT_FILES_DIR/vim/includes/plugins.vimrc +PlugUpdate +qall'
 fi
 echo ""
 
 echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"
 echo ""
-echo "     \`brew install fzf ag ccat coreutils ctags cabal ghc\`"
-echo "     \`cabal install cabal-install Cabal\`"
-echo "     \`cabal install happy alex fast-tags hindent stylish-hashell hlint\`"
+echo "     \`brew install coreutils ctags cabal ghc neovim rbenv\`"
 echo "     \`[rbenv exec] gem install ripper-tags\`"
+echo "     Install \`alacritty\`"
+echo "     Install \`hasklig\` (https://github.com/i-tu/Hasklig)"
 echo ""
 echo "     ... you may require \`sudo\`"
 echo "     ... there may be more"

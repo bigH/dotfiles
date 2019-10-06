@@ -77,3 +77,8 @@ if [ -e "$DOT_FILES_DIR/ripgrep/complete" ]; then
     fpath+="$DOT_FILES_DIR/ripgrep/complete"
   fi
 fi
+
+# Initialize `rbenv`
+if type rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init -)"
+fi
