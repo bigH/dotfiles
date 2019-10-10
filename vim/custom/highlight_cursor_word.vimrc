@@ -27,7 +27,7 @@ function! s:HighlightCursorWordNow()
     if(exists("g:HighlightCursorWordHighlightSetting"))
         exe "highlight HighlightCursorWordHighlight " . g:HighlightCursorWordHighlightSetting
     else
-        highlight HighlightCursorWordHighlight cterm=bold ctermfg=red
+        highlight HighlightCursorWordHighlight cterm=bold ctermfg=darkred
     endif
 
     try

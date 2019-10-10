@@ -1,3 +1,5 @@
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 "{{{ Misc
 
 set fileencodings=utf-8
@@ -70,10 +72,8 @@ if exists('&breakindent')
   set breakindent
 
   " shift wrapped content 2 spaces and use showbreak below
-  set breakindentopt=shift:6,sbr
-
-  " use the >> to indicate wrapping
-  set showbreak=>>>>
+  set breakindentopt=shift:2,sbr
+  set showbreak=>>
 
   " break at words
   set linebreak
@@ -297,9 +297,6 @@ nnoremap <silent> <M-CR> i<CR><Esc>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Duplicate Selection
-vnoremap <silent> <leader>d "dy"dP
-
 " Copy to system clipboard
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>Y "+y$
@@ -426,6 +423,7 @@ nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
 
 " Use correct vim colors
 if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
+  let g:gruvbox_italic=1
 	colorscheme gruvbox
 	let g:airline_theme='gruvbox'
 endif

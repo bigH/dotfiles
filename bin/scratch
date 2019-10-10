@@ -8,16 +8,16 @@ case $TYPE in
     POTENTIAL_PROGRAM='pry'
     ;;
   pay)
-    TYPE='rb'
-    POTENTIAL_PROGRAM='pay console'
+    TYPE='scala'
+    POTENTIAL_PROGRAM='scala'
     ;;
   ssh)
-    TYPE='sh'
-    POTENTIAL_PROGRAM='pay ssh'
+    TYPE='zsh'
+    POTENTIAL_PROGRAM='zsh'
     ;;
   devbox)
-    TYPE='sh'
-    POTENTIAL_PROGRAM='pay ssh'
+    TYPE='bash'
+    POTENTIAL_PROGRAM='bash'
     ;;
 esac
 

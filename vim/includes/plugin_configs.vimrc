@@ -203,7 +203,9 @@ if IsPluginLoaded('tpope/vim-commentary')
   " is provided
   xmap cm <Plug>Commentary
   nmap cm <Plug>Commentary
-  omap cm <Plug>Commentary
+  nmap cmcm <Plug>Commentary<Plug>Commentary
+  " Don't like the operator-pending mapping (though it's easy to uncomment
+  " omap cm <Plug>Commentary
 endif
 
 " -- splitjoin.vim --
@@ -390,6 +392,13 @@ endif
 
 " -- coc.nvim --
 
+if IsPluginLoaded('Townk/vim-autoclose')
+  au BufRead,BufNewFile *.rb let g:AutoClosePairs_add = "|"
+  au BufRead,BufNewFile todo-*.md let g:AutoClosePairs_del = "[]"
+endif
+
+" -- coc.nvim --
+
 if IsPluginLoaded('neoclide/coc.nvim')
   " Better display for messages
   set cmdheight=2
@@ -402,5 +411,30 @@ if IsPluginLoaded('neoclide/coc.nvim')
 
   " support comments in json
   autocmd FileType json syntax match Comment +\/\/.\+$+
+
+  " Use <C-Space> to trigger
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  " Use K to show documentation in preview window
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  " Use `[c` and `]c` for navigate diagnostics
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+  " Gotos
+  nmap <silent> <Leader>d <Plug>(coc-definition)
+  nmap <silent> <Leader>i <Plug>(coc-implementation)
+  nmap <silent> <Leader>r <Plug>(coc-references)
+  " overrides fzf `:Tags`
+  nmap <silent> <Leader>t <Plug>(coc-type-definition)
 endif
 

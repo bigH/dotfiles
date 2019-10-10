@@ -4,6 +4,12 @@ export DOT_FILES_DIR=$HOME/.hiren
 
 export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
 
+if type nvim >/dev/null 2>&1; then
+  export EDITOR="$(which nvim)"
+else
+  export EDITOR="$(which vim)"
+fi
+
 source $DOT_FILES_DIR/.colors
 
 source $DOT_FILES_DIR/.local.configs

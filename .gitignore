@@ -2,6 +2,7 @@
 .DS_Store
 .env_context
 .local/
+.metals/
 .oh-my-zsh/
 fzf/
 ripgrep/

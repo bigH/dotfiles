@@ -6,7 +6,6 @@ if !exists('g:app_plugin_set')
   endif
 endif
 
-
 function! ExcludeModes(...)
   let cond = 0
   for arg in a:000
@@ -107,9 +106,12 @@ PlugMemoize 'vim-ruby/vim-ruby'
 PlugMemoize 'derekwyatt/vim-scala'
 
 " -- EDITING --
+" `vimwiki` potentially for use in journal
+PlugMemoize 'vimwiki/vimwiki', ForModes('journal')
+
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 " NB: this plugin remaps <CR> and causes weird issues when using <C-P>
-" PlugMemoize 'tpope/vim-endwise'
+" PlugMemoize 'tpope/vim-endwise', ForModes('vim', 'nvim')
 
 " surround things with `()`, etc.
 PlugMemoize 'tpope/vim-surround'
@@ -166,6 +168,10 @@ PlugMemoize 'tommcdo/vim-exchange'
 " `g<l|L><motion><character|/pattern>` to align by padding left (`l`) or right
 " (`L`) of the
 PlugMemoize 'tommcdo/vim-lion'
+
+" utilities for editing vimscript
+" TODO make this conditional on project directory
+PlugMemoize 'tpope/vim-scriptease'
 
 " Command over Completion
 PlugMemoize 'neoclide/coc.nvim',

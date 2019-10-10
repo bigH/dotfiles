@@ -16,11 +16,13 @@ unlink "$HOME/.vimrc"
 unlink "$HOME/.zshrc"
 
 # unlink, but directory can remain
+unlink "$HOME/.vim/coc-settings.json"
+unlink "$HOME/.config/nvim/coc-settings.json"
 unlink "$HOME/.config/nvim/init.vim"
-unlink "$HOME/.local/nvim/coc-settings.json"
 
 # unlink directories
 rm -f "$HOME/.vim/UltiSnips"
+rm -f "$HOME/.vim/syntax"
 rm -f "$HOME/.vim"
 rm -f "$HOME/nice-noise-loops"
 rm -f "$HOME/bin"

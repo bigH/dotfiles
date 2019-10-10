@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Add Local `bin`
-export PATH="/usr/local/bin:$PATH"
-
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
   source $HOME/.ghcup/env
@@ -40,7 +37,7 @@ if [ -d '/usr/local/opt/bison/lib' ]; then
 fi
 
 # Add `cargo`
-if [ -d "$HOME/.cargo/env" ]; then
+if [ -f "$HOME/.cargo/env" ]; then
   source $HOME/.cargo/env
 fi
 

@@ -67,10 +67,13 @@ function! LoadJournal()
 
   execute 'edit' TodoPath()
   execute 'filetype' 'detect'
-  execute 'vsplit' DailyJournalPath()
-  execute 'filetype' 'detect'
   execute 'vsplit' NotesPath()
   execute 'filetype' 'detect'
+  let journal_path = DailyJournalPath()
+  if system('cat ' . l:journal_path) !~ '<!-- EOM -->'
+    execute 'vsplit' l:journal_path
+    execute 'filetype' 'detect'
+  endif
 
   call AutoSaveToggle()
 
@@ -89,36 +92,10 @@ augroup SetupLoader
   autocmd FocusGained * call RefreshJournal()
 augroup END
 
-" TODO doesn't work
-autocmd BufRead,BufNewFile todo-*.md set filetype=markdown.todo
-
-"}}}
-
-
-"{{{ Highlights
-
-" TODO doesn't work
-highlight TodoInProgress ctermfg=cyan
-highlight TodoSomeAction ctermfg=cyan
-highlight TodoDropped    ctermfg=gray
-highlight TodoBlocked    ctermfg=red  cterm=bold
-highlight TodoDone       ctermfg=gray
-
-" TODO doesn't work
-syntax match TodoInProgress /^\s*- \[\~\] .*$/
-syntax match TodoSomeAction /^\s*- \[\/\] .*$/
-syntax match TodoDropped    /^\s*- \[0\] .*$/
-syntax match TodoBlocked    /^\s*- \[\?\] .*$/
-syntax match TodoDone       /^\s*- \[x\] .*$/
-
 "}}}
 
 
 "{{{ Mappings
-
-" Move between windows using <C-H/L> keys
-nmap <silent> <Tab> >>
-nmap <silent> <S-Tab> <<
 
 " Move between windows using <C-H/L> keys
 nmap <silent> <C-H> :wincmd h<CR>:wincmd h<CR>
