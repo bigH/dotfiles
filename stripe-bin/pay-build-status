@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-DIR=$1
-REF=$2
-
-cd $DIR
-OUTPUT=`pay ci:status --ref $REF`
-
-

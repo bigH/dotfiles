@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-export DISABLE_GIT_THINGS='yes'
-export NON_LOCAL_ENVIRONMENT='yes'

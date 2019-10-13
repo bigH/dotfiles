@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-alias jp='cd ~/stripe/pay-server'
-alias p='cd ~/stripe/pay-server'
-alias pu='cd ~/stripe/pay-server; pay up'
