@@ -80,6 +80,8 @@ endfunction
 function! s:SetupTodoFile()
   set filetype=markdown.todo
 
+  let g:AutoClosePairs_del = "[]"
+
   " Map <CR> to make more TODOs
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 

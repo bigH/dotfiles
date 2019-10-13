@@ -179,10 +179,11 @@ PlugMemoize 'neoclide/coc.nvim',
       \ {'branch': 'release'}
 
 " For LSP support
-" PlugMemoize 'autozimu/LanguageClient-neovim', ForModes('vim', 'nvim'), {
-"   \ 'branch': 'next',
-"   \ 'do': 'bash install.sh',
-"   \ }
+" PlugMemoize 'autozimu/LanguageClient-neovim',
+"       \ ForModes('vim', 'nvim'), {
+"       \ 'branch': 'next',
+"       \ 'do': 'bash install.sh',
+"       \ }
 
 " provides a concentration writing mode `:Goyo`
 PlugMemoize 'junegunn/goyo.vim'

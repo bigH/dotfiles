@@ -22,20 +22,20 @@ set shiftwidth=4
 
 "{{{ Paths
 
-function! LastFileWritten(pattern)
+function! s:LastFileWritten(pattern)
   return trim(system('ls -t ' . $JOURNAL_PATH . '/' . a:pattern . '-* | head -1'))
 endfunction
 
-function! TodoPath()
-  return LastFileWritten('todo')
+function! s:TodoPath()
+  return s:LastFileWritten('todo')
 endfunction
 
-function! DailyJournalPath()
-  return LastFileWritten('journal')
+function! s:DailyJournalPath()
+  return s:LastFileWritten('journal')
 endfunction
 
-function! NotesPath()
-  return LastFileWritten('notes')
+function! s:NotesPath()
+  return s:LastFileWritten('notes')
 endfunction
 
 "}}}
@@ -43,39 +43,33 @@ endfunction
 
 "{{{ File Management
 
-function! SyncRead()
-  " git things
-endfunction
+command SyncJournalAsync call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vimrc')
 
-function! SyncWrite()
-  " git things
-endfunction
-
-function! RefreshJournal()
-  call SyncRead()
-  call SyncWrite()
-endfunction
-
-function! LoadJournal()
+function! s:LoadJournal()
   syntax enable
   filetype on
   filetype plugin on
+
+  let g:auto_save_silent = 1
+  let g:auto_save_postsave_hook = 'SyncJournalAsync'
+  call AutoSaveToggle()
+
+  let g:markdown_folding = 1
+  set nofoldenable
 
   execute 'cd' $JOURNAL_PATH
 
   call system($JOURNAL_PATH . '/system/rejournal.sh')
 
-  execute 'edit' TodoPath()
+  execute 'edit' s:TodoPath()
   execute 'filetype' 'detect'
-  execute 'vsplit' NotesPath()
+  execute 'vsplit' s:NotesPath()
   execute 'filetype' 'detect'
-  let journal_path = DailyJournalPath()
-  if system('cat ' . l:journal_path) !~ '<!-- EOM -->'
+  let journal_path = s:DailyJournalPath()
+  if split(system('cat ' . l:journal_path), '\n')[-1] != '<!-- EOM -->'
     execute 'vsplit' l:journal_path
     execute 'filetype' 'detect'
   endif
-
-  call AutoSaveToggle()
 
   execute 'wincmd' 'h'
   execute 'wincmd' 'h'
@@ -87,9 +81,8 @@ endfunction
 "{{{ Autogroups
 
 augroup SetupLoader
-  autocmd VimEnter * call LoadJournal()
-  autocmd BufWritePost * call RefreshJournal()
-  autocmd FocusGained * call RefreshJournal()
+  autocmd VimEnter * call <SID>LoadJournal()
+  autocmd FocusGained * SyncJournalAsync
 augroup END
 
 "}}}

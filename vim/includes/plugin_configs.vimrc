@@ -390,11 +390,62 @@ if IsPluginLoaded('derekwyatt/vim-scala')
   au BufRead,BufNewFile *.sbt set filetype=scala
 endif
 
-" -- coc.nvim --
+" -- vim-autoclose --
 
 if IsPluginLoaded('Townk/vim-autoclose')
   au BufRead,BufNewFile *.rb let g:AutoClosePairs_add = "|"
   au BufRead,BufNewFile todo-*.md let g:AutoClosePairs_del = "[]"
+endif
+
+" -- LanguageClient-neovim --
+
+if IsPluginLoaded('autozimu/LanguageClient-neovim')
+  let g:LanguageClient_diagnosticsDisplay = {
+      \     1: {
+      \         "name": "Error",
+      \         "texthl": "ALEError",
+      \         "signText": "●",
+      \         "signTexthl": "gitgutterDelete",
+      \         "virtualTexthl": "gitgutterDelete",
+      \     },
+      \     2: {
+      \         "name": "Warning",
+      \         "texthl": "ALEWarning",
+      \         "signText": "▲",
+      \         "signTexthl": "Todo",
+      \     },
+      \     3: {
+      \         "name": "Information",
+      \         "texthl": "ALEError",
+      \         "signText": "ℹ",
+      \         "signTexthl": "gitgutterDelete",
+      \     },
+      \     4: {
+      \         "name": "Hint",
+      \         "texthl": "ALEWarning",
+      \         "signText": "➤",
+      \         "signTexthl": "Todo",
+      \     },
+      \ }
+
+  let g:LanguageClient_loggingLevel = 'INFO' " Use highest logging level
+  let g:LanguageClient_loggingFile = '/tmp/languageclient-neovim.log'
+
+  if !exists('g:LanguageClient_serverCommands')
+    let g:LanguageClient_serverCommands = {}
+  endif
+
+  let g:LanguageClient_serverCommands.ruby = ['srb', 'tc', '--lsp', '--enable-experimental-lsp-autocomplete', '--debug-log-file=/tmp/sorbet-nvim.log', '-e', '0', '~/.local/share/empty']
+
+  augroup LanguageClientConfigs
+    au!
+    au FileType ruby nnoremap <silent> <buffer> <C-Space> :call LanguageClient_contextMenu()<CR>
+    au FileType ruby nnoremap <silent> <buffer> <Leader>d :call LanguageClient#textDocument_definition()<CR>
+    au FileType ruby nnoremap <silent> <buffer> <Leader>t :call LanguageClient#textDocument_hover()<CR>
+    au FileType ruby nnoremap <silent> <buffer> K :call LanguageClient#explainErrorAtPoint()<CR>
+    au FileType ruby nnoremap <silent> <buffer> <Leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
+    au FileType ruby inoremap <silent> <buffer> <C-Space> <C-x><C-o>
+  augroup END
 endif
 
 " -- coc.nvim --

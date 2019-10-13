@@ -2,8 +2,8 @@
 function! s:SetupJournalFile()
   set filetype=markdown.journal
 
-  nmap <silent> <buffer> <C-x> GO<!-- EOM --><Esc>:w<CR>:bd<CR>
-  imap <silent> <buffer> <C-x> <Esc>GO<!-- EOM --><Esc>:w<CR>:bd<CR>
+  nmap <silent> <buffer> <C-x> Go<CR><!-- EOM --><Esc>:w<CR>:bd<CR>
+  imap <silent> <buffer> <C-x> <Esc>Go<CR><!-- EOM --><Esc>:w<CR>:bd<CR>
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
