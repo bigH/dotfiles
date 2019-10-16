@@ -54,6 +54,10 @@ set colorcolumn=+0
 
 " Ignore case in search
 set ignorecase
+" ... unless using capital letters
+set smartcase
+" ... also make <C-P> menu autocomplete regardless of input text case
+set infercase
 
 " set visualbell, to silence the annoying audible bell
 set vb
@@ -64,6 +68,7 @@ set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
 
 " Save undo-history
+set undolevels=5000
 set undodir=~/.vim/undodir
 set undofile
 
@@ -81,6 +86,9 @@ endif
 
 " Turn off wrapping - can be turned on and will automatically use above config as needed
 set nowrap
+
+" Unfold everything by default
+set nofoldenable
 
 " Use the mouse
 set mouse=a
@@ -115,6 +123,18 @@ set splitright
 "}}}
 
 
+"{{{ Copy to OS Clipboard
+
+function! CopyRegisterToClipboard(name)
+  let contents = getreg(a:name)
+  silent! call setreg('+', l:contents)
+endfunction
+
+autocmd TextYankPost * call CopyRegisterToClipboard(v:event.regname)
+
+"}}}
+
+
 "{{{ Text Formatting
 
 " 2 space 'tabs'
@@ -144,6 +164,14 @@ set shiftround
 
 "{{{ Highlighting
 
+function! s:HighlightTabsIfExpandTabSet()
+  if &expandtab
+    match Error /\t/
+  else
+    match Error /\t/
+  endif
+endfunction
+au OptionSet expandtab <SID>HighlightTabsIfExpandTabSet
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight Comment cterm=italic gui=italic
 
@@ -216,43 +244,43 @@ noremap <leader><leader> :w<CR>
 
 " Defaults for certain files
 augroup FiletypeSettings
-	" Always use tabs in gitconfig
-	au FileType gitconfig setlocal noexpandtab
+  " Always use tabs in gitconfig
+  au FileType gitconfig setlocal noexpandtab
 
-	" Wrap long lines in quickfix windows
-	au FileType qf setlocal wrap
+  " Wrap long lines in quickfix windows
+  au FileType qf setlocal wrap
 
-	" Set cursorline in quickfix windows
-	au FileType qf setlocal cursorline
+  " Set cursorline in quickfix windows
+  au FileType qf setlocal cursorline
 augroup END
 
 " Restore cursor position to where it was before
 augroup JumpCursorOnEdit
 
-	au!
+  au!
 
-	autocmd BufReadPost *
-				\ if expand("<afile>:p:h") !=? $TEMP |
-				\   if line("'\"") > 1 && line("'\"") <= line("$") |
-				\     let JumpCursorOnEdit_foo = line("'\"") |
-				\     let b:doopenfold = 1 |
-				\     if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
-				\        let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
-				\        let b:doopenfold = 2 |
-				\     endif |
-				\     exe JumpCursorOnEdit_foo |
-				\   endif |
-				\ endif
+  autocmd BufReadPost *
+        \ if expand("<afile>:p:h") !=? $TEMP |
+        \   if line("'\"") > 1 && line("'\"") <= line("$") |
+        \     let JumpCursorOnEdit_foo = line("'\"") |
+        \     let b:doopenfold = 1 |
+        \     if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
+        \        let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
+        \        let b:doopenfold = 2 |
+        \     endif |
+        \     exe JumpCursorOnEdit_foo |
+        \   endif |
+        \ endif
 
-	" Need to postpone using "zv" until after reading the modelines.
-	autocmd BufWinEnter *
-				\ if exists("b:doopenfold") |
-				\   exe "normal zv" |
-				\   if(b:doopenfold > 1) |
-				\       exe  "+".1 |
-				\   endif |
-				\   unlet b:doopenfold |
-				\ endif
+  " Need to postpone using "zv" until after reading the modelines.
+  autocmd BufWinEnter *
+        \ if exists("b:doopenfold") |
+        \   exe "normal zv" |
+        \   if(b:doopenfold > 1) |
+        \       exe  "+".1 |
+        \   endif |
+        \   unlet b:doopenfold |
+        \ endif
 
 augroup END
 
@@ -260,9 +288,9 @@ augroup END
 " Don't do it when the position is invalid or when inside an event handler
 " (happens when dropping a file on gvim).
 autocmd BufReadPost *
-			\ if line("'\"") > 0 && line("'\"") <= line("$") |
-			\   exe "normal! g`\"" |
-			\ endif
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal! g`\"" |
+      \ endif
 
 "}}}
 
@@ -285,11 +313,6 @@ inoremap <silent> <C-L> <Right>
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
-" Search mappings: These will make it so that going to the next one in a
-" search will center on the line it's found in.
-nmap <silent> N Nzz
-nmap <silent> n nzz
-
 " Alt-Enter or <leader><CR> - insert a new-line here
 nnoremap <silent> <leader><CR> i<CR><Esc>
 nnoremap <silent> <M-CR> i<CR><Esc>
@@ -297,9 +320,8 @@ nnoremap <silent> <M-CR> i<CR><Esc>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Copy to system clipboard
-noremap <silent> <leader>y "+y
-noremap <silent> <leader>Y "+y$
+" Use Y to append in visual mode
+vnoremap <silent> Y "Yy
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>
@@ -333,27 +355,27 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Terminal Mappings (neovim-only)
 if has('nvim')
-	" Defaults for certain files
-	augroup TerminalSettings
-		" Terminal Defaults
-		au TermOpen * if &buftype == 'terminal' |
-					\   setlocal nonumber |
-					\   setlocal norelativenumber |
-					\   setlocal scrolloff=0 |
-					\   startinsert |
-					\   tnoremap <Esc> <C-\><C-n> |
-					\   tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>i |
-					\   tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>i |
-					\   tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>i |
-					\   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
-					\ endif
+  " Defaults for certain files
+  augroup TerminalSettings
+    " Terminal Defaults
+    au TermOpen * if &buftype == 'terminal' |
+          \   setlocal nonumber |
+          \   setlocal norelativenumber |
+          \   setlocal scrolloff=0 |
+          \   startinsert |
+          \   tnoremap <Esc> <C-\><C-n> |
+          \   tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>i |
+          \   tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>i |
+          \   tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>i |
+          \   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
+          \ endif
 
-		" Auto-Close
-		au TermClose * q
+    " Auto-Close
+    au TermClose * q
 
-		" Handle <Esc>
-		au FileType fzf tunmap <Esc>
-	augroup END
+    " Handle <Esc>
+    au FileType fzf tunmap <Esc>
+  augroup END
 endif
 
 "}}}
@@ -381,6 +403,7 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
+execute "source" $DOT_FILES_DIR . "/vim/custom/blinkenmatchen.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/visual_star.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/highlight_cursor_word.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/duplicate.vimrc"
@@ -404,14 +427,14 @@ let color_scheme_mode = 0 " 0 = dark, 1 = light
 set background=dark
 
 func! ColorSchemeLightDark()
-	if g:color_scheme_mode == 0
-		set background=light
-		let g:color_scheme_mode = 1
-	else
-		set background=dark
-		let g:color_scheme_mode = 0
-	endif
-	return
+  if g:color_scheme_mode == 0
+    set background=light
+    let g:color_scheme_mode = 1
+  else
+    set background=dark
+    let g:color_scheme_mode = 0
+  endif
+  return
 endfunc
 
 nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
@@ -424,8 +447,8 @@ nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
 " Use correct vim colors
 if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
   let g:gruvbox_italic=1
-	colorscheme gruvbox
-	let g:airline_theme='gruvbox'
+  colorscheme gruvbox
+  let g:airline_theme='gruvbox'
 endif
 
 "}}}
@@ -436,8 +459,8 @@ endif
 " change cursor color in insert mode
 " TODO does this work?
 if &term =~ "xterm" || &term =~ 'rxvt' || &term =~ 'screen'
-	let &t_SI = "\<Esc>]12;#CCCCCC\x7"
-	let &t_EI = "\<Esc>]12;#999999\x7"
+  let &t_SI = "\<Esc>]12;#CCCCCC\x7"
+  let &t_EI = "\<Esc>]12;#999999\x7"
 endif
 
 "}}}

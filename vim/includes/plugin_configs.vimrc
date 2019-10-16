@@ -448,6 +448,13 @@ if IsPluginLoaded('autozimu/LanguageClient-neovim')
   augroup END
 endif
 
+" -- vim-exchange --
+
+if IsPluginLoaded('tommcdo/vim-exchange')
+  " reindent after exchange
+  let g:exchange_indent = 1
+endif
+
 " -- coc.nvim --
 
 if IsPluginLoaded('neoclide/coc.nvim')

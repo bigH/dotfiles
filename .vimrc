@@ -25,9 +25,9 @@ autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 "{{{ Needed for UltiSnips
 
 if IsPluginLoaded('SirVer/UltiSnips')
-	" Setup Python
-	let g:python2_host_prog = '/usr/local/bin/python'
-	let g:python3_host_prog = '/usr/local/bin/python3'
+  " Setup Python
+  let g:python2_host_prog = '/usr/local/bin/python'
+  let g:python3_host_prog = '/usr/local/bin/python3'
 endif
 
 "}}}
@@ -36,8 +36,8 @@ endif
 "{{{ Pasting Only Useful in Code
 
 " Re-indent when pasting
-nnoremap p p=`]
-nnoremap P P=`]
+nnoremap p mmp=`]`m
+nnoremap P mmP=`]`m
 
 " Re-indent when pasting in visual mode
 vnoremap p p=']

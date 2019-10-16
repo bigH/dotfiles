@@ -20,6 +20,13 @@ set shiftwidth=4
 "}}}
 
 
+"{{{ Plugin-specific settings
+
+let g:AutoClosePairs_del = "[]"
+
+"}}}
+
+
 "{{{ Paths
 
 function! s:LastFileWritten(pattern)
@@ -52,9 +59,8 @@ function! s:LoadJournal()
 
   let g:auto_save_silent = 1
   let g:auto_save_postsave_hook = 'SyncJournalAsync'
-  call AutoSaveToggle()
+  let g:markdown_fold_style = 'nested'
 
-  let g:markdown_folding = 1
   set nofoldenable
 
   execute 'cd' $JOURNAL_PATH
@@ -80,7 +86,7 @@ endfunction
 
 "{{{ Autogroups
 
-augroup SetupLoader
+augroup SetupJournal
   autocmd VimEnter * call <SID>LoadJournal()
   autocmd FocusGained * SyncJournalAsync
 augroup END

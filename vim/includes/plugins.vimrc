@@ -105,10 +105,10 @@ PlugMemoize 'vim-ruby/vim-ruby'
 " TODO ??
 PlugMemoize 'derekwyatt/vim-scala'
 
-" -- EDITING --
-" `vimwiki` potentially for use in journal
-PlugMemoize 'vimwiki/vimwiki', ForModes('journal')
+" nice markdown folding
+PlugMemoize 'masukomi/vim-markdown-folding'
 
+" -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 " NB: this plugin remaps <CR> and causes weird issues when using <C-P>
 " PlugMemoize 'tpope/vim-endwise', ForModes('vim', 'nvim')

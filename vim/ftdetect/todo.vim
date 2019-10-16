@@ -76,11 +76,19 @@ function! s:ToggleTodoStateSimple()
   call winrestview(l:save)
 endfunction
 
+function! s:FocusOnCurrent()
+  let save_cursor = getpos('.')
+  execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
+  call setpos('.', l:save_cursor)
+endfunction
+
 " Setup any bindings for TODOs buffer
 function! s:SetupTodoFile()
   set filetype=markdown.todo
 
-  let g:AutoClosePairs_del = "[]"
+  " <C-F> to focus on current category
+  nmap <silent> <buffer> <C-f> :call <SID>FocusOnCurrent()<CR>
+  imap <silent> <buffer> <C-f> <Esc>:call <SID>FocusOnCurrent()<CR>a
 
   " Map <CR> to make more TODOs
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
