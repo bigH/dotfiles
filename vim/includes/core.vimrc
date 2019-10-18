@@ -107,7 +107,7 @@ augroup end
 
 " Update time is used by CursorHold events as well as to write swap file
 " This setting is kind of fast, but it makes HighlightCursorWord work nicely
-set updatetime=200
+set updatetime=400
 
 " Highlight cursor line
 set cursorline
@@ -127,6 +127,7 @@ set splitright
 
 function! CopyRegisterToClipboard(name)
   let contents = getreg(a:name)
+  silent! call setreg('*', l:contents)
   silent! call setreg('+', l:contents)
 endfunction
 
@@ -171,7 +172,9 @@ function! s:HighlightTabsIfExpandTabSet()
     match Error /\t/
   endif
 endfunction
-au OptionSet expandtab <SID>HighlightTabsIfExpandTabSet
+
+au OptionSet expandtab call <SID>HighlightTabsIfExpandTabSet()
+
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight Comment cterm=italic gui=italic
 

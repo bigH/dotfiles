@@ -7,6 +7,7 @@ exec "source" $DOT_FILES_DIR . "/vim/includes/core.vimrc"
 
 " override nowrap - vertical splits
 set wrap
+set breakat=" "
 
 " turn off all gutter stuff
 set nolist
@@ -48,24 +49,41 @@ endfunction
 "}}}
 
 
+"{{{ Focus on Things
+
+function! s:FocusOnCurrentWhileKeepingHeader()
+  let save_cursor = getpos('.')
+  execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
+  call setpos('.', l:save_cursor)
+endfunction
+
+nmap <silent> <C-f> :call <SID>FocusOnCurrentWhileKeepingHeader()<CR>
+imap <silent> <C-f> <Esc>:call <SID>FocusOnCurrentWhileKeepingHeader()<CR>a
+
+"}}}
+
+
 "{{{ File Management
 
 command SyncJournalAsync call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vimrc')
+command SyncJournal call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vimrc --now')
 
 function! s:LoadJournal()
   syntax enable
   filetype on
   filetype plugin on
 
-  let g:auto_save_silent = 1
-  let g:auto_save_postsave_hook = 'SyncJournalAsync'
   let g:markdown_fold_style = 'nested'
+  let g:auto_save_postsave_hook = 'SyncJournalAsync'
+
+  AutoSaveToggle
 
   set nofoldenable
 
   execute 'cd' $JOURNAL_PATH
 
   call system($JOURNAL_PATH . '/system/rejournal.sh')
+  SyncJournal
 
   execute 'edit' s:TodoPath()
   execute 'filetype' 'detect'
@@ -88,6 +106,7 @@ endfunction
 
 augroup SetupJournal
   autocmd VimEnter * call <SID>LoadJournal()
+  autocmd VimLeave * SyncJournal
   autocmd FocusGained * SyncJournalAsync
 augroup END
 

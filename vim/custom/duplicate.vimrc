@@ -104,48 +104,13 @@ function! s:do_duplicate(type, ...)
     silent call cursor(g:do_duplicate_buffer.end.line, g:do_duplicate_buffer.end.column)
     silent execute 'normal! "dp'
     silent call cursor(g:do_duplicate_buffer.end.line, g:do_duplicate_buffer.end.column)
-    silent call repeat#set("\<Plug>DuplicateRepeatNormal")
   else
     silent execute 'normal! `>"dpgv'
-    silent! call visualrepeat#set("\<Plug>DuplicateRepeatVisual")
   endif
 
   call s:restore_reg('d', old_reg_value)
 endfunction
 
-function! s:do_duplicate_repeat(is_visual)
-  let contents = g:do_duplicate_buffer.text
-  let motion_type = g:do_duplicate_buffer.type
-
-  let was_visual = 0
-  if motion_type =~ '^([Vv]|\<C-V>)$'
-    let was_visual = 1
-  endif
-
-  let old_reg_value = s:save_reg('d')
-
-  let old_line = line('.')
-  let old_col = col('.')
-
-  silent! call setreg('d', contents)
-  if was_visual == 0
-    silent call cursor(g:do_duplicate_buffer.end.line, g:do_duplicate_buffer.end.column)
-    silent execute 'normal! "dp'
-    call cursor(old_line, old_col)
-    silent call repeat#set("\<Plug>DuplicateRepeatNormal")
-  else
-    if is_visual == 1
-      silent execute 'normal! `>"dpgv'
-    else
-    endif
-    silent! call visualrepeat#set("\<Plug>DuplicateRepeatVisual")
-  endif
-
-  call s:restore_reg('d', old_reg_value)
-endfunction
-
-nnoremap <silent> <Plug>DuplicateRepeatVisual :call <SID>do_duplicate_repeat(1)<CR>
-nnoremap <silent> <Plug>DuplicateRepeatNormal :call <SID>do_duplicate_repeat(0)<CR>
 nnoremap <silent> <Plug>DuplicateNormal :<C-U>set operatorfunc=<SID>do_duplicate<CR>g@
 vnoremap <silent> <Plug>DuplicateVisual :<C-U>call <SID>do_duplicate(visualmode(), 1)<CR>
 

@@ -40,6 +40,17 @@ function! s:GetCurrentStateChar()
   endif
 endfunction
 
+function! s:ChangeState(char)
+  let save = winsaveview()
+  let search_reg = <SID>SaveReg("/")
+  let state = <SID>GetCurrentStateChar()
+  if l:state != a:char
+    call <SID>SetTodoState(a:char)
+  endif
+  call <SID>RestoreReg("/", l:search_reg)
+  call winrestview(l:save)
+endfunction
+
 function! s:ToggleTodoStateAll()
   let save = winsaveview()
   let search_reg = <SID>SaveReg("/")
@@ -76,28 +87,25 @@ function! s:ToggleTodoStateSimple()
   call winrestview(l:save)
 endfunction
 
-function! s:FocusOnCurrent()
-  let save_cursor = getpos('.')
-  execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
-  call setpos('.', l:save_cursor)
-endfunction
-
 " Setup any bindings for TODOs buffer
 function! s:SetupTodoFile()
   set filetype=markdown.todo
-
-  " <C-F> to focus on current category
-  nmap <silent> <buffer> <C-f> :call <SID>FocusOnCurrent()<CR>
-  imap <silent> <buffer> <C-f> <Esc>:call <SID>FocusOnCurrent()<CR>a
 
   " Map <CR> to make more TODOs
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 
   " <C-X> to toggle done/not-done
+  " NB: overrides <C-x> used for decrement
   nmap <silent> <buffer> <C-x> :call <SID>ToggleTodoStateSimple()<CR>
   imap <silent> <buffer> <C-x> <Esc>:call <SID>ToggleTodoStateSimple()<CR>a
+
+  " <C-\> to toggle done/not-done
   nmap <silent> <buffer> <C-\> :call <SID>ToggleTodoStateAll()<CR>
   imap <silent> <buffer> <C-\> <Esc>:call <SID>ToggleTodoStateAll()<CR>a
+
+  " TODO: <C-0> to toggle done/not-done
+  nmap <silent> <buffer> <C-0> :call <SID>ChangeState('0')<CR>
+  imap <silent> <buffer> <C-0> <Esc>:call <SID>ChangeState('0')<CR>a
 
   " Move between windows using <C-H/L> keys
   nmap <silent> <buffer> <Tab> >>

@@ -104,13 +104,3 @@ endif
 
 
 " TODO Ideas:
-" - a 'verb' that behaves like `c` but basically searches for what was deleted
-"   so you can `n.` your way to changing the entire file.
-" - a surround and pre-pend type utility to turn `foo` into `x { foo }` or the
-"   'do'/'end' variant
-" - a `ub` motion like `t`, but one character before that:
-"   `|let xyz = abc` -> `cub=` will change the `let xyz`, where as `ct=`
-"   includes the ` `
-" - a mapping for <C-A/X> that moves to the nearest number and changes it
-" - gundo for undo tree
-" - split this so it can be used as needed
