@@ -111,3 +111,5 @@ source $DOT_FILES_DIR/.profile
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 autoload -U +X bashcompinit && bashcompinit
+
+cd $HOME

@@ -11,7 +11,7 @@ sudo add-apt-repository ppa:longsleep/golang-backports
 
 sudo apt-get update
 
-sudo apt-get install -y dconf-cli uuid-runtime golang-go ctags yarn ghc neovim rbenv
+sudo apt-get install -y dconf-cli uuid-runtime golang-go ctags yarn ghc neovim rbenv clang llvm
 
 bash -c  "$(wget -qO- https://git.io/vQgMr)"
 
