@@ -83,10 +83,6 @@ print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DO
 print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 echo ""
 
-printf "  - ${BLUE}Installing \`gogh\` (color schemes) ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/Mayccoll/Gogh.git $DOT_FILES_DIR/gogh"
-echo ""
-
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo ""

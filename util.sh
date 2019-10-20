@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
 

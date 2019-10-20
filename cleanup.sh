@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
 source "$DOT_FILES_DIR/util.sh"
@@ -22,7 +22,10 @@ unlink "$HOME/.config/nvim/init.vim"
 
 # unlink directories
 rm -f "$HOME/.vim/UltiSnips"
+rm -f "$HOME/.config/nvim/syntax"
+rm -f "$HOME/.config/nvim/ftdetect"
 rm -f "$HOME/.vim/syntax"
+rm -f "$HOME/.vim/ftdetect"
 rm -f "$HOME/.vim"
 rm -f "$HOME/nice-noise-loops"
 rm -f "$HOME/bin"
