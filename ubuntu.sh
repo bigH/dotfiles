@@ -7,11 +7,12 @@ curl -sS https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key ad
 echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google.list
 
 sudo add-apt-repository ppa:hvr/ghc
+sudo add-apt-repository ppa:longsleep/golang-backports
 
 sudo apt-get update
+
+sudo apt-get install -y dconf-cli uuid-runtime golang-go ctags yarn ghc neovim rbenv
 
 bash -c  "$(wget -qO- https://git.io/vQgMr)"
 
 curl https://sh.rustup.rs -sSf | sh
-
-sudo apt-get install -y dconf-cli uuid-runtime golang ctags yarn ghc neovim rbenv
