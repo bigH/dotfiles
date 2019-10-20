@@ -1,4 +1,4 @@
-#/!/bin/bash
+#!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
 source "$DOT_FILES_DIR/util.sh"
@@ -44,9 +44,14 @@ link_if_possible "$DOT_FILES_DIR/.vimrc" "$HOME/.vimrc"
 link_if_possible "$DOT_FILES_DIR/.vim" "$HOME/.vim"
 link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.vim/syntax"
 link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.vim/ftdetect"
+link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.vim/coc-settings.json"
+echo ""
+
+echo "${BLUE}${BOLD}vim -> neovim${NORMAL}"
+mk_expected_dir "$HOME/.config/nvim"
+link_if_possible "$DOT_FILES_DIR/.nvim.init.vim" "$HOME/.config/nvim/init.vim"
 link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.config/nvim/syntax"
 link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.config/nvim/ftdetect"
-link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.vim/coc-settings.json"
 link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
 echo ""
 
@@ -76,6 +81,10 @@ echo ""
 printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
 print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
+echo ""
+
+printf "  - ${BLUE}Installing \`gogh\` (color schemes) ...${NORMAL}"
+print_symbol_for_status "clone" "git clone https://github.com/Mayccoll/Gogh.git $DOT_FILES_DIR/gogh"
 echo ""
 
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
@@ -115,11 +124,6 @@ else
   link_if_possible "$DOT_FILES_DIR/.gitignore_global" "$HOME/.gitignore_global"
   link_if_possible "$DOT_FILES_DIR/.gitconfig" "$HOME/.gitconfig"
 fi
-echo ""
-
-echo "${BLUE}${BOLD}vim -> neovim${NORMAL}"
-mk_expected_dir "$HOME/.config/nvim"
-link_if_possible "$DOT_FILES_DIR/.nvim.init.vim" "$HOME/.config/nvim/init.vim"
 echo ""
 
 echo "${BLUE}${BOLD}Miscellany ...${NORMAL}"
@@ -167,16 +171,26 @@ echo ""
 echo "     ... optional if doing \`ruby\`"
 echo "     \`[rbenv exec] gem install ripper-tags\`"
 echo ""
-echo "     ... on macOS"
-echo "     Install \`alacritty\` and/or \`kitty\`"
-echo ""
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
+  echo ""
+  echo "     ... on macOS"
+  echo "     Install \`alacritty\` and/or \`kitty\`"
+  echo ""
+  echo "     ... sets up OS X in a nice way"
+  echo "     \`~/.hiren/.osx\`"
+  echo ""
+else
+  echo "  [${BLUE}${BOLD}Other POSIX${NORMAL}]: (assumes Ubuntu family)"
+  echo ""
+  echo "     ... sets up Ubuntu in a nice way"
+  echo "     \`sudo apt-get install dconf-cli uuid-runtime golang ctags yarn rustup\`"
+  echo ""
+fi
 echo "     ... ligatures and nice mono-space font"
 echo "     Install \`hasklig\` font"
 echo ""
 echo "     Setup \`iTerm2\` to use the configs in \`$DOT_FILES_DIR/iterm\`"
-echo ""
-echo "     ... sets up OS X in a nice way"
-echo "     \`~/.hiren/.osx\`"
 echo ""
 if [ -n "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
   echo "  $DOT_FILES_ENV_DISPLAY:"

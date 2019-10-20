@@ -56,6 +56,9 @@ function! IsPluginLoaded(...)
   return 1
 endfunction
 
+" NB: needed to make this file work in isolation
+set nocompatible
+
 " -- PLUGINS --
 call plug#begin('~/.vim/bundle')
 
