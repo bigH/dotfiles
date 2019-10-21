@@ -1,7 +1,7 @@
-if exists('g:visual_star')
+if exists('g:custom_visual_star')
   finish
 endif
-let g:visual_star = 1
+let g:custom_visual_star = 1
 
 " get content of visual selection as string
 function! s:GetVisualSelectionAsString()

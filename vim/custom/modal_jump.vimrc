@@ -1,7 +1,7 @@
-if exists('g:modal_jump')
+if exists('g:custom_modal_jump')
   finish
 endif
-let g:modal_jump = 1
+let g:custom_modal_jump = 1
 
 "{{{ Cycle <C-J> and <C-K> functionality
 

@@ -1,7 +1,7 @@
-if exists('g:change_repeat')
+if exists('g:custom_change_repeat')
   finish
 endif
-let g:change_repeat = 1
+let g:custom_change_repeat = 1
 
 " TODO
 "  - undo fragments the first action

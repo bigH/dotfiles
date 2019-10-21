@@ -1,7 +1,7 @@
-if exists('g:stacktrace_browser')
+if exists('g:custom_stacktrace_browser')
   finish
 endif
-let g:stacktrace_browser = 1
+let g:custom_stacktrace_browser = 1
 
 " get content of visual selection
 function! s:GetVisualSelectionAsArray()

@@ -69,6 +69,7 @@ set directory=~/.vim/tmp
 
 " Save undo-history
 set undolevels=5000
+set undoreload=5000
 set undodir=~/.vim/undodir
 set undofile
 
@@ -92,6 +93,7 @@ set nofoldenable
 
 " Use the mouse
 set mouse=a
+set mousehide
 
 " Put tags in the `.tags` file - `$PROJECT_ROOT/.tags`
 set tags=.tags
@@ -119,6 +121,9 @@ filetype plugin on
 " Split Naturally
 set splitbelow
 set splitright
+
+" Fix Splits when Resizing
+autocmd VimResized * wincmd =
 
 "}}}
 
@@ -349,7 +354,17 @@ imap <silent> <C-F> <Esc>wi
 
 " use <CR> to select from pop-up menu
 " NB: this mapping conflicts with endwise, which also remaps `<CR>`
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>"
+
+" visual shifting keeps selection
+vnoremap < <gv
+vnoremap > >gv
+
+" allow the . to execute once for each line of a visual selection
+vnoremap . :normal .<CR>
+
+" `w!!` to force sudo
+cmap !! w !sudo tee % >/dev/null
 
 "}}}
 

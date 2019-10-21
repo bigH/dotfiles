@@ -7,7 +7,6 @@ exec "source" $DOT_FILES_DIR . "/vim/includes/core.vimrc"
 
 " override nowrap - vertical splits
 set wrap
-set breakat=" "
 
 " turn off all gutter stuff
 set nolist
@@ -83,7 +82,6 @@ function! s:LoadJournal()
   execute 'cd' $JOURNAL_PATH
 
   call system($JOURNAL_PATH . '/system/rejournal.sh')
-  SyncJournal
 
   execute 'edit' s:TodoPath()
   execute 'filetype' 'detect'
@@ -94,6 +92,8 @@ function! s:LoadJournal()
     execute 'vsplit' l:journal_path
     execute 'filetype' 'detect'
   endif
+
+  SyncJournalAsync
 
   execute 'wincmd' 'h'
   execute 'wincmd' 'h'
@@ -108,6 +108,7 @@ augroup SetupJournal
   autocmd VimEnter * call <SID>LoadJournal()
   autocmd VimLeave * SyncJournal
   autocmd FocusGained * SyncJournalAsync
+  autocmd FocusLost * stopinsert
 augroup END
 
 "}}}

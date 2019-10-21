@@ -1,7 +1,7 @@
-if exists('g:loaded_kill_buffer_not_split')
+if exists('g:custom_kill_buffer_not_split')
   finish
 endif
-let g:loaded_kill_buffer_not_split = 1
+let g:custom_kill_buffer_not_split = 1
 
 func! KillBufferNotSplit() abort
     if &modified

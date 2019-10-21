@@ -1,7 +1,7 @@
-if exists('g:modal_paste')
+if exists('g:custom_modal_paste')
   finish
 endif
-let g:modal_paste = 1
+let g:custom_modal_paste = 1
 
 
 "{{{ Line Number and Paste Cycle

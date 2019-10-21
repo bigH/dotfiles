@@ -1,7 +1,7 @@
-if exists('g:duplicate')
+if exists('g:custom_duplicate')
   finish
 endif
-let g:duplicate = 1
+let g:custom_duplicate = 1
 
 " TODO
 "  - undo fragments actions

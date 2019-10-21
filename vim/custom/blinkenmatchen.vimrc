@@ -1,8 +1,8 @@
-if exists('g:blinkenmatchen')
+if exists('g:custom_blinkenmatchen')
   finish
 endif
 
-let g:blinkenmatchen = 1
+let g:custom_blinkenmatchen = 1
 
 nnoremap <silent> <Plug>(blinkenmatchen-next) n:call HLBlink(0.1)<CR>
 nnoremap <silent> <Plug>(blinkenmatchen-prev) N:call HLBlink(0.1)<CR>

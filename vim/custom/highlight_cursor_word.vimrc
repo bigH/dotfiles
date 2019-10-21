@@ -1,7 +1,7 @@
-if exists('g:highlight_cursor_word_installed')
+if exists('g:custom_highlight_cursor_word')
   finish
 endif
-let g:highlight_cursor_word_installed = 1
+let g:custom_highlight_cursor_word = 1
 
 function! s:NoHighlightCursorWordNow()
   if (exists("w:HighlightCursorWordMatchId") && w:HighlightCursorWordMatchId !=0)
