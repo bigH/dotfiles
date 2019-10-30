@@ -22,7 +22,7 @@ function! HighlightCurrent()
     highlight SearchCurrentResult ctermbg=lightgreen ctermfg=black
   endif
   if exists('g:blinkenmatchen_current_match')
-    call matchdelete(g:ring)
+    call matchdelete(g:blinkenmatchen_current_match)
   end
   let matchlen = strlen(matchstr(strpart(getline('.'),column-1),@/))
   let target_pat = '\c\%#\%('.@/.'\)'

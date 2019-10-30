@@ -36,7 +36,7 @@
 # List History
 	ls = "log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\""
 # List History in Long Format
-	ls = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --numstat"
+	ll = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --numstat"
 # List History with Relative Dates
 	ld = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --date=relative"
 # List History with Short Format
