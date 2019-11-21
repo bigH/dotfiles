@@ -111,6 +111,14 @@ PlugMemoize 'derekwyatt/vim-scala'
 " nice markdown folding
 PlugMemoize 'masukomi/vim-markdown-folding'
 
+" typescript and jsx files
+PlugMemoize 'leafgarland/typescript-vim'
+PlugMemoize 'mxw/vim-jsx'
+PlugMemoize 'HerringtonDarkholme/yats.vim'
+
+" TODO get rid of this if `ale` doesn't do it
+" PlugMemoize 'prettier/vim-prettier'
+
 " -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 " NB: this plugin remaps <CR> and causes weird issues when using <C-P>
@@ -129,7 +137,8 @@ PlugMemoize 'tpope/vim-commentary'
 PlugMemoize 'vim-scripts/ReplaceWithRegister'
 
 " automatically closes things you open `()`, `[]`, etc.
-PlugMemoize 'Townk/vim-autoclose'
+" TODO annoying with typescript imports
+" PlugMemoize 'Townk/vim-autoclose'
 
 " highlights whitespace where it's not desired
 PlugMemoize 'ntpeters/vim-better-whitespace'

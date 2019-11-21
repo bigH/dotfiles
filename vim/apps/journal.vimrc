@@ -52,7 +52,12 @@ endfunction
 
 function! s:FocusOnCurrentWhileKeepingHeader()
   let save_cursor = getpos('.')
-  execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
+  let current_line = getline('.')
+  if l:current_line =~ '^#\s.*$'
+    execute 'normal! zMggzo' . l:save_cursor[1] . 'GzO'
+  else
+    execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
+  endif
   call setpos('.', l:save_cursor)
 endfunction
 

@@ -110,10 +110,14 @@ if IsPluginLoaded('dense-analysis/ale')
   " Execution configs
   let g:ale_linters = {}
   let g:ale_linters['ruby'] = ['rubocop']
-  let g:ale_linters['javascript'] = ['eslint', 'flow']
+  let g:ale_linters['javascript'] = ['prettier', 'eslint']
   let g:ale_linters['haskell'] = ['stack-ghc-mod', 'hlint']
 
-  let g:ale_fixers = ['rubocop']
+  let g:ale_fixers = {
+  \   'ruby': ['rubocop'],
+  \   'javascript': ['prettier'],
+  \   'css': ['prettier'],
+  \}
 
   " Use `bundle`
   let g:ale_ruby_rubocop_executable = 'bundle'

@@ -54,6 +54,13 @@ if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then
   export PATH="/usr/local/Cellar/emacs/26.2/bin:$PATH"
 fi
 
+# Add `nvm`
+if [ -d "$HOME/.nvm" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
 # Add `llvm`
 if [ -d '/usr/local/opt/llvm/bin/' ]; then
   export PATH="/usr/local/opt/llvm/bin/:$PATH"

@@ -4,13 +4,15 @@ export DOT_FILES_DIR=$HOME/.hiren
 source "$DOT_FILES_DIR/util.sh"
 
 # unlinks
-unlink "$HOME/.alacritty.yml"
 unlink "$HOME/.ackrc"
-unlink "$HOME/.gitignore_global"
-unlink "$HOME/.rgignore"
+unlink "$HOME/.alacritty.yml"
+unlink "$HOME/.config/alacritty.yml"
+unlink "$HOME/.ctags"
 unlink "$HOME/.gitconfig"
+unlink "$HOME/.gitignore_global"
 unlink "$HOME/.inputrc"
 unlink "$HOME/.pryrc"
+unlink "$HOME/.rgignore"
 unlink "$HOME/.tigrc"
 unlink "$HOME/.vimrc"
 unlink "$HOME/.zshrc"
