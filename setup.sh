@@ -123,9 +123,10 @@ fi
 echo ""
 
 echo "${BLUE}${BOLD}Miscellany ...${NORMAL}"
+mk_expected_dir "$HOME/.config/alacritty"
 link_if_possible "$DOT_FILES_DIR/.ackrc" "$HOME/.ackrc"
 link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.alacritty.yml"
-link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.config/alacritty.yml"
+link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
 link_if_possible "$DOT_FILES_DIR/.ctags" "$HOME/.ctags"
 link_if_possible "$DOT_FILES_DIR/.inputrc" "$HOME/.inputrc"
 link_if_possible "$DOT_FILES_DIR/.pryrc" "$HOME/.pryrc"
