@@ -87,6 +87,11 @@ if [ -e "$DOT_FILES_DIR/ripgrep/complete" ]; then
   fi
 fi
 
+# add brew path
+if [ -d '/usr/local/sbin' ]; then
+  export PATH="/usr/local/sbin:$PATH"
+fi
+
 # Initialize `rbenv`
 if type rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"

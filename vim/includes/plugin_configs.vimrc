@@ -1,7 +1,7 @@
-if exists('g:color_stuff')
+if exists('g:plugin_configs')
   finish
 endif
-let g:color_stuff = 1
+let g:plugin_configs = 1
 
 
 "{{{ Plugin Configurations
@@ -14,6 +14,14 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim', 'zackhsi/fzf-tags')
 
   " Map <C-\> to do this with vsplit
   nmap <C-\> :vsplit<CR><Plug>(fzf_tags)
+endif
+
+" -- fzf --
+
+if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim', 'yuki-ycino/fzf-preview.vim')
+  " use `bat`
+  let g:fzf_preview_command = 'bat -p --color always {-1}'
+
 endif
 
 " -- fzf --
@@ -116,6 +124,8 @@ if IsPluginLoaded('dense-analysis/ale')
   let g:ale_fixers = {
   \   'ruby': ['rubocop'],
   \   'javascript': ['prettier'],
+  \   'typescript': ['prettier'],
+  \   'typescriptreact': ['prettier'],
   \   'css': ['prettier'],
   \}
 
@@ -132,7 +142,7 @@ if IsPluginLoaded('dense-analysis/ale')
   let g:airline#extensions#ale#enabled = 1
 
   " Fix on Save (Sucks on Rubocop)
-  " let g:ale_fix_on_save = 1
+  let g:ale_fix_on_save = 1
 endif
 
 " -- nerd-tree --

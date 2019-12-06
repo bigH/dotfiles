@@ -13,7 +13,7 @@ endfunction
 
 " Setup any bindings for Journal buffer
 function! s:SetupNotesFile()
-  set filetype=markdown.notes
+  setlocal filetype=markdown.notes
 
   " Map <CR> to make more TODOs
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
@@ -26,14 +26,17 @@ function! s:SetupNotesFile()
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
-    set breakindent
+    setlocal breakindent
 
     " shift wrapped content 2 spaces
-    set breakindentopt=shift:2,sbr
-    set showbreak=
+    setlocal breakindentopt=shift:2,sbr
+    setlocal showbreak=
 
     " break at words
-    set linebreak
+    setlocal linebreak
+
+    " fold everything
+    setlocal foldenable
   endif
 endfunction
 

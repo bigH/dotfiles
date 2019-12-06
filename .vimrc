@@ -36,6 +36,7 @@ endif
 "{{{ Pasting Only Useful in Code
 
 " Re-indent when pasting
+" nnoremap p mmp :undojoin \| execute 'normal' '=`]`m'<CR>
 nnoremap p mmp=`]`m
 nnoremap P mmP=`]`m
 

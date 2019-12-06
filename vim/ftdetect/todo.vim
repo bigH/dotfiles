@@ -89,7 +89,7 @@ endfunction
 
 " Setup any bindings for TODOs buffer
 function! s:SetupTodoFile()
-  set filetype=markdown.todo
+  setlocal filetype=markdown.todo
 
   " Map <CR> to make more TODOs
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
@@ -115,14 +115,17 @@ function! s:SetupTodoFile()
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
-    set breakindent
+    setlocal breakindent
 
     " shift wrapped content 6 spaces
-    set breakindentopt=shift:6,sbr
-    set showbreak=
+    setlocal breakindentopt=shift:6,sbr
+    setlocal showbreak=
 
     " break at words
-    set linebreak
+    setlocal linebreak
+
+    " fold everything
+    setlocal foldenable
   endif
 endfunction
 

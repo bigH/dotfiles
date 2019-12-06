@@ -82,8 +82,6 @@ function! s:LoadJournal()
 
   AutoSaveToggle
 
-  set nofoldenable
-
   execute 'cd' $JOURNAL_PATH
 
   call system($JOURNAL_PATH . '/system/rejournal.sh')

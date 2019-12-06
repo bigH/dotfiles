@@ -1,6 +1,6 @@
 " Setup any bindings for Journal buffer
 function! s:SetupJournalFile()
-  set filetype=markdown.journal
+  setlocal filetype=markdown.journal
 
   " <C-X> to indicate journal entry is complete
   " NB: overrides <C-x> used for decrement
@@ -9,14 +9,17 @@ function! s:SetupJournalFile()
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
-    set breakindent
+    setlocal breakindent
 
     " shift wrapped content 2 spaces
-    set breakindentopt=shift:2,sbr
-    set showbreak=
+    setlocal breakindentopt=shift:2,sbr
+    setlocal showbreak=
 
     " break at words
-    set linebreak
+    setlocal linebreak
+
+    " fold everything
+    setlocal foldenable
   endif
 endfunction
 

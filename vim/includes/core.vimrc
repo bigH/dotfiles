@@ -191,8 +191,7 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
 " Desired `highlight` in comments
 augroup Todos
-  au!
-  au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|NB):/
+  au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|PR|NB):/
         \ containedin=.*Comment,vimCommentTitle
 augroup END
 
@@ -237,7 +236,6 @@ set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 " Much more useful if we make it be <leader>!
 " (Uses map instead of mapleader so that this doesn't affect insert mode.)
 nmap <space> <leader>
-nmap \ <nop>
 
 " <CR> is easier for me to hit on my keyboard than :
 nnoremap <CR> :
@@ -250,23 +248,8 @@ noremap <leader><leader> :w<CR>
 
 "{{{ Auto Commands
 
-" Defaults for certain files
-augroup FiletypeSettings
-  " Always use tabs in gitconfig
-  au FileType gitconfig setlocal noexpandtab
-
-  " Wrap long lines in quickfix windows
-  au FileType qf setlocal wrap
-
-  " Set cursorline in quickfix windows
-  au FileType qf setlocal cursorline
-augroup END
-
 " Restore cursor position to where it was before
 augroup JumpCursorOnEdit
-
-  au!
-
   autocmd BufReadPost *
         \ if expand("<afile>:p:h") !=? $TEMP |
         \   if line("'\"") > 1 && line("'\"") <= line("$") |
@@ -356,9 +339,9 @@ imap <silent> <C-F> <Esc>wi
 " NB: this mapping conflicts with endwise, which also remaps `<CR>`
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>"
 
-" visual shifting keeps selection
-vnoremap < <gv
-vnoremap > >gv
+" visual shifting keeps selection (doesn't play nice with `.`)
+" vnoremap < <gv
+" vnoremap > >gv
 
 " allow the . to execute once for each line of a visual selection
 vnoremap . :normal .<CR>
@@ -428,6 +411,13 @@ execute "source" $DOT_FILES_DIR . "/vim/custom/duplicate.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/highlight_cursor_word.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/until.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/visual_star.vimrc"
+
+"}}}
+
+
+"{{{ FileType Customizations
+
+execute "source" $DOT_FILES_DIR . "/vim/includes/filetypes.vimrc"
 
 "}}}
 

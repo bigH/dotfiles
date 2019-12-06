@@ -1,3 +1,8 @@
+if exists('g:plugin_installs')
+  finish
+endif
+let g:plugin_installs = 1
+
 if !exists('g:app_plugin_set')
   if has('nvim')
     let g:app_plugin_set = 'nvim'
@@ -184,6 +189,9 @@ PlugMemoize 'tommcdo/vim-lion'
 " utilities for editing vimscript
 " TODO make this conditional on project directory
 PlugMemoize 'tpope/vim-scriptease'
+
+PlugMemoize 'yuki-ycino/fzf-preview.vim'
+PlugMemoize 'bogado/file-line'
 
 " Command over Completion
 PlugMemoize 'neoclide/coc.nvim',

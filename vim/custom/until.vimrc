@@ -4,6 +4,7 @@ endif
 let g:custom_until = 1
 " TODO:
 " - `cU=` is awkward because `U` is awkward
+" - `cU=` could be used to mean until the last `=`
 " - in situations where the character is not present it just uses the
 "   character under the cursor - which is bad
 
