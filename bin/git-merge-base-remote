@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git_merge_base_remote() {
+  if [ -f .hiren/merge-base-remote ]; then
+    cat .hiren/merge-base-remote
+  else
+    echo 'origin'
+  fi
+}
+
+git_merge_base_remote

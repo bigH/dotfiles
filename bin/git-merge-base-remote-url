@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git_merge_base_remote_url() {
+  git remote -v | grep "$(git merge-base-remote)" | awk '{print $2}' | uniq
+}
+
+git_merge_base_remote_url

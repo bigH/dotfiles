@@ -49,11 +49,14 @@ alias jh='cd $DOT_FILES_DIR'
 alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then
-  # git
   alias g='git'
   alias gn='git --no-pager'
 
-  # misspellings of git
+  # merge-base
+  alias gmb='g merge-base $(g merge-base-remote)/$(g merge-base-branch)'
+  alias gmbh='gmb HEAD'
+
+  # misspellings
   alias gti=g
   alias igt=g
   alias itg=g
@@ -61,17 +64,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # commit wip
   alias wip='g commit -a -m WIP'
 
-  # -- git shortcuts
+  # -- shortcuts
 
-  # git checkout
+  # checkout
   alias gco="g checkout"
   alias gcob="g checkout -b"
 
-  # git add
+  # add
   alias ga="g add"
   alias gap="g add --patch"
 
-  # git commit
+  # commit
   alias gc="g commit"
   alias gca="g commit -a"
   alias gcm="g commit -m"
@@ -79,35 +82,35 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcamend="g commit --amend"
   alias gcane="g commit --amend --no-edit"
 
-  # git push
+  # push
   alias gs='g st'
   alias gsf='g st | cut -c4-'
   alias gst='ls -t $(g st | cut -c4-)'
   alias gstr='ls -tr $(g st | cut -c4-)'
 
-  # git show
+  # show
   alias gsh='g show'
 
-  # git stash list
+  # stash list
   alias gsl='g stash list'
   alias gsls='g stash list --stat'
 
-  # git log
+  # log
   alias gl='g log'
   alias gll='g log --stat'
-  alias glm='gn log $(git merge-base HEAD origin/master)..HEAD'
-  alias gllm='gn log --stat $(git merge-base HEAD origin/master)..HEAD'
+  alias glm='gn log $(gmbh)..HEAD'
+  alias gllm='gn log --stat $(gmbh)..HEAD'
 
-  # git pull
-  alias gpom='g pull origin master-passing-tests'
-  alias gprom='g pull --rebase origin master-passing-tests'
+  # pull
+  alias gpom='g pull $(g merge-base-remote) $(g merge-base-branch)'
+  alias gprom='g pull --rebase $(g merge-base-remote) $(g merge-base-branch)'
 
-  # git push
+  # push
   alias gp='g push origin $(g branch-name)'
   alias gpf='g push --force origin $(g branch-name)'
   alias gpu='g push -u origin $(g branch-name)'
 
-  # git diff
+  # diff
   alias gd='g diff'
   alias gdm='g diff $(g merge-base HEAD origin/master)'
   alias gnd='gn diff'
@@ -115,7 +118,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gds='g diff --staged'
   alias gnds='gn diff --staged'
 
-  # git vim/vim-all
+  # vim/vim-all
   alias gv='g vim'
   alias gva='g vim-all'
 fi
