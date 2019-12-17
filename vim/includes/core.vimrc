@@ -95,8 +95,8 @@ set nofoldenable
 set mouse=a
 set mousehide
 
-" Put tags in the `.tags` file - `$PROJECT_ROOT/.tags`
-set tags=.tags
+" Put tags in the default location - only search PWD
+set tags=tags
 
 " Auto read files when they change
 set autoread
@@ -130,13 +130,15 @@ autocmd VimResized * wincmd =
 
 "{{{ Copy to OS Clipboard
 
-function! CopyRegisterToClipboard(name)
-  let contents = getreg(a:name)
-  silent! call setreg('*', l:contents)
-  silent! call setreg('+', l:contents)
+function! CopyPlusToStar(name)
+  if a:name == '+'
+    let contents = getreg(a:name)
+    silent! call setreg('*', l:contents)
+    silent! call setreg('+', l:contents)
+  endif
 endfunction
 
-autocmd TextYankPost * call CopyRegisterToClipboard(v:event.regname)
+autocmd TextYankPost * call CopyPlusToStar(v:event.regname)
 
 "}}}
 
@@ -311,8 +313,8 @@ nnoremap <silent> <M-CR> i<CR><Esc>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Use Y to append in visual mode
-vnoremap <silent> Y "Yy
+" Use Y to put text into clipboard
+vnoremap <silent> Y "+y
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>

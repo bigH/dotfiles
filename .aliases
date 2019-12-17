@@ -34,19 +34,29 @@ else
   alias v='vim'
 fi
 
+# chrome memory
+alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d"+" - | bc'
+
+# go to dot files
+alias jh='cd $DOT_FILES_DIR'
+
+# rg - better colors
+alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
+
 # yarn -> y
 if type yarn >/dev/null 2>&1; then
   alias y='yarn'
 fi
 
-# chrome memory
-alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d"+" - | bc'
+# docker -> d
+if type docker >/dev/null 2>&1; then
+  alias d=docker
+fi
 
-# chrome memory
-alias jh='cd $DOT_FILES_DIR'
-
-# rg - better colors
-alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
+# docker-compose -> dc
+if type docker-compose >/dev/null 2>&1; then
+  alias dc=docker-compose
+fi
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias g='git'
