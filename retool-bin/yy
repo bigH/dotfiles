@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd "$RETOOL_DEV/hammerhead" || (echo 'ERROR: $RETOOL_DEV/retool not found'; exit)
+yarn dev:onprem

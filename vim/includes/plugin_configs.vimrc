@@ -77,14 +77,17 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \           : fzf#vim#with_preview('right:50%:hidden', '?'),
         \   <bang>0)
 
-  " Map `\f` to FZF search all open files
-  nmap <silent> <leader>f :Lines<CR>
+  " Map `\f` to FZF search all files with Rg
+  nmap <silent> <leader>f :Rg<CR>
+  " Map `\F` to FZF search open files
+  nmap <silent> <leader>F :Lines<CR>
 
   " Map `\t` to FZF tag finder
   nmap <silent> <leader>t :Tags<CR>
 
   " Map `\e` to FZF file lister
   nmap <silent> <leader>e :Files<CR>
+  nmap <silent> <leader>E :Files<CR>
 
   " Map `\o` to FZF file lister
   nmap <silent> <leader>O :RecentFiles<CR>

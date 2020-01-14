@@ -128,7 +128,7 @@ autocmd VimResized * wincmd =
 "}}}
 
 
-"{{{ Copy to OS Clipboard
+"{{{ Copy to all OS clipboards
 
 function! CopyPlusToStar(name)
   if a:name == '+'
@@ -412,7 +412,7 @@ execute "source" $DOT_FILES_DIR . "/vim/custom/change_repeat.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/duplicate.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/highlight_cursor_word.vimrc"
 execute "source" $DOT_FILES_DIR . "/vim/custom/until.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/visual_star.vimrc"
+execute "source" $DOT_FILES_DIR . "/vim/custom/star_pound.vimrc"
 
 "}}}
 

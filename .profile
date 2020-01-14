@@ -15,12 +15,19 @@ source $DOT_FILES_DIR/.colors
 source $DOT_FILES_DIR/.local.configs
 source $DOT_FILES_DIR/.journal.configs
 
+
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.configs" ]; then
     source $DOT_FILES_DIR/.$DOT_FILES_ENV.configs
   fi
 else
   source $DOT_FILES_DIR/.default.configs
+fi
+
+if [ ! -z "$DOT_FILES_ENV" ]; then
+  if [ -d "$HOME/$DOT_FILES_ENV-bin" ]; then
+    export PATH="$HOME/$DOT_FILES_ENV-bin:$PATH"
+  fi
 fi
 
 source $DOT_FILES_DIR/.aliases

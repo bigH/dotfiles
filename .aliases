@@ -12,26 +12,30 @@ else
   alias ls='ls -p --color=auto -G --group-directories-first'
 fi
 
+if type kubectl >/dev/null 2>&1; then
+  alias kc=kubectl
+fi
+
 # manipulate files verbosely (print log of what happened)
 alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
 
 # tree
-alias tree="tree --dirsfirst"
+alias tree='tree --dirsfirst'
 
 # useful kill commands
-alias k='kill'
+alias k=kill
 alias k9='kill -9'
 
 # use nvim if present, otherwise vim
 if type nvim >/dev/null 2>&1; then
-  alias vim='nvim'
-  alias vi='nvim'
-  alias v='nvim'
+  alias vim=nvim
+  alias vi=nvim
+  alias v=nvim
 else
-  alias vi='vim'
-  alias v='vim'
+  alias vi=vim
+  alias v=vim
 fi
 
 # chrome memory
@@ -45,7 +49,7 @@ alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' -
 
 # yarn -> y
 if type yarn >/dev/null 2>&1; then
-  alias y='yarn'
+  alias y=yarn
 fi
 
 # docker -> d
@@ -59,11 +63,11 @@ if type docker-compose >/dev/null 2>&1; then
 fi
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then
-  alias g='git'
+  alias g=git
   alias gn='git --no-pager'
 
   # merge-base
-  alias gmb='g merge-base $(g merge-base-remote)/$(g merge-base-branch)'
+  alias gmb='g merge-base "$(g merge-base-remote)/$(g merge-base-branch)"'
   alias gmbh='gmb HEAD'
 
   # misspellings
@@ -77,20 +81,20 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # -- shortcuts
 
   # checkout
-  alias gco="g checkout"
-  alias gcob="g checkout -b"
+  alias gco='g checkout'
+  alias gcob='g checkout -b'
 
   # add
-  alias ga="g add"
-  alias gap="g add --patch"
+  alias ga='g add'
+  alias gap='g add --patch'
 
   # commit
-  alias gc="g commit"
-  alias gca="g commit -a"
-  alias gcm="g commit -m"
-  alias gcam="g commit -am"
-  alias gcamend="g commit --amend"
-  alias gcane="g commit --amend --no-edit"
+  alias gc='g commit'
+  alias gca='g commit -a'
+  alias gcm='g commit -m'
+  alias gcam='g commit -am'
+  alias gcamend='g commit --amend'
+  alias gcane='g commit --amend --no-edit'
 
   # push
   alias gs='g st'
@@ -122,9 +126,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # diff
   alias gd='g diff'
-  alias gdm='g diff $(g merge-base HEAD origin/master)'
+  alias gdm='g diff "$(g merge-base-remote)/$(g merge-base-branch)"'
   alias gnd='gn diff'
-  alias gndm='gn diff $(g merge-base HEAD origin/master)'
+  alias gndm='gn diff "$(g merge-base-remote)/$(g merge-base-branch)"'
   alias gds='g diff --staged'
   alias gnds='gn diff --staged'
 

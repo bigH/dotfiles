@@ -22,6 +22,11 @@ portcheck() {
   fi
 }
 
+# listen - check all listening ports
+listen() {
+    netstat -an | grep LISTEN | sort
+}
+
 # first_line [file]
 first_line() {
   head -n 1
