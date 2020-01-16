@@ -174,7 +174,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "     Install \`alacritty\`"
   echo ""
   echo "     ... sets up OS X in a nice way"
-  echo "     \`~/.hiren/.osx\`"
+  echo "     \`~/.hiren/osx.sh\`"
   echo ""
 else
   echo "  [${BLUE}${BOLD}Other POSIX${NORMAL}]: (assumes Ubuntu family)"
