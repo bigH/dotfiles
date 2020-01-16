@@ -20,7 +20,6 @@ if [ ! -z "$DOT_FILES_ENV" ]; then
   fi
 fi
 
-# potentially migrate to similar approach to configs
 source "$DOT_FILES_DIR/aliases.sh"
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh" ]; then
@@ -31,13 +30,10 @@ fi
 source "$DOT_FILES_DIR/functions/all.sh"
 
 if [[ "$SHELL" == *'zsh' ]]; then
-  source "$DOT_FILES_DIR/.zsh.bindings"
-fi
-
-if [[ "$SHELL" == *'zsh' ]]; then
-  source "$DOT_FILES_DIR/.zsh_prompt"
-  source "$DOT_FILES_DIR/.shell.zsh"
+  source "$DOT_FILES_DIR/zsh-bindings.sh"
+  source "$DOT_FILES_DIR/zsh-prompt.sh"
+  source "$DOT_FILES_DIR/zsh-shell.sh"
 elif [[ "$SHELL" == *'bash' ]]; then
-  source "$DOT_FILES_DIR/.bash_prompt"
-  source "$DOT_FILES_DIR/.shell.bash"
+  source "$DOT_FILES_DIR/bash-prompt.sh"
+  source "$DOT_FILES_DIR/bash-shell.sh"
 fi
