@@ -106,7 +106,7 @@ source $ZSH/oh-my-zsh.sh
 
 export DOT_FILES_DIR=$HOME/.hiren
 
-source $DOT_FILES_DIR/.profile
+source $DOT_FILES_DIR/profile
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
