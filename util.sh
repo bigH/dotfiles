@@ -3,13 +3,13 @@
 export DOT_FILES_DIR=$HOME/.hiren
 
 source $DOT_FILES_DIR/bash.colors.sh
-touch $DOT_FILES_DIR/.env_context
+touch $DOT_FILES_DIR/env-context
 
 if [ $# -eq 1 ]; then
-  echo "$1" > $DOT_FILES_DIR/.env_context
+  echo "$1" > $DOT_FILES_DIR/env-context
 fi
 
-export DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/.env_context")"
+export DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/env-context")"
 if [ -z "$DOT_FILES_ENV" ]; then
   export DOT_FILES_ENV_DISPLAY="[${NORMAL}${BOLD}DEFAULT${NORMAL}]"
 else

@@ -2,7 +2,7 @@
 
 export DOT_FILES_DIR=$HOME/.hiren
 
-export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/.env_context)"
+export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/env-context)"
 
 if type nvim >/dev/null 2>&1; then
   export EDITOR="$(which nvim)"
