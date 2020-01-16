@@ -1,5 +1,2 @@
 #!/usr/bin/env bash
 
-rt() {
-
-}

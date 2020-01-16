@@ -108,6 +108,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # stash list
   alias gsl='g stash list'
   alias gsls='g stash list --stat'
+  alias gsd='g stash drop'
 
   # log
   alias gl='g log'

@@ -10,59 +10,34 @@ else
   export EDITOR="$(which vim)"
 fi
 
-source $DOT_FILES_DIR/.colors
+source "$DOT_FILES_DIR/colors.sh"
 
-source $DOT_FILES_DIR/.local.configs
-source $DOT_FILES_DIR/.journal.configs
-
+source "$DOT_FILES_DIR/configs/all.sh"
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.configs" ]; then
-    source $DOT_FILES_DIR/.$DOT_FILES_ENV.configs
-  fi
-else
-  source $DOT_FILES_DIR/.default.configs
-fi
-
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -d "$HOME/$DOT_FILES_ENV-bin" ]; then
-    export PATH="$HOME/$DOT_FILES_ENV-bin:$PATH"
+  if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/bin" ]; then
+    export PATH="$DOT_FILES_DIR/$DOT_FILES_ENV/bin:$PATH"
   fi
 fi
 
-source $DOT_FILES_DIR/.aliases
+# potentially migrate to similar approach to configs
+source "$DOT_FILES_DIR/aliases.sh"
 if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.aliases" ]; then
-    source $DOT_FILES_DIR/.$DOT_FILES_ENV.aliases
+  if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh" ]; then
+    source "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh"
   fi
 fi
 
-source $DOT_FILES_DIR/.functions
-
-source $DOT_FILES_DIR/.rg.functions
-
-source $DOT_FILES_DIR/.fzf.configs
-source $DOT_FILES_DIR/.fzf.functions
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.functions" ]; then
-    source $DOT_FILES_DIR/.$DOT_FILES_ENV.functions
-  fi
-fi
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/.$DOT_FILES_ENV.ctags.functions" ]; then
-    source $DOT_FILES_DIR/.$DOT_FILES_ENV.ctags.functions
-  fi
-fi
-source $DOT_FILES_DIR/.ctags.configs
+source "$DOT_FILES_DIR/functions/all.sh"
 
 if [[ "$SHELL" == *'zsh' ]]; then
-  source $DOT_FILES_DIR/.zsh.bindings
+  source "$DOT_FILES_DIR/.zsh.bindings"
 fi
 
 if [[ "$SHELL" == *'zsh' ]]; then
-  source $DOT_FILES_DIR/.zsh_prompt
-  source $DOT_FILES_DIR/.shell.zsh
+  source "$DOT_FILES_DIR/.zsh_prompt"
+  source "$DOT_FILES_DIR/.shell.zsh"
 elif [[ "$SHELL" == *'bash' ]]; then
-  source $DOT_FILES_DIR/.bash_prompt
-  source $DOT_FILES_DIR/.shell.bash
+  source "$DOT_FILES_DIR/.bash_prompt"
+  source "$DOT_FILES_DIR/.shell.bash"
 fi

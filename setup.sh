@@ -40,7 +40,7 @@ echo ""
 echo ""
 
 echo "${BLUE}${BOLD}\`.vim[rc]\` and \`coc-settings.json\`${NORMAL}"
-link_if_possible "$DOT_FILES_DIR/.vimrc" "$HOME/.vimrc"
+link_if_possible "$DOT_FILES_DIR/vimrc" "$HOME/.vimrc"
 link_if_possible "$DOT_FILES_DIR/.vim" "$HOME/.vim"
 link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.vim/syntax"
 link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.vim/ftdetect"
@@ -49,7 +49,7 @@ echo ""
 
 echo "${BLUE}${BOLD}vim -> neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/nvim"
-link_if_possible "$DOT_FILES_DIR/.nvim.init.vim" "$HOME/.config/nvim/init.vim"
+link_if_possible "$DOT_FILES_DIR/nvim-init.vim" "$HOME/.config/nvim/init.vim"
 link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.config/nvim/syntax"
 link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.config/nvim/ftdetect"
 link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
@@ -108,42 +108,39 @@ echo ""
 # TODO change this setup to append to existing file (and create an empty one if it exists)
 # TODO what happens if the file's changed after you've patched it
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
-link_if_possible "$DOT_FILES_DIR/.zshrc" "$HOME/.zshrc"
+link_if_possible "$DOT_FILES_DIR/zshrc" "$HOME/.zshrc"
 link_if_possible "$DOT_FILES_DIR/.oh-my-zsh" "$HOME/.oh-my-zsh"
 echo ""
 
 echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"
-if [ -n "$DOT_FILES_ENV" ]; then
-  link_if_possible "$DOT_FILES_DIR/.$DOT_FILES_ENV.gitignore_global" "$HOME/.gitignore_global"
-  link_if_possible "$DOT_FILES_DIR/.$DOT_FILES_ENV.gitconfig" "$HOME/.gitconfig"
+if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitignore_global" ]; then
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gitignore_global" "$HOME/.gitignore_global"
 else
-  link_if_possible "$DOT_FILES_DIR/.gitignore_global" "$HOME/.gitignore_global"
-  link_if_possible "$DOT_FILES_DIR/.gitconfig" "$HOME/.gitconfig"
+  link_if_possible "$DOT_FILES_DIR/gitignore_global" "$HOME/.gitignore_global"
+fi
+if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitconfig" ]; then
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gitconfig" "$HOME/.gitconfig"
+else
+  link_if_possible "$DOT_FILES_DIR/gitconfig" "$HOME/.gitconfig"
 fi
 echo ""
 
 echo "${BLUE}${BOLD}Miscellany ...${NORMAL}"
 mk_expected_dir "$HOME/.config/alacritty"
-link_if_possible "$DOT_FILES_DIR/.ackrc" "$HOME/.ackrc"
-link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.alacritty.yml"
-link_if_possible "$DOT_FILES_DIR/.alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
-link_if_possible "$DOT_FILES_DIR/.ctags" "$HOME/.ctags"
-link_if_possible "$DOT_FILES_DIR/.inputrc" "$HOME/.inputrc"
-link_if_possible "$DOT_FILES_DIR/.pryrc" "$HOME/.pryrc"
-link_if_possible "$DOT_FILES_DIR/.rgignore" "$HOME/.rgignore"
-link_if_possible "$DOT_FILES_DIR/.tigrc" "$HOME/.tigrc"
+link_if_possible "$DOT_FILES_DIR/ackrc" "$HOME/.ackrc"
+link_if_possible "$DOT_FILES_DIR/alacritty.yml" "$HOME/.alacritty.yml"
+link_if_possible "$DOT_FILES_DIR/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+link_if_possible "$DOT_FILES_DIR/ctags" "$HOME/.ctags"
+link_if_possible "$DOT_FILES_DIR/inputrc" "$HOME/.inputrc"
+link_if_possible "$DOT_FILES_DIR/pryrc" "$HOME/.pryrc"
+link_if_possible "$DOT_FILES_DIR/rgignore" "$HOME/.rgignore"
+link_if_possible "$DOT_FILES_DIR/tigrc" "$HOME/.tigrc"
 link_if_possible "$DOT_FILES_DIR/nice-noise-loops" "$HOME/nice-noise-loops"
 echo ""
 
 echo "${BLUE}${BOLD}\`bin\` directory${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/bin" "$HOME/bin"
 echo ""
-
-if [ -n "$DOT_FILES_ENV" ] && [ -e "$DOT_FILES_DIR/$DOT_FILES_ENV-bin" ]; then
-  echo "${BLUE}${BOLD}$DOT_FILES_ENV-bin directory${NORMAL}"
-  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV-bin" "$HOME/$DOT_FILES_ENV-bin"
-  echo ""
-fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "${BLUE}${BOLD}Installing iTerm2 shell integration ...${NORMAL}"
@@ -174,7 +171,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
   echo ""
   echo "     ... on macOS"
-  echo "     Install \`alacritty\` and/or \`kitty\`"
+  echo "     Install \`alacritty\`"
   echo ""
   echo "     ... sets up OS X in a nice way"
   echo "     \`~/.hiren/.osx\`"

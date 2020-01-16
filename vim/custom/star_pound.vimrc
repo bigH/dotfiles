@@ -79,11 +79,11 @@ command! -range VisualNewSearch :call s:DoNewSearch(1)
 command! -range AppendSearch :call s:DoAppendSearch(0)
 command! -range NewSearch :call s:DoNewSearch(0)
 
-vnoremap * :VisualAppendSearch<CR>
-vnoremap # :VisualNewSearch<CR>
+vnoremap <silent> # :VisualAppendSearch<CR>:set hlsearch<CR>
+vnoremap <silent> * :VisualNewSearch<CR>:set hlsearch<CR>
 
-nnoremap * :AppendSearch<CR>
-nnoremap # :NewSearch<CR>
+nnoremap <silent> # :AppendSearch<CR>:set hlsearch<CR>
+nnoremap <silent> * :NewSearch<CR>:set hlsearch<CR>
 
 " Nice to Haves:
 "  - different highlight for each search term

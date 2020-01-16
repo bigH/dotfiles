@@ -32,10 +32,6 @@ rm -f "$HOME/.vim"
 rm -f "$HOME/nice-noise-loops"
 rm -f "$HOME/bin"
 
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  rm -f "$HOME/$DOT_FILES_ENV-bin"
-fi
-
 # cleanings
 rm -rf "$DOT_FILES_DIR/.oh-my-zsh"
 rm -rf "$DOT_FILES_DIR/.vim"

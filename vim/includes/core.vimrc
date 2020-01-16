@@ -104,6 +104,7 @@ set autoread
 " Reload edited files.
 augroup BetterAutoread
   autocmd FocusGained * checktime
+  autocmd FocusGained * redraw
   autocmd BufEnter * checktime
 augroup end
 

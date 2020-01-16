@@ -96,8 +96,8 @@ nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
 "{{{ Load ENV_SPECIFIC things
 
-if filereadable($DOT_FILES_DIR . "/." . $DOT_FILES_ENV . ".vimrc")
-  execute "source" $DOT_FILES_DIR . "/." . $DOT_FILES_ENV . ".vimrc"
+if filereadable($DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vimrc")
+  execute "source" $DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vimrc"
 endif
 
 "}}}

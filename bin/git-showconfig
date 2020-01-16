@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git_showconfig() {
+  if type bat >/dev/null 2>&1; then
+    bat ~/.gitconfig
+  else
+    cat ~/.gitconfig
+  fi
+}
+
+git_showconfig
