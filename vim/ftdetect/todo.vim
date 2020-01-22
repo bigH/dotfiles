@@ -87,11 +87,10 @@ function! s:ToggleTodoStateSimple()
   call winrestview(l:save)
 endfunction
 
-" Setup any bindings for TODOs buffer
 function! s:SetupTodoFile()
   setlocal filetype=markdown.todo
 
-  " Map <CR> to make more TODOs
+  " Map <CR> to make more or walk up the hierarchy
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 
   " <C-X> to toggle done/not-done

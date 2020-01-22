@@ -21,7 +21,6 @@ endif
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim', 'yuki-ycino/fzf-preview.vim')
   " use `bat`
   let g:fzf_preview_command = 'bat -p --color always {-1}'
-
 endif
 
 " -- fzf --
@@ -151,6 +150,11 @@ endif
 " -- nerd-tree --
 
 if IsPluginLoaded('scrooloose/nerdtree')
+  " Refresh NERDTree upon return to ViM
+  augroup NERDTree
+    autocmd FocusGained * NERDTreeRefreshRoot
+  augroup END
+
   " Set it to not show `? for help`
   let NERDTreeMinimalUI = 1
 
@@ -512,4 +516,3 @@ if IsPluginLoaded('neoclide/coc.nvim')
   " overrides fzf `:Tags`
   nmap <silent> <Leader>t <Plug>(coc-type-definition)
 endif
-

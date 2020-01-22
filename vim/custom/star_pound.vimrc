@@ -1,9 +1,16 @@
 if exists('g:custom_visual_star')
   " finish
 endif
+
 let g:custom_visual_star = 1
 
 let g:current_star_searches = []
+let g:current_star_searches_word_boundaries = 1
+
+let g:current_star_search_history = [[]]
+
+" TODO use this
+let g:last_known_manual_search = @/
 
 " get content of visual selection as string
 function! s:GetVisualSelectionAsString()
@@ -30,60 +37,112 @@ function! s:GetNextSearchTerm(is_visual)
   endtry
 endfunction
 
-function! EscapeForSearchTerms(searchTerm)
-  return escape(a:searchTerm, '\\/.*$^~[]')
+function! s:SearchTermEscape(search)
+  return escape(a:search, '\\/.*$^~[]')
 endfunction
 
-function! QuoteForSearchTerms(searchTerm)
-  return '\<' . a:searchTerm . '\>'
-endfunction
-
-function! MapFriendlyEscapeAndQuote(idx, searchTerm)
-  return QuoteForSearchTerms(EscapeForSearchTerms(a:searchTerm))
+function! s:GetCalculatedPattern()
+  try
+    if len(g:current_star_searches) > 0
+      let l:searches = deepcopy(g:current_star_searches)
+      return '\V\(' . join(l:searches, '\|') . '\)'
+    else
+      return ''
+    endif
+  catch /.*/
+    echo "Couldn't execute new search"
+  endtry
 endfunction
 
 function! s:ExecuteSearch()
   try
-    let l:new_list = deepcopy(g:current_star_searches)
-    let l:escaped = map(l:new_list, function('MapFriendlyEscapeAndQuote'))
-    let l:special_pattern = '\V\(' . join(l:escaped, '\|') . '\)'
-    let @/ = l:special_pattern
+    let @/ = s:GetCalculatedPattern()
   catch /.*/
     echo "Couldn't execute new search"
   endtry
 endfunction
 
-function! s:DoAppendSearch(is_visual)
+" makes sure to dedupe search terms and history - though history should be
+" impossible given all elements
+function! s:RecordInSearchHistory()
   try
-    let search = s:GetNextSearchTerm(a:is_visual)
-    call add(g:current_star_searches, l:search)
-    call s:ExecuteSearch()
+    let l:current_star_searches = uniq(g:current_star_searches)
+    let l:current_star_searches_copy = deepcopy(g:current_star_searches)
+    call add(g:current_star_search_history, l:current_star_searches_copy)
   catch /.*/
-    echo "Couldn't execute append search"
+    echo "Couldn't execute push to history"
   endtry
 endfunction
 
-function! s:DoNewSearch(is_visual)
+function! s:DoPushBoundedSearch(is_visual)
   try
     let search = s:GetNextSearchTerm(a:is_visual)
-    let g:current_star_searches = [l:search]
+    call add(g:current_star_searches, '\<' . s:SearchTermEscape(l:search) . '\>')
+    call s:RecordInSearchHistory()
+    call s:ExecuteSearch()
+  catch /.*/
+    echo "Couldn't execute push search"
+  endtry
+endfunction
+
+function! s:DoPushUnboundedSearch(is_visual)
+  try
+    let search = s:GetNextSearchTerm(a:is_visual)
+    call add(g:current_star_searches, s:SearchTermEscape(l:search))
+    call s:RecordInSearchHistory()
     call s:ExecuteSearch()
   catch /.*/
     echo "Couldn't execute new search"
   endtry
 endfunction
 
-command! -range VisualAppendSearch :call s:DoAppendSearch(1)
-command! -range VisualNewSearch :call s:DoNewSearch(1)
+function! s:DoRewindCurrentSearchHistory()
+  try
+    if s:GetCalculatedPattern() == @/
+      if len(g:current_star_search_history) > 1
+        call remove(g:current_star_search_history, -1)
+        let g:current_star_searches = deepcopy(g:current_star_search_history[-1])
+        call s:ExecuteSearch()
+      endif
+    else
+      call s:ExecuteSearch()
+    endif
+  catch /.*/
+    echo "Couldn't execute rewind"
+  endtry
+endfunction
 
-command! -range AppendSearch :call s:DoAppendSearch(0)
-command! -range NewSearch :call s:DoNewSearch(0)
+command! -range VisualPushBoundedSearch :call s:DoPushBoundedSearch(1)
+command! -range VisualPushUnboundedSearch :call s:DoPushUnboundedSearch(1)
 
-vnoremap <silent> # :VisualAppendSearch<CR>:set hlsearch<CR>
-vnoremap <silent> * :VisualNewSearch<CR>:set hlsearch<CR>
+command! -range PushBoundedSearch :call s:DoPushBoundedSearch(0)
+command! -range PushUnboundedSearch :call s:DoPushUnboundedSearch(0)
 
-nnoremap <silent> # :AppendSearch<CR>:set hlsearch<CR>
-nnoremap <silent> * :NewSearch<CR>:set hlsearch<CR>
+command! -range RewindCurrentSearchHistory :call s:DoRewindCurrentSearchHistory()
+
+vnoremap <silent> <Plug>VisualPushBoundedSearch :<C-U>VisualPushBoundedSearch<CR>:set hlsearch<CR>
+vnoremap <silent> <Plug>VisualPushUnboundedSearch :<C-U>VisualPushUnboundedSearch<CR>:set hlsearch<CR>
+
+nnoremap <silent> <Plug>PushBoundedSearch :<C-U>PushBoundedSearch<CR>:set hlsearch<CR>
+nnoremap <silent> <Plug>PushUnboundedSearch :<C-U>PushUnboundedSearch<CR>:set hlsearch<CR>
+
+nnoremap <silent> <Plug>RewindCurrentSearchHistory :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
+
+if !exists('g:star_pound_no_mappings') || g:star_pound_no_mappings == 0
+  if !exists('g:star_pound_no_visual_mappings') || g:star_pound_no_visual_mappings == 0
+    vmap * <Plug>VisualPushBoundedSearch
+    vmap # <Plug>VisualPushUnboundedSearch
+  endif
+
+  if !exists('g:star_pound_no_normal_mappings') || g:star_pound_no_normal_mappings == 0
+    nmap * <Plug>PushBoundedSearch
+    nmap # <Plug>PushUnboundedSearch
+  endif
+
+  if !exists('g:star_pound_no_rewind_mappings') || g:star_pound_no_rewind_mappings == 0
+    nmap <BS> <Plug>RewindCurrentSearchHistory
+  endif
+endif
 
 " Nice to Haves:
 "  - different highlight for each search term

@@ -3,8 +3,7 @@ if exists('g:custom_until')
 endif
 let g:custom_until = 1
 " TODO:
-" - `cU=` is awkward because `U` is awkward
-" - `cU=` could be used to mean until the last `=`
+" - doesn't accept numeric input to describe how many untils
 " - in situations where the character is not present it just uses the
 "   character under the cursor - which is bad
 
@@ -41,8 +40,11 @@ vnoremap <silent> <Plug>until_backward_visual v:call <SID>until_text_object(0)<C
 
 if !exists('g:until_no_mappings') || g:until_no_mappings == 0
   omap <silent> u <Plug>until_forward
-  omap <silent> U <Plug>until_backward
-
   vmap <silent> u <Plug>until_forward_visual
-  vmap <silent> U <Plug>until_backward_visual
+
+  " separate because it is awkward to have a `U` mapping
+  if !exists('g:until_include_backwards_mappings') || g:until_include_backwards_mappings == 0
+    omap <silent> U <Plug>until_backward
+    vmap <silent> U <Plug>until_backward_visual
+  endif
 endif

@@ -173,16 +173,6 @@ set shiftround
 
 "{{{ Highlighting
 
-function! s:HighlightTabsIfExpandTabSet()
-  if &expandtab
-    match Error /\t/
-  else
-    match Error /\t/
-  endif
-endfunction
-
-au OptionSet expandtab call <SID>HighlightTabsIfExpandTabSet()
-
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight Comment cterm=italic gui=italic
 
@@ -408,27 +398,27 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
-execute "source" $DOT_FILES_DIR . "/vim/custom/blinkenmatchen.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/change_repeat.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/duplicate.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/highlight_cursor_word.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/until.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/custom/star_pound.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/blinkenmatchen.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/change_repeat.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/star_pound.vimrc"
 
 "}}}
 
 
 "{{{ FileType Customizations
 
-execute "source" $DOT_FILES_DIR . "/vim/includes/filetypes.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/filetypes.vimrc"
 
 "}}}
 
 
 "{{{ Load Plugins
 
-execute "source" $DOT_FILES_DIR . "/vim/includes/plugins.vimrc"
-execute "source" $DOT_FILES_DIR . "/vim/includes/plugin_configs.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugins.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugin_configs.vimrc"
 
 "}}}
 

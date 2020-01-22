@@ -5,6 +5,7 @@ let g:custom_change_repeat = 1
 
 " TODO
 "  - undo fragments the first action
+"  - doesn't take number args for motions
 
 function! s:apply_type(pos, type)
   let pos = a:pos
@@ -102,8 +103,8 @@ nnoremap <silent> <Plug>ChangeRepeatNormal :<C-U>set operatorfunc=<SID>do_change
 vnoremap <silent> <Plug>ChangeRepeatVisual :<C-U>call <SID>do_change_repeat(visualmode(), 1)<CR>
 
 if !exists("g:change_repeat_no_mappings") || ! g:change_repeat_no_mappings
-  " TODO This mapping conflicts with `commentary`, and i need to figure that
-  " mapping out
   nmap <silent> gc <Plug>ChangeRepeatNormal
   vmap <silent> gc <Plug>ChangeRepeatVisual
+  " TODO this doesn't work at all
+  " nmap <silent> gcc 0gc_
 endif

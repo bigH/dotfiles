@@ -3,6 +3,11 @@
   "suggest.acceptSuggestionOnCommitCharacter": true,
   "suggest.triggerAfterInsertEnter": false,
   "suggest.autoTrigger": "trigger",
+  "codeLens.enable": false,
+  "typescript.referencesCodeLens.enable": false,
+  "typescript.implementationsCodeLens.enable": false,
+  "javascript.referencesCodeLens.enable": false,
+  "javascript.implementationsCodeLens.enable": false,
   "languageserver": {
     "metals": {
       "command": "metals-vim",

@@ -11,11 +11,10 @@ function! s:PerformAppropriateCR()
   endif
 endfunction
 
-" Setup any bindings for Journal buffer
 function! s:SetupNotesFile()
   setlocal filetype=markdown.notes
 
-  " Map <CR> to make more TODOs
+  " Map <CR> to make more or walk up the hierarchy
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 
   " Move between windows using <C-H/L> keys

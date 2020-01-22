@@ -24,11 +24,11 @@ alias rm='rm -v'
 # tree
 alias tree='tree --dirsfirst'
 
-# useful kill commands
+# useful `kill` commands
 alias k=kill
 alias k9='kill -9'
 
-# use nvim if present, otherwise vim
+# use `nvim` if present, otherwise `vim`
 if type nvim >/dev/null 2>&1; then
   alias vim=nvim
   alias vi=nvim
@@ -44,22 +44,27 @@ alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d
 # go to dot files
 alias jh='cd $DOT_FILES_DIR'
 
-# rg - better colors
+# `rg` - better colors
 alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
 
-# yarn -> y
+# `yarn` -> `y`
 if type yarn >/dev/null 2>&1; then
   alias y=yarn
 fi
 
-# docker -> d
+# `docker` -> `d`
 if type docker >/dev/null 2>&1; then
   alias d=docker
 fi
 
-# docker-compose -> dc
+# `docker-compose` -> `dc`
 if type docker-compose >/dev/null 2>&1; then
   alias dc=docker-compose
+fi
+
+# `tldr` is like `man`
+if type tldr >/dev/null 2>&1; then
+  alias tldr=tldr --theme base16
 fi
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then

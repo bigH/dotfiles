@@ -1,9 +1,9 @@
 "{{{ Includes
 
-exec "source" $DOT_FILES_DIR . "/vim/includes/core.vimrc"
+exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vimrc"
 
-exec "source" $DOT_FILES_DIR . "/vim/custom/modal_jump.vimrc"
-exec "source" $DOT_FILES_DIR . "/vim/custom/modal_paste.vimrc"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vimrc"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vimrc"
 
 "}}}
 
@@ -26,7 +26,7 @@ autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 if IsPluginLoaded('SirVer/UltiSnips')
   " Setup Python
-  let g:python2_host_prog = '/usr/local/bin/python'
+  let g:python2_host_prog = '/usr/local/bin/python2'
   let g:python3_host_prog = '/usr/local/bin/python3'
 endif
 
@@ -88,7 +88,7 @@ nmap <silent> <C-L> :blast!<CR>
 
 " Disable Ex-Mode and map Q to close buffers
 " TODO doesn't really work.. - `bd` seems `==`
-execute "source" $DOT_FILES_DIR . "/vim/custom/kill_buffer_not_split.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/kill_buffer_not_split.vimrc"
 nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
 "}}}
