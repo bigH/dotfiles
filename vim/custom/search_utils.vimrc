@@ -1,11 +1,10 @@
-if exists('g:custom_visual_star')
+if exists('g:custom_search_utils')
   finish
 endif
 
-let g:custom_visual_star = 1
+let g:custom_search_utils = 1
 
 let g:current_star_searches = []
-let g:current_star_matches = []
 let g:current_star_search_history = [[]]
 let g:last_known_manual_search = @/
 
@@ -19,6 +18,8 @@ let g:search_highlight_colors = [
       \   'ctermbg=darkgrey ctermfg=black',
       \   'ctermbg=brown ctermfg=black',
     \ ]
+
+let w:current_star_matches = []
 
 " get content of visual selection as string
 function! s:GetVisualSelectionAsString()
@@ -34,7 +35,7 @@ function! s:GetVisualSelectionAsString()
 endfunction
 
 function! s:GetNextSearchTerm(is_visual)
-  try
+  " try
     let old_search = s:GetCalculatedPattern()
     if l:old_search != @/
       let g:last_known_manual_search = @/
@@ -46,9 +47,9 @@ function! s:GetNextSearchTerm(is_visual)
       let search = expand("<cword>")
     endif
     return l:search
-  catch /.*/
-    echo "Couldn't get next search term"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't get next search term"
+  " endtry
 endfunction
 
 function! s:SearchTermEscape(search)
@@ -56,69 +57,69 @@ function! s:SearchTermEscape(search)
 endfunction
 
 function! s:GetCalculatedPattern()
-  try
+  " try
     if len(g:current_star_searches) > 0
       let l:searches = deepcopy(g:current_star_searches)
       return '\V\(' . join(l:searches, '\|') . '\)'
     else
       return ''
     endif
-  catch /.*/
-    echo "Couldn't execute new search"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute new search"
+  " endtry
 endfunction
 
 function! s:ExecuteSearch()
-  try
+  " try
     let @/ = s:GetCalculatedPattern()
-  catch /.*/
-    echo "Couldn't execute new search"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute new search"
+  " endtry
 endfunction
 
 " makes sure to dedupe search terms and history - though history should be
 " impossible given all elements
 function! s:RecordInSearchHistory()
-  try
+  " try
     let l:current_star_searches = uniq(g:current_star_searches)
     let l:current_star_searches_copy = deepcopy(g:current_star_searches)
     call add(g:current_star_search_history, l:current_star_searches_copy)
-  catch /.*/
-    echo "Couldn't execute push to history"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute push to history"
+  " endtry
 endfunction
 
 function! s:DoPushBoundedSearch(is_visual)
-  try
+  " try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, '\<' . s:SearchTermEscape(l:search) . '\>')
-    call s:PushHighlight()
+    call s:ReHighlightAll()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
-  catch /.*/
-    echo "Couldn't execute push search"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute push search"
+  " endtry
 endfunction
 
 function! s:DoPushUnboundedSearch(is_visual)
-  try
+  " try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, s:SearchTermEscape(l:search))
-    call s:PushHighlight()
+    call s:ReHighlightAll()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
-  catch /.*/
-    echo "Couldn't execute new search"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute new search"
+  " endtry
 endfunction
 
 function! s:DoRewindCurrentSearchHistory()
-  try
+  " try
     if s:GetCalculatedPattern() == @/
       if len(g:current_star_search_history) > 1
         call remove(g:current_star_search_history, -1)
         let g:current_star_searches = deepcopy(g:current_star_search_history[-1])
-        call s:PopHighlight()
+        call s:ReHighlightAll()
         call s:ExecuteSearch()
       elseif @/ == g:last_known_manual_search
         let @/ = ''
@@ -130,34 +131,86 @@ function! s:DoRewindCurrentSearchHistory()
     else
       let @/ = g:last_known_manual_search
     endif
-  catch /.*/
-    echo "Couldn't execute rewind"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't execute rewind"
+  " endtry
 endfunction
 
 function! s:PushHighlight()
-  try
-    if len(g:current_star_matches) < len(g:search_highlight_colors)
-    let search = g:current_star_searches[-1]
-    let idx = len(g:current_star_matches)
-    let highlightName = "StarPoundSearchIdx" . l:idx
-    execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
-    call add(g:current_star_matches, matchadd(l:highlightName, l:search, 100))
-  endif
-  catch /.*/
-    echo "Couldn't push highlight"
-  endtry
+  " try
+    if len(w:current_star_matches) < len(g:search_highlight_colors)
+      let search = g:current_star_searches[-1]
+      let idx = len(w:current_star_matches)
+      let highlightName = "StarPoundSearchIdx" . l:idx
+      execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
+      call add(w:current_star_matches, matchadd(l:highlightName, l:search, 100))
+    endif
+  " catch /.*/
+  "   echo "Couldn't push highlight"
+  " endtry
 endfunction
 
 function! s:PopHighlight()
-  try
-    if len(g:current_star_matches) - 1 == len(g:current_star_searches)
-      call matchdelete(g:current_star_matches[-1])
-      call remove(g:current_star_matches, -1)
+  " try
+    if len(w:current_star_matches) - 1 == len(g:current_star_searches)
+      call matchdelete(w:current_star_matches[-1])
+      call remove(w:current_star_matches, -1)
     endif
-  catch /.*/
-    echo "Couldn't pop highlight"
-  endtry
+  " catch /.*/
+  "   echo "Couldn't pop highlight"
+  " endtry
+endfunction
+
+function! s:KillHighlight()
+  if exists('w:current_star_matches')
+    for match_info in w:current_star_matches
+      try
+        call matchdelete(l:match_info)
+      catch /.*/
+      endtry
+    endfor
+  endif
+endfunction
+
+function! s:DoHighlight()
+  let w:current_star_matches = []
+  let idx = 0
+  for searchTerm in g:current_star_searches
+    let highlightName = "StarPoundSearchIdx" . l:idx
+    execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
+    call add(w:current_star_matches, matchadd(l:highlightName, l:searchTerm, 100))
+    let idx = l:idx + 1
+  endfor
+endfunction
+
+function! s:ReHighlightAll()
+  let currentWindow = winnr()
+  windo call s:ReHighlight()
+  execute currentWindow . 'wincmd w'
+endfunction
+
+function! s:ReHighlight()
+  call s:KillHighlight()
+  call s:DoHighlight()
+  call SearchUtilsHighlightCurrent()
+endfunction
+
+function! SearchUtilsHighlightCurrent()
+  let [bufnum, row, column, ignore] = getpos('.')
+  if(exists("g:current_match_highlight"))
+    exe "highlight SearchCurrentResult " . g:current_match_highlight
+  else
+    highlight SearchCurrentResult ctermbg=white ctermfg=black
+  endif
+  if exists('g:current_match_metadata')
+    try
+      call matchdelete(g:current_match_metadata)
+    catch /.*/
+    endtry
+  end
+  let matchlen = strlen(matchstr(strpart(getline('.'),column-1),@/))
+  let target_pat = '\c\%#\%('.@/.'\)'
+  let g:current_match_metadata = matchadd('SearchCurrentResult', target_pat, 101)
 endfunction
 
 command! -range VisualPushBoundedSearch :call s:DoPushBoundedSearch(1)
@@ -176,18 +229,34 @@ nnoremap <silent> <Plug>PushUnboundedSearch :<C-U>PushUnboundedSearch<CR>:set hl
 
 nnoremap <silent> <Plug>RewindCurrentSearchHistory :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
 
-if !exists('g:star_pound_no_mappings') || g:star_pound_no_mappings == 0
-  if !exists('g:star_pound_no_visual_mappings') || g:star_pound_no_visual_mappings == 0
+augroup ReHighlightAutomation
+  autocmd VimEnter * call s:ReHighlightAll()
+  autocmd WinEnter * call s:ReHighlight()
+  autocmd WinNew * call s:ReHighlight()
+  autocmd BufWinEnter * call s:DoHighlight()
+  autocmd BufWinLeave * call s:KillHighlight()
+augroup end
+
+nnoremap <silent> <Plug>(highlight-and-focus-next) n:call SearchUtilsHighlightCurrent()<CR>
+nnoremap <silent> <Plug>(highlight-and-focus-prev) N:call SearchUtilsHighlightCurrent()<CR>
+
+if !exists('g:search_utils_no_mappings') || g:search_utils_no_mappings == 0
+  if !exists('g:search_utils_no_highlight_current') || g:search_utils_no_highlight_current == 0
+    nmap <silent> n <Plug>(highlight-and-focus-next)
+    nmap <silent> N <Plug>(highlight-and-focus-prev)
+  endif
+
+  if !exists('g:search_utils_no_visual_mappings') || g:search_utils_no_visual_mappings == 0
     vmap * <Plug>VisualPushBoundedSearch
     vmap # <Plug>VisualPushUnboundedSearch
   endif
 
-  if !exists('g:star_pound_no_normal_mappings') || g:star_pound_no_normal_mappings == 0
+  if !exists('g:search_utils_no_normal_mappings') || g:search_utils_no_normal_mappings == 0
     nmap * <Plug>PushBoundedSearch
     nmap # <Plug>PushUnboundedSearch
   endif
 
-  if !exists('g:star_pound_no_rewind_mappings') || g:star_pound_no_rewind_mappings == 0
+  if !exists('g:search_utils_no_rewind_mappings') || g:search_utils_no_rewind_mappings == 0
     nmap <BS> <Plug>RewindCurrentSearchHistory
   endif
 endif

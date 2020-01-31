@@ -398,12 +398,11 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/blinkenmatchen.vimrc"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/change_repeat.vimrc"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vimrc"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vimrc"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/star_pound.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/search_utils.vimrc"
 
 "}}}
 
