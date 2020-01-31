@@ -35,7 +35,7 @@ function! s:GetVisualSelectionAsString()
 endfunction
 
 function! s:GetNextSearchTerm(is_visual)
-  " try
+  try
     let old_search = s:GetCalculatedPattern()
     if l:old_search != @/
       let g:last_known_manual_search = @/
@@ -47,9 +47,9 @@ function! s:GetNextSearchTerm(is_visual)
       let search = expand("<cword>")
     endif
     return l:search
-  " catch /.*/
-  "   echo "Couldn't get next search term"
-  " endtry
+  catch /.*/
+    echo "Couldn't get next search term"
+  endtry
 endfunction
 
 function! s:SearchTermEscape(search)
@@ -57,64 +57,64 @@ function! s:SearchTermEscape(search)
 endfunction
 
 function! s:GetCalculatedPattern()
-  " try
+  try
     if len(g:current_star_searches) > 0
       let l:searches = deepcopy(g:current_star_searches)
       return '\V\(' . join(l:searches, '\|') . '\)'
     else
       return ''
     endif
-  " catch /.*/
-  "   echo "Couldn't execute new search"
-  " endtry
+  catch /.*/
+    echo "Couldn't execute new search"
+  endtry
 endfunction
 
 function! s:ExecuteSearch()
-  " try
+  try
     let @/ = s:GetCalculatedPattern()
-  " catch /.*/
-  "   echo "Couldn't execute new search"
-  " endtry
+  catch /.*/
+    echo "Couldn't execute new search"
+  endtry
 endfunction
 
-" makes sure to dedupe search terms and history - though history should be
-" impossible given all elements
 function! s:RecordInSearchHistory()
-  " try
-    let l:current_star_searches = uniq(g:current_star_searches)
-    let l:current_star_searches_copy = deepcopy(g:current_star_searches)
-    call add(g:current_star_search_history, l:current_star_searches_copy)
-  " catch /.*/
-  "   echo "Couldn't execute push to history"
-  " endtry
+  try
+    let l:current_star_searches_for_insertion = deepcopy(g:current_star_searches)
+    call uniq(l:current_star_searches_for_insertion)
+    if l:current_star_searches_for_insertion == g:current_star_searches
+      call add(g:current_star_search_history, l:current_star_searches_for_insertion)
+    endif
+  catch /.*/
+    echo "Couldn't execute push to history"
+  endtry
 endfunction
 
 function! s:DoPushBoundedSearch(is_visual)
-  " try
+  try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, '\<' . s:SearchTermEscape(l:search) . '\>')
     call s:ReHighlightAll()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
-  " catch /.*/
-  "   echo "Couldn't execute push search"
-  " endtry
+  catch /.*/
+    echo "Couldn't execute push search"
+  endtry
 endfunction
 
 function! s:DoPushUnboundedSearch(is_visual)
-  " try
+  try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, s:SearchTermEscape(l:search))
     call s:ReHighlightAll()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
-  " catch /.*/
-  "   echo "Couldn't execute new search"
-  " endtry
+  catch /.*/
+    echo "Couldn't execute new search"
+  endtry
 endfunction
 
 function! s:DoRewindCurrentSearchHistory()
-  " try
+  try
     if s:GetCalculatedPattern() == @/
       if len(g:current_star_search_history) > 1
         call remove(g:current_star_search_history, -1)
@@ -131,34 +131,9 @@ function! s:DoRewindCurrentSearchHistory()
     else
       let @/ = g:last_known_manual_search
     endif
-  " catch /.*/
-  "   echo "Couldn't execute rewind"
-  " endtry
-endfunction
-
-function! s:PushHighlight()
-  " try
-    if len(w:current_star_matches) < len(g:search_highlight_colors)
-      let search = g:current_star_searches[-1]
-      let idx = len(w:current_star_matches)
-      let highlightName = "StarPoundSearchIdx" . l:idx
-      execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
-      call add(w:current_star_matches, matchadd(l:highlightName, l:search, 100))
-    endif
-  " catch /.*/
-  "   echo "Couldn't push highlight"
-  " endtry
-endfunction
-
-function! s:PopHighlight()
-  " try
-    if len(w:current_star_matches) - 1 == len(g:current_star_searches)
-      call matchdelete(w:current_star_matches[-1])
-      call remove(w:current_star_matches, -1)
-    endif
-  " catch /.*/
-  "   echo "Couldn't pop highlight"
-  " endtry
+  catch /.*/
+    echo "Couldn't execute rewind"
+  endtry
 endfunction
 
 function! s:KillHighlight()
@@ -176,9 +151,11 @@ function! s:DoHighlight()
   let w:current_star_matches = []
   let idx = 0
   for searchTerm in g:current_star_searches
-    let highlightName = "StarPoundSearchIdx" . l:idx
-    execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
-    call add(w:current_star_matches, matchadd(l:highlightName, l:searchTerm, 100))
+    if idx < len(g:search_highlight_colors)
+      let highlightName = "StarPoundSearchIdx" . l:idx
+      execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
+      call add(w:current_star_matches, matchadd(l:highlightName, l:searchTerm, 100))
+    endif
     let idx = l:idx + 1
   endfor
 endfunction
