@@ -19,6 +19,7 @@ function source_configs_for_expected_command() {
 
 # source these only if they're "visible" commands
 source_configs_for_expected_command fzf
+source_configs_for_expected_command kubectl
 source_configs_for_expected_command ctags
 
 unset -f source_configs_for_expected_command

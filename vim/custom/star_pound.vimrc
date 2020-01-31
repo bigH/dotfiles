@@ -1,16 +1,24 @@
 if exists('g:custom_visual_star')
-  " finish
+  finish
 endif
 
 let g:custom_visual_star = 1
 
 let g:current_star_searches = []
-let g:current_star_searches_word_boundaries = 1
-
+let g:current_star_matches = []
 let g:current_star_search_history = [[]]
-
-" TODO use this
 let g:last_known_manual_search = @/
+
+let g:search_highlight_colors = [
+      \   'ctermbg=cyan ctermfg=black',
+      \   'ctermbg=magenta ctermfg=black',
+      \   'ctermbg=yellow ctermfg=black',
+      \   'ctermbg=red ctermfg=black',
+      \   'ctermbg=blue ctermfg=black',
+      \   'ctermbg=green ctermfg=black',
+      \   'ctermbg=darkgrey ctermfg=black',
+      \   'ctermbg=brown ctermfg=black',
+    \ ]
 
 " get content of visual selection as string
 function! s:GetVisualSelectionAsString()
@@ -27,9 +35,15 @@ endfunction
 
 function! s:GetNextSearchTerm(is_visual)
   try
-    let search = expand("<cword>")
+    let old_search = s:GetCalculatedPattern()
+    if l:old_search != @/
+      let g:last_known_manual_search = @/
+    endif
+    let search = ''
     if (a:is_visual == 1)
       let search = s:GetVisualSelectionAsString()
+    else
+      let search = expand("<cword>")
     endif
     return l:search
   catch /.*/
@@ -78,6 +92,7 @@ function! s:DoPushBoundedSearch(is_visual)
   try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, '\<' . s:SearchTermEscape(l:search) . '\>')
+    call s:PushHighlight()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
   catch /.*/
@@ -89,6 +104,7 @@ function! s:DoPushUnboundedSearch(is_visual)
   try
     let search = s:GetNextSearchTerm(a:is_visual)
     call add(g:current_star_searches, s:SearchTermEscape(l:search))
+    call s:PushHighlight()
     call s:RecordInSearchHistory()
     call s:ExecuteSearch()
   catch /.*/
@@ -102,13 +118,45 @@ function! s:DoRewindCurrentSearchHistory()
       if len(g:current_star_search_history) > 1
         call remove(g:current_star_search_history, -1)
         let g:current_star_searches = deepcopy(g:current_star_search_history[-1])
+        call s:PopHighlight()
         call s:ExecuteSearch()
+      elseif @/ == g:last_known_manual_search
+        let @/ = ''
+      else
+        let @/ = g:last_known_manual_search
       endif
+    elseif @/ == g:last_known_manual_search
+      let @/ = ''
     else
-      call s:ExecuteSearch()
+      let @/ = g:last_known_manual_search
     endif
   catch /.*/
     echo "Couldn't execute rewind"
+  endtry
+endfunction
+
+function! s:PushHighlight()
+  try
+    if len(g:current_star_matches) < len(g:search_highlight_colors)
+    let search = g:current_star_searches[-1]
+    let idx = len(g:current_star_matches)
+    let highlightName = "StarPoundSearchIdx" . l:idx
+    execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
+    call add(g:current_star_matches, matchadd(l:highlightName, l:search, 100))
+  endif
+  catch /.*/
+    echo "Couldn't push highlight"
+  endtry
+endfunction
+
+function! s:PopHighlight()
+  try
+    if len(g:current_star_matches) - 1 == len(g:current_star_searches)
+      call matchdelete(g:current_star_matches[-1])
+      call remove(g:current_star_matches, -1)
+    endif
+  catch /.*/
+    echo "Couldn't pop highlight"
   endtry
 endfunction
 

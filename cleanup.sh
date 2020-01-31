@@ -3,6 +3,8 @@
 export DOT_FILES_DIR=$HOME/.hiren
 source "$DOT_FILES_DIR/util.sh"
 
+# TODO call project cleanup.sh
+
 # unlinks
 unlink "$HOME/.ackrc"
 unlink "$HOME/.alacritty.yml"

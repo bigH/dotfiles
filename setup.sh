@@ -157,10 +157,13 @@ else
 fi
 echo ""
 
+# TODO call project setup.sh
+
 echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"
 echo ""
 echo "     ... installs dependencies"
-echo "     \`brew install coreutils ctags cabal ghc neovim rbenv yarn rustup-init go tig python2 python3 swaks htop\`"
+echo "     \`brew install ack coreutils ctags cabal ghc neovim rbenv yarn \\"
+echo "                   rustup-init go tig python2 python3 swaks htop\`"
 echo "      - \`rustup update\` should update rust"
 echo "      - \`rbenv install 2.6.5\` installs journal version"
 echo ""

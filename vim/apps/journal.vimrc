@@ -29,20 +29,20 @@ let g:AutoClosePairs_del = "[]"
 
 "{{{ Paths
 
-function! s:LastFileWritten(pattern)
-  return trim(system('ls -t ' . $JOURNAL_PATH . '/' . a:pattern . '-* | head -1'))
-endfunction
-
 function! s:TodoPath()
-  return s:LastFileWritten('todo')
+  return $JOURNAL_PATH . '/todo-current.md'
 endfunction
 
-function! s:DailyJournalPath()
-  return s:LastFileWritten('journal')
+function! s:LatestDatedFile(pattern)
+  return trim(system('ls ' . $JOURNAL_PATH . '/' . a:pattern . '-* | sort | tail -1'))
 endfunction
 
 function! s:NotesPath()
-  return s:LastFileWritten('notes')
+  return s:LatestDatedFile('notes')
+endfunction
+
+function! s:DailyJournalPath()
+  return s:LatestDatedFile('journal')
 endfunction
 
 "}}}
@@ -54,9 +54,9 @@ function! s:FocusOnCurrentWhileKeepingHeader()
   let save_cursor = getpos('.')
   let current_line = getline('.')
   if l:current_line =~ '^#\s.*$'
-    execute 'normal! zMggzo' . l:save_cursor[1] . 'GzO'
+    execute 'normal! zMgg' . l:save_cursor[1] . 'GzO'
   else
-    execute 'normal! zMggzo' . l:save_cursor[1] . 'GzozO'
+    execute 'normal! zMgg' . l:save_cursor[1] . 'GzozO'
   endif
   call setpos('.', l:save_cursor)
 endfunction

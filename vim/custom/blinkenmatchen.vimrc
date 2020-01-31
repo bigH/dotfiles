@@ -19,7 +19,7 @@ function! HighlightCurrent()
   if(exists("g:blinkenmatchen_highlight"))
     exe "highlight SearchCurrentResult " . g:blinkenmatchen_highlight
   else
-    highlight SearchCurrentResult ctermbg=lightgreen ctermfg=black
+    highlight SearchCurrentResult ctermbg=white ctermfg=black
   endif
   if exists('g:blinkenmatchen_current_match')
     call matchdelete(g:blinkenmatchen_current_match)
