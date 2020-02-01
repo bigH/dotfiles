@@ -2,6 +2,7 @@
 
 exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/github.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
 

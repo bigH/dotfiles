@@ -127,25 +127,63 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \   ]
         \ }, <bang>0)
 
-  " Rg with preview and visual yank
-  command! -bang -nargs=* FileHistory
-        \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-        \   <bang>0 ? fzf#vim#with_preview('down:50%')
-        \           : fzf#vim#with_preview('right:50%', '?'),
-        \   1)
+  function! DoNothingSink(lines)
+  endfunction
+
+  " File History with Preview
+  command! -bar -bang FileHistoryDiff
+        \ call fzf#vim#buffer_commits(
+        \   {
+        \     'options': [
+        \       '--preview',
+        \       <bang>0 ? ('echo {} | ' .
+        \                  'grep -o "[a-f0-9]\{7,\}" | ' .
+        \                  'head -1 | ' .
+        \                  'xargs -I COMMIT_SHA git show -W COMMIT_SHA:"' . expand('%') . '" | ' .
+        \                  'bat -p --color always -l ' . &l:filetype)
+        \               : ('echo {} | ' .
+        \                  'grep -o "[a-f0-9]\{7,\}" | ' .
+        \                  'head -1 | ' .
+        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA COMMIT_SHA~ -- ' . expand('%') . ' | ' .
+        \                  'diff-so-fancy')
+        \     ],
+        \     'sink*': function('DoNothingSink')
+        \   }, 1)
+
+  command! -bar -bang VisualFileHistoryDiff
+        \ call fzf#vim#commits(
+        \   {
+        \     'source':
+        \       <bang>0 ? ('git log --fixed-strings -L ":' . GetVisualSelectionAsString(). ':' . expand('%') . '" --color=never "--format=%C(auto)%h%d %s %C(green)%cr" | grep "^[a-z0-9]\{7,\}\s\S.*$" --color=never')
+        \               : ('git log --fixed-strings -S "' . GetVisualSelectionAsString(). '" --color=always "--format=%C(auto)%h%d %s %C(green)%cr"'),
+        \     'options': [
+        \       '--preview',
+        \       <bang>0 ? ('echo {} | ' .
+        \                  'grep -o "[a-f0-9]\{7,\}" | ' .
+        \                  'head -1 | ' .
+        \                  'xargs -I COMMIT_SHA git log -W --color=always --fixed-strings -L ":' . GetVisualSelectionAsString(). ':' . expand('%') . '" COMMIT_SHA -1')
+        \               : ('echo {} | ' .
+        \                  'grep -o "[a-f0-9]\{7,\}" | ' .
+        \                  'head -1 | ' .
+        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA COMMIT_SHA~ | ' .
+        \                  'diff-so-fancy')
+        \     ],
+        \     'sink*': function('DoNothingSink')
+        \   }, 1)
 
   " Map `\f` to FZF search all files with Rg full screen
   nmap <silent> <leader>F :<C-U>Rg!<CR>
-  vmap <silent> <leader>F :<C-U>RgVisual!<CR>
-
-  " Map `\F` to FZF search open files
   nmap <silent> <leader>f :<C-U>Rg<CR>
+  " Use selected text to prepopulate
+  vmap <silent> <leader>F :<C-U>RgVisual!<CR>
   vmap <silent> <leader>f :<C-U>RgVisual<CR>
 
   " Map `\h` to FZF search open files
-  nmap <silent> <leader>h :<C-U>BCommits!<CR>
-  nmap <silent> <leader>H :<C-U>Commits!<CR>
+  nmap <silent> <leader>h :<C-U>FileHistory<CR>
+  nmap <silent> <leader>H :<C-U>FileHistory!<CR>
+  " Use selected text to search diff
+  vmap <silent> <leader>h :<C-U>VisualFileHistoryDiff<CR>
+  vmap <silent> <leader>H :<C-U>VisualFileHistoryDiff!<CR>
 
   " Map `\t` to FZF tag finder - gets overriden below by other bindings
   nmap <silent> <leader>t :Tags<CR>
