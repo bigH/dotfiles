@@ -6,7 +6,11 @@
 # zsh='SHELL=/bin/zsh bash'
 
 # ls override from oh-my-zsh
-if type gls >/dev/null 2>&1; then
+if type exa >/dev/null 2>&1; then
+  alias ls='exa --color=auto -G --group-directories-first'
+  alias ll='ls -l -1'
+  alias la='ls -la -1'
+elif type gls >/dev/null 2>&1; then
   alias ls='gls -p --color=auto -G --group-directories-first'
 else
   alias ls='ls -p --color=auto -G --group-directories-first'

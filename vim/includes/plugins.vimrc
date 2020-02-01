@@ -190,10 +190,6 @@ PlugMemoize 'tommcdo/vim-lion'
 " TODO make this conditional on project directory
 PlugMemoize 'tpope/vim-scriptease'
 
-" turns on preview
-" TODO does this even work??
-PlugMemoize 'yuki-ycino/fzf-preview.vim'
-
 " allow `foo:17` from the command-line
 PlugMemoize 'bogado/file-line'
 

@@ -9,14 +9,19 @@ let g:current_star_search_history = [[]]
 let g:last_known_manual_search = @/
 
 let g:search_highlight_colors = [
-      \   'ctermbg=cyan ctermfg=black',
-      \   'ctermbg=magenta ctermfg=black',
-      \   'ctermbg=yellow ctermfg=black',
       \   'ctermbg=red ctermfg=black',
-      \   'ctermbg=blue ctermfg=black',
-      \   'ctermbg=green ctermfg=black',
-      \   'ctermbg=darkgrey ctermfg=black',
       \   'ctermbg=brown ctermfg=black',
+      \   'ctermbg=yellow ctermfg=black',
+      \   'ctermbg=green ctermfg=black',
+      \   'ctermbg=cyan ctermfg=black',
+      \   'ctermbg=blue ctermfg=black',
+      \   'ctermbg=magenta ctermfg=black',
+      \   'ctermbg=darkgrey ctermfg=black',
+      \   'ctermbg=lightgrey ctermfg=black',
+      \   'ctermbg=lightcyan ctermfg=black',
+      \   'ctermbg=lightgreen ctermfg=black',
+      \   'ctermbg=lightyellow ctermfg=black',
+      \   'ctermbg=lightred ctermfg=black',
     \ ]
 
 let w:current_star_matches = []
@@ -69,9 +74,10 @@ function! s:GetCalculatedPattern()
   endtry
 endfunction
 
-function! s:ExecuteSearch()
+function! s:CalculateSearchRegisterAndHighlightAll()
   try
     let @/ = s:GetCalculatedPattern()
+    call s:ReHighlightAll()
   catch /.*/
     echo "Couldn't execute new search"
   endtry
@@ -79,57 +85,51 @@ endfunction
 
 function! s:RecordInSearchHistory()
   try
-    let l:current_star_searches_for_insertion = deepcopy(g:current_star_searches)
-    call uniq(l:current_star_searches_for_insertion)
-    if l:current_star_searches_for_insertion == g:current_star_searches
-      call add(g:current_star_search_history, l:current_star_searches_for_insertion)
-    endif
+    call add(g:current_star_search_history, deepcopy(g:current_star_searches))
   catch /.*/
     echo "Couldn't execute push to history"
   endtry
 endfunction
 
-function! s:DoPushBoundedSearch(is_visual)
+function! s:DoPushPreparedSearch(search)
   try
-    let search = s:GetNextSearchTerm(a:is_visual)
-    call add(g:current_star_searches, '\<' . s:SearchTermEscape(l:search) . '\>')
-    call s:ReHighlightAll()
+    let l:current_star_searches_for_insertion = deepcopy(g:current_star_searches)
+    call add(l:current_star_searches_for_insertion, a:search)
+    call uniq(l:current_star_searches_for_insertion)
+    let g:current_star_searches = l:current_star_searches_for_insertion
+    call add(g:current_star_search_history, deepcopy(g:current_star_searches))
     call s:RecordInSearchHistory()
-    call s:ExecuteSearch()
+    call s:CalculateSearchRegisterAndHighlightAll()
   catch /.*/
     echo "Couldn't execute push search"
   endtry
 endfunction
 
+function! s:DoPushBoundedSearch(is_visual)
+  let search = s:GetNextSearchTerm(a:is_visual)
+  let prepared = s:SearchTermEscape(l:search)
+  let bounded = '\<' . l:prepared . '\>'
+  call s:DoPushPreparedSearch(l:bounded)
+endfunction
+
 function! s:DoPushUnboundedSearch(is_visual)
-  try
-    let search = s:GetNextSearchTerm(a:is_visual)
-    call add(g:current_star_searches, s:SearchTermEscape(l:search))
-    call s:ReHighlightAll()
-    call s:RecordInSearchHistory()
-    call s:ExecuteSearch()
-  catch /.*/
-    echo "Couldn't execute new search"
-  endtry
+  let search = s:GetNextSearchTerm(a:is_visual)
+  let prepared = s:SearchTermEscape(l:search)
+  call s:DoPushPreparedSearch(l:prepared)
 endfunction
 
 function! s:DoRewindCurrentSearchHistory()
   try
-    if s:GetCalculatedPattern() == @/
-      if len(g:current_star_search_history) > 1
-        call remove(g:current_star_search_history, -1)
-        let g:current_star_searches = deepcopy(g:current_star_search_history[-1])
-        call s:ReHighlightAll()
-        call s:ExecuteSearch()
-      elseif @/ == g:last_known_manual_search
-        let @/ = ''
-      else
-        let @/ = g:last_known_manual_search
-      endif
-    elseif @/ == g:last_known_manual_search
-      let @/ = ''
+    if s:GetCalculatedPattern() != @/
+      let g:last_known_manual_search = @/
+      call s:CalculateSearchRegisterAndHighlightAll()
+    elseif len(g:current_star_search_history) > 1
+      call remove(g:current_star_search_history, -1)
+      let g:current_star_searches = deepcopy(g:current_star_search_history[-1])
+      call s:CalculateSearchRegisterAndHighlightAll()
     else
       let @/ = g:last_known_manual_search
+      call s:ReHighlightAll()
     endif
   catch /.*/
     echo "Couldn't execute rewind"
@@ -154,7 +154,7 @@ function! s:DoHighlight()
     if idx < len(g:search_highlight_colors)
       let highlightName = "StarPoundSearchIdx" . l:idx
       execute "highlight " . l:highlightName . " " . g:search_highlight_colors[l:idx]
-      call add(w:current_star_matches, matchadd(l:highlightName, l:searchTerm, 100))
+      call add(w:current_star_matches, matchadd(l:highlightName, l:searchTerm, 70 + l:idx))
     endif
     let idx = l:idx + 1
   endfor
@@ -190,13 +190,13 @@ function! SearchUtilsHighlightCurrent()
   let g:current_match_metadata = matchadd('SearchCurrentResult', target_pat, 101)
 endfunction
 
-command! -range VisualPushBoundedSearch :call s:DoPushBoundedSearch(1)
-command! -range VisualPushUnboundedSearch :call s:DoPushUnboundedSearch(1)
+command! VisualPushBoundedSearch :call s:DoPushBoundedSearch(1)
+command! VisualPushUnboundedSearch :call s:DoPushUnboundedSearch(1)
 
-command! -range PushBoundedSearch :call s:DoPushBoundedSearch(0)
-command! -range PushUnboundedSearch :call s:DoPushUnboundedSearch(0)
+command! PushBoundedSearch :call s:DoPushBoundedSearch(0)
+command! PushUnboundedSearch :call s:DoPushUnboundedSearch(0)
 
-command! -range RewindCurrentSearchHistory :call s:DoRewindCurrentSearchHistory()
+command! RewindCurrentSearchHistory :call s:DoRewindCurrentSearchHistory()
 
 vnoremap <silent> <Plug>VisualPushBoundedSearch :<C-U>VisualPushBoundedSearch<CR>:set hlsearch<CR>
 vnoremap <silent> <Plug>VisualPushUnboundedSearch :<C-U>VisualPushUnboundedSearch<CR>:set hlsearch<CR>
@@ -207,9 +207,10 @@ nnoremap <silent> <Plug>PushUnboundedSearch :<C-U>PushUnboundedSearch<CR>:set hl
 nnoremap <silent> <Plug>RewindCurrentSearchHistory :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
 
 augroup ReHighlightAutomation
+  autocmd VimLeave * set @/ = g:last_known_manual_search
   autocmd VimEnter * call s:ReHighlightAll()
-  autocmd WinEnter * call s:ReHighlight()
-  autocmd WinNew * call s:ReHighlight()
+  autocmd WinEnter * call s:ReHighlightAll()
+  autocmd WinNew * call s:ReHighlightAll()
   autocmd BufWinEnter * call s:DoHighlight()
   autocmd BufWinLeave * call s:KillHighlight()
 augroup end

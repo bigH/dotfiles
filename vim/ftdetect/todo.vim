@@ -102,14 +102,10 @@ function! s:SetupTodoFile()
   nmap <silent> <buffer> <C-\> :call <SID>ToggleTodoStateAll()<CR>
   imap <silent> <buffer> <C-\> <Esc>:call <SID>ToggleTodoStateAll()<CR>a
 
-  " TODO: <C-0> to toggle done/not-done
-  nmap <silent> <buffer> <C-0> :call <SID>ChangeState('0')<CR>
-  imap <silent> <buffer> <C-0> <Esc>:call <SID>ChangeState('0')<CR>a
-
-  " Move between windows using <C-H/L> keys
-  nmap <silent> <buffer> <Tab> >>
+  " Indent/Outdent
+  nmap <silent> <buffer> <Tab> mm>>`m4l
   imap <silent> <buffer> <Tab> <Esc>mm>>`m4la
-  nmap <silent> <buffer> <S-Tab> <<
+  nmap <silent> <buffer> <S-Tab> mm<<`m4h
   imap <silent> <buffer> <S-Tab> <Esc>mm<<`m4ha
 
   " Indent wrapped lines up to the same level

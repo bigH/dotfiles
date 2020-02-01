@@ -241,40 +241,13 @@ noremap <leader><leader> :w<CR>
 
 "{{{ Auto Commands
 
-" Restore cursor position to where it was before
-augroup JumpCursorOnEdit
-  autocmd BufReadPost *
-        \ if expand("<afile>:p:h") !=? $TEMP |
-        \   if line("'\"") > 1 && line("'\"") <= line("$") |
-        \     let JumpCursorOnEdit_foo = line("'\"") |
-        \     let b:doopenfold = 1 |
-        \     if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
-        \        let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
-        \        let b:doopenfold = 2 |
-        \     endif |
-        \     exe JumpCursorOnEdit_foo |
-        \   endif |
-        \ endif
-
-  " Need to postpone using "zv" until after reading the modelines.
-  autocmd BufWinEnter *
-        \ if exists("b:doopenfold") |
-        \   exe "normal zv" |
-        \   if(b:doopenfold > 1) |
-        \       exe  "+".1 |
-        \   endif |
-        \   unlet b:doopenfold |
-        \ endif
-
-augroup END
-
 " When editing a file, always jump to the last known cursor position.
 " Don't do it when the position is invalid or when inside an event handler
-" (happens when dropping a file on gvim).
+" (happens when dropping a file on gvim). Don't do it for git commit messages.
 autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal! g`\"" |
-      \ endif
+  \ if stridx(expand('%'), '.git/COMMIT_EDITMSG') < 0 && line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
 
 "}}}
 

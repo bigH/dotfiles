@@ -18,16 +18,8 @@ endif
 
 " -- fzf --
 
-if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim', 'yuki-ycino/fzf-preview.vim')
-  " use `bat`
-  let g:fzf_preview_command = 'bat -p --color always {-1}'
-endif
-
-" -- fzf --
-
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Customize fzf to use tabs for <Enter>
-  " TODO many of these don't work
   let g:fzf_action = {
         \ 'ctrl-m': 'e!',
         \ 'ctrl-o': 'e!',
@@ -52,36 +44,32 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
           \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
   endfunc
 
-  " Augmenting Ag command using fzf#vim#with_preview function
-  "   * fzf#vim#with_preview([[options], [preview window], [toggle keys...]])
-  "     * For syntax-highlighting, Ruby and any of the following tools are required:
-  "       - Bat: https://github.com/sharkdp/bat
-  "       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
-  "       - CodeRay: http://coderay.rubychan.de/
-  "       - Rouge: https://github.com/jneen/rouge
-  "
-  "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
-  "   :Ag! - Start fzf in fullscreen and display the preview window above
-  command! -bang -nargs=* Ag
-        \ call fzf#vim#ag(<q-args>,
-        \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-        \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-        \                 <bang>0)
-
-  " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+  " Add preview to `rg` -- included `preview` program knows which line to
+  " scroll to :)
   command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
         \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-        \   <bang>0 ? fzf#vim#with_preview('up:60%')
-        \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+        \   <bang>0 ? fzf#vim#with_preview('down:50%')
+        \           : fzf#vim#with_preview('right:50%', '?'),
         \   <bang>0)
 
-  " Map `\f` to FZF search all files with Rg
-  nmap <silent> <leader>f :Rg<CR>
-  " Map `\F` to FZF search open files
-  nmap <silent> <leader>F :Lines<CR>
+  " Files with preview
+  command! -bang -nargs=? -complete=dir Files
+        \ call fzf#vim#files(<q-args>, {
+        \   'options': [
+        \     '--layout=reverse',
+        \     '--info=inline',
+        \     '--preview',
+        \     $DOT_FILES_DIR . '/.vim/bundle/fzf.vim/bin/preview.sh {}'
+        \   ]
+        \ }, <bang>0)
 
-  " Map `\t` to FZF tag finder
+  " Map `\f` to FZF search all files with Rg full screen
+  nmap <silent> <leader>f :Rg!<CR>
+  " Map `\F` to FZF search open files
+  nmap <silent> <leader>F :Rg<CR>
+
+  " Map `\t` to FZF tag finder - gets overriden below by other bindings
   nmap <silent> <leader>t :Tags<CR>
 
   " Map `\e` to FZF file lister
@@ -464,7 +452,7 @@ if IsPluginLoaded('autozimu/LanguageClient-neovim')
     au FileType ruby nnoremap <silent> <buffer> <Leader>d :call LanguageClient#textDocument_definition()<CR>
     au FileType ruby nnoremap <silent> <buffer> <Leader>t :call LanguageClient#textDocument_hover()<CR>
     au FileType ruby nnoremap <silent> <buffer> K :call LanguageClient#explainErrorAtPoint()<CR>
-    au FileType ruby nnoremap <silent> <buffer> <Leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
+    au FileType ruby nnoremap <silent> <buffer> <Leader>T :call LanguageClient#textDocument_typeDefinition()<CR>
     au FileType ruby inoremap <silent> <buffer> <C-Space> <C-x><C-o>
   augroup END
 endif

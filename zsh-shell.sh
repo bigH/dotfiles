@@ -1,8 +1,17 @@
 #!/usr/bin/env zsh
 
-# General zshzle options
 # cd by just typing in a directory name
-setopt autocd
+# I don't like this any-more. Here's why:
+#
+#   $ pwd
+#   /path/to
+#   $ mkdir somewhere
+#   $ alias go=somewhere
+#   $ go
+#   $ pwd
+#   /path/to/somewhere
+#
+# setopt autocd
 
 # warn me if a glob doesn't match anything
 setopt nomatch

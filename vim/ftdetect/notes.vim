@@ -17,10 +17,10 @@ function! s:SetupNotesFile()
   " Map <CR> to make more or walk up the hierarchy
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 
-  " Move between windows using <C-H/L> keys
-  nmap <silent> <buffer> <Tab> >>
+  " Indent/Outdent
+  nmap <silent> <buffer> <Tab> mm>>`m4l
   imap <silent> <buffer> <Tab> <Esc>mm>>`m4la
-  nmap <silent> <buffer> <S-Tab> <<
+  nmap <silent> <buffer> <S-Tab> mm<<`m4h
   imap <silent> <buffer> <S-Tab> <Esc>mm<<`m4ha
 
   " Indent wrapped lines up to the same level
