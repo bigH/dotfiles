@@ -1,7 +1,7 @@
-" Source main `vimrc`
+" Source main `vim`
 
 let g:app_plugin_set = 'scratch'
-exec "source" $DOT_FILES_DIR . "/vim/includes/core.vimrc"
+exec "source" $DOT_FILES_DIR . "/vim/includes/core.vim"
 
 "{{{ Special `scratch` stuff
 

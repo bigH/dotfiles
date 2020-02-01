@@ -1,7 +1,7 @@
-" Source main `vimrc`
+" Source main `vim`
 
 let g:app_plugin_set = 'journal'
-exec "source" $DOT_FILES_DIR . "/vim/includes/core.vimrc"
+exec "source" $DOT_FILES_DIR . "/vim/includes/core.vim"
 
 "{{{ Basics
 
@@ -69,8 +69,8 @@ imap <silent> <C-f> <Esc>:call <SID>FocusOnCurrentWhileKeepingHeader()<CR>a
 
 "{{{ File Management
 
-command SyncJournalAsync call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vimrc')
-command SyncJournal call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vimrc --now')
+command SyncJournalAsync call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim')
+command SyncJournal call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim --now')
 
 function! s:LoadJournal()
   syntax enable

@@ -74,6 +74,9 @@ PlugMemoize 'junegunn/vim-plug'
 " status line and other edgy niceties
 PlugMemoize 'vim-airline/vim-airline', ForModes('vim', 'nvim')
 
+" git things are nice
+PlugMemoize 'tpope/vim-fugitive', ForModes('vim', 'nvim')
+
 " NERDTree and git support
 PlugMemoize 'scrooloose/nerdtree', ForModes('vim', 'nvim')
 PlugMemoize 'Xuyuanp/nerdtree-git-plugin', ForModes('vim', 'nvim')

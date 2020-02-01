@@ -18,7 +18,7 @@ export RUST_BACKTRACE=1
 
 # Setup `dircolors`
 # `dircolors` isn't on the path
-if [ -e /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
+if [ -e "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
   eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
 fi
 

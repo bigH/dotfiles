@@ -19,6 +19,49 @@ endif
 " -- fzf --
 
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
+  " Using floating windows of Neovim to start fzf
+  if has('nvim')
+    function! FloatingFZF(width, height, border_highlight)
+      function! s:create_float(hl, opts)
+        let buf = nvim_create_buf(v:false, v:true)
+        let opts = extend({'relative': 'editor', 'style': 'minimal'}, a:opts)
+        let win = nvim_open_win(buf, v:true, opts)
+        call setwinvar(win, '&winhighlight', 'NormalFloat:'.a:hl)
+        call setwinvar(win, '&colorcolumn', '')
+        return buf
+      endfunction
+
+      " Size and position
+      let width = float2nr(&columns * a:width)
+      let height = float2nr(&lines * a:height)
+      let row = float2nr((&lines - height) / 2)
+      let col = float2nr((&columns - width) / 2)
+
+      " Border
+      let top = '╭' . repeat('─', width - 2) . '╮'
+      let mid = '│' . repeat(' ', width - 2) . '│'
+      let bot = '╰' . repeat('─', width - 2) . '╯'
+      let border = [top] + repeat([mid], height - 2) + [bot]
+
+      " Draw frame
+      let s:frame = s:create_float(a:border_highlight, {'row': row, 'col': col, 'width': width, 'height': height})
+      call nvim_buf_set_lines(s:frame, 0, -1, v:true, border)
+
+      " Draw viewport
+      call s:create_float('Normal', {'row': row + 1, 'col': col + 2, 'width': width - 4, 'height': height - 2})
+      autocmd BufWipeout <buffer> execute 'bwipeout' s:frame
+    endfunction
+
+    let g:fzf_layout = { 'window': 'call FloatingFZF(0.9, 0.7, "Comment")' }
+  endif
+
+  " Other small things
+  if has('nvim') && !exists('g:fzf_layout')
+    autocmd! FileType fzf
+    autocmd  FileType fzf set laststatus=0 noshowmode noruler
+      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+  endif
+
   " Customize fzf to use tabs for <Enter>
   let g:fzf_action = {
         \ 'ctrl-m': 'e!',
@@ -35,17 +78,37 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \  'down':    '40%'})
 
   " TODO make this work
-  func! FzfFindInDirectoryfunc()
+  function! FzfFindInDirectoryfunc()
     wincmd l
     call fzf#vim#grep(
           \   'rg --column --line-number --no-heading --color=always --smart-case '.
           \   shellescape(<q-args>).' ',
           \   0,
           \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
-  endfunc
+  endfunction
 
-  " Add preview to `rg` -- included `preview` program knows which line to
-  " scroll to :)
+  " get content of visual selection as string
+  function! GetVisualSelectionAsString()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+      return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+  endfunction
+
+  " Rg with preview and visual yank
+  command! -bang -nargs=* RgVisual
+        \ call fzf#vim#grep(
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+        \   <bang>0 ? fzf#vim#with_preview({'options': '-q "' . GetVisualSelectionAsString() . '"'}, 'down:50%')
+        \           : fzf#vim#with_preview({'options': '-q "' . GetVisualSelectionAsString() . '"'}, 'right:50%', '?'),
+        \   <bang>0)
+
+  " Rg with preview
   command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
         \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
@@ -64,10 +127,25 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \   ]
         \ }, <bang>0)
 
+  " Rg with preview and visual yank
+  command! -bang -nargs=* FileHistory
+        \ call fzf#vim#grep(
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+        \   <bang>0 ? fzf#vim#with_preview('down:50%')
+        \           : fzf#vim#with_preview('right:50%', '?'),
+        \   1)
+
   " Map `\f` to FZF search all files with Rg full screen
-  nmap <silent> <leader>f :Rg!<CR>
+  nmap <silent> <leader>F :<C-U>Rg!<CR>
+  vmap <silent> <leader>F :<C-U>RgVisual!<CR>
+
   " Map `\F` to FZF search open files
-  nmap <silent> <leader>F :Rg<CR>
+  nmap <silent> <leader>f :<C-U>Rg<CR>
+  vmap <silent> <leader>f :<C-U>RgVisual<CR>
+
+  " Map `\h` to FZF search open files
+  nmap <silent> <leader>h :<C-U>BCommits!<CR>
+  nmap <silent> <leader>H :<C-U>Commits!<CR>
 
   " Map `\t` to FZF tag finder - gets overriden below by other bindings
   nmap <silent> <leader>t :Tags<CR>
@@ -162,7 +240,7 @@ endif
 " -- vim-textobj-user --
 
 if IsPluginLoaded('kana/vim-textobj-user')
-  exec "source" $DOT_FILES_DIR . "/vim/custom/text_objects.vimrc"
+  exec "source" $DOT_FILES_DIR . "/vim/custom/text_objects.vim"
 endif
 
 " -- vim-angry [textobj] --
@@ -341,25 +419,25 @@ endif
 
 " functions for use below to make NERDTree switch windows in the editor region
 if IsPluginLoaded('scrooloose/nerdtree')
-  func! NERDBPrev()
+  function! NERDBPrev()
     execute 'wincmd' 'l'
     execute 'bprev'
-  endfunc
+  endfunction
 
-  func! NERDBFirst()
+  function! NERDBFirst()
     execute 'wincmd' 'l'
     execute 'bfirst'
-  endfunc
+  endfunction
 
-  func! NERDBNext()
+  function! NERDBNext()
     execute 'wincmd' 'l'
     execute 'bnext'
-  endfunc
+  endfunction
 
-  func! NERDBLast()
+  function! NERDBLast()
     execute 'wincmd' 'l'
     execute 'blast'
-  endfunc
+  endfunction
 
   " L/H/C-H/C-L in NERDTree
   augroup NERDTree
@@ -389,8 +467,8 @@ if IsPluginLoaded('nathanaelkane/vim-indent-guides')
 
   " configure colors
   let g:indent_guides_auto_colors = 0
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=black
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=NONE
+  autocmd VimEnter,Colorscheme * highlight IndentGuidesOdd ctermbg=black
+  autocmd VimEnter,Colorscheme * highlight IndentGuidesEven ctermbg=NONE
 endif
 
 " -- vim-scala --

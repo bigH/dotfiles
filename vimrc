@@ -1,9 +1,9 @@
 "{{{ Includes
 
-exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vimrc"
+exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vimrc"
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vimrc"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
 
 "}}}
 
@@ -88,7 +88,7 @@ nmap <silent> <C-L> :blast!<CR>
 
 " Disable Ex-Mode and map Q to close buffers
 " TODO doesn't really work.. - `bd` seems `==`
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/kill_buffer_not_split.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/kill_buffer_not_split.vim"
 nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
 "}}}
@@ -96,8 +96,8 @@ nnoremap <silent> Q :call KillBufferNotSplit()<CR>
 
 "{{{ Load ENV_SPECIFIC things
 
-if filereadable($DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vimrc")
-  execute "source" $DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vimrc"
+if filereadable($DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vim")
+  execute "source" $DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vim"
 endif
 
 "}}}

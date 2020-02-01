@@ -338,8 +338,8 @@ if has('nvim')
           \   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
           \ endif
 
-    " Auto-Close
-    au TermClose * q
+    " Auto-Close - conflicts with FZF floating window
+    " au TermClose * q
 
     " Handle <Esc>
     au FileType fzf tunmap <Esc>
@@ -371,26 +371,26 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/change_repeat.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/search_utils.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/change_repeat.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/search_utils.vim"
 
 "}}}
 
 
 "{{{ FileType Customizations
 
-execute "source" $DOT_FILES_DIR . "/" . "vim/includes/filetypes.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/filetypes.vim"
 
 "}}}
 
 
 "{{{ Load Plugins
 
-execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugins.vimrc"
-execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugin_configs.vimrc"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugins.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugin_configs.vim"
 
 "}}}
 
