@@ -20,7 +20,8 @@ endif
 
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Using floating windows of Neovim to start fzf
-  if has('nvim')
+  try
+    let l:throwaway = function('nvim_open_win')
     function! FloatingFZF(width, height, border_highlight)
       function! s:create_float(hl, opts)
         let buf = nvim_create_buf(v:false, v:true)
@@ -53,7 +54,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
     endfunction
 
     let g:fzf_layout = { 'window': 'call FloatingFZF(0.9, 0.7, "Comment")' }
-  endif
+  catch /.*/
+  endtry
 
   " Other small things
   if has('nvim') && !exists('g:fzf_layout')
