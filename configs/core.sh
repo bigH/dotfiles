@@ -2,7 +2,7 @@
 
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
-  source $HOME/.ghcup/env
+  auto_source $HOME/.ghcup/env
 else
   export PATH="$HOME/.cabal/bin:$PATH"
 fi
@@ -38,7 +38,7 @@ fi
 
 # Add `cargo`
 if [ -f "$HOME/.cargo/env" ]; then
-  source $HOME/.cargo/env
+  auto_source $HOME/.cargo/env
 fi
 
 # Add `cargo`
@@ -46,8 +46,8 @@ if [ -d "$HOME/.rustup" ]; then
   export RUSTUP_HOME="$HOME/.rustup"
 fi
 
-# Add `made-bin`
-export PATH="$DOT_FILES_DIR/made-bin:$PATH"
+# Add `made/bin`
+export PATH="$DOT_FILES_DIR/made/bin:$PATH"
 
 # Add `emacs`
 if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then
@@ -76,14 +76,7 @@ fi
 # Add iTerm2 things
 if [[ "$SHELL" == *'zsh' ]]; then
   if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
-    source "${HOME}/.iterm2_shell_integration.zsh"
-  fi
-fi
-
-# Add `rg` completion to
-if [ -e "$DOT_FILES_DIR/ripgrep/complete" ]; then
-  if [[ "$SHELL" == *'zsh' ]]; then
-    fpath+="$DOT_FILES_DIR/ripgrep/complete"
+    auto_source "${HOME}/.iterm2_shell_integration.zsh"
   fi
 fi
 

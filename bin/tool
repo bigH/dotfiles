@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+NEWLINE=$'\n'
+
+tool_command() {
+  echo "$@"
+}
+
+tool_command "$@"

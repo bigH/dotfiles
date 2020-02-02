@@ -37,7 +37,7 @@ rm -f "$HOME/bin"
 # cleanings
 rm -rf "$DOT_FILES_DIR/.oh-my-zsh"
 rm -rf "$DOT_FILES_DIR/.vim"
-rm -rf "$DOT_FILES_DIR/made-bin"
+rm -rf "$DOT_FILES_DIR/made"
 rm -rf "$DOT_FILES_DIR/fzf"
 rm -rf "$DOT_FILES_DIR/ripgrep"
 rm -rf "$DOT_FILES_DIR/bat"

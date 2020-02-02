@@ -27,7 +27,6 @@ function prompt_command() {
     HOSTNAME_HEAD="${HOSTNAME%%.*}"
   fi
 
-  # TODO white-n `/` in the whole path
   # Show hostname inside SSH session
   local HOST_PROMPT="${USER_HOST_DELIMITER} ${YELLOW}${BOLD}${HOSTNAME_HEAD}${NORMAL}"
 

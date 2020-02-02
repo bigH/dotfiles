@@ -9,19 +9,19 @@
 # bindkey -M main '^i' expand-alias
 
 # Ctrl-P - select file to paste
-bindkey '^P' fzf-file-widget
+bindkey '^p' fzf-file-widget
 # Ctrl-N - select directory to paste
-bindkey '^N' fzf-cd-widget
+bindkey '^n' fzf-cd-widget
 
 # Ctrl-H - find commit SHA(s)
 fzf-gh-widget() { local result=$(gh | join-lines); LBUFFER+=$result }
 zle -N fzf-gh-widget
-bindkey '^H' fzf-gh-widget
+bindkey '^h' fzf-gh-widget
 
 # Alt-H - commit SHA range
-fzf-gh-widget() { local result=$(gh | tac | join-lines '..'); LBUFFER+=$result }
-zle -N fzf-gh-widget
-bindkey '^H' fzf-gh-widget
+fzf-gh-range-widget() { local result=$(gh | tac | join-lines '..'); LBUFFER+=$result }
+zle -N fzf-gh-range-widget
+bindkey '^[h' fzf-gh-range-widget
 
 # Alt-O - open files differing from particular commit
 fzf-gfi-gh-widget() { local result=$(gfi $(gh) | join-lines); LBUFFER+=$result }
@@ -62,7 +62,7 @@ bindkey '^v' edit-command-line
 
 fixup-command-for-cmd-substitution() {
   if [[ "$1" == *'rg'* ]]; then
-    if [[ "$1" == *'$(rg'* ]] || [[ "$1" == *' -l '* ]] || [[ "$1" == *' --files-without-match '* ]]; then
+    if [[ "$1" == *'$(rg'* ]] || [[ "$1" == *' -l'* ]] || [[ "$1" == *' --files-without-match'* ]]; then
       # too complex or already containing flag needed
       echo "$1"
     else
@@ -73,7 +73,7 @@ fixup-command-for-cmd-substitution() {
   fi
 }
 
-# Alt-V - `vim $(...)` around
+# Alt-V - `vim $(... -l)` around
 insert-last-command-with-vim() {
   BUFFER='vim $('
   BUFFER+="$(fixup-command-for-cmd-substitution "$history[$((HISTCMD-1))]")"
@@ -92,5 +92,3 @@ insert-last-command-with-rg() {
 }
 zle -N insert-last-command-with-rg
 bindkey '^[r' insert-last-command-with-rg
-
-# TODO Ctrl-? - select from to run using $(..)

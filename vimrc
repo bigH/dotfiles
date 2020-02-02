@@ -88,9 +88,7 @@ nmap <silent> L :bnext!<CR>
 nmap <silent> <C-L> :blast!<CR>
 
 " Disable Ex-Mode and map Q to close buffers
-" TODO doesn't really work.. - `bd` seems `==`
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/kill_buffer_not_split.vim"
-nnoremap <silent> Q :call KillBufferNotSplit()<CR>
+nnoremap <silent> Q :bd<CR>
 
 "}}}
 
@@ -103,5 +101,3 @@ endif
 
 "}}}
 
-
-" TODO Ideas:

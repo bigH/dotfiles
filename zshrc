@@ -72,7 +72,6 @@ plugins=(
 
 autoload -U compinit && compinit
 
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -106,9 +105,9 @@ source $ZSH/oh-my-zsh.sh
 
 export DOT_FILES_DIR=$HOME/.hiren
 
-source $DOT_FILES_DIR/profile
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+source "$DOT_FILES_DIR/auto_sourcer.sh"
+auto_source $ZSH/oh-my-zsh.sh
+auto_source $DOT_FILES_DIR/profile
+auto_source_initialize
 
 autoload -U +X bashcompinit && bashcompinit
-
