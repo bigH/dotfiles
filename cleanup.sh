@@ -8,7 +8,7 @@ source "$DOT_FILES_DIR/util.sh"
 # unlinks
 unlink "$HOME/.ackrc"
 unlink "$HOME/.alacritty.yml"
-unlink "$HOME/.config/alacritty.yml"
+unlink "$HOME/.config/alacritty/alacritty.yml"
 unlink "$HOME/.ctags"
 unlink "$HOME/.gitconfig"
 unlink "$HOME/.gitignore_global"

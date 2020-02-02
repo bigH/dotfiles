@@ -24,6 +24,7 @@ echo "${BLUE}${BOLD}\`made\` directory${NORMAL}"
 mkdir_if_not_exists "$DOT_FILES_DIR/made"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/bin"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/doc"
+mkdir_if_not_exists "$DOT_FILES_DIR/made/doc/man1"
 echo ""
 
 echo "${BLUE}${BOLD}Cleanup \`vim\` directories${NORMAL}"
@@ -151,9 +152,9 @@ fi
 
 echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
 if type nvim >/dev/null 2>&1; then
-  zsh -c 'nvim -u $DOT_FILES_DIR/vim/includes/plugins.vimrc +PlugUpdate +qall'
+  zsh -c 'nvim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'
 else
-  zsh -c 'vim -u $DOT_FILES_DIR/vim/includes/plugins.vimrc +PlugUpdate +qall'
+  zsh -c 'vim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'
 fi
 echo ""
 

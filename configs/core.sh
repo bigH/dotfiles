@@ -46,8 +46,9 @@ if [ -d "$HOME/.rustup" ]; then
   export RUSTUP_HOME="$HOME/.rustup"
 fi
 
-# Add `made/bin`
+# Add `made/*`
 export PATH="$DOT_FILES_DIR/made/bin:$PATH"
+export MANPATH="$DOT_FILES_DIR/made/doc:$MANPATH"
 
 # Add `emacs`
 if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then

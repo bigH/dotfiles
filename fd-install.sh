@@ -11,7 +11,7 @@ if [ -d "$HOME/.cargo" ]; then
   cargo build --release -q
 
   cp target/release/fd $DOT_FILES_DIR/made/bin
-  cp doc/fd.* $DOT_FILES_DIR/made/doc/.
+  cp doc/fd.* $DOT_FILES_DIR/made/doc/man1/.
 else
   echo "ERROR: '$HOME/.cargo' not found"
 fi

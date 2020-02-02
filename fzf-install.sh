@@ -9,4 +9,4 @@ make install
 ./install --no-key-bindings --no-completion --no-update-rc --no-bash --no-zsh --no-fish
 
 cp bin/fzf{,-tmux} $DOT_FILES_DIR/made/bin
-cp man/fzf*.* $DOT_FILES_DIR/made/doc/.
+cp man/man1/fzf*.* $DOT_FILES_DIR/made/doc/man1/.
