@@ -27,6 +27,21 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
     fi
   }
 
+  last_mtime() {
+    if [ -z "$1" ]; then
+      echo "ERROR: specify a file to source."
+    else
+      if type gstat >/dev/null 2>&1; then
+        # NB: expect local to contain `gstat` if `stat` is not GNU implementation
+        # on `macOS`, this is achieved by installing coreutils
+        # on `linux`, this won't exist and `stat` will work "correctly"
+        gstat -c %Y "$1"
+      else
+        stat -c %Y "$1"
+      fi
+    fi
+  }
+
   auto_source_check_sources_zsh() {
     NOW_UTC="$(date +%s)"
     if [ "$(echo "$AUTO_SOURCER_LAST_CHECK + $AUTO_SOURCER_CHECK_INTERVAL" | bc)" -lt "$NOW_UTC" ]; then
@@ -34,7 +49,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
         if [[ "$SOURCED_FILE" == "$HOME"* ]]; then
           DISPLAY_PATH="~${SOURCED_FILE#"$HOME"}"
         fi
-        if [ -e "$SOURCED_FILE" ] && [ "$(stat -f %m "$SOURCED_FILE")" -gt "$AUTO_SOURCER_LAST_CHECK" ]; then
+        if [ -e "$SOURCED_FILE" ] && [ "$(last_mtime "$SOURCED_FILE")" -gt "$AUTO_SOURCER_LAST_CHECK" ]; then
           # disrupts output from other commands
           # echo "\`$DISPLAY_PATH\` changed, resourcing..."
           auto_source "$SOURCED_FILE"
