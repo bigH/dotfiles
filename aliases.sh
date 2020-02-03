@@ -7,9 +7,9 @@
 
 # ls override from oh-my-zsh
 if type exa >/dev/null 2>&1; then
-  alias ls='exa --color=auto -G --group-directories-first'
-  alias ll='ls -l -1'
-  alias la='ls -la -1'
+  alias ls='exa --color=auto --group-directories-first -G'
+  alias ll='exa --color=auto --group-directories-first -l'
+  alias la='exa --color=auto --group-directories-first -la'
 elif type gls >/dev/null 2>&1; then
   alias ls='gls -p --color=auto -G --group-directories-first'
 else
