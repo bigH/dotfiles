@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
-# set input according to arguments
-if [ $# -ge 1 ]; then
-  for i in $*; do
-    cat $i | sed 's/^/    /'
-  done
-else
-  cat - | sed 's/^/    /'
-fi
+# this nicely indents both stderr and stdout
+indent() {
+  if [ -n "$1" ] && [ "$1" = "--header" ]; then
+    shift
+    printf "\$ $1"
+    for arg in "$@"; do
+      printf " '%s'" "$arg"
+    done
+    echo
+  fi
 
+  { "$@" 2>&3 | sed >&2 's/^/    /'; } 3>&1 1>&2 | sed 's/^/    /';
+}
+
+indent "$@"

@@ -34,15 +34,16 @@ endif
 "}}}
 
 
-"{{{ Pasting Only Useful in Code
+"{{{ Pasting Only Useful in Code (TODO consider a different solution)??
+" TODO moved this to paste mode - seems good
 
 " Re-indent when pasting
-nnoremap p mmp=`]`m
-nnoremap P mmP=`]`m
+" nnoremap p mmp=`]`m
+" nnoremap P mmP=`]`m
 
-" Re-indent when pasting in visual mode
-vnoremap p p=']
-vnoremap P P=']
+" " Re-indent when pasting in visual mode
+" vnoremap p p=']
+" vnoremap P P=']
 
 "}}}
 

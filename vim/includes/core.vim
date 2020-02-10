@@ -131,11 +131,17 @@ autocmd VimResized * wincmd =
 
 "{{{ Copy to all OS clipboards
 
+let g:copy_all_registers_to_clipboard = 0
+
 function! CopyPlusToStar(name)
-  if a:name == '+'
+  if g:copy_all_registers_to_clipboard || a:name == '+'
     let contents = getreg(a:name)
-    silent! call setreg('*', l:contents)
-    silent! call setreg('+', l:contents)
+    if a:name == '+'
+      silent! call setreg('*', l:contents)
+    endif
+    if a:name == '+'
+      silent! call setreg('+', l:contents)
+    endif
   endif
 endfunction
 
@@ -189,7 +195,6 @@ augroup Todos
 augroup END
 
 highlight def link MyTodo Todo
-
 
 "}}}
 
@@ -284,7 +289,7 @@ vnoremap <silent> Y "+y
 nnoremap <silent> K <Nop>
 
 " Map Q to `NoOp`
-nnoremap <silent> K <Nop>
+nnoremap <silent> Q <Nop>
 
 " Prevent (mis|slow)-types of below from triggering orignal vim commands
 " NB: Later get re-mapped to using `vim-surround`
@@ -305,15 +310,9 @@ imap <silent> <C-F> <Esc>wi
 " NB: this mapping conflicts with endwise, which also remaps `<CR>`
 inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>"
 
-" visual shifting keeps selection (doesn't play nice with `.`)
-" vnoremap < <gv
-" vnoremap > >gv
-
+" this seems hacky
 " allow the . to execute once for each line of a visual selection
 vnoremap . :normal .<CR>
-
-" `w!!` to force sudo
-cmap !! w !sudo tee % >/dev/null
 
 "}}}
 

@@ -121,19 +121,19 @@ wh() {
       echo "${MAGENTA}readlink -f '$1'${NORMAL}:"
       echo ""
       PATH_TO_FILE="$(readlink-f "$1")"
-      echo "$PATH_TO_FILE" | "$DOT_FILES_DIR/bin/indent"
+      "$DOT_FILES_DIR/bin/indent" echo "$PATH_TO_FILE"
       echo ""
       wh "$PATH_TO_FILE"
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
       echo "${MAGENTA}ls -l '$1'${NORMAL}:"
       echo ""
-      ls -l "$1" | "$DOT_FILES_DIR/bin/indent"
+      "$DOT_FILES_DIR/bin/indent" ls -l "$1"
     elif [ -d "$1" ]; then
       echo "${CYAN} -- found a directory -- ${NORMAL}"
       echo "${MAGENTA}ls -ld '$1'${NORMAL}:"
       echo ""
-      ls -ld "$1" | "$DOT_FILES_DIR/bin/indent"
+      "$DOT_FILES_DIR/bin/indent" ls -ld "$1"
       echo ""
       echo "${GRAY}(directory listing)${NORMAL}"
       echo "${MAGENTA}ls '$1'${NORMAL}:"
@@ -141,7 +141,7 @@ wh() {
       ls "$1"
     else
       echo "${MAGENTA}which '$1'${NORMAL}:"
-      which "$1" | "$DOT_FILES_DIR/bin/indent"
+      "$DOT_FILES_DIR/bin/indent" "which" "$1"
       PATH_TO_COMMAND="$(which "$1")"
       if [ -e "$PATH_TO_COMMAND" ]; then
         echo ""

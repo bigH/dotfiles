@@ -207,7 +207,7 @@ nnoremap <silent> <Plug>PushUnboundedSearch :<C-U>PushUnboundedSearch<CR>:set hl
 nnoremap <silent> <Plug>RewindCurrentSearchHistory :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
 
 augroup ReHighlightAutomation
-  autocmd VimLeave * set @/ = g:last_known_manual_search
+  autocmd VimLeavePre * let @/ = g:last_known_manual_search
   autocmd VimEnter * call s:ReHighlightAll()
   autocmd WinEnter * call s:ReHighlightAll()
   autocmd WinNew * call s:ReHighlightAll()

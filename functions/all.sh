@@ -21,10 +21,10 @@ source_functions_for_expected_command fzf
 source_functions_for_expected_command rg
 
 unset -f source_functions_for_expected_command
+unset ALIASES
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/functions.sh" ]; then
     auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/functions.sh"
   fi
 fi
-

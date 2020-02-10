@@ -30,7 +30,10 @@
 
 [alias]
 # aliases
+	git = !git
 	co = checkout
+	cob = checkout -b
+	comb = '!git checkout $(git mbh)'
 	blame = annotate
 # Show Status in Summary Form
 	st = status --short
@@ -48,6 +51,7 @@
 	lastdiff = diff --cached HEAD^
 # Diff Against `master`
 	masterdiff = diff origin/master --
+	mbh = '!echo $(git merge-base-remote)/$(git merge-base-branch)'
 # Last Commit Info
 	last = "!git --no-pager log -1"
 # Files Containing $1

@@ -10,9 +10,11 @@ else
   export EDITOR="$(which vim)"
 fi
 
+# basics with no dependencies
 auto_source "$DOT_FILES_DIR/colors.sh"
 
-auto_source "$DOT_FILES_DIR/configs/all.sh"
+# configs/path (almost everything below needs them to work)
+auto_source "$DOT_FILES_DIR/""configs/all.sh"
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/bin" ]; then
@@ -20,13 +22,8 @@ if [ ! -z "$DOT_FILES_ENV" ]; then
   fi
 fi
 
-auto_source "$DOT_FILES_DIR/aliases.sh"
-if [ ! -z "$DOT_FILES_ENV" ]; then
-  if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh" ]; then
-    auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh"
-  fi
-fi
-
+# may require `bin` and things from `configs`
+auto_source "$DOT_FILES_DIR/aliases/all.sh"
 auto_source "$DOT_FILES_DIR/functions/all.sh"
 
 if [[ "$SHELL" == *'zsh' ]]; then

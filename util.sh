@@ -36,7 +36,7 @@ function print_symbol_for_status {
     bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
     STATUS="$?"
 
-    if [ $STATUS -eq 0 ]; then
+    if [ "$STATUS" -eq 0 ]; then
       printf " [${PRINT_PREFIX}${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
     else
       printf " [${RED}${BOLD}${PRINT_PREFIX}\xE2\x9C\x98${NORMAL}]"

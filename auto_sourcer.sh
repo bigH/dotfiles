@@ -10,6 +10,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
   export AUTO_SOURCER_LAST_CHECK=""
 
   auto_source() {
+    # TODO make sure to re-source only if it is changed
     if [ -z "$1" ]; then
       echo "ERROR: specify a file to source."
     else

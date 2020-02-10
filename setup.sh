@@ -11,7 +11,7 @@ fi
 TEST_CURRENT_SHELL=$(expr "$SHELL" : '.*/\(.*\)')
 if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
   echo "${BLUE}${BOLD}Time to change your default shell to zsh!${NORMAL}"
-  echo "  \`chsh -s $(grep /zsh$ /etc/shells | tail -1) $USER\`"
+  echo "  \`chsh -s $(grep '/zsh$' '/etc/shells' | tail -1) $USER\`"
   exit 1
 fi
 
@@ -162,17 +162,18 @@ echo ""
 
 echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"
 echo ""
-echo "     ... installs dependencies"
-echo "     \`brew install ack cabal coreutils ctags exa ghc go htop neovim \\"
-echo "                   python2 python3 rbenv rustup-init swaks tig yarn\'"
-echo "      - \`rustup update\` should update rust"
-echo "      - \`rbenv install 2.6.5\` installs journal version"
-echo ""
-echo "     ... optional if doing \`ruby\`"
-echo "     \`[rbenv exec] gem install ripper-tags\`"
-echo ""
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
+  echo ""
+  echo "     ... installs dependencies"
+  echo "     \`brew install ack broot cabal cloc coreutils ctags exa ghc glances \\"
+  echo "                   go htop neovim python2 python3 rbenv rustup-init swaks \\"
+  echo "                   tig yarn\`"
+  echo "      - \`rustup update\` should update rust"
+  echo "      - \`rbenv install 2.6.5\` installs journal version"
+  echo ""
+  echo "     ... optional if doing \`ruby\`"
+  echo "     \`[rbenv exec] gem install ripper-tags\`"
   echo ""
   echo "     ... on macOS"
   echo "     Install \`alacritty\`"
@@ -180,17 +181,19 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "     ... sets up OS X in a nice way"
   echo "     \`~/.hiren/osx.sh\`"
   echo ""
+  echo "     Setup \`iTerm2\` to use the configs in \`$DOT_FILES_DIR/iterm\`"
+  echo ""
 else
   echo "  [${BLUE}${BOLD}Other POSIX${NORMAL}]: (assumes Ubuntu family)"
   echo ""
   echo "     ... sets up Ubuntu in a nice way"
-  echo "     \`sudo apt-get install dconf-cli uuid-runtime golang ctags yarn rustup\`"
+  echo "     \`sudo apt-get install -y cloc ctags dconf-cli glances golang \\"
+  echo "                               hegemon htop neovim rustup swaks \\"
+  echo "                               uuid-runtime yarn\`"
   echo ""
 fi
 echo "     ... ligatures and nice mono-space font"
 echo "     Install \`hasklig\` font"
-echo ""
-echo "     Setup \`iTerm2\` to use the configs in \`$DOT_FILES_DIR/iterm\`"
 echo ""
 if [ -n "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
   echo "  $DOT_FILES_ENV_DISPLAY:"

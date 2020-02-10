@@ -82,8 +82,8 @@ colors:
 
 visual_bell:
   animation: EaseOut
-  color: '0xffffff'
-  duration: 100
+  color: '0x2c3e50'
+  duration: 20
 
 background_opacity: 1.0
 

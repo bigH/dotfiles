@@ -5,6 +5,7 @@ let g:custom_modal_paste = 1
 
 
 "{{{ Line Number and Paste Cycle
+" TODO dry this up
 
 let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
 
@@ -17,6 +18,10 @@ func! Paste_on_off()
     set nonumber
     set norelativenumber
     set nolist
+    nunmap p
+    nunmap P
+    vunmap p
+    vunmap P
     let g:break_here_should_reformat=0
     let g:paste_mode = 1
   elseif g:paste_mode == 1
@@ -27,6 +32,10 @@ func! Paste_on_off()
     set number
     set norelativenumber
     set list
+    nnoremap <silent> p mmp=`]`m
+    nnoremap <silent> P mmP=`]`m
+    vnoremap <silent> p p=']
+    vnoremap <silent> P P=']
     let g:break_here_should_reformat=1
     let g:paste_mode = 2
   else
@@ -37,6 +46,10 @@ func! Paste_on_off()
     set number
     set relativenumber
     set list
+    nnoremap <silent> p mmp=`]`m
+    nnoremap <silent> P mmP=`]`m
+    vnoremap <silent> p p=']
+    vnoremap <silent> P P=']
     let g:break_here_should_reformat=1
     let g:paste_mode = 0
   endif

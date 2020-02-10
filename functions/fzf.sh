@@ -46,18 +46,27 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   ghist() {
     is-in-git-repo || return
 
-    DIFF=false
+    DIFF=no
     CHECK_PATHS="$@"
-    if [ "$1" = "-d" ] || [ "$1" = "--diff" ]; then
-      DIFF=true
+    if [ "$1" = "-p" ] || [ "$1" = "--patch" ]; then
+      DIFF=patch
+      shift
+      CHECK_PATHS="$@"
+    elif [ "$1" = "-d" ] || [ "$1" = "--diff" ]; then
+      DIFF=diff
       shift
       CHECK_PATHS="$@"
     fi
 
-    if [ "$DIFF" = true ] || [ "$#" -gt "1" ]; then
+    if [ "$DIFF" = "patch" ]; then
       # For some reason, eval makes this work. otherwise, the `fzf` list never populates
       eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
-            fzf --multi --ansi --no-height --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
+        fzf --multi --ansi --no-height --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
+        true"
+    elif [ "$DIFF" = "diff" ]; then
+      # For some reason, eval makes this work. otherwise, the `fzf` list never populates
+      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
+            fzf --multi --ansi --no-height --preview \"git diff {2} -- $CHECK_PATHS | diff-so-fancy\" |\
             true"
     else
       # Using eval only for consistency
@@ -71,7 +80,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   gfi() {
     is-in-git-repo || return
 
-    MERGE_BASE=$(git merge-base HEAD origin/master)
+    MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
     REF="${1:-$MERGE_BASE}"
 
     git diff $REF --name-only |
@@ -84,7 +93,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     is-in-git-repo || return
 
     REF="${1:-HEAD}"
-    MERGE_BASE=$(git merge-base HEAD origin/master)
+    MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
 
     git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always $REF |
     fzf --no-height --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \

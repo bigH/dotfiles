@@ -13,7 +13,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim', 'zackhsi/fzf-tags')
   nmap <silent> <C-]> <Plug>(fzf_tags)
 
   " Map <C-\> to do this with vsplit
-  nmap <C-\> :vsplit<CR><Plug>(fzf_tags)
+  nmap <C-\> :<C-U>vsplit<CR><Plug>(fzf_tags)
 endif
 
 " -- fzf --
@@ -21,7 +21,9 @@ endif
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Using floating windows of Neovim to start fzf
   try
-    let l:throwaway = function('nvim_open_win')
+    " verify that we can make windows
+    let Throwaway = function('nvim_open_win')
+
     function! FloatingFZF(width, height, border_highlight)
       function! s:create_float(hl, opts)
         let buf = nvim_create_buf(v:false, v:true)
@@ -55,6 +57,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
 
     let g:fzf_layout = { 'window': 'call FloatingFZF(0.9, 0.7, "Comment")' }
   catch /.*/
+    echo "Floating FZF Setup abanadoned"
   endtry
 
   " Other small things
@@ -105,29 +108,30 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview and visual yank
   command! -bang -nargs=* RgVisual
         \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-        \   <bang>0 ? fzf#vim#with_preview({'options': '-q "' . GetVisualSelectionAsString() . '"'}, 'down:50%')
-        \           : fzf#vim#with_preview({'options': '-q "' . GetVisualSelectionAsString() . '"'}, 'right:50%', '?'),
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.
+        \       (<bang>0 ? '--no-ignore --hidden ' : '').
+        \       '"'.GetVisualSelectionAsString().'"',
+        \   1,
+        \   <bang>0 ? fzf#vim#with_preview('down:50%')
+        \           : fzf#vim#with_preview('right:50%', '?'),
         \   <bang>0)
 
   " Rg with preview
   command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.
+        \     shellescape(<q-args>),
+        \   1,
         \   <bang>0 ? fzf#vim#with_preview('down:50%')
         \           : fzf#vim#with_preview('right:50%', '?'),
         \   <bang>0)
 
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
-        \ call fzf#vim#files(<q-args>, {
-        \   'options': [
-        \     '--layout=reverse',
-        \     '--info=inline',
-        \     '--preview',
-        \     $DOT_FILES_DIR . '/.vim/bundle/fzf.vim/bin/preview.sh {}'
-        \   ]
-        \ }, <bang>0)
+        \ call fzf#vim#files(<q-args>,
+        \   <bang>0 ? fzf#vim#with_preview({'options': ['--layout=reverse', '--info=default']}, 'down:50%')
+        \           : fzf#vim#with_preview({'options': ['--layout=reverse', '--info=default']}, 'right:50%', '?'),
+        \   <bang>0)
 
   function! DoNothingSink(lines)
   endfunction
@@ -146,12 +150,13 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \               : ('echo {} | ' .
         \                  'grep -o "[a-f0-9]\{7,\}" | ' .
         \                  'head -1 | ' .
-        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA COMMIT_SHA~ -- ' . expand('%') . ' | ' .
+        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA~ COMMIT_SHA -- ' . expand('%') . ' | ' .
         \                  'diff-so-fancy')
         \     ],
         \     'sink*': function('DoNothingSink')
         \   }, 1)
 
+  " File History for a Selection
   command! -bar -bang VisualFileHistoryDiff
         \ call fzf#vim#commits(
         \   {
@@ -167,7 +172,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \               : ('echo {} | ' .
         \                  'grep -o "[a-f0-9]\{7,\}" | ' .
         \                  'head -1 | ' .
-        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA COMMIT_SHA~ | ' .
+        \                  'xargs -I COMMIT_SHA git diff COMMIT_SHA~ COMMIT_SHA | ' .
         \                  'diff-so-fancy')
         \     ],
         \     'sink*': function('DoNothingSink')
@@ -188,17 +193,17 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   vmap <silent> <leader>H :<C-U>VisualFileHistoryDiff!<CR>
 
   " Map `\t` to FZF tag finder - gets overriden below by other bindings
-  nmap <silent> <leader>t :Tags<CR>
+  nmap <silent> <leader>t :<C-U>Tags<CR>
 
   " Map `\e` to FZF file lister
-  nmap <silent> <leader>e :Files<CR>
-  nmap <silent> <leader>E :Files<CR>
+  nmap <silent> <leader>e :<C-U>Files<CR>
+  nmap <silent> <leader>E :<C-U>Files!<CR>
 
   " Map `\o` to FZF file lister
-  nmap <silent> <leader>O :RecentFiles<CR>
+  nmap <silent> <leader>O :<C-U>RecentFiles<CR>
 
   " Map `\O` to FZF git file lister
-  nmap <silent> <leader>o :GFiles?<CR>
+  nmap <silent> <leader>o :<C-U>GFiles?<CR>
 
   " Set history directory
   let g:fzf_history_dir = '~/.local/share/fzf-history'
@@ -258,7 +263,8 @@ endif
 if IsPluginLoaded('scrooloose/nerdtree')
   " Refresh NERDTree upon return to ViM
   augroup NERDTree
-    autocmd FocusGained * NERDTreeRefreshRoot
+    " TODO this can be slow, so maybe not always on?
+    " autocmd FocusGained * NERDTreeRefreshRoot
   augroup END
 
   " Set it to not show `? for help`
@@ -349,8 +355,8 @@ if IsPluginLoaded('AndrewRadev/splitjoin.vim')
   let g:splitjoin_split_mapping = ''
   let g:splitjoin_join_mapping = ''
 
-  nmap sj :SplitjoinSplit<cr>
-  nmap sk :SplitjoinJoin<cr>
+  nmap sj :<C-U>SplitjoinSplit<cr>
+  nmap sk :<C-U>SplitjoinJoin<cr>
 endif
 
 " -- tagbar --
@@ -434,27 +440,36 @@ end
 
 " F1 opens NERDTree
 if IsPluginLoaded('scrooloose/nerdtree')
-  nmap <silent> <F1> :NERDTreeFind<CR>
-  imap <silent> <F1> <Esc>:NERDTreeFind<CR>a
+  function! SmartNERDTree()
+    if @% == ""
+      NERDTreeToggle
+    else
+      NERDTreeFind
+    endif
+  endfun
+
+  nnoremap <silent> <F1> :<C-U>call SmartNERDTree()<CR>
+  inoremap <silent> <F1> <Esc>:<C-U>call SmartNERDTree()<CR>a
 endif
 
 " F2 opens Tagbar
 if IsPluginLoaded('majutsushi/tagbar')
-  nmap <silent> <F2> :TagbarOpen<CR>
-  imap <silent> <F2> <Esc>:TagbarOpen<CR>a
+  nmap <silent> <F2> :<C-U>TagbarOpen<CR>
+  imap <silent> <F2> <Esc>:<C-U>TagbarOpen<CR>a
 endif
 
 " F3 closes Tagbar & NERDTree
 if IsPluginLoaded('scrooloose/nerdtree', 'majutsushi/tagbar')
-  nmap <silent> <F3> :TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>
-  imap <silent> <F3> <Esc>:TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>a
+  nmap <silent> <F3> :<C-U>TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>
+  imap <silent> <F3> <Esc>:<C-U>TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>a
 endif
 
 " F4 and <leader>b
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
-  nmap <silent> <F4> :Buffers<CR>
-  nmap <silent> <leader>b <Esc>:Buffers<CR>
-  imap <silent> <F4> <Esc>:Buffers<CR>
+  nmap <silent> <F4> :<C-U>Buffers<CR>
+  imap <silent> <F4> <Esc>:<C-U>Buffers<CR>
+
+  nmap <silent> <leader>b <Esc>:<C-U>Buffers<CR>
 endif
 
 " functions for use below to make NERDTree switch windows in the editor region
@@ -479,12 +494,22 @@ if IsPluginLoaded('scrooloose/nerdtree')
     execute 'blast'
   endfunction
 
+  function! NERDSpace()
+    execute 'normal' '<Leader>'
+  endfunction
+
+  function! NERDEnterCommand()
+    execute 'normal!' ':'
+  endfunction
+
   " L/H/C-H/C-L in NERDTree
   augroup NERDTree
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H', 'callback': 'NERDBPrev', 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NERDBFirst', 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L', 'callback': 'NERDBNext', 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NERDBLast', 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<CR>' , 'callback': 'NERDSpace'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<CR>' , 'callback': 'NERDEnterCommand', 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H'    , 'callback': 'NERDBPrev'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NERDBFirst'      , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L'    , 'callback': 'NERDBNext'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NERDBLast'       , 'override': 1 })
   augroup END
 endif
 
