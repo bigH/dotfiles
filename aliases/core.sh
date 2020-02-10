@@ -53,6 +53,13 @@ if type yarn >/dev/null 2>&1; then
 fi
 
 # `tldr` is like `man`
+if type bat >/dev/null 2>&1; then
+  if type prefer-bat >/dev/null 2>&1; then
+    alias cat=prefer-bat
+  fi
+fi
+
+# `tldr` is like `man`
 if type tldr >/dev/null 2>&1; then
   alias tldr=tldr --theme base16
 fi
