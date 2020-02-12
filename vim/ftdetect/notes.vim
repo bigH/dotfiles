@@ -23,6 +23,10 @@ function! s:SetupNotesFile()
   nmap <silent> <buffer> <S-Tab> mm<<`m4h
   imap <silent> <buffer> <S-Tab> <Esc>mm<<`m4ha
 
+  " <C-F> focus on a cluster of notes
+  nmap <silent> <buffer> <C-F> :call FocusOnCurrent()<CR>
+  imap <silent> <buffer> <C-F> <Esc>:call FocusOnCurrent()<CR>a
+
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
     setlocal breakindent

@@ -7,6 +7,10 @@ function! s:SetupJournalFile()
   nmap <silent> <buffer> <C-x> Go<CR><!-- EOM --><Esc>:w<CR>:bd<CR>
   imap <silent> <buffer> <C-x> <Esc>Go<CR><!-- EOM --><Esc>:w<CR>:bd<CR>
 
+  " unfold the entire doc
+  nmap <silent> <buffer> <C-F> zR
+  imap <silent> <buffer> <C-F> <Esc>'mzRamm
+
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
     setlocal breakindent

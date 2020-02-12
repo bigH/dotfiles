@@ -63,7 +63,7 @@
 # No Pager
 	n = "!git --no-pager"
 # Rework previous commit
-  rework = "reset --soft HEAD~1"
+	rework = "reset --soft HEAD~1"
 
 # git with `diff-so-fancy`
 [color "diff-highlight"]

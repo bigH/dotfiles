@@ -1,13 +1,13 @@
-highlight TodoTag        ctermfg=magenta  cterm=bold   gui=bold
+highlight TodoTag        ctermfg=magenta  cterm=bold
 
-highlight TodoNoAction   ctermfg=white
-highlight TodoInProgress ctermfg=cyan
-highlight TodoSomeAction ctermfg=cyan     cterm=bold   gui=bold
-highlight TodoBlocked    ctermfg=darkred  cterm=bold   gui=bold
-highlight TodoDropped    ctermfg=gray     cterm=bold   gui=bold
-highlight TodoDone       ctermfg=gray
+highlight TodoNoAction   ctermfg=white                              guifg=white
+highlight TodoInProgress ctermfg=cyan                               guifg=cyan
+highlight TodoSomeAction ctermfg=cyan     cterm=bold                guifg=cyan     gui=bold
+highlight TodoBlocked    ctermfg=darkred  cterm=bold                guifg=darkred  gui=bold
+highlight TodoDropped    ctermfg=gray     cterm=bold                guifg=gray     gui=bold
+highlight TodoDone       ctermfg=gray                               guifg=gray
 
-highlight TodoNotes      ctermfg=darkgrey ctermbg=none cterm=italic gui=italic
+highlight TodoNotes      ctermfg=darkgrey ctermbg=none cterm=italic guifg=darkgrey guibg=none gui=italic
 
 syntax match TodoTag contained /:[a-z_]\+/
 

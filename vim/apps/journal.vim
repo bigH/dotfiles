@@ -50,19 +50,16 @@ endfunction
 
 "{{{ Focus on Things
 
-function! s:FocusOnCurrentWhileKeepingHeader()
+function! FocusOnCurrent()
   let save_cursor = getpos('.')
   let current_line = getline('.')
   if l:current_line =~ '^#\s.*$'
-    execute 'normal! zMgg' . l:save_cursor[1] . 'GzO'
+    execute 'normal! zM' . l:save_cursor[1] . 'GzO'
   else
-    execute 'normal! zMgg' . l:save_cursor[1] . 'GzozO'
+    execute 'normal! zM' . l:save_cursor[1] . 'GzozO'
   endif
   call setpos('.', l:save_cursor)
 endfunction
-
-nmap <silent> <C-f> :call <SID>FocusOnCurrentWhileKeepingHeader()<CR>
-imap <silent> <C-f> <Esc>:call <SID>FocusOnCurrentWhileKeepingHeader()<CR>a
 
 "}}}
 
@@ -88,12 +85,15 @@ function! s:LoadJournal()
 
   execute 'edit' s:TodoPath()
   execute 'filetype' 'detect'
+  hi clear markdownCodeBlock
   execute 'vsplit' s:NotesPath()
   execute 'filetype' 'detect'
+  hi clear markdownCodeBlock
   let journal_path = s:DailyJournalPath()
   if split(system('cat ' . l:journal_path), '\n')[-1] != '<!-- EOM -->'
     execute 'vsplit' l:journal_path
     execute 'filetype' 'detect'
+    hi clear markdownCodeBlock
   endif
 
   SyncJournalAsync

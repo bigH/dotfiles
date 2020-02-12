@@ -5,11 +5,13 @@ let g:custom_modal_paste = 1
 
 
 "{{{ Line Number and Paste Cycle
-" TODO dry this up
 
-let paste_mode = 0 " 0 = relative, 1 = paste, 2 = absolute
+" 0 = paste mode
+" 1 = relative numbers
+" 2 = absolute numbers
+let paste_mode = 1
 
-func! Paste_on_off()
+func! ModalPasteApply()
   if g:paste_mode == 0
     nnoremap <silent> k k
     nnoremap <silent> j j
@@ -23,22 +25,7 @@ func! Paste_on_off()
     vunmap p
     vunmap P
     let g:break_here_should_reformat=0
-    let g:paste_mode = 1
   elseif g:paste_mode == 1
-    nnoremap <silent> k gk
-    nnoremap <silent> j gj
-    retab
-    set nopaste
-    set number
-    set norelativenumber
-    set list
-    nnoremap <silent> p mmp=`]`m
-    nnoremap <silent> P mmP=`]`m
-    vnoremap <silent> p p=']
-    vnoremap <silent> P P=']
-    let g:break_here_should_reformat=1
-    let g:paste_mode = 2
-  else
     nnoremap <silent> k gk
     nnoremap <silent> j gj
     retab
@@ -51,13 +38,32 @@ func! Paste_on_off()
     vnoremap <silent> p p=']
     vnoremap <silent> P P=']
     let g:break_here_should_reformat=1
-    let g:paste_mode = 0
+  else
+    nnoremap <silent> k gk
+    nnoremap <silent> j gj
+    retab
+    set nopaste
+    set number
+    set norelativenumber
+    set list
+    nnoremap <silent> p mmp=`]`m
+    nnoremap <silent> P mmP=`]`m
+    vnoremap <silent> p p=']
+    vnoremap <silent> P P=']
+    let g:break_here_should_reformat=1
   endif
   return
 endfunc
 
-" Paste Mode!  Dang! <F10>
+func! ModalPasteRotate()
+  let g:paste_mode = (g:paste_mode + 1) % 3
+  call ApplyPasteMode()
+endfunc
 
-nnoremap <silent> <F10> :call Paste_on_off()<CR>
+" <F10> to rotate paste-mode
+nnoremap <silent> <F10> :call ModalPasteRotate()<CR>
+
+" Set on VimEnter
+autocmd VimEnter * call ModalPasteApply()
 
 "}}}

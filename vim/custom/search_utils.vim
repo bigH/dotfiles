@@ -1,5 +1,5 @@
 if exists('g:custom_search_utils')
-  finish
+  " finish
 endif
 
 let g:custom_search_utils = 1
@@ -9,19 +9,19 @@ let g:current_star_search_history = [[]]
 let g:last_known_manual_search = @/
 
 let g:search_highlight_colors = [
-      \   'ctermbg=red ctermfg=black',
-      \   'ctermbg=brown ctermfg=black',
-      \   'ctermbg=yellow ctermfg=black',
-      \   'ctermbg=green ctermfg=black',
-      \   'ctermbg=cyan ctermfg=black',
-      \   'ctermbg=blue ctermfg=black',
-      \   'ctermbg=magenta ctermfg=black',
-      \   'ctermbg=darkgrey ctermfg=black',
-      \   'ctermbg=lightgrey ctermfg=black',
-      \   'ctermbg=lightcyan ctermfg=black',
-      \   'ctermbg=lightgreen ctermfg=black',
-      \   'ctermbg=lightyellow ctermfg=black',
-      \   'ctermbg=lightred ctermfg=black',
+      \   'ctermbg=red         ctermfg=black guibg=red         guifg=black',
+      \   'ctermbg=yellow      ctermfg=black guibg=yellow      guifg=black',
+      \   'ctermbg=green       ctermfg=black guibg=green       guifg=black',
+      \   'ctermbg=cyan        ctermfg=black guibg=cyan        guifg=black',
+      \   'ctermbg=blue        ctermfg=black guibg=blue        guifg=black',
+      \   'ctermbg=magenta     ctermfg=black guibg=magenta     guifg=black',
+      \   'ctermbg=darkgrey    ctermfg=black guibg=darkgrey    guifg=black',
+      \   'ctermbg=lightgrey   ctermfg=black guibg=lightgrey   guifg=black',
+      \   'ctermbg=lightcyan   ctermfg=black guibg=lightcyan   guifg=black',
+      \   'ctermbg=lightgreen  ctermfg=black guibg=lightgreen  guifg=black',
+      \   'ctermbg=lightyellow ctermfg=black guibg=lightyellow guifg=black',
+      \   'ctermbg=lightred    ctermfg=black guibg=lightred    guifg=black',
+      \   'ctermbg=brown       ctermfg=black guibg=brown       guifg=black',
     \ ]
 
 let w:current_star_matches = []
@@ -177,7 +177,7 @@ function! SearchUtilsHighlightCurrent()
   if(exists("g:current_match_highlight"))
     exe "highlight SearchCurrentResult " . g:current_match_highlight
   else
-    highlight SearchCurrentResult ctermbg=white ctermfg=black
+    highlight SearchCurrentResult ctermbg=white ctermfg=black guibg=white guifg=black
   endif
   if exists('g:current_match_metadata')
     try
@@ -198,17 +198,16 @@ command! PushUnboundedSearch :call s:DoPushUnboundedSearch(0)
 
 command! RewindCurrentSearchHistory :call s:DoRewindCurrentSearchHistory()
 
-vnoremap <silent> <Plug>VisualPushBoundedSearch :<C-U>VisualPushBoundedSearch<CR>:set hlsearch<CR>
-vnoremap <silent> <Plug>VisualPushUnboundedSearch :<C-U>VisualPushUnboundedSearch<CR>:set hlsearch<CR>
+vnoremap <silent> <Plug>(VisualPushBoundedSearch) :<C-U>VisualPushBoundedSearch<CR>:set hlsearch<CR>
+vnoremap <silent> <Plug>(VisualPushUnboundedSearch) :<C-U>VisualPushUnboundedSearch<CR>:set hlsearch<CR>
 
-nnoremap <silent> <Plug>PushBoundedSearch :<C-U>PushBoundedSearch<CR>:set hlsearch<CR>
-nnoremap <silent> <Plug>PushUnboundedSearch :<C-U>PushUnboundedSearch<CR>:set hlsearch<CR>
+nnoremap <silent> <Plug>(PushBoundedSearch) :<C-U>PushBoundedSearch<CR>:set hlsearch<CR>
+nnoremap <silent> <Plug>(PushUnboundedSearch) :<C-U>PushUnboundedSearch<CR>:set hlsearch<CR>
 
-nnoremap <silent> <Plug>RewindCurrentSearchHistory :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
+nnoremap <silent> <Plug>(RewindCurrentSearchHistory) :<C-U>RewindCurrentSearchHistory<CR>:set hlsearch<CR>
 
 augroup ReHighlightAutomation
   autocmd VimLeavePre * let @/ = g:last_known_manual_search
-  autocmd VimEnter * call s:ReHighlightAll()
   autocmd WinEnter * call s:ReHighlightAll()
   autocmd WinNew * call s:ReHighlightAll()
   autocmd BufWinEnter * call s:DoHighlight()
@@ -225,17 +224,17 @@ if !exists('g:search_utils_no_mappings') || g:search_utils_no_mappings == 0
   endif
 
   if !exists('g:search_utils_no_visual_mappings') || g:search_utils_no_visual_mappings == 0
-    vmap * <Plug>VisualPushBoundedSearch
-    vmap # <Plug>VisualPushUnboundedSearch
+    vmap * <Plug>(VisualPushBoundedSearch)
+    vmap # <Plug>(VisualPushUnboundedSearch)
   endif
 
   if !exists('g:search_utils_no_normal_mappings') || g:search_utils_no_normal_mappings == 0
-    nmap * <Plug>PushBoundedSearch
-    nmap # <Plug>PushUnboundedSearch
+    nmap * <Plug>(PushBoundedSearch)
+    nmap # <Plug>(PushUnboundedSearch)
   endif
 
   if !exists('g:search_utils_no_rewind_mappings') || g:search_utils_no_rewind_mappings == 0
-    nmap <BS> <Plug>RewindCurrentSearchHistory
+    nmap <BS> <Plug>(RewindCurrentSearchHistory)
   endif
 endif
 

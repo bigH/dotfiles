@@ -55,7 +55,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
       autocmd BufWipeout <buffer> execute 'bwipeout' s:frame
     endfunction
 
-    let g:fzf_layout = { 'window': 'call FloatingFZF(0.9, 0.7, "Comment")' }
+    let g:fzf_layout = { 'window': 'call FloatingFZF(0.9, 0.9, "Comment")' }
   catch /.*/
     echo "Floating FZF Setup abanadoned"
   endtry
@@ -77,7 +77,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
 
   " Open old-files
   command! RecentFiles call fzf#run({
-        \  'source':  v:oldfiles,
+        \  'source':  filter(v:oldfiles, 'v:val =~ getcwd()'),
         \  'sink':    'e',
         \  'options': '-m -x +s',
         \  'down':    '40%'})
@@ -105,6 +105,11 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
     return join(lines, "\n")
   endfunction
 
+  let g:fzf_config_for_rg = { 'options' : [
+        \                       '--no-hscroll',
+        \                       '--bind', 'ctrl-s:toggle-sort',
+        \                   ] }
+
   " Rg with preview and visual yank
   command! -bang -nargs=* RgVisual
         \ call fzf#vim#grep(
@@ -112,8 +117,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \       (<bang>0 ? '--no-ignore --hidden ' : '').
         \       '"'.GetVisualSelectionAsString().'"',
         \   1,
-        \   <bang>0 ? fzf#vim#with_preview('down:50%')
-        \           : fzf#vim#with_preview('right:50%', '?'),
+        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, 'down:50%')
+        \           : fzf#vim#with_preview(g:fzf_config_for_rg, 'right:50%', '?'),
         \   <bang>0)
 
   " Rg with preview
@@ -122,15 +127,21 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \   'rg --column --line-number --no-heading --color=always --smart-case '.
         \     shellescape(<q-args>),
         \   1,
-        \   <bang>0 ? fzf#vim#with_preview('down:50%')
-        \           : fzf#vim#with_preview('right:50%', '?'),
+        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, 'down:50%')
+        \           : fzf#vim#with_preview(g:fzf_config_for_rg, 'right:50%', '?'),
         \   <bang>0)
 
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
         \ call fzf#vim#files(<q-args>,
-        \   <bang>0 ? fzf#vim#with_preview({'options': ['--layout=reverse', '--info=default']}, 'down:50%')
-        \           : fzf#vim#with_preview({'options': ['--layout=reverse', '--info=default']}, 'right:50%', '?'),
+        \   <bang>0 ? fzf#vim#with_preview({
+        \               'source': 'fd --hidden --no-ignore --color=always',
+        \               'options': ['--ansi', '--layout=reverse', '--info=default']
+        \             }, 'down:50%', '?')
+        \           : fzf#vim#with_preview({
+        \               'source': 'fd --hidden --color=always',
+        \               'options': ['--ansi', '--layout=reverse', '--info=default']
+        \             }, 'right:50%'),
         \   <bang>0)
 
   function! DoNothingSink(lines)
@@ -141,7 +152,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \ call fzf#vim#buffer_commits(
         \   {
         \     'options': [
-        \       '--preview',
+        \       '--no-sort', '--preview',
         \       <bang>0 ? ('echo {} | ' .
         \                  'grep -o "[a-f0-9]\{7,\}" | ' .
         \                  'head -1 | ' .
@@ -186,18 +197,18 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   vmap <silent> <leader>f :<C-U>RgVisual<CR>
 
   " Map `\h` to FZF search open files
-  nmap <silent> <leader>h :<C-U>FileHistory<CR>
   nmap <silent> <leader>H :<C-U>FileHistory!<CR>
+  nmap <silent> <leader>h :<C-U>FileHistory<CR>
   " Use selected text to search diff
-  vmap <silent> <leader>h :<C-U>VisualFileHistoryDiff<CR>
   vmap <silent> <leader>H :<C-U>VisualFileHistoryDiff!<CR>
+  vmap <silent> <leader>h :<C-U>VisualFileHistoryDiff<CR>
 
   " Map `\t` to FZF tag finder - gets overriden below by other bindings
   nmap <silent> <leader>t :<C-U>Tags<CR>
 
   " Map `\e` to FZF file lister
-  nmap <silent> <leader>e :<C-U>Files<CR>
   nmap <silent> <leader>E :<C-U>Files!<CR>
+  nmap <silent> <leader>e :<C-U>Files<CR>
 
   " Map `\o` to FZF file lister
   nmap <silent> <leader>O :<C-U>RecentFiles<CR>
@@ -532,8 +543,10 @@ if IsPluginLoaded('nathanaelkane/vim-indent-guides')
 
   " configure colors
   let g:indent_guides_auto_colors = 0
-  autocmd VimEnter,Colorscheme * highlight IndentGuidesOdd ctermbg=black
-  autocmd VimEnter,Colorscheme * highlight IndentGuidesEven ctermbg=NONE
+
+  " highlight
+  autocmd VimEnter,Colorscheme * highlight IndentGuidesOdd ctermbg=black guibg=black
+  autocmd VimEnter,Colorscheme * highlight IndentGuidesEven ctermbg=NONE guibg=NONE
 endif
 
 " -- vim-scala --

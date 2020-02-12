@@ -67,11 +67,16 @@ func! JKModeApply()
 endfunc
 
 func! Modulus(n,m)
-  return ((a:n % a:m) + a:m) % a:m
+  return (a:n + a:m) % a:m
 endfunc
 
 func! JKModeRotate(direction)
   let g:jk_mode = Modulus(g:jk_mode + a:direction, 5)
+  call JKModeApply()
+endfunc
+
+func! JKModeSet(mode)
+  let g:jk_mode = Modulus(mode, 5)
   call JKModeApply()
 endfunc
 
@@ -128,9 +133,5 @@ nnoremap <silent> <leader>[ :call JKModeRotate(-1)<CR>
 " Use <C-J/K> to move in current mode
 nmap <silent> <C-J> :call JKModeJ()<CR>
 nmap <silent> <C-K> :call JKModeK()<CR>
-
-" Use <M-J/K> when in insert mode to handle <C-J/K>
-inoremap <silent> <M-j> <Esc><C-J>I
-inoremap <silent> <M-k> <Esc><C-K>I
 
 "}}}

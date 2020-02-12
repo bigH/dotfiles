@@ -102,6 +102,10 @@ function! s:SetupTodoFile()
   nmap <silent> <buffer> <C-\> :call <SID>ToggleTodoStateAll()<CR>
   imap <silent> <buffer> <C-\> <Esc>:call <SID>ToggleTodoStateAll()<CR>a
 
+  " <C-F> focus on a cluster of TODOs
+  nmap <silent> <buffer> <C-F> :call FocusOnCurrent()<CR>
+  imap <silent> <buffer> <C-F> <Esc>:call FocusOnCurrent()<CR>a
+
   " Indent/Outdent
   nmap <silent> <buffer> <Tab> mm>>`m4l
   imap <silent> <buffer> <Tab> <Esc>mm>>`m4la

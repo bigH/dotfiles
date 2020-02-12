@@ -5,6 +5,7 @@ exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/github.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
 
 "}}}
 
@@ -35,15 +36,14 @@ endif
 
 
 "{{{ Pasting Only Useful in Code (TODO consider a different solution)??
-" TODO moved this to paste mode - seems good
 
 " Re-indent when pasting
-" nnoremap p mmp=`]`m
-" nnoremap P mmP=`]`m
+nnoremap p mmp=`]`m
+nnoremap P mmP=`]`m
 
-" " Re-indent when pasting in visual mode
-" vnoremap p p=']
-" vnoremap P P=']
+" Re-indent when pasting in visual mode
+vnoremap p p=']
+vnoremap P P=']
 
 "}}}
 

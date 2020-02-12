@@ -22,6 +22,7 @@ source_configs_for_expected_command fd
 source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
 source_configs_for_expected_command rg
+source_configs_for_expected_command journal
 
 unset -f source_configs_for_expected_command
 unset CONFIGS

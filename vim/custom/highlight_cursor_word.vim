@@ -27,14 +27,16 @@ function! s:HighlightCursorWordNow()
   if(exists("g:HighlightCursorWordHighlightSetting"))
     exe "highlight HighlightCursorWordHighlight " . g:HighlightCursorWordHighlightSetting
   else
-    highlight HighlightCursorWordHighlight cterm=bold ctermfg=darkred
+    highlight HighlightCursorWordHighlight cterm=bold ctermfg=darkred gui=bold guifg=red guibg=black
   endif
 
-  try
-    let w:HighlightCursorWordMatchId = matchadd('HighlightCursorWordHighlight', '\<'.s:wordUnderCursor.'\>', -1)
-  catch /.*/
-    echo "Couldn't HighlightCursorWordNow"
-  endtry
+  if len(s:wordUnderCursor) > 1 && s:wordUnderCursor =~ '[A-Za-z-_]\{2,\}'
+    try
+      let w:HighlightCursorWordMatchId = matchadd('HighlightCursorWordHighlight', '\<'.s:wordUnderCursor.'\>', -1)
+    catch /.*/
+      echo "Couldn't HighlightCursorWordNow"
+    endtry
+  endif
 endfunction
 
 augroup HighlightCursorWordGroup

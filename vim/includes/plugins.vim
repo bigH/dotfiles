@@ -196,6 +196,9 @@ PlugMemoize 'tpope/vim-scriptease'
 " allow `foo:17` from the command-line
 PlugMemoize 'bogado/file-line'
 
+" colorize `#fff`
+PlugMemoize 'chrisbra/Colorizer'
+
 " Command over Completion
 PlugMemoize 'neoclide/coc.nvim',
       \ ForModes('nvim'),

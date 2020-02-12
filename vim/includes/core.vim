@@ -1,4 +1,17 @@
+"{{{ True Color Support
+
+" BREAKS EVERYTHING
+
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+"}}}
+
 
 "{{{ Misc
 
@@ -291,8 +304,13 @@ nnoremap <silent> K <Nop>
 " Map Q to `NoOp`
 nnoremap <silent> Q <Nop>
 
+" Map `&` to `:&&`, which preserves all flags and performs the substitute
+" again (faithfully) - `g&` will do the same with a new search (using
+" anything that touches the `@/` register (which `search_utils` uses)
+nnoremap <silent> & :<C-U>&&<CR>
+
 " Prevent (mis|slow)-types of below from triggering orignal vim commands
-" NB: Later get re-mapped to using `vim-surround`
+" NB: Later get re-mapped to using `vim-surround` when loading plugins
 nnoremap <silent> s <Nop>
 nnoremap <silent> S <Nop>
 
@@ -312,7 +330,13 @@ inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>"
 
 " this seems hacky
 " allow the . to execute once for each line of a visual selection
-vnoremap . :normal .<CR>
+vnoremap <silent> . :normal .<CR>
+
+" make using the line object easier
+onoremap <silent> <CR> _
+
+" there's no `<CR>` register to record macros into - make quitting easier
+nnoremap q<CR> :<C-U>q<CR>
 
 "}}}
 
