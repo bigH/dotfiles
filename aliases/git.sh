@@ -72,7 +72,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gds='g diff --staged'
   alias gnds='gn diff --staged'
 
-  # github things
-  # this one technically clobbers gnu `pr` installed with `brew`
+  # --- random higher-order things ---
+  # toss the branch and make a new one
+  alias gtoss='g toss-branch'
+
+  # --- github things ---
+  # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='g pr'
 fi

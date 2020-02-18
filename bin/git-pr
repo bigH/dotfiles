@@ -3,9 +3,8 @@
 git_pr() {
   CURRENT_BRANCH="$(git branch-name)"
   BRANCH_NAME="${1:-$CURRENT_BRANCH}"
-  CONFIGURED_REMOTE="$(git merge-base-remote-url)"
-  HTTP_ROOT_URL="$(git merge-base-remote-url | sed -E 's#^.*@(.*):(.*)\.git#https://\1/\2#')"
-  open "$HTTP_ROOT_URL/pull/new/$BRANCH_NAME"
+  HTTP_ROOT_URL="$(git web)"
+  indent --header open "$HTTP_ROOT_URL/pull/new/$BRANCH_NAME"
 }
 
 git_pr "$@"

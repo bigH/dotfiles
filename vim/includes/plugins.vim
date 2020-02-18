@@ -190,14 +190,16 @@ PlugMemoize 'tommcdo/vim-exchange'
 PlugMemoize 'tommcdo/vim-lion'
 
 " utilities for editing vimscript
-" TODO make this conditional on project directory
+" TODO make this conditional on directory or types
 PlugMemoize 'tpope/vim-scriptease'
-
-" allow `foo:17` from the command-line
-PlugMemoize 'bogado/file-line'
 
 " colorize `#fff`
 PlugMemoize 'chrisbra/Colorizer'
+
+" rainbow parentheses
+" - neither of these work for complex parsers (like TS)
+" - it doesn't break badly, so keeping it for when it works
+PlugMemoize 'luochen1990/rainbow'
 
 " Command over Completion
 PlugMemoize 'neoclide/coc.nvim',

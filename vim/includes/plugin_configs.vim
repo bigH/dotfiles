@@ -131,17 +131,24 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \           : fzf#vim#with_preview(g:fzf_config_for_rg, 'right:50%', '?'),
         \   <bang>0)
 
+  function! OptionsForFiles(additional_fd_opts)
+    return {
+        \    'source': 'fd --hidden --color=always ' . a:additional_fd_opts,
+        \    'options': [
+        \      '--ansi',
+        \      '--layout=reverse',
+        \      '--bind',
+        \      'ctrl-s:toggle-sort',
+        \      '--info=default'
+        \    ]
+        \  }
+  endfunction
+
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
         \ call fzf#vim#files(<q-args>,
-        \   <bang>0 ? fzf#vim#with_preview({
-        \               'source': 'fd --hidden --no-ignore --color=always',
-        \               'options': ['--ansi', '--layout=reverse', '--info=default']
-        \             }, 'down:50%', '?')
-        \           : fzf#vim#with_preview({
-        \               'source': 'fd --hidden --color=always',
-        \               'options': ['--ansi', '--layout=reverse', '--info=default']
-        \             }, 'right:50%'),
+        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore'), 'down:50%', '?')
+        \           : fzf#vim#with_preview(OptionsForFiles(''), 'right:50%'),
         \   <bang>0)
 
   function! DoNothingSink(lines)
@@ -659,4 +666,17 @@ if IsPluginLoaded('neoclide/coc.nvim')
   nmap <silent> <Leader>r <Plug>(coc-references)
   " overrides fzf `:Tags`
   nmap <silent> <Leader>t <Plug>(coc-type-definition)
+endif
+
+" -- Colorizer --
+
+if IsPluginLoaded('chrisbra/Colorizer')
+  " TODO turn on when appropriate
+endif
+
+" -- rainbow-parentheses --
+
+if IsPluginLoaded('luochen1990/rainbow')
+  " always on
+  let g:rainbow_active = 1
 endif

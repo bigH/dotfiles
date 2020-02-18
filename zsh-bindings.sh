@@ -9,29 +9,66 @@
 # bindkey -M main '^i' expand-alias
 
 # Ctrl-P - select file to paste
-bindkey '^p' fzf-file-widget
+fzf-file-select() {
+  LBUFFER+=$(fzf-file-selector)
+  zle redisplay
+}
+zle -N fzf-file-select
+bindkey '^p' fzf-file-select
+
 # Ctrl-N - select directory to paste
-bindkey '^n' fzf-cd-widget
+fzf-directory-select() {
+  LBUFFER+=$(fzf-directory-selector)
+  zle redisplay
+}
+zle -N fzf-directory-select
+bindkey '^n' fzf-directory-select
 
 # Ctrl-H - find commit SHA(s)
-fzf-gh-widget() { local result=$(gh | join-lines); LBUFFER+=$result }
+fzf-gh-widget() {
+  local result=$(gh | join-lines);
+  LBUFFER+=$result
+  zle redisplay
+}
 zle -N fzf-gh-widget
 bindkey '^h' fzf-gh-widget
 
 # Alt-H - commit SHA range
-fzf-gh-range-widget() { local result=$(gh | tac | join-lines '..'); LBUFFER+=$result }
+fzf-gh-range-widget() {
+  local result=$(gh | tac | join-lines '..');
+  LBUFFER+=$result
+  zle redisplay
+}
 zle -N fzf-gh-range-widget
 bindkey '^[h' fzf-gh-range-widget
 
 # Alt-O - open files differing from particular commit
-fzf-gfi-gh-widget() { local result=$(gfi $(gh) | join-lines); LBUFFER+=$result }
-zle -N fzf-gfi-gh-widget
-bindkey '^[o' fzf-gfi-gh-widget
+fzf-git-files-from-commits() {
+  local commits=$(gh)
+  local num_commits=$(echo "$commits" | wc -l | bc)
+  if [ "$num_commits" -eq 1 ]; then
+    local result=$(gfc "$commits" | join-lines);
+    LBUFFER+=$result
+  elif [ "$num_commits" -eq 2 ]; then
+    local range=$(echo "$commits" | tac | join-lines '..')
+    local result=$(gfr "$range" | join-lines);
+    LBUFFER+=$result
+  elif [ "$num_commits" -ge 2 ]; then
+    # unsupported
+  fi
+  zle redisplay
+}
+zle -N fzf-git-files-from-commits
+bindkey '^[o' fzf-git-files-from-commits
 
 # Ctrl-O - open files differing from merge-base
-fzf-gfi-widget() { local result=$(gfi | join-lines); LBUFFER+=$result }
-zle -N fzf-gfi-widget
-bindkey '^O' fzf-gfi-widget
+fzf-gfc-widget() {
+  local result=$(gfc | join-lines);
+  LBUFFER+=$result
+  zle redisplay
+}
+zle -N fzf-gfc-widget
+bindkey '^O' fzf-gfc-widget
 
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word
@@ -41,21 +78,15 @@ bindkey '^f' forward-word
 bindkey '^[b' emacs-backward-word
 bindkey '^[f' emacs-forward-word
 
-# Alt-Space - insert `git branch-name`
+# Alt-Space - see status
 zmodload -i zsh/parameter
-insert-git-branch-name() {
-  LBUFFER+=`git branch-name`
+fzf-git-status() {
+  local result=$(gfs | join-lines);
+  LBUFFER+=$result
+  zle redisplay
 }
-zle -N insert-git-branch-name
-bindkey '^[ ' insert-git-branch-name
-
-# Alt-X - insert last command result
-zmodload -i zsh/parameter
-insert-last-command-output() {
-  LBUFFER+="$(eval $history[$((HISTCMD-1))])"
-}
-zle -N insert-last-command-output
-bindkey '^[x' insert-last-command-output
+zle -N fzf-git-status
+bindkey '^[ ' fzf-git-status
 
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line

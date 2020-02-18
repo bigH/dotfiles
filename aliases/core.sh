@@ -12,10 +12,6 @@ else
   alias ls='ls -p --color=auto -G --group-directories-first'
 fi
 
-if type kubectl >/dev/null 2>&1; then
-  alias kc=kubectl
-fi
-
 # NB: removed because the output can cause annoying terminal delays
 # alias cp='cp -v'
 # alias mv='mv -v'
@@ -25,8 +21,9 @@ fi
 alias tree='tree --dirsfirst'
 
 # useful `kill` commands
-alias k=kill
-alias k9='kill -9'
+# NB: removed because fzf will complete `kill <tab>`
+# alias k=kill
+# alias k9='kill -9'
 
 # use `nvim` if present, otherwise `vim`
 if type nvim >/dev/null 2>&1; then

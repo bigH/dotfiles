@@ -1,14 +1,15 @@
 "{{{ True Color Support
 
-" BREAKS EVERYTHING
+" BREAKS MOST COLOR CHOICES
+" when selecting guifg=foo, it won't render the same as ctermfg=foo
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-if exists('+termguicolors')
-  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+" if exists('+termguicolors')
+"   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+"   let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+"   set termguicolors
+" endif
 
 "}}}
 
@@ -353,16 +354,19 @@ if has('nvim')
           \   setlocal norelativenumber |
           \   setlocal scrolloff=0 |
           \   setlocal sidescrolloff=0 |
-          \   startinsert |
           \   tnoremap <Esc> <C-\><C-n> |
           \   tnoremap <silent> <M-h> <C-\><C-n>:wincmd h<CR>i |
           \   tnoremap <silent> <M-j> <C-\><C-n>:wincmd j<CR>i |
           \   tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>i |
           \   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
+          \   startinsert |
           \ endif
 
     " Auto-Close - conflicts with FZF floating window
     " au TermClose * q
+    au WinEnter * if &buftype == 'terminal' |
+          \   startinsert |
+          \ endif
 
     " Handle <Esc>
     au FileType fzf tunmap <Esc>
@@ -445,8 +449,9 @@ nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
 " Use correct vim colors
 if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
   let g:gruvbox_italic=1
-  colorscheme gruvbox
   let g:airline_theme='gruvbox'
+  let g:gruvbox_termcolors=256
+  colorscheme gruvbox
 endif
 
 "}}}

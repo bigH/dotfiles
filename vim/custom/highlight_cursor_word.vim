@@ -1,5 +1,5 @@
 if exists('g:custom_highlight_cursor_word')
-  finish
+"  finish
 endif
 let g:custom_highlight_cursor_word = 1
 

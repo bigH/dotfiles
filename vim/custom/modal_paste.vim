@@ -22,8 +22,12 @@ func! ModalPasteApply()
     set nolist
     nunmap p
     nunmap P
+    nunmap gp
+    nunmap gP
     vunmap p
     vunmap P
+    vunmap gp
+    vunmap gP
     let g:break_here_should_reformat=0
   elseif g:paste_mode == 1
     nnoremap <silent> k gk
@@ -35,8 +39,12 @@ func! ModalPasteApply()
     set list
     nnoremap <silent> p mmp=`]`m
     nnoremap <silent> P mmP=`]`m
+    nnoremap <silent> gp p
+    nnoremap <silent> gP P
     vnoremap <silent> p p=']
     vnoremap <silent> P P=']
+    vnoremap <silent> gp p
+    vnoremap <silent> gP P
     let g:break_here_should_reformat=1
   else
     nnoremap <silent> k gk
@@ -48,8 +56,12 @@ func! ModalPasteApply()
     set list
     nnoremap <silent> p mmp=`]`m
     nnoremap <silent> P mmP=`]`m
+    nnoremap <silent> gp p
+    nnoremap <silent> gP P
     vnoremap <silent> p p=']
     vnoremap <silent> P P=']
+    vnoremap <silent> gp p
+    vnoremap <silent> gP P
     let g:break_here_should_reformat=1
   endif
   return

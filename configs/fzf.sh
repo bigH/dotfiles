@@ -21,12 +21,12 @@ if [ ! -z "$COMPLETEABLE_SHELL_TYPE" ]; then
   if type fd >/dev/null 2>&1; then
     # Use `fd` instead of the default find command for listing path candidates.
     _fzf_compgen_path() {
-      fd --hidden --follow --exclude ".git" . "$1"
+      fd --hidden --follow . "$1"
     }
 
     # Use `fd` to generate the list for directory completion
     _fzf_compgen_dir() {
-      fd --type d --hidden --follow --exclude ".git" . "$1"
+      fd --type d --hidden --follow . "$1"
     }
 
     # use `fd`

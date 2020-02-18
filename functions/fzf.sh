@@ -1,20 +1,46 @@
 #!/usr/bin/env bash
 
-## FZF Helpers
+FZF_HISTORY_DIR="$HOME/.local/share/fzf-history"
+FZF_HISTORY_FOR_FILES="$FZF_HISTORY_DIR/sh_files"
+FZF_HISTORY_FOR_DIRECTORIES="$FZF_HISTORY_DIR/sh_directories"
 
-# fzfe - echo's to stderr all files selected
-fzfe() {
-  fzf "$@" | tee /dev/stderr
+touch "$FZF_HISTORY_FOR_FILES"
+touch "$FZF_HISTORY_FOR_DIRECTORIES"
+
+DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
+if type exa >/dev/null 2>&1; then
+  DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
+fi
+
+fzf-directory-selector() {
+  fd --type d --hidden --follow . | \
+    fzf +m --ansi --no-height \
+           --history "$FZF_HISTORY_FOR_DIRECTORIES"
+           --bind '?:toggle-preview' \
+           --bind 'ctrl-s:toggle-sort' \
+           --bind 'ctrl-e:preview-down' \
+           --bind 'ctrl-y:preview-up' \
+           --bind 'change:top' \
+           --preview-window 'right:50%' \
+           --preview "$DIRECTORY_PREVIEW_COMMAND"
 }
 
-## CD
+FILE_PREVIEW_COMMAND='bat {}'
 
-# fcd - including hidden directories
-fcd() {
-  local DIR
-  DIR=$(find ${1:-.} -type d 2> /dev/null | fzf +m --preview="ls -l {}") &&
-    echo cd "$DIR" &&
-    cd "$DIR"
+fzf-file-selector() {
+  echo fd --type f --hidden --follow . \| \
+    fzf -m --ansi --no-height \
+           --history "$FZF_HISTORY_FOR_FILES" \
+           --bind '?:toggle-preview' \
+           --bind 'ctrl-s:toggle-sort' \
+           --bind 'alt-d:deselect-all' \
+           --bind 'alt-a:select-all' \
+           --bind 'ctrl-e:preview-down' \
+           --bind 'ctrl-y:preview-up' \
+           --bind 'change:top' \
+           --preview-window 'right:50%' \
+           --preview "$FILE_PREVIEW_COMMAND" \| \
+    join-lines
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
@@ -76,12 +102,47 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
-  # Select file from git status
-  gfi() {
+  # TODO fix this
+  # TODO it'd be nice if this fell back on diffing with `gmbh`
+  # TODO if this works the fzf config below should be everywhere (or the parts that matter)
+  # Select file from git status, fall back to `gfc`
+  # gfs() {
+  #   if ! is-in-git-repo; then
+  #     echo "No \`git\` repo found."
+  #   else
+  #     git -c color.ui=always status --short | \
+  #       fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
+  #           --bind '?:toggle-preview' \
+  #           --bind 'ctrl-s:toggle-sort' \
+  #           --bind 'alt-d:deselect-all' \
+  #           --bind 'alt-a:select-all' \
+  #           --bind 'ctrl-e:preview-down' \
+  #           --bind 'ctrl-y:preview-up' \
+  #           --bind 'change:top' \
+  #           --preview-window 'right:50%' \
+  #           --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
+  #       cut -c4- | join-lines
+  #   fi
+  # }
+
+  # Select file from git diff with commit (or merge-base)
+  gfc() {
     is-in-git-repo || return
 
     MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
     REF="${1:-$MERGE_BASE}"
+
+    git diff $REF --name-only |
+      fzf --no-height --reverse -m --ansi --nth 2..,.. \
+      --preview "(git diff $REF -- {-1} | diff-so-fancy)"
+  }
+
+  # Select file from git range
+  gfr() {
+    is-in-git-repo || return
+    test -n "$1" || return
+
+    REF="$1"
 
     git diff $REF --name-only |
     fzf --no-height --reverse -m --ansi --nth 2..,.. \
