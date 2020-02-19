@@ -337,7 +337,11 @@ vnoremap <silent> . :normal .<CR>
 onoremap <silent> <CR> _
 
 " there's no `<CR>` register to record macros into - make quitting easier
+" can't do with with `w`
 nnoremap q<CR> :<C-U>q<CR>
+
+" make `;` do `;.` - also no `nore` because `vim-repeat`
+nmap <silent> ; ;.
 
 "}}}
 

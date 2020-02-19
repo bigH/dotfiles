@@ -151,8 +151,3 @@ wh() {
   fi
 }
 
-# status represents if `git` commands will work
-is-in-git-repo() {
-  git rev-parse HEAD > /dev/null 2>&1
-}
-

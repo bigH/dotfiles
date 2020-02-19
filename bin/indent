@@ -14,9 +14,11 @@ indent() {
     echo
     shift
     if [ -t 1 ]; then
-      printf "%s" "$(tput setaf 2)" "$(tput bold)"
+      printf "%s" "$(tput setaf 8)"
     fi
-    printf "\$ $1"
+    printf "\$ "
+    printf "%s" "$(tput setaf 2)" "$(tput bold)"
+    printf "%s" "$1"
     if [ -t 1 ]; then
       printf "%s" "$(tput sgr0)" "$(tput setaf 4)"
     fi

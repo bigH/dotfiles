@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# status represents if `git` commands will work
+is_in_git_repo() {
+  git rev-parse HEAD > /dev/null 2>&1
+}
+
+is_in_git_repo
