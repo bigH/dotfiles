@@ -1,17 +1,57 @@
+let g:todo_indent = 4
+let g:todo_note_indent = g:todo_indent + 2
+
 function! s:PerformAppropriateCR()
   let line=getline('.')
   if l:line =~ '^\s\+- \[ \]\s*$'
     return "\<Esc>\<S-Tab>A"
   elseif l:line =~ '^- \[ \]\s*$'
-    return "\<Esc>0C# "
+    return "\<Esc>0C## "
   elseif l:line =~ '^\s*- \[.\].\+$'
     return "\<CR>-\<Space>[\<Space>]\<Space>"
+  elseif l:line =~ '^##\s*$'
+    return "\<Esc>0C# "
   elseif l:line =~ '^#\s*$'
-    return "\<Esc>O\<Esc>jA"
+    return "\<Esc>O\<Esc>0DjA"
   elseif l:line =~ '^#.*$'
     return "\<CR>-\<Space>[\<Space>]\<Space>"
   else
     return "\<CR>"
+  endif
+endfunction
+
+function! s:PerformAppropriateDent(indent)
+  let [bufnum, row, column, ignore] = getpos('.')
+  let previous = row - 1
+  let current_line = getline('.')
+  let previous_line = getline(l:previous)
+  let indent_amount = 0
+  if a:indent == 1
+    if l:previous >= 1 &&
+       \ l:current_line =~ '^\s*- \[ \]\s*$' &&
+       \ l:previous_line =~ '^\s*- \[.\]\s.*$' &&
+       \ indent('.') >= indent(l:previous) + g:todo_indent
+      let indent_amount = indent(l:previous) + g:todo_note_indent
+      call setline('.', repeat(' ', l:indent_amount))
+      call setpos('.', [bufnum, row, l:indent_amount, ignore])
+    else
+      normal >>
+      call setpos('.', [bufnum, row, column + g:todo_indent, ignore])
+    endif
+  else
+    if l:current_line =~ '^\s*$' && l:previous >= 1
+      let new_line = repeat(' ', indent(l:previous) + g:todo_indent) . '- [ ] '
+      call setline('.', l:new_line)
+      call setpos('.', [bufnum, row, len(l:new_line), ignore])
+    else
+      let original_indent_amount = indent('.')
+      normal <<
+      if (l:original_indent_amount == 0)
+        call setpos('.', [bufnum, row, column, ignore])
+      else
+        call setpos('.', [bufnum, row, column - g:todo_indent, ignore])
+      endif
+    endif
   endif
 endfunction
 
@@ -93,6 +133,10 @@ function! s:SetupTodoFile()
   " Map <CR> to make more or walk up the hierarchy
   imap <silent> <buffer> <expr> <CR> <SID>PerformAppropriateCR()
 
+  " Map `o` to work like above
+  nmap <silent> <buffer> o A<CR>
+  nmap <silent> <buffer> O kA<CR>
+
   " <C-X> to toggle done/not-done
   " NB: overrides <C-x> used for decrement
   nmap <silent> <buffer> <C-x> :call <SID>ToggleTodoStateSimple()<CR>
@@ -107,16 +151,16 @@ function! s:SetupTodoFile()
   imap <silent> <buffer> <C-F> <Esc>:call FocusOnCurrent()<CR>a
 
   " Indent/Outdent
-  nmap <silent> <buffer> <Tab> mm>>`m4l
-  imap <silent> <buffer> <Tab> <Esc>mm>>`m4la
-  nmap <silent> <buffer> <S-Tab> mm<<`m4h
-  imap <silent> <buffer> <S-Tab> <Esc>mm<<`m4ha
+  nmap <silent> <buffer> <Tab> :call <SID>PerformAppropriateDent(1)<CR>
+  imap <silent> <buffer> <Tab> <Esc>:call <SID>PerformAppropriateDent(1)<CR>a
+  nmap <silent> <buffer> <S-Tab> :call <SID>PerformAppropriateDent(0)<CR>
+  imap <silent> <buffer> <S-Tab> <Esc>:call <SID>PerformAppropriateDent(0)<CR>a
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
     setlocal breakindent
 
-    " shift wrapped content 6 spaces
+    " shift wrapped content 6 spaces (g:todo_note_indent)
     setlocal breakindentopt=shift:6,sbr
     setlocal showbreak=
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker_kill_all() {
+docker_nuke() {
   # Stop all containers
   indent --header docker stop `docker ps -qa`
 
@@ -17,4 +17,4 @@ docker_kill_all() {
   indent --header docker network rm `docker network ls -q`
 }
 
-docker_kill_all
+docker_nuke

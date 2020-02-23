@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# turn off certain `shellcheck` errors
+export SHELLCHECK_OPTS="-e SC1090"
+
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
   auto_source $HOME/.ghcup/env

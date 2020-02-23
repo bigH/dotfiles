@@ -22,3 +22,4 @@ syntax region TodoDone         start="^\s*- \[x\]"       end="$" contains=TodoTa
 
 syntax region TodoNotes        start="^\(\s\s\s\s\)\+\(\s*- \[.\]\)\@!" end="$" keepend oneline
 
+highlight markdownItalic ctermfg=white cterm=italic guifg=white gui=italic

@@ -1,6 +1,7 @@
 if exists('g:custom_until')
   finish
 endif
+
 let g:custom_until = 1
 " TODO:
 " - doesn't accept numeric input to describe how many untils
@@ -32,19 +33,19 @@ function! s:until_text_object(forward)
   endif
 endfunction
 
-onoremap <silent> <Plug>until_forward v:call <SID>until_text_object(1)<CR>
-onoremap <silent> <Plug>until_backward v:call <SID>until_text_object(0)<CR>
+onoremap <silent> <Plug>(until_forward) v:call <SID>until_text_object(1)<CR>
+onoremap <silent> <Plug>(until_backward) v:call <SID>until_text_object(0)<CR>
 
-vnoremap <silent> <Plug>until_forward_visual v:call <SID>until_text_object(1)<CR>
-vnoremap <silent> <Plug>until_backward_visual v:call <SID>until_text_object(0)<CR>
+vnoremap <silent> <Plug>(until_forward_visual) v:call <SID>until_text_object(1)<CR>
+vnoremap <silent> <Plug>(until_backward_visual) v:call <SID>until_text_object(0)<CR>
 
 if !exists('g:until_no_mappings') || g:until_no_mappings == 0
-  omap <silent> u <Plug>until_forward
-  vmap <silent> u <Plug>until_forward_visual
+  omap <silent> u <Plug>(until_forward)
+  vmap <silent> u <Plug>(until_forward_visual)
 
   " separate because it is awkward to have a `U` mapping
   if !exists('g:until_include_backwards_mappings') || g:until_include_backwards_mappings == 0
-    omap <silent> U <Plug>until_backward
-    vmap <silent> U <Plug>until_backward_visual
+    omap <silent> U <Plug>(until_backward)
+    vmap <silent> U <Plug>(until_backward_visual)
   endif
 endif

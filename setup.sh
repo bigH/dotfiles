@@ -67,23 +67,39 @@ echo ""
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
 printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
-print_symbol_for_status "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
+if type fzf >/dev/null 2>&1; then
+  print_symbol_for_status "found" "true"
+else
+  print_symbol_for_status "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
+  print_symbol_for_status "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
+fi
 echo ""
 
 printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
-print_symbol_for_status "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
+if type ripgrep >/dev/null 2>&1; then
+  print_symbol_for_status "found" "true"
+else
+  print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
+  print_symbol_for_status "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
+fi
 echo ""
 
 printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
-print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
+if type bat >/dev/null 2>&1; then
+  print_symbol_for_status "found" "true"
+else
+  print_symbol_for_status "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
+  print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
+fi
 echo ""
 
 printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
-print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
+if type fd >/dev/null 2>&1; then
+  print_symbol_for_status "found" "true"
+else
+  print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
+  print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
+fi
 echo ""
 
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
@@ -171,9 +187,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
   echo ""
   echo "     ... installs dependencies"
-  echo "     \`brew install ack broot cabal cloc coreutils exa ghc glances go \\"
-  echo "                   htop neovim python2 python3 rbenv rustup-init swaks \\"
-  echo "                   tig wget yarn\`"
+  echo "     \`brew install ack bat broot cabal cloc coreutils exa fd fzf \\"
+  echo "                   ghc glances go htop neovim python2 python3 rbenv \\"
+  echo "                   ripgrep rustup-init swaks tig wget yarn\`"
   echo "      - \`brew install --HEAD \\"
   echo "                      universal-ctags/universal-ctags/universal-ctags\`"
   echo "          (\`universal-ctags\` should have \`go\` support)"
@@ -195,9 +211,9 @@ else
   echo "  [${BLUE}${BOLD}Other POSIX${NORMAL}]: (assumes Ubuntu family)"
   echo ""
   echo "     ... sets up Ubuntu in a nice way"
-  echo "     \`sudo apt-get install -y cloc ctags dconf-cli glances golang \\"
-  echo "                               hegemon htop neovim rustup swaks \\"
-  echo "                               uuid-runtime yarn\`"
+  echo "     \`sudo apt-get install -y bat cloc ctags dconf-cli fd-find fzf \\"
+  echo "                              glances golang hegemon htop neovim \\"
+  echo "                              ripgrep rustup swaks uuid-runtime yarn\`"
   echo ""
 fi
 echo "     ... ligatures and nice mono-space font"

@@ -63,12 +63,17 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Other small things
   if has('nvim') && !exists('g:fzf_layout')
     autocmd! FileType fzf
-    autocmd  FileType fzf set laststatus=0 noshowmode noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+    autocmd  FileType fzf set laststatus=0 noshowmode noruler nohlsearch
+          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler hlsearch
   endif
 
   " Customize fzf to use tabs for <Enter>
   let g:fzf_action = {
+        \ '?':      'toggle-preview',
+        \ 'change': 'top',
+        \ 'ctrl-s': 'toggle-sort',
+        \ 'ctrl-e': 'preview-down',
+        \ 'ctrl-y': 'preview-up',
         \ 'ctrl-m': 'e!',
         \ 'ctrl-o': 'e!',
         \ 'ctrl-t': 'tabedit',
@@ -92,17 +97,21 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
           \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
   endfunction
 
-  " get content of visual selection as string
-  function! GetVisualSelectionAsString()
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-      return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
+  function! GetFzfSetup(fullscreen)
+    if a:fullscreen
+      return 'down:50%'
+    else
+      let height = &lines * 1.0
+      let width = &columns * 1.0
+      let ratio = width / height
+      if ratio < 2 && height > 100
+        return 'down:30%'
+      elseif ratio < 2
+        return 'down:50%'
+      else
+        return 'right:50%'
+      endif
+    end
   endfunction
 
   let g:fzf_config_for_rg = { 'options' : [
@@ -117,8 +126,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \       (<bang>0 ? '--no-ignore --hidden ' : '').
         \       '"'.GetVisualSelectionAsString().'"',
         \   1,
-        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, 'down:50%')
-        \           : fzf#vim#with_preview(g:fzf_config_for_rg, 'right:50%', '?'),
+        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(1))
+        \           : fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(0), '?'),
         \   <bang>0)
 
   " Rg with preview
@@ -127,8 +136,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \   'rg --column --line-number --no-heading --color=always --smart-case '.
         \     shellescape(<q-args>),
         \   1,
-        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, 'down:50%')
-        \           : fzf#vim#with_preview(g:fzf_config_for_rg, 'right:50%', '?'),
+        \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(1))
+        \           : fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(0), '?'),
         \   <bang>0)
 
   function! OptionsForFiles(additional_fd_opts)
@@ -147,8 +156,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
         \ call fzf#vim#files(<q-args>,
-        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore'), 'down:50%', '?')
-        \           : fzf#vim#with_preview(OptionsForFiles(''), 'right:50%'),
+        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore'), GetFzfSetup(1), '?')
+        \           : fzf#vim#with_preview(OptionsForFiles(''), GetFzfSetup(0)),
         \   <bang>0)
 
   function! DoNothingSink(lines)
@@ -354,9 +363,8 @@ if IsPluginLoaded('tpope/vim-commentary')
   " is provided
   xmap cm <Plug>Commentary
   nmap cm <Plug>Commentary
-  nmap cmcm <Plug>Commentary<Plug>Commentary
-  " Don't like the operator-pending mapping (though it's easy to uncomment
-  " omap cm <Plug>Commentary
+  " operator-pending mapping (`cmcm`)
+  omap cm <Plug>Commentary
 endif
 
 " -- splitjoin.vim --
@@ -369,7 +377,7 @@ if IsPluginLoaded('AndrewRadev/splitjoin.vim')
   let g:splitjoin_ruby_curly_braces = 0
   let g:splitjoin_ruby_options_as_arguments = 1
 
-  " `splitjoin` docs say to do this. nbd.
+  " `splitjoin` docs say to do this.
   let g:splitjoin_split_mapping = ''
   let g:splitjoin_join_mapping = ''
 

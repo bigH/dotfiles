@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# source `indent` function
+. "$DOT_FILES_DIR/functions/indent.sh"
+
 git_pr() {
   CURRENT_BRANCH="$(git branch-name)"
   BRANCH_NAME="${1:-$CURRENT_BRANCH}"

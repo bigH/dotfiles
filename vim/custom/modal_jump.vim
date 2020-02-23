@@ -15,46 +15,56 @@ let g:custom_modal_jump = 1
 " 2 = loc-list
 " 3 = methods
 " 4 = classes
+let s:jk_mode_for_loclist = 2
 let g:jk_mode = 0
 
-func! COpenIfApplicable()
+function! COpenIfApplicable(jump_to_first)
+  let current_window = winnr()
+  let current_buffer = bufname()
   " close the other one
   lclose
-  if len(getqflist()) == 0
-    cclose
-  else
-    copen
+  copen
+  wincmd J
+  if a:jump_to_first && len(getqflist()) > 0
     cfirst
     wincmd k
-  endif
-endfunc
-
-func! LOpenIfApplicable()
-  " close the other one
-  cclose
-  if len(getloclist(winnr())) == 0
-    lclose
+  elseif buflisted(l:current_buffer)
+    execute current_window . 'wincmd w'
   else
-    lopen
-    lfirst
     wincmd k
   endif
 endfunc
 
-func! CloseBothLists()
+function! LOpenIfApplicable(jump_to_first)
+  let current_window = winnr()
+  let current_buffer = bufname()
+  " close the other one
+  cclose
+  lopen
+  wincmd J
+  if a:jump_to_first && len(getloclist(l:current_buffer)) > 0
+    lfirst
+  elseif buflisted(l:current_buffer)
+    execute current_window . 'wincmd w'
+  else
+    wincmd k
+  endif
+endfunc
+
+function! CloseBothLists()
   cclose
   lclose
 endfunc
 
-func! JKModeApply()
+function! JKModeApply()
   if g:jk_mode == 0
     call CloseBothLists()
     echo "=> Git Hunk Mode"
   elseif g:jk_mode == 1
-    call COpenIfApplicable()
+    call COpenIfApplicable(1)
     echo "=> QuickFix Mode"
   elseif g:jk_mode == 2
-    call LOpenIfApplicable()
+    call LOpenIfApplicable(1)
     wincmd k
     echo "=> Loc List Mode"
   elseif g:jk_mode == 3
@@ -66,21 +76,21 @@ func! JKModeApply()
   endif
 endfunc
 
-func! Modulus(n,m)
+function! Modulus(n,m)
   return (a:n + a:m) % a:m
 endfunc
 
-func! JKModeRotate(direction)
+function! JKModeRotate(direction)
   let g:jk_mode = Modulus(g:jk_mode + a:direction, 5)
   call JKModeApply()
 endfunc
 
-func! JKModeSet(mode)
+function! JKModeSet(mode)
   let g:jk_mode = Modulus(mode, 5)
   call JKModeApply()
 endfunc
 
-func! JKModeJ()
+function! JKModeJ()
   if g:jk_mode == 1
     try
       cnext
@@ -102,7 +112,7 @@ func! JKModeJ()
   endif
 endfunc
 
-func! JKModeK()
+function! JKModeK()
   if g:jk_mode == 1
     try
       cprevious
@@ -123,6 +133,15 @@ func! JKModeK()
     GitGutterPrevHunk
   endif
 endfunc
+
+" function! UpdateLocListIfApplicable()
+"   if g:jk_mode == s:jk_mode_for_loclist
+"     call LOpenIfApplicable(0)
+"   endif
+" endfunction
+
+" autocmd WinLeave * call RecordLastWindowLocList()
+" autocmd WinEnter * call UpdateLocListIfApplicable()
 
 " Rotate modes
 nnoremap <silent> ]<leader>] :call JKModeRotate(1)<CR>

@@ -111,13 +111,13 @@ function! s:do_duplicate(type, ...)
   call s:restore_reg('d', old_reg_value)
 endfunction
 
-nnoremap <silent> <Plug>DuplicateNormal :<C-U>set operatorfunc=<SID>do_duplicate<CR>g@
-vnoremap <silent> <Plug>DuplicateVisual :<C-U>call <SID>do_duplicate(visualmode(), 1)<CR>
+nnoremap <silent> <Plug>(DuplicateNormal) :<C-U>set operatorfunc=<SID>do_duplicate<CR>g@
+vnoremap <silent> <Plug>(DuplicateVisual) :<C-U>call <SID>do_duplicate(visualmode(), 1)<CR>
 
 if !exists("g:duplicate_no_mappings") || ! g:duplicate_no_mappings
   " TODO This mapping conflicts with `commentary`, and i need to figure that
   " mapping out
-  nmap <silent> gd <Plug>DuplicateNormal
-  vmap <silent> gd <Plug>DuplicateVisual
+  nmap <silent> gd <Plug>(DuplicateNormal)
+  vmap <silent> gd <Plug>(DuplicateVisual)
 endif
 

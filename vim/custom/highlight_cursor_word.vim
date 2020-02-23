@@ -1,5 +1,5 @@
 if exists('g:custom_highlight_cursor_word')
-"  finish
+  finish
 endif
 let g:custom_highlight_cursor_word = 1
 
@@ -30,7 +30,7 @@ function! s:HighlightCursorWordNow()
     highlight HighlightCursorWordHighlight cterm=bold ctermfg=darkred gui=bold guifg=red guibg=black
   endif
 
-  if len(s:wordUnderCursor) > 1 && s:wordUnderCursor =~ '[A-Za-z-_]\{2,\}'
+  if s:wordUnderCursor =~ '[A-Za-z_]\{1,\}'
     try
       let w:HighlightCursorWordMatchId = matchadd('HighlightCursorWordHighlight', '\<'.s:wordUnderCursor.'\>', -1)
     catch /.*/

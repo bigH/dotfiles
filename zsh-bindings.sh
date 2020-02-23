@@ -9,20 +9,20 @@
 # bindkey -M main '^i' expand-alias
 
 # Ctrl-P - select file to paste
-fzf-file-select() {
+fzf-file-select-and-insert() {
   LBUFFER+=$(fzf-file-selector)
   zle redisplay
 }
-zle -N fzf-file-select
-bindkey '^p' fzf-file-select
+zle -N fzf-file-select-and-insert
+bindkey '^p' fzf-file-select-and-insert
 
 # Ctrl-N - select directory to paste
-fzf-directory-select() {
+fzf-directory-select-and-insert() {
   LBUFFER+=$(fzf-directory-selector)
   zle redisplay
 }
-zle -N fzf-directory-select
-bindkey '^n' fzf-directory-select
+zle -N fzf-directory-select-and-insert
+bindkey '^n' fzf-directory-select-and-insert
 
 # Ctrl-H - find commit SHA(s)
 fzf-gh-widget() {

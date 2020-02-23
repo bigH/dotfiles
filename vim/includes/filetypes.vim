@@ -9,6 +9,12 @@ augroup FiletypeSettings
   au BufNewFile,BufRead gitconfig set filetype=gitconfig
   au FileType gitconfig setlocal noexpandtab
 
+  " TypeScript and JavaScript `gf`
+  au FileType typescriptreact setlocal suffixesadd=.ts,tsx,.js,.jsx
+  au FileType typescript      setlocal suffixesadd=.ts,tsx,.js,.jsx
+  au FileType javascript.jsx  setlocal suffixesadd=.ts,tsx,.js,.jsx
+  au FileType jsx             setlocal suffixesadd=.ts,tsx,.js,.jsx
+
   " Always use wrapping in markdown
   au FileType markdown setlocal wrap
 

@@ -82,7 +82,7 @@ PlugMemoize 'scrooloose/nerdtree', ForModes('vim', 'nvim')
 PlugMemoize 'Xuyuanp/nerdtree-git-plugin', ForModes('vim', 'nvim')
 "
 " tagbar is sweet - don't use it much though
-PlugMemoize 'majutsushi/tagbar', ForModes('vim', 'nvim')
+" PlugMemoize 'majutsushi/tagbar', ForModes('vim', 'nvim')
 
 " `fzf` support
 PlugMemoize 'junegunn/fzf'

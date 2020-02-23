@@ -89,22 +89,22 @@ function! s:do_change_repeat(type, ...)
   let l:contents = g:do_change_repeat_buffer.text
   let @/ = ('\C' . escape(contents, '\\/.*$^~[]'))
   silent normal! gnd
-  silent call repeat#set("\<Plug>ChangeRepeatRepeat")
+  silent call repeat#set("\<Plug>(ChangeRepeatRepeat)")
   startinsert
 endfunction
 
 function! s:do_change_repeat_repeat()
   silent normal! gn".p
-  silent call repeat#set("\<Plug>ChangeRepeatRepeat")
+  silent call repeat#set("\<Plug>(ChangeRepeatRepeat)")
 endfunction
 
-nnoremap <silent> <Plug>ChangeRepeatRepeat :call <SID>do_change_repeat_repeat()<CR>
-nnoremap <silent> <Plug>ChangeRepeatNormal :<C-U>set operatorfunc=<SID>do_change_repeat<CR>g@
-vnoremap <silent> <Plug>ChangeRepeatVisual :<C-U>call <SID>do_change_repeat(visualmode(), 1)<CR>
+nnoremap <silent> <Plug>(ChangeRepeatRepeat) :call <SID>do_change_repeat_repeat()<CR>
+nnoremap <silent> <Plug>(ChangeRepeatNormal) :<C-U>set operatorfunc=<SID>do_change_repeat<CR>g@
+vnoremap <silent> <Plug>(ChangeRepeatVisual) :<C-U>call <SID>do_change_repeat(visualmode(), 1)<CR>
 
 if !exists("g:change_repeat_no_mappings") || ! g:change_repeat_no_mappings
-  nmap <silent> gc <Plug>ChangeRepeatNormal
-  vmap <silent> gc <Plug>ChangeRepeatVisual
+  nmap <silent> gc <Plug>(ChangeRepeatNormal)
+  vmap <silent> gc <Plug>(ChangeRepeatVisual)
   " TODO this doesn't work at all
   " nmap <silent> gcc 0gc_
 endif

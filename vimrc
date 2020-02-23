@@ -53,33 +53,27 @@ vnoremap P P=']
 " Kill current split
 nmap <silent> <M-x> :close<CR>
 imap <silent> <M-x> <Esc>:close<CR>
-
-" Make current split the only
 nmap <silent> <M-X> :only<CR>
 imap <silent> <M-X> <Esc>:only<CR>
 
 " Move between windows using <M-H/J/K/L> keys
 nmap <silent> <M-h> :wincmd h<CR>
-nmap <silent> <M-j> :wincmd j<CR>
-nmap <silent> <M-k> :wincmd k<CR>
-nmap <silent> <M-l> :wincmd l<CR>
-
-" Move between windows using <M-H/J/K/L> keys
 imap <silent> <M-h> <Esc>:wincmd h<CR>i
+nmap <silent> <M-j> :wincmd j<CR>
 imap <silent> <M-j> <Esc>:wincmd j<CR>i
+nmap <silent> <M-k> :wincmd k<CR>
 imap <silent> <M-k> <Esc>:wincmd k<CR>i
+nmap <silent> <M-l> :wincmd l<CR>
 imap <silent> <M-l> <Esc>:wincmd l<CR>i
 
 " Split windows using <M-S-H/J/K/L> keys
 nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>
-nmap <silent> <M-J> :split<CR>
-nmap <silent> <M-K> :split<CR>:wincmd k<CR>
-nmap <silent> <M-L> :vsplit<CR>
-
-" Split windows using <M-S-H/J/K/L> keys
 imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>i
+nmap <silent> <M-J> :split<CR>
 imap <silent> <M-J> <Esc>:split<CR>i
+nmap <silent> <M-K> :split<CR>:wincmd k<CR>
 imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>i
+nmap <silent> <M-L> :vsplit<CR>
 imap <silent> <M-L> <Esc>:vsplit<CR>i
 
 " Move Buffers

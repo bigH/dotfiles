@@ -28,7 +28,7 @@ fzf-directory-selector() {
 FILE_PREVIEW_COMMAND='bat {}'
 
 fzf-file-selector() {
-  echo fd --type f --hidden --follow . \| \
+  fd --type f --hidden --follow . | \
     fzf -m --ansi --no-height \
            --history "$FZF_HISTORY_FOR_FILES" \
            --bind '?:toggle-preview' \
@@ -39,7 +39,7 @@ fzf-file-selector() {
            --bind 'ctrl-y:preview-up' \
            --bind 'change:top' \
            --preview-window 'right:50%' \
-           --preview "$FILE_PREVIEW_COMMAND" \| \
+           --preview "$FILE_PREVIEW_COMMAND" | \
     join-lines
 }
 
@@ -106,24 +106,22 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # TODO it'd be nice if this fell back on diffing with `gmbh`
   # TODO if this works the fzf config below should be everywhere (or the parts that matter)
   # Select file from git status, fall back to `gfc`
-  # gfs() {
-  #   if ! is-in-git-repo; then
-  #     echo "No \`git\` repo found."
-  #   else
-  #     git -c color.ui=always status --short | \
-  #       fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
-  #           --bind '?:toggle-preview' \
-  #           --bind 'ctrl-s:toggle-sort' \
-  #           --bind 'alt-d:deselect-all' \
-  #           --bind 'alt-a:select-all' \
-  #           --bind 'ctrl-e:preview-down' \
-  #           --bind 'ctrl-y:preview-up' \
-  #           --bind 'change:top' \
-  #           --preview-window 'right:50%' \
-  #           --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
-  #       cut -c4- | join-lines
-  #   fi
-  # }
+  gfs() {
+    is-in-git-repo || return
+
+    git -c color.ui=always status --short | \
+      fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
+          --bind '?:toggle-preview' \
+          --bind 'ctrl-s:toggle-sort' \
+          --bind 'alt-d:deselect-all' \
+          --bind 'alt-a:select-all' \
+          --bind 'ctrl-e:preview-down' \
+          --bind 'ctrl-y:preview-up' \
+          --bind 'change:top' \
+          --preview-window 'right:50%' \
+          --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
+      cut -c4- | join-lines
+  }
 
   # Select file from git diff with commit (or merge-base)
   gfc() {
@@ -133,8 +131,16 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     REF="${1:-$MERGE_BASE}"
 
     git diff $REF --name-only |
-      fzf --no-height --reverse -m --ansi --nth 2..,.. \
-      --preview "(git diff $REF -- {-1} | diff-so-fancy)"
+      fzf --no-height --reverse -m --ansi --nth '2..,..' \
+          --bind '?:toggle-preview' \
+          --bind 'ctrl-s:toggle-sort' \
+          --bind 'alt-d:deselect-all' \
+          --bind 'alt-a:select-all' \
+          --bind 'ctrl-e:preview-down' \
+          --bind 'ctrl-y:preview-up' \
+          --bind 'change:top' \
+          --preview-window 'right:50%' \
+          --preview "(git diff $REF -- {-1} | diff-so-fancy)"
   }
 
   # Select file from git range

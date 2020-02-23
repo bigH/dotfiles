@@ -143,6 +143,24 @@ autocmd VimResized * wincmd =
 "}}}
 
 
+"{{{ Useful to get `v` selection
+
+" get content of visual selection as string
+function! GetVisualSelectionAsString()
+  let [line_start, column_start] = getpos("'<")[1:2]
+  let [line_end, column_end] = getpos("'>")[1:2]
+  let lines = getline(line_start, line_end)
+  if len(lines) == 0
+    return ''
+  endif
+  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][column_start - 1:]
+  return join(lines, "\n")
+endfunction
+
+"}}}
+
+
 "{{{ Copy to all OS clipboards
 
 let g:copy_all_registers_to_clipboard = 0
@@ -296,8 +314,9 @@ nnoremap <silent> <M-CR> i<CR><Esc>
 " Sane Y
 nnoremap <silent> Y y$
 
-" Use Y to put text into clipboard
-vnoremap <silent> Y "+y
+" Use `Y` to append text to clipboard & `<leader>Y` to clear
+vnoremap <silent> Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
+nnoremap <silent> <Leader>Y :<C-U>let @+ = ''<CR>
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>
@@ -341,7 +360,8 @@ onoremap <silent> <CR> _
 nnoremap q<CR> :<C-U>q<CR>
 
 " make `;` do `;.` - also no `nore` because `vim-repeat`
-nmap <silent> ; ;.
+" TODO: not sure this works
+" nmap <silent> ; ;.
 
 "}}}
 
@@ -463,9 +483,23 @@ endif
 
 "{{{ Cursor Stuff
 
+" NeoVim and iTerm2 support displaying more cursor shapes than just a block.
+if $ALACRITTY_LOG
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0
+    \,i-ci:ver25-Cursor/lCursor
+    \,r-cr:hor20-Cursor/lCursor
+else
+  set guicursor=n-v-c:block
+    \,i-ci-ve:ver25
+    \,r-cr:hor20
+    \,o:hor50
+    \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+    \,sm:block-blinkwait175-blinkoff150-blinkon175
+endif
+
 " change cursor color in insert mode
 " TODO does this work?
-if &term =~ "xterm" || &term =~ 'rxvt' || &term =~ 'screen'
+if &term =~ 'xterm' || &term =~ 'rxvt' || &term =~ 'screen'
   let &t_SI = "\<Esc>]12;#CCCCCC\x7"
   let &t_EI = "\<Esc>]12;#999999\x7"
 endif

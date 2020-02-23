@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
 
+# quotes mult-word parameters in order to make a command copy-paste with ease
+bash_quote() {
+  if [[ "$1" = *' '* ]]; then
+    echo "'$1'"
+  else
+    echo "$1"
+  fi
+}
+
+# nicely indents both stderr and stdout
+indent() {
+  if [ -n "$1" ] && [ "$1" = "--header" ]; then
+    shift
+    if [ -t 1 ]; then
+      printf "%s" "$(tput setaf 8)"
+    fi
+    printf "\$ "
+    printf "%s" "$(tput setaf 2)" "$(tput bold)"
+    printf "%s" "$1"
+    if [ -t 1 ]; then
+      printf "%s" "$(tput sgr0)" "$(tput setaf 2)"
+    fi
+    REST=""
+    for arg in "$@"; do
+      if [ -n "$REST" ]; then
+        printf " %s" "$(bash_quote "$arg")"
+      fi
+      REST="YES"
+    done
+    if [ -t 1 ]; then
+      printf "%s" "$(tput sgr0)"
+    fi
+    echo
+  fi
+
+  { "$@" 2>&3 | sed >&2 's/^/    /'; } 3>&1 1>&2 | sed 's/^/    /';
+}
+
 # jj - list autojump directories
 if type autojump >/dev/null 2>&1; then
   jj() {
@@ -110,6 +148,11 @@ join-lines() {
 
 # `which` with `ls -l $(which)`
 wh() {
+  if [ -t 1 ]; then
+    LS_COMMAND='ls --color=always'
+  else
+    LS_COMMAND='ls'
+  fi
   if [ -z "$1" ]; then
     echo 'ERROR: specify the command.'
   else
@@ -118,34 +161,25 @@ wh() {
       if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "${GRAY}(using \`readlink-f\` to support OS X)${NORMAL}"
       fi
-      echo "${MAGENTA}readlink -f '$1'${NORMAL}:"
-      echo ""
-      PATH_TO_FILE="$(readlink-f "$1")"
-      "$DOT_FILES_DIR/bin/indent" echo "$PATH_TO_FILE"
+      indent --header 'readlink-f' "$1"
       echo ""
       wh "$PATH_TO_FILE"
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
-      echo "${MAGENTA}ls -l '$1'${NORMAL}:"
+      indent --header $LS_COMMAND -ld "$1"
       echo ""
-      "$DOT_FILES_DIR/bin/indent" ls -l "$1"
     elif [ -d "$1" ]; then
       echo "${CYAN} -- found a directory -- ${NORMAL}"
-      echo "${MAGENTA}ls -ld '$1'${NORMAL}:"
+      indent --header $LS_COMMAND -ld "$1"
       echo ""
-      "$DOT_FILES_DIR/bin/indent" ls -ld "$1"
+      indent --header $LS_COMMAND -l "$1"
       echo ""
-      echo "${GRAY}(directory listing)${NORMAL}"
-      echo "${MAGENTA}ls '$1'${NORMAL}:"
-      echo ""
-      ls "$1"
     else
-      echo "${MAGENTA}which '$1'${NORMAL}:"
-      "$DOT_FILES_DIR/bin/indent" "which" "$1"
+      indent --header which "$1"
+      echo ""
       PATH_TO_COMMAND="$(which "$1")"
       if [ -e "$PATH_TO_COMMAND" ]; then
-        echo ""
-        wh "$PATH_TO_COMMAND"
+        indent wh "$PATH_TO_COMMAND"
       fi
     fi
   fi
