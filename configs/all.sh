@@ -4,12 +4,16 @@ CONFIGS="$DOT_FILES_DIR/configs"
 
 # utility just for this script
 function source_configs_for_expected_command() {
-  if [ ! -z "$1" ]; then
-    if command -v "$1" >/dev/null 2>&1; then
-      auto_source "$CONFIGS/$1.sh"
-    else
-      echo "${YELLOW}WARN${NORMAL}: Skipping '$CONFIGS/$1.sh' as '$1' not found"
+  FILENAME="$CONFIGS/$1.sh"
+  SOURCED="NO"
+  for POSSIBLE_COMMAND in "$@"; do
+    if command -v "$POSSIBLE_COMMAND" >/dev/null 2>&1; then
+      auto_source "$FILENAME"
+      SOURCED="YES"
     fi
+  done
+  if [[ "$SOURCED" = "NO" ]]; then
+    echo "${YELLOW}WARN${NORMAL}: Skipping '$FILENAME' as none of ($@) found"
   fi
 }
 
@@ -18,7 +22,7 @@ auto_source "$CONFIGS/core.sh"
 
 # source these only if they're "visible" commands
 source_configs_for_expected_command ctags
-source_configs_for_expected_command fd
+source_configs_for_expected_command fd fdfind
 source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
 source_configs_for_expected_command rg

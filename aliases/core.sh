@@ -12,6 +12,18 @@ else
   alias ls='ls -p --color=auto -G --group-directories-first'
 fi
 
+if type fdfind >/dev/null 2>&1; then
+  alias fd=fdfind
+fi
+
+if type zsh >/dev/null 2>&1; then
+  alias zsh="SHELL=\"$(which zsh)\" zsh"
+fi
+
+if type bash >/dev/null 2>&1; then
+  alias bash="SHELL=\"$(which bash)\" bash"
+fi
+
 # NB: removed because the output can cause annoying terminal delays
 # alias cp='cp -v'
 # alias mv='mv -v'

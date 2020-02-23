@@ -16,7 +16,7 @@ if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
 fi
 
 echo "${BLUE}${BOLD}..random directories..${NORMAL}"
-mk_expected_dir "$DOT_FILES_DIR/.local/share/fzf-history"
+mk_expected_dir "$HOME/.local/share/fzf-history"
 mk_expected_dir "$DOT_FILES_DIR/logs"
 echo ""
 
@@ -100,7 +100,9 @@ echo ""
 
 printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
 if type fd >/dev/null 2>&1; then
-  print_symbol_for_status "found" "true"
+  print_symbol_for_status "found fd" "true"
+elif type fdfind >/dev/null 2>&1; then
+  print_symbol_for_status "found fdfind" "true"
 else
   print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
   print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
@@ -131,6 +133,10 @@ printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
 print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
 echo ""
 
+echo ""
+
+echo "${BLUE}${BOLD}Linking Bash Setup${NORMAL}"
+link_if_possible "$DOT_FILES_DIR/bashrc" "$HOME/.bashrc"
 echo ""
 
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
@@ -217,8 +223,13 @@ else
   echo ""
   echo "     ... sets up Ubuntu in a nice way"
   echo "     \`sudo apt-get install -y bat cloc ctags dconf-cli fd-find fzf \\"
-  echo "                              glances golang hegemon htop neovim \\"
-  echo "                              ripgrep rustup swaks uuid-runtime yarn\`"
+  echo "                              glances golang htop libsensors4-dev \\"
+  echo "                              neovim ripgrep swaks uuid-runtime yarn\`"
+  echo ""
+  echo "     ... install \`rustup\`"
+  echo "     \`curl https://sh.rustup.rs -sSf | sh\`"
+  echo "      - \`rustup update\` should update rust"
+  echo "      - \`cargo install hegemon\`"
   echo ""
 fi
 echo "     ... ligatures and nice mono-space font"

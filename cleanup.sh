@@ -18,6 +18,7 @@ unlink "$HOME/.rgignore"
 unlink "$HOME/.fdignore"
 unlink "$HOME/.tigrc"
 unlink "$HOME/.vimrc"
+unlink "$HOME/.bashrc"
 unlink "$HOME/.zshrc"
 
 # unlink, but directory can remain
