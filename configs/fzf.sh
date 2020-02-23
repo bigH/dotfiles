@@ -9,12 +9,9 @@ else
 fi
 
 # only configure these things if you're in `bash` or `zsh`
-if [ ! -z "$COMPLETEABLE_SHELL_TYPE" ]; then
+if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   # Auto-completion
-  [[ $- == *i* ]] && auto_source "$DOT_FILES_DIR/fzf/shell/completion.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
-
-  # Key bindings
-  auto_source "$DOT_FILES_DIR/fzf/shell/key-bindings.$COMPLETEABLE_SHELL_TYPE"
+  [[ $- == *i* ]] && auto_source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
 
   export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 

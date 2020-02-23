@@ -69,6 +69,11 @@ echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
 printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
 if type fzf >/dev/null 2>&1; then
   print_symbol_for_status "found" "true"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
+  else
+    print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
+  fi
 else
   print_symbol_for_status "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
   print_symbol_for_status "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
@@ -76,7 +81,7 @@ fi
 echo ""
 
 printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-if type ripgrep >/dev/null 2>&1; then
+if type rg >/dev/null 2>&1; then
   print_symbol_for_status "found" "true"
 else
   print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
