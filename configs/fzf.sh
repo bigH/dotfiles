@@ -30,6 +30,7 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
     export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude ".git" .'
     export FZF_CTRL_T_COMMAND='fd --hidden --follow --exclude ".git" .'
     export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude ".git" .'
+    export FZF_CTRL_R_OPTS="--preview 'echo {}' --height 50% --preview-window down:5:wrap --bind '?:toggle-preview'"
   fi
 
   if type gls >/dev/null 2>&1; then

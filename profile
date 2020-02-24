@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DOT_FILES_DIR=$HOME/.hiren
+export DOT_FILES_DIR="$HOME/.hiren"
 
 export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/env-context)"
 
@@ -10,11 +10,12 @@ else
   export EDITOR="$(which vim)"
 fi
 
+
 # basics with no dependencies
 auto_source "$DOT_FILES_DIR/colors.sh"
 
 # configs/path (almost everything below needs them to work)
-auto_source "$DOT_FILES_DIR/""configs/all.sh"
+auto_source "$DOT_FILES_DIR/configs/all.sh"
 
 if [ ! -z "$DOT_FILES_ENV" ]; then
   if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/bin" ]; then
@@ -34,3 +35,5 @@ elif [[ "$SHELL" == *'bash' ]]; then
   auto_source "$DOT_FILES_DIR/bash-prompt.sh"
   auto_source "$DOT_FILES_DIR/bash-shell.sh"
 fi
+
+auto_source_initialize

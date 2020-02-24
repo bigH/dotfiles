@@ -105,8 +105,8 @@ autoload -U compinit && compinit
 
 export DOT_FILES_DIR=$HOME/.hiren
 
+source $ZSH/oh-my-zsh.sh
 source "$DOT_FILES_DIR/auto_sourcer.sh"
-auto_source $ZSH/oh-my-zsh.sh
 auto_source $DOT_FILES_DIR/profile
 auto_source_initialize
 
