@@ -27,11 +27,11 @@ function! COpenIfApplicable(jump_to_first)
   wincmd J
   if a:jump_to_first && len(getqflist()) > 0
     cfirst
-    wincmd k
+    execute current_window . 'wincmd w'
   elseif buflisted(l:current_buffer)
     execute current_window . 'wincmd w'
   else
-    wincmd k
+    execute current_window . 'wincmd w'
   endif
 endfunc
 
@@ -44,10 +44,11 @@ function! LOpenIfApplicable(jump_to_first)
   wincmd J
   if a:jump_to_first && len(getloclist(l:current_buffer)) > 0
     lfirst
+    execute current_window . 'wincmd w'
   elseif buflisted(l:current_buffer)
     execute current_window . 'wincmd w'
   else
-    wincmd k
+    execute current_window . 'wincmd w'
   endif
 endfunc
 
@@ -134,14 +135,17 @@ function! JKModeK()
   endif
 endfunc
 
-" function! UpdateLocListIfApplicable()
+" function! OpenLocList()
 "   if g:jk_mode == s:jk_mode_for_loclist
-"     call LOpenIfApplicable(0)
-"   endif
+"     let wininfo = getwininfo()[winnr() - 1]
+"     if !(wininfo.loclist || wininfo.quickfix || wininfo.terminal)
+"       lclose
+"       lopen
+"       wincmd J
+"     endif
 " endfunction
 
-" autocmd WinLeave * call RecordLastWindowLocList()
-" autocmd WinEnter * call UpdateLocListIfApplicable()
+" autocmd WinEnter * call OpenLocList()
 
 " Rotate modes
 nnoremap <silent> ]<leader>] :call JKModeRotate(1)<CR>

@@ -9,7 +9,6 @@ exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
 
 "}}}
 
-
 "{{{ AutoCommands
 
 " Reload edited files.
@@ -77,10 +76,11 @@ nmap <silent> <M-L> :vsplit<CR>
 imap <silent> <M-L> <Esc>:vsplit<CR>i
 
 " Move Buffers
-nmap <silent> <C-H> :bfirst!<CR>
-nmap <silent> H :bprevious!<CR>
-nmap <silent> L :bnext!<CR>
-nmap <silent> <C-L> :blast!<CR>
+" nmap <silent> <C-H> :bfirst!<CR>
+" nmap <silent> H :bprevious!<CR>
+" nmap <silent> L :bnext!<CR>
+" nmap <silent> <C-L> :blast!<CR>
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
 
 " Disable Ex-Mode and map Q to close buffers
 nnoremap <silent> Q :bd<CR>
