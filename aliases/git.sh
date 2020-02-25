@@ -63,14 +63,28 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gpf='g push --force origin $(g branch-name)'
   alias gpu='g push -u origin $(g branch-name)'
 
-  # diff
-  alias gd='g diff HEAD'
-  alias gdm='g diff HEAD "$(g merge-base-remote)/$(g merge-base-branch)"'
-  alias gdo='g diff HEAD "$(g merge-base-remote)/$(g branch-name)"'
-  alias gnd='gn diff HEAD'
-  alias gndm='gn diff HEAD "$(g merge-base-remote)/$(g merge-base-branch)"'
-  alias gds='g diff --staged'
+  if type git-fzf-diff >/dev/null 2>&1; then
+    # prefer `fzf-diff` over `diff`
+    alias gd='g fzf-diff'
+    alias gds='g fzf-diff --staged'
+    alias gdmb='g fzf-diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gdh='g fzf-diff HEAD'
+
+    alias gpd='g diff'
+    alias gpds='g diff --staged'
+    alias gpdmb='g diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gpdh='g diff HEAD'
+  else
+    alias gd='g diff'
+    alias gds='g diff --staged'
+    alias gdmb='g diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gdh='g diff HEAD'
+  fi
+
+  alias gnd='gn diff'
+  alias gndh='gn diff HEAD'
   alias gnds='gn diff --staged'
+  alias gndmb='gn diff "$(g merge-base-remote)/$(g merge-base-branch)"'
 
   # --- random higher-order things ---
   # toss the branch and make a new one

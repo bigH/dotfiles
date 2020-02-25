@@ -13,7 +13,15 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   # Auto-completion
   [[ $- == *i* ]] && auto_source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
 
-  export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+  export FZF_DEFAULT_OPTS=" --border \
+                            --layout=reverse \
+                            --bind '?:toggle-preview' \
+                            --bind 'ctrl-s:toggle-sort' \
+                            --bind 'ctrl-e:preview-down' \
+                            --bind 'ctrl-y:preview-up' \
+                            --bind 'change:top' \
+                            --height '55%' \
+                            --preview-window 'right:50%' "
 
   if type fd >/dev/null 2>&1; then
     # Use `fd` instead of the default find command for listing path candidates.
@@ -27,18 +35,19 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
     }
 
     # use `fd`
-    export FZF_DEFAULT_COMMAND='fd --hidden --follow --exclude ".git" .'
-    export FZF_CTRL_T_COMMAND='fd --hidden --follow --exclude ".git" .'
-    export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude ".git" .'
-    export FZF_CTRL_R_OPTS="--preview 'echo {}' --height 50% --preview-window down:5:wrap --bind '?:toggle-preview'"
+    export FZF_DEFAULT_COMMAND='fd --hidden --follow .'
+    export FZF_CTRL_T_COMMAND='fd --hidden --follow .'
+    export FZF_ALT_C_COMMAND='fd --type d --hidden --follow .'
+
+    export FZF_CTRL_R_OPTS='--preview "echo {}" --height 50% --preview-window down:5:wrap --bind "?:toggle-preview"'
   fi
 
   if type gls >/dev/null 2>&1; then
     # use `gls` if present (on OS X)
-    export DIR_PREVIEW_COMMAND="gls --color=always -G"
+    export DIR_PREVIEW_COMMAND='gls --color=always -G'
   else
     # use `ls` otherwise
-    export FZF_ALT_C_OPTS="ls --color=always -G"
+    export FZF_ALT_C_OPTS='ls --color=always -G'
   fi
 
   # use `ls` to preview directories

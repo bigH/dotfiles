@@ -46,7 +46,10 @@ bindkey '^[h' fzf-gh-range-widget
 fzf-git-files-from-commits() {
   local commits=$(gh)
   local num_commits=$(echo "$commits" | wc -l | bc)
-  if [ "$num_commits" -eq 1 ]; then
+  if [ "$num_commits" -eq 0 ]; then
+    local result=$(gfc | join-lines);
+    LBUFFER+=$result
+  elif [ "$num_commits" -eq 1 ]; then
     local result=$(gfc "$commits" | join-lines);
     LBUFFER+=$result
   elif [ "$num_commits" -eq 2 ]; then
@@ -62,13 +65,13 @@ zle -N fzf-git-files-from-commits
 bindkey '^[o' fzf-git-files-from-commits
 
 # Ctrl-O - open files differing from merge-base
-fzf-gfc-widget() {
-  local result=$(gfc | join-lines);
+fzf-gfs-widget() {
+  local result=$(gfs | join-lines)
   LBUFFER+=$result
   zle redisplay
 }
-zle -N fzf-gfc-widget
-bindkey '^O' fzf-gfc-widget
+zle -N fzf-gfs-widget
+bindkey '^O' fzf-gfs-widget
 
 # Ctrl-B/F - back / forward by word
 bindkey '^b' backward-word

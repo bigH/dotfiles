@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+. $DOT_FILES_DIR/functions/util.sh
+
+git_diff_viewer() {
+  PARAMETERS_QUOTED="$(bash_quote "$@")"
+
+  git diff --name-only $PARAMETERS_QUOTED | \
+    fzf --no-height --ansi --no-sort --reverse --multi \
+    --bind alt-d:deselect-all --bind alt-a:select-all \
+    --preview "git diff $PARAMETERS_QUOTED {} | diff-so-fancy"
+}
+
+git_diff_viewer "$@"

@@ -363,6 +363,10 @@ nnoremap q<CR> :<C-U>q<CR>
 " TODO: not sure this works
 " nmap <silent> ; ;.
 
+" Resize the current vertical split (either larger or smaller)
+nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 5/4)<CR>
+nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 4/5)<CR>
+
 "}}}
 
 

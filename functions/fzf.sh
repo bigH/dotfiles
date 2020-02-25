@@ -12,35 +12,25 @@ if type exa >/dev/null 2>&1; then
   DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
 fi
 
+FZF_DEFAULT_OPTS_MULTI='--bind alt-d:deselect-all --bind alt-a:select-all'
+
 fzf-directory-selector() {
-  fd --type d --hidden --follow . | \
-    fzf +m --ansi --no-height \
-           --history "$FZF_HISTORY_FOR_DIRECTORIES"
-           --bind '?:toggle-preview' \
-           --bind 'ctrl-s:toggle-sort' \
-           --bind 'ctrl-e:preview-down' \
-           --bind 'ctrl-y:preview-up' \
-           --bind 'change:top' \
-           --preview-window 'right:50%' \
-           --preview "$DIRECTORY_PREVIEW_COMMAND"
+  eval "fd --type d --hidden --follow . | \
+          fzf +m --ansi --no-height \
+                 --history \"$FZF_HISTORY_FOR_DIRECTORIES\" \
+                 $FZF_DEFAULT_OPTS \
+                 --preview \"$DIRECTORY_PREVIEW_COMMAND\""
 }
 
 FILE_PREVIEW_COMMAND='bat {}'
 
 fzf-file-selector() {
-  fd --type f --hidden --follow . | \
-    fzf -m --ansi --no-height \
-           --history "$FZF_HISTORY_FOR_FILES" \
-           --bind '?:toggle-preview' \
-           --bind 'ctrl-s:toggle-sort' \
-           --bind 'alt-d:deselect-all' \
-           --bind 'alt-a:select-all' \
-           --bind 'ctrl-e:preview-down' \
-           --bind 'ctrl-y:preview-up' \
-           --bind 'change:top' \
-           --preview-window 'right:50%' \
-           --preview "$FILE_PREVIEW_COMMAND" | \
-    join-lines
+  eval "fd --type f --hidden --follow . | \
+          fzf -m --ansi --no-height \
+                 --history \"$FZF_HISTORY_FOR_FILES\" \
+                 $FZF_DEFAULT_OPTS_MULTI \
+                 --preview \"$FILE_PREVIEW_COMMAND\" | \
+          join-lines"
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
@@ -87,17 +77,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     if [ "$DIFF" = "patch" ]; then
       # For some reason, eval makes this work. otherwise, the `fzf` list never populates
       eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
-        fzf --multi --ansi --no-height --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
-        true"
+            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
+            true"
     elif [ "$DIFF" = "diff" ]; then
       # For some reason, eval makes this work. otherwise, the `fzf` list never populates
       eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
-            fzf --multi --ansi --no-height --preview \"git diff {2} -- $CHECK_PATHS | diff-so-fancy\" |\
+            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git diff {2} -- $CHECK_PATHS | diff-so-fancy\" |\
             true"
     else
       # Using eval only for consistency
       eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- \"$CHECK_PATHS\" |\
-            fzf --multi --ansi --no-height --preview \"git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"\" |\
+            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"\" |\
             true"
     fi
   }
@@ -109,18 +99,18 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   gfs() {
     is-in-git-repo || return
 
-    git -c color.ui=always status --short | \
-      fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
-          --bind '?:toggle-preview' \
-          --bind 'ctrl-s:toggle-sort' \
-          --bind 'alt-d:deselect-all' \
-          --bind 'alt-a:select-all' \
-          --bind 'ctrl-e:preview-down' \
-          --bind 'ctrl-y:preview-up' \
-          --bind 'change:top' \
-          --preview-window 'right:50%' \
-          --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
-      cut -c4- | join-lines
+    local FILES
+    FILES="$(eval "git -c color.ui=always status --short | \
+                   fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
+                       $FZF_DEFAULT_OPTS_MULTI \
+                       --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
+                   cut -c4-")"
+
+    if [ -z "$FILES" ]; then
+      fzf-file-selector
+    else
+      echo $FILES
+    fi
   }
 
   # Select file from git diff with commit (or merge-base)
@@ -130,17 +120,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
     REF="${1:-$MERGE_BASE}"
 
-    git diff $REF --name-only |
-      fzf --no-height --reverse -m --ansi --nth '2..,..' \
-          --bind '?:toggle-preview' \
-          --bind 'ctrl-s:toggle-sort' \
-          --bind 'alt-d:deselect-all' \
-          --bind 'alt-a:select-all' \
-          --bind 'ctrl-e:preview-down' \
-          --bind 'ctrl-y:preview-up' \
-          --bind 'change:top' \
-          --preview-window 'right:50%' \
-          --preview "(git diff $REF -- {-1} | diff-so-fancy)"
+    eval "git diff $REF --name-only |
+            fzf --no-height --reverse -m --ansi --nth '2..,..' \
+                $FZF_DEFAULT_OPTS_MULTI \
+                --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
   }
 
   # Select file from git range
@@ -150,9 +133,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
     REF="$1"
 
-    git diff $REF --name-only |
-    fzf --no-height --reverse -m --ansi --nth 2..,.. \
-      --preview "(git diff $REF -- {-1} | diff-so-fancy)"
+    eval "git diff $REF --name-only |
+            fzf --no-height --reverse -m --ansi --nth '2..,..' \
+                $FZF_DEFAULT_OPTS_MULTI \
+                --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
   }
 
   # Select commit from git history
@@ -162,11 +146,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     REF="${1:-HEAD}"
     MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
 
-    git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always $REF |
-    fzf --no-height --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
-      --header 'Press CTRL-S to toggle sort' \
-      --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show -p | diff-so-fancy' |
-    grep -o "[a-f0-9]\{7,\}"
+    eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
+            fzf --no-height --ansi --no-sort --reverse --multi \
+                $FZF_DEFAULT_OPTS_MULTI \
+                --preview 'grep -o \"[a-f0-9]\{7,\}\" <<< {} | xargs git show -p | diff-so-fancy' |
+            grep -o \"[a-f0-9]\{7,\}\""
   }
 
   # Create useful gitignore files
