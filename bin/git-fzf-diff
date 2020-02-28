@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. $DOT_FILES_DIR/functions/util.sh
+. $DOT_FILES_DIR/sh_utils.sh
 
 git_diff_viewer() {
   PARAMETERS_QUOTED="$(bash_quote "$@")"

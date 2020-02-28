@@ -10,9 +10,8 @@ else
   export EDITOR="$(which vim)"
 fi
 
-
 # basics with no dependencies
-auto_source "$DOT_FILES_DIR/colors.sh"
+auto_source "$DOT_FILES_DIR/sh_utils.sh"
 
 # configs/path (almost everything below needs them to work)
 auto_source "$DOT_FILES_DIR/configs/all.sh"

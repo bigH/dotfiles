@@ -82,6 +82,7 @@ PlugMemoize 'scrooloose/nerdtree', ForModes('vim', 'nvim')
 PlugMemoize 'Xuyuanp/nerdtree-git-plugin', ForModes('vim', 'nvim')
 "
 " tagbar is sweet - don't use it much though
+" it seems to be buggy in many situations
 " PlugMemoize 'majutsushi/tagbar', ForModes('vim', 'nvim')
 
 " `fzf` support
@@ -113,7 +114,6 @@ PlugMemoize 'dense-analysis/ale', ForModes('vim', 'nvim')
 PlugMemoize 'vim-ruby/vim-ruby'
 
 " scala language pack
-" TODO ??
 PlugMemoize 'derekwyatt/vim-scala'
 
 " nice markdown folding
@@ -162,6 +162,9 @@ PlugMemoize 'kana/vim-textobj-entire'
 
 " adds `al` and `il` to select a line with and without indent (respectively)
 PlugMemoize 'kana/vim-textobj-line'
+
+" adds `ac` and `ic` to select a 'chunk'
+PlugMemoize 'Chun-Yang/vim-textobj-chunk'
 
 " adds a `i,` and `a,` motion for parameters (works on kwargs)
 PlugMemoize 'b4winckler/vim-angry'

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# source `indent` function
+. "$DOT_FILES_DIR/sh_utils.sh"
+
 git_toss_branch() {
   ORIGINAL_BRANCH_NAME="$(git branch-name)"
   MERGE_BASE_BRANCH_NAME="$(git merge-base-branch)"
@@ -8,7 +11,7 @@ git_toss_branch() {
     echo "$(tput setaf 1)$(tput bold)ERROR:$(tput sgr0)$(tput setaf 1) Cannot \`toss-branch\` on '$(git branch-name)'"
   else
     indent --header git add -A
-    indent --header git commit -m WIP
+    indent --header git commit -m "WIP (git-toss-branch)"
     indent --header git checkout -b "$ORIGINAL_BRANCH_NAME-$(date "+%Y-%m-%d-%H-%M-%S")"
     indent --header git checkout "$MERGE_BASE_BRANCH_NAME"
     indent --header git branch -D "$ORIGINAL_BRANCH_NAME"

@@ -1,23 +1,23 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
 TYPE="${1:-pry}"
 
 case $TYPE in
+  node)
+    TYPE='js'
+    POTENTIAL_PROGRAM='node'
+    ;;
   pry)
     TYPE='rb'
     POTENTIAL_PROGRAM='pry'
     ;;
-  pay)
+  scala)
     TYPE='scala'
     POTENTIAL_PROGRAM='scala'
     ;;
-  ssh)
+  sh)
     TYPE='zsh'
     POTENTIAL_PROGRAM='zsh'
-    ;;
-  devbox)
-    TYPE='bash'
-    POTENTIAL_PROGRAM='bash'
     ;;
 esac
 
@@ -27,6 +27,9 @@ case $TYPE in
     ;;
   sh)
     HEADER='#!/usr/bin/env bash'
+    ;;
+  sh)
+    HEADER='#!/usr/bin/env node'
     ;;
 esac
 

@@ -92,7 +92,6 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
-  # TODO fix this
   # TODO it'd be nice if this fell back on diffing with `gmbh`
   # TODO if this works the fzf config below should be everywhere (or the parts that matter)
   # Select file from git status, fall back to `gfc`
@@ -100,16 +99,25 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     is-in-git-repo || return
 
     local FILES
-    FILES="$(eval "git -c color.ui=always status --short | \
-                   fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
-                       $FZF_DEFAULT_OPTS_MULTI \
-                       --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
-                   cut -c4-")"
-
-    if [ -z "$FILES" ]; then
-      fzf-file-selector
+    if [ -n "$(git status -s)" ]; then
+      FILES="$(eval "git -c color.ui=always status --short | \
+                       fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
+                         $FZF_DEFAULT_OPTS_MULTI \
+                         --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
+                         cut -c4-")"
     else
-      echo $FILES
+      MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
+      FILES="$(eval "git diff '$MERGE_BASE' --name-only | \
+                       fzf --no-height --no-sort --multi --ansi \
+                         $FZF_DEFAULT_OPTS_MULTI \
+                         --preview 'git diff '$MERGE_BASE' -- {} | diff-so-fancy' | \
+                         cut -c4-")"
+    fi
+
+    if [ -n "$FILES" ]; then
+      echo "$FILES"
+    else
+      fzf-file-selector
     fi
   }
 

@@ -3,7 +3,6 @@
 FUNCTIONS_DIR="$DOT_FILES_DIR/functions"
 
 # basic functions
-auto_source "$FUNCTIONS_DIR/util.sh"
 auto_source "$FUNCTIONS_DIR/core.sh"
 
 # utility just for this script

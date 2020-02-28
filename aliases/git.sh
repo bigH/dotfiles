@@ -32,6 +32,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcam='g commit -am'
   alias gcamend='g commit --amend'
   alias gcane='g commit --amend --no-edit'
+  alias gacane='g add --all ; g commit --amend --no-edit'
 
   # push
   alias gs='g st'
@@ -54,7 +55,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gllm='gn log --stat $(gmbh)..HEAD'
 
   # pull
-  alias gpo='g pull $(g merge-base-remote) $(g merge-base-branch)'
+  alias gpo='g pull $(g merge-base-remote)'
+  alias gpom='g pull $(g merge-base-remote) $(g merge-base-branch)'
   alias gprom='g pull --rebase $(g merge-base-remote) $(g merge-base-branch)'
   alias grpom='gprom'
 
@@ -67,24 +69,24 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     # prefer `fzf-diff` over `diff`
     alias gd='g fzf-diff'
     alias gds='g fzf-diff --staged'
-    alias gdmb='g fzf-diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gdmb='g fzf-diff "$(gmbh)"'
     alias gdh='g fzf-diff HEAD'
 
     alias gpd='g diff'
     alias gpds='g diff --staged'
-    alias gpdmb='g diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gpdmb='g diff "$(gmbh)"'
     alias gpdh='g diff HEAD'
   else
     alias gd='g diff'
     alias gds='g diff --staged'
-    alias gdmb='g diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+    alias gdmb='g diff "$(gmbh)"'
     alias gdh='g diff HEAD'
   fi
 
   alias gnd='gn diff'
   alias gndh='gn diff HEAD'
   alias gnds='gn diff --staged'
-  alias gndmb='gn diff "$(g merge-base-remote)/$(g merge-base-branch)"'
+  alias gndmb='gn diff "$(gmbh)"'
 
   # --- random higher-order things ---
   # toss the branch and make a new one

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# source `indent` function
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+LINEAR_KEY="6CUrp6YVDq1fpeKy3TNHFz9d1xHjQkHTsDejcRsJ"
+
+git_linear_branch() {
+  echo "$(tput setaf 1)$(tput bold)ERROR:$(tput sgr0)$(tput setaf 1) Cannot \`linear-branch\`"
+  exit 0
+}
+
+git_linear_branch "$@"

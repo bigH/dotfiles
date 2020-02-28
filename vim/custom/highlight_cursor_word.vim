@@ -46,7 +46,3 @@ augroup HighlightCursorWordGroup
 augroup END
 
 command! HighlightCursorWord :call <sid>HighlightCursorWordNow()
-
-" TODO
-"  - make an array of ignored words
-"  - potentially support making it not clash with searches

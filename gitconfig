@@ -19,6 +19,8 @@
 	default = upstream
 
 [diff]
+# seems to break somethings
+	renameLimit = 100
 # use `patience` so diffs are more exact
 	algorithm = patience
 # use indentHeuristic so diffs are more pleasing
@@ -64,6 +66,8 @@
 	n = "!git --no-pager"
 # Rework previous commit
 	rework = "reset --soft HEAD~1"
+# list tags
+	tags = "!git tag --list | sort --version-sort --reverse"
 
 # git with `diff-so-fancy`
 [color "diff-highlight"]

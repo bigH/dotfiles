@@ -316,7 +316,10 @@ nnoremap <silent> Y y$
 
 " Use `Y` to append text to clipboard & `<leader>Y` to clear
 vnoremap <silent> Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
+vnoremap <silent> <Leader>Y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
+
 nnoremap <silent> <Leader>Y :<C-U>let @+ = ''<CR>
+nnoremap <silent> <Leader>y "+y
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>
@@ -358,10 +361,6 @@ onoremap <silent> <CR> _
 " there's no `<CR>` register to record macros into - make quitting easier
 " can't do with with `w`
 nnoremap q<CR> :<C-U>q<CR>
-
-" make `;` do `;.` - also no `nore` because `vim-repeat`
-" TODO: not sure this works
-" nmap <silent> ; ;.
 
 " Resize the current vertical split (either larger or smaller)
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 5/4)<CR>

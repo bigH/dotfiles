@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export DOT_FILES_DIR=$HOME/.hiren
-source "$DOT_FILES_DIR/util.sh"
+source "$DOT_FILES_DIR/setup_utils.sh"
 
 # TODO call project cleanup.sh
 

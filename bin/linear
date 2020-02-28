@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+usage() {
+  echo 'TODO'
+}
+
+error_exit_usage() {
+}
+
+get() {
+}
+
+ACTION="$1"
+
+case $ACTION in
+  get)
+    get "$@"
+    ;;
+  select)
+    get "$@" | fzf_wrapper "$@"
+    ;;
+  *)
+    error_exit_usage "Unknown action: $ACTION"
+    ;;
+esac

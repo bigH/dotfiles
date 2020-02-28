@@ -41,12 +41,12 @@ alias tree='tree --dirsfirst'
 
 # use `nvim` if present, otherwise `vim`
 if type nvim >/dev/null 2>&1; then
-  alias vim=nvim
-  alias vi=nvim
-  alias v=nvim
+  alias vim='nvim'
+  alias vi='nvim'
+  alias v='nvim'
 else
-  alias vi=vim
-  alias v=vim
+  alias vi='vim'
+  alias v='vim'
 fi
 
 # chrome memory
@@ -60,17 +60,17 @@ alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' -
 
 # `yarn` -> `y`
 if type yarn >/dev/null 2>&1; then
-  alias y=yarn
+  alias y='yarn'
 fi
 
 # `tldr` is like `man`
 if type bat >/dev/null 2>&1; then
   if type prefer-bat >/dev/null 2>&1; then
-    alias cat=prefer-bat
+    alias cat='prefer-bat'
   fi
 fi
 
 # `tldr` is like `man`
 if type tldr >/dev/null 2>&1; then
-  alias tldr=tldr --theme base16
+  alias tldr='tldr --theme base16'
 fi
