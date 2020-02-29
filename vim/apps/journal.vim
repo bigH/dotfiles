@@ -23,6 +23,7 @@ set shiftwidth=4
 "{{{ Plugin-specific settings
 
 let g:AutoClosePairs_del = "[]"
+let g:airline#extensions#tabline#enabled = 0
 
 "}}}
 

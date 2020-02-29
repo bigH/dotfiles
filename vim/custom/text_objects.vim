@@ -10,3 +10,74 @@ call textobj#user#plugin('constant', {
       \     'select': ['ar', 'ir'],
       \   },
       \ })
+
+" `a tree` or `in tree`
+call textobj#user#plugin('indenttree', {
+      \   'inner': {
+      \     'select-a-function': 'SelectTree',
+      \     'select-a': 'at',
+      \     'select-i-function': 'SelectTreeChildren',
+      \     'select-i': 'it',
+      \   },
+      \   'outer': {
+      \     'select-a-function': 'SelectTreeParent',
+      \     'select-a': 'ot',
+      \     'select-i-function': 'SelectTreeSiblings',
+      \     'select-i': 'iot',
+      \   },
+      \ })
+
+function! SelectTree()
+  let start_pos = getpos('.')
+  let indent = indent('.')
+  let end_pos = getpos('.')
+  normal! j
+  while indent('.') > l:indent
+    let end_pos = getpos('.')
+    normal! j
+  endwhile
+  return ['V', l:start_pos, l:end_pos]
+endfunction
+
+function! SelectTreeSiblings()
+  let start_pos = getpos('.')
+  let indent = indent('.')
+  normal! k
+  while indent('.') >= l:indent
+    let start_pos = getpos('.')
+    normal! k
+  endwhile
+  normal! j
+  let end_pos = getpos('.')
+  normal! j
+  while indent('.') >= l:indent
+    let end_pos = getpos('.')
+    normal! j
+  endwhile
+  return ['V', l:start_pos, l:end_pos]
+endfunction
+
+function! SelectTreeChildren()
+  let indent = indent('.')
+  normal! j
+  let start_pos = getpos('.')
+  if indent('.') > l:indent
+    while indent('.') > l:indent
+      let end_pos = getpos('.')
+      normal! j
+    endwhile
+    return ['V', l:start_pos, l:end_pos]
+  else
+    return 0
+  endif
+endfunction
+
+function! SelectTreeParent()
+  let indent = indent('.')
+  normal! k
+  while indent('.') >= l:indent
+    normal! k
+  endwhile
+  return SelectTree()
+endfunction
+

@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# `zsh` color things
-if [[ "$SHELL" == *'zsh' ]]; then
-  autoload -U colors;
-  colors
-fi
-
 # Defaults
 if which tput >/dev/null 2>&1; then
   ncolors=$(tput colors)

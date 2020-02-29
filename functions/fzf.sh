@@ -129,7 +129,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     REF="${1:-$MERGE_BASE}"
 
     eval "git diff $REF --name-only |
-            fzf --no-height --reverse -m --ansi --nth '2..,..' \
+            fzf --no-height -m --ansi --nth '2..,..' \
                 $FZF_DEFAULT_OPTS_MULTI \
                 --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
   }
@@ -142,7 +142,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     REF="$1"
 
     eval "git diff $REF --name-only |
-            fzf --no-height --reverse -m --ansi --nth '2..,..' \
+            fzf --no-height -m --ansi --nth '2..,..' \
                 $FZF_DEFAULT_OPTS_MULTI \
                 --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
   }
@@ -155,7 +155,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
 
     eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
-            fzf --no-height --ansi --no-sort --reverse --multi \
+            fzf --no-height --ansi --no-sort --multi \
                 $FZF_DEFAULT_OPTS_MULTI \
                 --preview 'grep -o \"[a-f0-9]\{7,\}\" <<< {} | xargs git show -p | diff-so-fancy' |
             grep -o \"[a-f0-9]\{7,\}\""
@@ -166,7 +166,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     api="curl -L -s https://www.gitignore.io/api"
 
     if [ "$#" -eq 0 ]; then
-      result="$(eval "$api/list" | tr ',' '\n' | fzf --no-height --reverse --multi --preview "$api/{} | bat -p --color always -l gitignore" | paste -s -d "," -)"
+      result="$(eval "$api/list" | tr ',' '\n' | fzf --no-height --multi --preview "$api/{} | bat -p --color always -l gitignore" | paste -s -d "," -)"
       [ -n "$result" ] && eval "$api/$result"
     else
       $api/$*

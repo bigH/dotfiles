@@ -72,7 +72,7 @@ PlugMemoize 'junegunn/vim-plug'
 
 " -- GENERAL --
 " status line and other edgy niceties
-PlugMemoize 'vim-airline/vim-airline', ForModes('vim', 'nvim')
+PlugMemoize 'vim-airline/vim-airline'
 
 " git things are nice
 PlugMemoize 'tpope/vim-fugitive', ForModes('vim', 'nvim')
@@ -98,8 +98,8 @@ PlugMemoize 'morhetz/gruvbox'
 " not always used, but useful for `scratch` and `journal`
 PlugMemoize '907th/vim-auto-save', ExcludeModes('vim', 'nvim')
 
-" sweet plugin that shows `fzf` if more than one tag matches a <C-]>
-PlugMemoize 'zackhsi/fzf-tags', ForModes('vim', 'nvim')
+" LSP makes this obsolete - fzf for tags
+" PlugMemoize 'zackhsi/fzf-tags', ForModes('vim', 'nvim')
 
 " snippet engine for vim and a snippet library
 PlugMemoize 'SirVer/UltiSnips', ForModes('vim', 'nvim')
@@ -218,5 +218,8 @@ PlugMemoize 'neoclide/coc.nvim',
 
 " provides a concentration writing mode `:Goyo`
 PlugMemoize 'junegunn/goyo.vim'
+
+" make inactive panes dimmed
+PlugMemoize 'blueyed/vim-diminactive'
 
 call plug#end()

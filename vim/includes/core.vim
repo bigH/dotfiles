@@ -358,10 +358,6 @@ vnoremap <silent> . :normal .<CR>
 " make using the line object easier
 onoremap <silent> <CR> _
 
-" there's no `<CR>` register to record macros into - make quitting easier
-" can't do with with `w`
-nnoremap q<CR> :<C-U>q<CR>
-
 " Resize the current vertical split (either larger or smaller)
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 5/4)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 4/5)<CR>
@@ -516,5 +512,4 @@ endif
 set history=1000
 
 "}}}
-
 

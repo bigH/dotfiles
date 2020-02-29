@@ -310,7 +310,6 @@ endif
 " -- airline --
 
 if IsPluginLoaded('vim-airline/vim-airline')
-  " TODO go back to tabs
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#buffers_label = ''
   let g:airline#extensions#tabline#tabs_label = ''
@@ -693,4 +692,10 @@ endif
 if IsPluginLoaded('luochen1990/rainbow')
   " always on
   let g:rainbow_active = 1
+endif
+
+" -- vim-diminactive --
+
+if IsPluginLoaded('blueyed/vim-diminactive')
+  let g:diminactive_enable_focus = 1
 endif
