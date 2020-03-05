@@ -21,6 +21,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcob='g checkout -b'
   alias gcomb='g checkout $(gmbh) --'
 
+  # branch
+  alias gbd='g branch -D'
+
   # add
   alias ga='g add'
   alias gap='g add --patch'
@@ -34,7 +37,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcane='g commit --amend --no-edit'
   alias gacane='g add --all ; g commit --amend --no-edit'
 
-  # push
+  # status
   alias gs='g st'
   alias gsf='g st | cut -c4-'
   alias gst='ls -t $(g st | cut -c4-)'
@@ -46,7 +49,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # stash list
   alias gsl='g stash list'
   alias gsls='g stash list --stat'
+  alias gssh='g stash show --patch'
   alias gsd='g stash drop'
+  alias gsa='g stash apply'
 
   # log
   alias gl='g log'

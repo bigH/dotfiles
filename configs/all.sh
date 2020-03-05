@@ -25,6 +25,7 @@ source_configs_for_expected_command ctags
 source_configs_for_expected_command fd fdfind
 source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
+source_configs_for_expected_command helm
 source_configs_for_expected_command rg
 source_configs_for_expected_command journal
 

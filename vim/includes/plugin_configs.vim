@@ -699,3 +699,13 @@ endif
 if IsPluginLoaded('blueyed/vim-diminactive')
   let g:diminactive_enable_focus = 1
 endif
+
+" -- vim-bufkill --
+
+if IsPluginLoaded('qpkorr/vim-bufkill')
+  nnoremap <silent> Q :<C-U>BD<CR>
+  let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'kill'
+  let g:BufKillFunctionSelectingValidBuffersToDisplay = 'auto'
+  let g:BufKillActionWhenModifiedFileToBeKilled = 'fail'
+  let g:BufKillCreateMappings = 0
+endif

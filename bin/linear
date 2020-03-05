@@ -5,9 +5,11 @@ usage() {
 }
 
 error_exit_usage() {
+  echo 'TODO'
 }
 
 get() {
+  echo 'TODO' "$@"
 }
 
 ACTION="$1"
@@ -17,7 +19,7 @@ case $ACTION in
     get "$@"
     ;;
   select)
-    get "$@" | fzf_wrapper "$@"
+    get "$@" | as_lines "$@" | fzf_wrapper "$@"
     ;;
   *)
     error_exit_usage "Unknown action: $ACTION"

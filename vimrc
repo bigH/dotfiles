@@ -78,9 +78,6 @@ imap <silent> <M-L> <Esc>:vsplit<CR>i
 " Move Buffers
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
 
-" Disable Ex-Mode and map Q to close buffers
-nnoremap <silent> Q :bd<CR>
-
 "}}}
 
 

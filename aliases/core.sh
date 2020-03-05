@@ -12,6 +12,9 @@ else
   alias ls='ls -p --color=auto -G --group-directories-first'
 fi
 
+# common typo for me
+alias kls=ls
+
 if type fdfind >/dev/null 2>&1; then
   alias fd=fdfind
 fi

@@ -222,4 +222,7 @@ PlugMemoize 'junegunn/goyo.vim'
 " make inactive panes dimmed
 PlugMemoize 'blueyed/vim-diminactive'
 
+" closing buffers should retain splits
+PlugMemoize 'qpkorr/vim-bufkill'
+
 call plug#end()

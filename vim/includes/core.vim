@@ -359,8 +359,12 @@ vnoremap <silent> . :normal .<CR>
 onoremap <silent> <CR> _
 
 " Resize the current vertical split (either larger or smaller)
-nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 5/4)<CR>
-nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 4/5)<CR>
+nnoremap <silent> <leader>= :exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>
+nnoremap <silent> <leader>- :exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>
+
+" Resize the current horizontal split (either larger or smaller)
+nnoremap <silent> <leader>+ :exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>
+nnoremap <silent> <leader>_ :exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>
 
 "}}}
 

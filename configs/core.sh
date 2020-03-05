@@ -98,3 +98,8 @@ fi
 if type rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
+
+# Setup Helm in path
+if [ -d "$HOME/opt/helm-2.14.3" ]; then
+  export PATH="$HOME/opt/helm-2.14.3:$PATH"
+fi
