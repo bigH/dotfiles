@@ -162,7 +162,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
         \ call fzf#vim#files(<q-args>,
-        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore'), GetFzfSetup(1), '?')
+        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore --exclude ".git/"'), GetFzfSetup(1), '?')
         \           : fzf#vim#with_preview(OptionsForFiles(''), GetFzfSetup(0)),
         \   <bang>0)
 
@@ -505,6 +505,18 @@ endif
 
 " functions for use below to make NERDTree switch windows in the editor region
 if IsPluginLoaded('scrooloose/nerdtree')
+  function! NERDClose()
+    NERDTreeClose
+  endfunction
+
+  function! NERDSpace()
+    execute 'normal' '<Leader>'
+  endfunction
+
+  function! NERDEnterCommand()
+    execute 'normal!' ':'
+  endfunction
+
   function! NERDBPrev()
     execute 'wincmd' 'l'
     execute 'bprev'
@@ -525,22 +537,15 @@ if IsPluginLoaded('scrooloose/nerdtree')
     execute 'blast'
   endfunction
 
-  function! NERDSpace()
-    execute 'normal' '<Leader>'
-  endfunction
-
-  function! NERDEnterCommand()
-    execute 'normal!' ':'
-  endfunction
-
   " L/H/C-H/C-L in NERDTree
   augroup NERDTree
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<CR>' , 'callback': 'NERDSpace'       , 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<CR>' , 'callback': 'NERDEnterCommand', 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H'    , 'callback': 'NERDBPrev'       , 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>', 'callback': 'NERDBFirst'      , 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L'    , 'callback': 'NERDBNext'       , 'override': 1 })
-    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>', 'callback': 'NERDBLast'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'Q'       , 'callback': 'NERDClose'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<Space>' , 'callback': 'NERDSpace'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<CR>'    , 'callback': 'NERDEnterCommand', 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'H'       , 'callback': 'NERDBPrev'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-H>'   , 'callback': 'NERDBFirst'      , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': 'L'       , 'callback': 'NERDBNext'       , 'override': 1 })
+    autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<C-L>'   , 'callback': 'NERDBLast'       , 'override': 1 })
   augroup END
 endif
 
@@ -579,7 +584,6 @@ endif
 
 if IsPluginLoaded('Townk/vim-autoclose')
   au BufRead,BufNewFile *.rb let g:AutoClosePairs_add = "|"
-  au BufRead,BufNewFile todo-*.md let g:AutoClosePairs_del = "[]"
 endif
 
 " -- LanguageClient-neovim --
@@ -708,4 +712,10 @@ if IsPluginLoaded('qpkorr/vim-bufkill')
   let g:BufKillFunctionSelectingValidBuffersToDisplay = 'auto'
   let g:BufKillActionWhenModifiedFileToBeKilled = 'fail'
   let g:BufKillCreateMappings = 0
+endif
+
+" -- golden-ratio --
+
+if IsPluginLoaded('roman/golden-ratio')
+  let g:golden_ratio_autocommand=0
 endif

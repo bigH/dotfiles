@@ -148,11 +148,23 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # Select commit from git history
-  gh() {
+  gh_many() {
     is-in-git-repo || return
 
     REF="${1:-HEAD}"
-    MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
+
+    eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
+      fzf --no-height --ansi --no-sort --multi \
+      $FZF_DEFAULT_OPTS_MULTI \
+      --preview 'grep -o \"[a-f0-9]\{7,\}\" <<< {} | xargs git show -p | diff-so-fancy' |
+      grep -o \"[a-f0-9]\{7,\}\""
+  }
+
+  # Select commit from git history
+  gh_one() {
+    is-in-git-repo || return
+
+    REF="${1:-HEAD}"
 
     eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
             fzf --no-height --ansi --no-sort --multi \

@@ -72,26 +72,26 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   if type git-fzf-diff >/dev/null 2>&1; then
     # prefer `fzf-diff` over `diff`
-    alias gd='g fzf-diff'
-    alias gds='g fzf-diff --staged'
-    alias gdmb='g fzf-diff "$(gmbh)"'
-    alias gdh='g fzf-diff HEAD'
+    alias fgd='g fzf-diff'
+    alias fgds='g fzf-diff --staged'
+    alias fgdhb='g fzf-diff "$(gmbh)"'
+    alias fgdh='g fzf-diff "$(gh_one)"'
 
-    alias gpd='g diff'
-    alias gpds='g diff --staged'
-    alias gpdmb='g diff "$(gmbh)"'
-    alias gpdh='g diff HEAD'
+    alias gd='g diff'
+    alias gds='g diff --staged'
+    alias gdmb='g diff "$(gmbh)"'
+    alias gdh='g diff "$(gh_one)"'
   else
     alias gd='g diff'
     alias gds='g diff --staged'
     alias gdmb='g diff "$(gmbh)"'
-    alias gdh='g diff HEAD'
+    alias gdh='g diff "$(gh_one)"'
   fi
 
   alias gnd='gn diff'
-  alias gndh='gn diff HEAD'
   alias gnds='gn diff --staged'
   alias gndmb='gn diff "$(gmbh)"'
+  alias gndh='gn diff "$(gh_one)"'
 
   # --- random higher-order things ---
   # toss the branch and make a new one

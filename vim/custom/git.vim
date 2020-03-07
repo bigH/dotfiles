@@ -1,0 +1,71 @@
+if exists('g:custom_github')
+  finish
+endif
+
+let g:custom_github = 1
+
+" required for GetVisualLineRange
+execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
+
+function! s:SyscallSucceeded(command_string)
+  call system(a:command_string)
+  return v:shell_error == 0
+endfunction
+
+function! s:SyscallTrimmed(command_string)
+  let output = system(a:command_string)
+  return trim(l:output)
+endfunction
+
+function! s:LineDetails(is_visual)
+  if a:is_visual
+    let [l:start, l:end] = GetVisualLineRange()
+    if l:start == l:end
+      return 'L' . l:start
+    else
+      return 'L' . l:start . '-L' . l:end
+    end
+  else
+    return 'L' . line('.')
+  endif
+endfunction
+
+function! s:GithubOpen(path)
+  if s:SyscallSucceeded('is-in-git-repo')
+    let base = s:SyscallTrimmed('git web')
+    call system('open "' . l:base . '/' . a:path . '"')
+  endif
+endfunction
+
+function! s:GithubOpenMergeBase(is_visual)
+  if s:SyscallSucceeded('is-in-git-repo')
+    let line_details = s:LineDetails(a:is_visual)
+    let branch = s:SyscallTrimmed('git merge-base-branch')
+    let path = expand('%')
+    call s:GithubOpen('blob/' . l:branch . '/' . l:path . '#' . l:line_details)
+  endif
+endfunction
+
+function! s:GithubOpenBlame(is_visual)
+  if s:SyscallSucceeded('is-in-git-repo')
+    let line_details = s:LineDetails(a:is_visual)
+    let branch = s:SyscallTrimmed('git merge-base-branch')
+    let path = expand('%')
+    call s:GithubOpen('blame/' . l:branch . '/' . l:path . '#' . l:line_details)
+  endif
+endfunction
+
+function! s:SaveAndGitAdd()
+  write
+  if s:SyscallSucceeded('is-in-git-repo')
+    silent execute '!git add %'
+  endif
+endfunction
+
+nmap <silent> <leader>gh :<C-U>call <SID>GithubOpenMergeBase(0)<CR>
+vmap <silent> <leader>gh :<C-U>call <SID>GithubOpenMergeBase(1)<CR>
+
+nmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(0)<CR>
+vmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(1)<CR>
+
+nmap <silent> <leader>ga :<C-U>call <SID>SaveAndGitAdd()<CR>

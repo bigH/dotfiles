@@ -22,8 +22,23 @@ set shiftwidth=4
 
 "{{{ Plugin-specific settings
 
-let g:AutoClosePairs_del = "[]"
-let g:airline#extensions#tabline#enabled = 0
+" -- vim-autoclose --
+
+if IsPluginLoaded('Townk/vim-autoclose')
+  let g:AutoClosePairs_del = "[]"
+endif
+
+" -- airline --
+
+if IsPluginLoaded('vim-airline/vim-airline')
+  let g:airline#extensions#tabline#enabled = 0
+endif
+
+" -- golden-ratio --
+
+if IsPluginLoaded('roman/golden-ratio')
+  let g:golden_ratio_autocommand=1
+endif
 
 "}}}
 

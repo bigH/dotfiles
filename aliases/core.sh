@@ -2,10 +2,20 @@
 
 # ls override from oh-my-zsh
 if type exa >/dev/null 2>&1; then
-  alias l='exa --color=auto --group-directories-first'
-  alias ls='exa --color=auto --group-directories-first'
-  alias ll='exa --color=auto --group-directories-first -l'
-  alias la='exa --color=auto --group-directories-first -la'
+  export EXA_DEFAULT_OPTS='--sort=type --color=auto --group-directories-first'
+  export EXA_LONG_OPTS='--classify --time-style=long-iso --git --color-scale --long'
+
+  # shellcheck disable=SC2139
+  alias l="exa $EXA_DEFAULT_OPTS"
+
+  # shellcheck disable=SC2139
+  alias ls="exa $EXA_DEFAULT_OPTS"
+
+  # shellcheck disable=SC2139
+  alias ll="exa $EXA_DEFAULT_OPTS $EXA_LONG_OPTS"
+
+  # shellcheck disable=SC2139
+  alias la="exa $EXA_DEFAULT_OPTS $EXA_LONG_OPTS -a"
 elif type gls >/dev/null 2>&1; then
   alias ls='gls -p --color=auto -G --group-directories-first'
 else

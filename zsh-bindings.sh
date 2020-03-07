@@ -26,7 +26,7 @@ bindkey '^n' fzf-directory-select-and-insert
 
 # Ctrl-H - find commit SHA(s)
 fzf-gh-widget() {
-  local result=$(gh | join-lines);
+  local result=$(gh_many | join-lines);
   LBUFFER+=$result
   zle redisplay
 }
@@ -35,7 +35,7 @@ bindkey '^h' fzf-gh-widget
 
 # Alt-H - commit SHA range
 fzf-gh-range-widget() {
-  local result=$(gh | tac | join-lines '..');
+  local result=$(gh_many | tac | join-lines '..');
   LBUFFER+=$result
   zle redisplay
 }
@@ -44,7 +44,7 @@ bindkey '^[h' fzf-gh-range-widget
 
 # Alt-O - open files differing from particular commit
 fzf-git-files-from-commits() {
-  local commits=$(gh)
+  local commits=$(gh_many)
   local num_commits=$(echo "$commits" | wc -l | bc)
   if [ "$num_commits" -eq 0 ]; then
     local result=$(gfc | join-lines);

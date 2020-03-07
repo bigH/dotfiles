@@ -2,7 +2,7 @@
 
 exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/github.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/git.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
@@ -18,7 +18,7 @@ augroup ReloadGitGutter
 augroup end
 
 " Remove any trailing whitespace that is in the file
-autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+autocmd BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 "}}}
 

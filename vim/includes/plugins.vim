@@ -225,4 +225,7 @@ PlugMemoize 'blueyed/vim-diminactive'
 " closing buffers should retain splits
 PlugMemoize 'qpkorr/vim-bufkill'
 
+" resizes window according to golden ratio (active window is bigger)
+PlugMemoize 'roman/golden-ratio', ForModes('vim', 'nvim')
+
 call plug#end()

@@ -6,15 +6,19 @@ export SHELLCHECK_OPTS="-e SC1090"
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
   auto_source $HOME/.ghcup/env
-else
+elif [ -d "$HOME/.cabal/bin" ]; then
   export PATH="$HOME/.cabal/bin:$PATH"
 fi
 
 # Add go `bin`
-export PATH="$HOME/go/bin:$PATH"
+if [ -d "$HOME/go/bin" ]; then
+  export PATH="$HOME/go/bin:$PATH"
+fi
 
 # Add Home `bin`
-export PATH="$HOME/bin:$PATH"
+if [ -d "$HOME/bin" ]; then
+  export PATH="$HOME/bin:$PATH"
+fi
 
 # Turn RUST_BACKTRACE on
 export RUST_BACKTRACE=1
@@ -48,10 +52,6 @@ fi
 if [ -d "$HOME/.rustup" ]; then
   export RUSTUP_HOME="$HOME/.rustup"
 fi
-
-# Add `made/*`
-export PATH="$DOT_FILES_DIR/made/bin:$PATH"
-export MANPATH="$DOT_FILES_DIR/made/doc:$MANPATH"
 
 # Add `emacs`
 if [ -d '/usr/local/Cellar/emacs/26.2/bin' ]; then
@@ -103,3 +103,7 @@ fi
 if [ -d "$HOME/opt/helm-2.14.3" ]; then
   export PATH="$HOME/opt/helm-2.14.3:$PATH"
 fi
+
+# Add `made/*` - NB: always last
+export PATH="$DOT_FILES_DIR/made/bin:$PATH"
+export MANPATH="$DOT_FILES_DIR/made/doc:$MANPATH"

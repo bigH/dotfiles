@@ -42,12 +42,15 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
     export FZF_CTRL_R_OPTS='--preview "echo {}" --height 50% --preview-window down:5:wrap --bind "?:toggle-preview"'
   fi
 
-  if type gls >/dev/null 2>&1; then
-    # use `gls` if present (on OS X)
-    export DIR_PREVIEW_COMMAND='gls --color=always -G'
+  if type exa >/dev/null 2>&1; then
+    export DIR_PREVIEW_COMMAND='exa --color=always -l --color-scale --classify --sort=type --git'
   else
-    # use `ls` otherwise
-    export FZF_ALT_C_OPTS='ls --color=always -G'
+    if type gls >/dev/null 2>&1; then
+      # `gls` installed by `coreutils`
+      export DIR_PREVIEW_COMMAND='gls --color=always -G'
+    else
+      export FZF_ALT_C_OPTS='ls --color=always -G'
+    fi
   fi
 
   # use `ls` to preview directories
