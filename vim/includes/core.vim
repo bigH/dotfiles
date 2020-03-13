@@ -221,23 +221,12 @@ set ruler
 " Display current mode
 set showmode
 
-" Show relative numbers on the left side
-set relativenumber
-set number
-
-" Don't allow cursor to be at edges
-set scrolloff=3
-set sidescrolloff=15
-
 " Automatically set scroll
 autocmd BufEnter * set scroll=5
 
 " Delete comment character when joining lines
 set formatoptions+=j
 
-" Status line gnarliness
-set laststatus=2
-set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 "}}}
 
@@ -254,6 +243,10 @@ nnoremap <CR> :
 
 " <leader><leader> to save
 noremap <silent> <leader><leader> :wa<CR>
+noremap <silent> <Space><Space> :wa<CR>
+
+" this is useful for plugins to define `dd` equivalents
+onoremap <Plug>(line-object) _
 
 "}}}
 
@@ -358,8 +351,22 @@ nnoremap <silent> <leader>_ :exe "resize " . min([winheight(0) - 1, winheight(0)
 if has('nvim')
   " Defaults for certain files
   augroup TerminalSettings
-    " Terminal Defaults
-    au TermOpen * if &buftype == 'terminal' |
+    " Show relative numbers on the left side
+    set relativenumber
+    set number
+
+    " Don't allow cursor to be at edges
+    set scrolloff=3
+    set sidescrolloff=15
+
+    " Status line gnarliness
+    set laststatus=2
+    set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+
+    " TODO does this work properly?
+    " `autocmd`
+    au! TermOpen * if &buftype == 'terminal' |
+          \   setlocal laststatus=0 |
           \   setlocal nonumber |
           \   setlocal norelativenumber |
           \   setlocal scrolloff=0 |
@@ -370,7 +377,12 @@ if has('nvim')
           \   tnoremap <silent> <M-k> <C-\><C-n>:wincmd k<CR>i |
           \   tnoremap <silent> <M-l> <C-\><C-n>:wincmd l<CR>i |
           \   startinsert |
-          \ endif
+          \ endif |
+          \ autocmd BufLeave <buffer> set relativenumber |
+          \                           set number |
+          \                           set scrolloff=3 |
+          \                           set sidescrolloff=15 |
+          \                           set laststatus=2
 
     " Auto-Close - conflicts with FZF floating window
     " au TermClose * q
@@ -408,23 +420,23 @@ command! WS w !sudo tee %
 
 "{{{ Custom Personal Stuff
 
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/change_repeat.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vim"
-execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/search_utils.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vim"
 
 "}}}
 
 
-"{{{ FileType Customizations
+"{{{ Easily Isolated Vim Configs
 
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/abbrevs.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/filetypes.vim"
 
 "}}}
 
 
-"{{{ Load Plugins
+"{{{ Plugins
 
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugins.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/plugin_configs.vim"

@@ -10,151 +10,128 @@ let g:custom_modal_jump = 1
 " - make it so when switching tabs in a loclist or quickfix mode, we jump to
 "   the first error after switching files (aucmd?)
 
-" 0 = git hunks
-" 1 = quickfix
-" 2 = loc-list
-" 3 = methods
-" 4 = classes
-let s:jk_mode_for_loclist = 2
+let s:modes = ['Git Hunks',
+        \      'Quickfix',
+        \      'Loc List']
+
 let g:jk_mode = 0
 
-function! COpenIfApplicable(jump_to_first)
+function! s:COpenIfApplicable(jump_to_first)
   let current_window = winnr()
   let current_buffer = bufname()
-  " close the other one
-  lclose
   copen
   wincmd J
   if a:jump_to_first && len(getqflist()) > 0
     cfirst
-    execute current_window . 'wincmd w'
-  elseif buflisted(l:current_buffer)
-    execute current_window . 'wincmd w'
-  else
-    execute current_window . 'wincmd w'
+  endif
+  execute current_window . 'wincmd w'
+endfunc
+
+function! s:LCloseIfPossible()
+  if &buftype == 'locationlist'
+    lclose
   endif
 endfunc
 
-function! LOpenIfApplicable(jump_to_first)
-  let current_window = winnr()
-  let current_buffer = bufname()
+function! s:LOpenFirstIfPossible(jump_to_first)
+  if &buftype != "quickfix" && &buftype != "locationlist"
+    lopen
+    if a:jump_to_first && len(getloclist(winnr())) > 0
+      lfirst
+    endif
+  endif
+endfunc
+
+function! s:LOpenIfApplicable(jump_to_first)
+  let current_buffer = bufnr()
   " close the other one
-  cclose
-  lopen
-  wincmd J
-  if a:jump_to_first && len(getloclist(l:current_buffer)) > 0
-    lfirst
-    execute current_window . 'wincmd w'
-  elseif buflisted(l:current_buffer)
-    execute current_window . 'wincmd w'
-  else
-    execute current_window . 'wincmd w'
+  silent! cclose
+  windo call s:LOpenFirstIfPossible(a:jump_to_first)
+  let target_window = bufwinnr(l:current_buffer)
+  execute l:target_window . 'wincmd w'
+endfunc
+
+function! s:CloseBothLists()
+  silent! cclose
+  " windo call s:LCloseIfPossible()
+  let window_numbers = range(len(getwininfo()) - 1, 0, -1)
+  for l:window in l:window_numbers
+    if getwininfo()[l:window].loclist
+      lclose
+    endif
+  endfor
+endfunc
+
+function! s:JKModeApply()
+  let current = s:modes[g:jk_mode]
+  if l:current == 'Git Hunks'
+    call s:CloseBothLists()
+  elseif l:current == 'Quickfix'
+    call s:COpenIfApplicable(1)
+  elseif l:current == 'Loc List'
+    call s:LOpenIfApplicable(1)
   endif
+  echo "=> " . l:current . " Mode"
 endfunc
 
-function! CloseBothLists()
-  cclose
-  lclose
-endfunc
-
-function! JKModeApply()
-  if g:jk_mode == 0
-    call CloseBothLists()
-    echo "=> Git Hunk Mode"
-  elseif g:jk_mode == 1
-    call COpenIfApplicable(1)
-    echo "=> QuickFix Mode"
-  elseif g:jk_mode == 2
-    call LOpenIfApplicable(1)
-    wincmd k
-    echo "=> Loc List Mode"
-  elseif g:jk_mode == 3
-    call CloseBothLists()
-    echo "=> Method Mode"
-  else
-    call CloseBothLists()
-    echo "=> Class Mode"
-  endif
-endfunc
-
-function! Modulus(n,m)
+function! s:Modulus(n,m)
   return (a:n + a:m) % a:m
 endfunc
 
-function! JKModeRotate(direction)
-  let g:jk_mode = Modulus(g:jk_mode + a:direction, 5)
-  call JKModeApply()
+function! s:JKModeSet(mode_number)
+  let g:jk_mode = s:Modulus(a:mode_number, len(s:modes))
+  call s:JKModeApply()
 endfunc
 
-function! JKModeSet(mode)
-  let g:jk_mode = Modulus(mode, 5)
-  call JKModeApply()
+function! s:JKModeRotate(direction)
+  let g:jk_mode = s:Modulus(g:jk_mode + a:direction, len(s:modes))
+  call s:JKModeSet(g:jk_mode)
 endfunc
 
-function! JKModeJ()
-  if g:jk_mode == 1
-    try
-      cnext
-    catch /.*/
-      " ignore the error
-    endtry
-  elseif g:jk_mode == 2
-    try
-      lnext
-    catch /.*/
-      " ignore the error
-    endtry
-  elseif g:jk_mode == 3
-    normal ]m
-  elseif g:jk_mode == 4
-    normal ]]
-  else
+function! s:JKModeJ()
+  let current = s:modes[g:jk_mode]
+  if l:current == 'Git Hunks'
     GitGutterNextHunk
-  endif
-endfunc
-
-function! JKModeK()
-  if g:jk_mode == 1
-    try
-      cprevious
-    catch /.*/
-      " ignore the error
-    endtry
-  elseif g:jk_mode == 2
-    try
-      lprevious
-    catch /.*/
-      " ignore the error
-    endtry
-  elseif g:jk_mode == 3
-    normal [m
-  elseif g:jk_mode == 4
-    normal [[
+  elseif l:current == 'Quickfix'
+    silent! cnext
+  elseif l:current == 'Loc List'
+    silent! lnext
   else
-    GitGutterPrevHunk
+    echo "unknown mode: " . g:jk_mode
   endif
 endfunc
 
-" function! OpenLocList()
-"   if g:jk_mode == s:jk_mode_for_loclist
-"     let wininfo = getwininfo()[winnr() - 1]
-"     if !(wininfo.loclist || wininfo.quickfix || wininfo.terminal)
-"       lclose
-"       lopen
-"       wincmd J
-"     endif
-" endfunction
+function! s:JKModeK()
+  let current = s:modes[g:jk_mode]
+  if l:current == 'Git Hunks'
+    GitGutterPrevHunk
+  elseif l:current == 'Quickfix'
+    silent! cprevious
+  elseif l:current == 'Loc List'
+    silent! lprevious
+  else
+    echo "unknown mode: " . g:jk_mode
+  endif
+endfunc
 
-" autocmd WinEnter * call OpenLocList()
+function! s:LOpenForNewWindow()
+  let current = s:modes[g:jk_mode]
+  if l:current == 'Loc List'
+    call s:LOpenFirstIfPossible(1)
+  endif
+endfunc
+
+" Doesn't work fully for some reason (maybe there's a bug in JKModeApply)
+autocmd QuickFixCmdPost * call <SID>JKModeSet(1)
 
 " Rotate modes
-nnoremap <silent> ]<leader>] :call JKModeRotate(1)<CR>
-nnoremap <silent> <leader>] :call JKModeRotate(1)<CR>
-nnoremap <silent> [<leader>[ :call JKModeRotate(-1)<CR>
-nnoremap <silent> <leader>[ :call JKModeRotate(-1)<CR>
+nnoremap <silent> ]<leader>] :<C-U>call <SID>JKModeRotate(1)<CR>
+nnoremap <silent> <leader>] :<C-U>call <SID>JKModeRotate(1)<CR>
+nnoremap <silent> [<leader>[ :<C-U>call <SID>JKModeRotate(-1)<CR>
+nnoremap <silent> <leader>[ :<C-U>call <SID>JKModeRotate(-1)<CR>
 
 " Use <C-J/K> to move in current mode
-nmap <silent> <C-J> :call JKModeJ()<CR>
-nmap <silent> <C-K> :call JKModeK()<CR>
+nmap <silent> <C-J> :<C-U>call <SID>JKModeJ()<CR>
+nmap <silent> <C-K> :<C-U>call <SID>JKModeK()<CR>
 
 "}}}

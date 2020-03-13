@@ -12,7 +12,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias itg=g
 
   # commit wip
-  alias wip='g commit -a -m WIP'
+  alias wip='g commit --no-verify -a -m WIP'
 
   # -- shortcuts
 
@@ -26,6 +26,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # add
   alias ga='g add'
+  alias gaa='g add .'
   alias gap='g add --patch'
 
   # commit
@@ -52,6 +53,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gssh='g stash show --patch'
   alias gsd='g stash drop'
   alias gsa='g stash apply'
+  alias gsp='g stash pop'
 
   # log
   alias gl='g log'
@@ -65,31 +67,47 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gprom='g pull --rebase $(g merge-base-remote) $(g merge-base-branch)'
   alias grpom='gprom'
 
+  # reset
+  alias gr='g reset'
+  alias grh='g reset --hard'
+  alias grs='g reset --soft'
+
+  # reset
+  alias greb='g rebase'
+  alias grc='g rebase --continue'
+  alias gra='g rebase --abort'
+  alias gri='g rebase --interactive'
+  alias grif='g rebase --interactive "$(gh_one)^"'
+
   # push
   alias gp='g push origin $(g branch-name)'
   alias gpf='g push --force origin $(g branch-name)'
   alias gpu='g push -u origin $(g branch-name)'
 
-  if type git-fzf-diff >/dev/null 2>&1; then
+  if type fzf >/dev/null 2>&1; then
     # prefer `fzf-diff` over `diff`
-    alias fgd='g fzf-diff'
-    alias fgds='g fzf-diff --staged'
-    alias fgdhb='g fzf-diff "$(gmbh)"'
-    alias fgdh='g fzf-diff "$(gh_one)"'
+    alias gd='g fzf-diff'
+    alias gds='g fzf-diff --staged'
+    alias gdsh='g fzf-diff HEAD^'
+    alias gdmb='g fzf-diff "$(gmbh)"'
+    alias gdh='g fzf-diff "$(gh_one)"'
 
-    alias gd='g diff'
-    alias gds='g diff --staged'
-    alias gdmb='g diff "$(gmbh)"'
-    alias gdh='g diff "$(gh_one)"'
+    alias gdd='g diff'
+    alias gdds='g diff --staged'
+    alias gddsh='g diff HEAD^'
+    alias gddmb='g diff "$(gmbh)"'
+    alias gddh='g diff "$(gh_one)"'
   else
     alias gd='g diff'
     alias gds='g diff --staged'
+    alias gdsh='g diff HEAD^'
     alias gdmb='g diff "$(gmbh)"'
     alias gdh='g diff "$(gh_one)"'
   fi
 
   alias gnd='gn diff'
   alias gnds='gn diff --staged'
+  alias gndsh='gn diff HEAD^'
   alias gndmb='gn diff "$(gmbh)"'
   alias gndh='gn diff "$(gh_one)"'
 
@@ -100,4 +118,12 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # --- github things ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='g pr'
+
+  # --- vim things ---
+  # `gs` || `gdmb`
+  alias vg='vim $(gfs)'
+  # pick a commit then files
+  alias vh='vim $(gfc $(gh_one))'
+  # pick a commit then files
+  alias vh='vim $(gfc $(gh_one))'
 fi

@@ -84,7 +84,9 @@ function! s:GetCalculatedPattern()
         call add(l:search_terms, l:search_term)
       endfor
     endfor
-    if len(l:search_terms)
+    if len(l:search_terms) >= 2 && l:search_terms[-1] == l:search_terms[-2]
+      return '\V\(' . l:search_terms[-1] . '\)'
+    elseif len(l:search_terms)
       return '\V\(' . join(l:search_terms, '\|') . '\)'
     else
       return ''
@@ -162,7 +164,11 @@ function! s:HighlightNewTerm(search_term)
 endfunction
 
 function! s:PopHighlightInWindow()
-  if (len(w:current_star_matches) == 0)
+  if !exists('w:current_star_matches')
+    let w:current_star_matches = []
+  endif
+
+  if len(w:current_star_matches) == 0
     add(g:search_util_log, "ERROR: couldn't pop ".winnr()
   else
     let match_info = w:current_star_matches[-1]
@@ -197,6 +203,8 @@ function! s:DoPushSearch(search_term, is_new)
   else
     call s:HighlightNewTerm(a:search_term)
   endif
+
+  echo '-> ' . string(reverse(deepcopy(g:current_star_searches)))
 endfunction
 
 function! s:PopSearch()
@@ -210,6 +218,8 @@ function! s:PopSearch()
     call remove(g:current_star_search_history, -1)
     let @/ = s:GetCalculatedPattern()
   endif
+
+  echo '<- ' . string(reverse(deepcopy(g:current_star_searches)))
 endfunction
 
 function! PushBoundedSearch(is_visual, is_new)
@@ -298,6 +308,8 @@ vnoremap <silent> <Plug>(RewindCurrentSearchHistory) :<C-U>call RewindCurrentSea
 augroup ReHighlightAutomation
   autocmd VimEnter * call s:SetupHighlights()
   autocmd VimEnter * call s:LoadSearchOnEnter()
+  autocmd VimEnter * call s:ReHighlightAll()
+
   autocmd VimLeavePre * call s:SaveSearchOnExit()
 
   autocmd CmdlineLeave * call s:ClearHighlightsIfSearched(v:event.abort, v:event.cmdtype)
@@ -305,7 +317,6 @@ augroup ReHighlightAutomation
   autocmd WinNew * call s:HighlightNewWindow()
   autocmd ColorScheme * call s:ReHighlightAll()
 
-  " TODO move cursor highlight if applicable
   autocmd CursorMoved * call SearchUtilsHighlightCurrent()
   autocmd WinEnter * call SearchUtilsHighlightCurrent()
   autocmd WinLeave * call SearchUtilsClearCurrent()

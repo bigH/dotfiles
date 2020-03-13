@@ -32,7 +32,7 @@ function! SelectTree()
   let indent = indent('.')
   let end_pos = getpos('.')
   normal! j
-  while indent('.') > l:indent
+  while indent('.') > l:indent && len(trim(line('.'))) != 0
     let end_pos = getpos('.')
     normal! j
   endwhile
@@ -43,14 +43,14 @@ function! SelectTreeSiblings()
   let start_pos = getpos('.')
   let indent = indent('.')
   normal! k
-  while indent('.') >= l:indent
+  while indent('.') >= l:indent && len(trim(line('.'))) != 0
     let start_pos = getpos('.')
     normal! k
   endwhile
   normal! j
   let end_pos = getpos('.')
   normal! j
-  while indent('.') >= l:indent
+  while indent('.') >= l:indent && len(trim(line('.'))) != 0
     let end_pos = getpos('.')
     normal! j
   endwhile
@@ -61,8 +61,8 @@ function! SelectTreeChildren()
   let indent = indent('.')
   normal! j
   let start_pos = getpos('.')
-  if indent('.') > l:indent
-    while indent('.') > l:indent
+  if indent('.') > l:indent && len(trim(line('.'))) != 0
+    while indent('.') > l:indent && len(trim(line('.'))) != 0
       let end_pos = getpos('.')
       normal! j
     endwhile
@@ -75,7 +75,7 @@ endfunction
 function! SelectTreeParent()
   let indent = indent('.')
   normal! k
-  while indent('.') >= l:indent
+  while indent('.') >= l:indent && len(trim(line('.'))) != 0
     normal! k
   endwhile
   return SelectTree()

@@ -72,7 +72,7 @@ fi
 
 if [ -x '/usr/libexec/java_home' ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
-  if [ -n"$JAVA_HOME" ]; then
+  if [ -n "$JAVA_HOME" ]; then
     export JAVA_HOME
   fi
 fi

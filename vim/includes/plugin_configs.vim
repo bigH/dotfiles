@@ -273,7 +273,7 @@ if IsPluginLoaded('dense-analysis/ale')
   \   'typescript': ['prettier'],
   \   'typescriptreact': ['prettier'],
   \   'css': ['prettier'],
-  \}
+  \ }
 
   " Use `bundle`
   let g:ale_ruby_rubocop_executable = 'bundle'
@@ -286,6 +286,10 @@ if IsPluginLoaded('dense-analysis/ale')
 
   " Enable `ale` airline stuff
   let g:airline#extensions#ale#enabled = 1
+
+  " replace git things
+  let g:airline_section_b = '%t'
+  let g:airline_section_c = ''
 
   " Fix on Save (Sucks on Rubocop)
   let g:ale_fix_on_save = 1
@@ -364,12 +368,13 @@ endif
 " -- vim-commentary --
 
 if IsPluginLoaded('tpope/vim-commentary')
-  " TODO I don't like this because in visual mode, `c` now waits to see if `m`
-  " is provided
-  xmap cm <Plug>Commentary
-  nmap cm <Plug>Commentary
-  " operator-pending mapping (`cmcm`)
-  omap cm <Plug>Commentary
+  xmap gc <Plug>Commentary
+
+  nmap gc <Plug>Commentary
+  omap gc <Plug>Commentary
+
+  " `gcc` !== `gcgc` and both work
+  nmap gcc <Plug>Commentary<Plug>(line-object)
 endif
 
 " -- splitjoin.vim --

@@ -92,8 +92,6 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
-  # TODO it'd be nice if this fell back on diffing with `gmbh`
-  # TODO if this works the fzf config below should be everywhere (or the parts that matter)
   # Select file from git status, fall back to `gfc`
   gfs() {
     is-in-git-repo || return
