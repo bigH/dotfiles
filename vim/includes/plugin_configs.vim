@@ -82,7 +82,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
 
   " Open old-files
   command! RecentFiles call fzf#run({
-        \  'source':  filter(v:oldfiles, 'v:val =~ getcwd()'),
+        \  'source':  filter(v:oldfiles, 'v:val =~ getcwd() && filereadable(v:val)'),
         \  'sink':    'e',
         \  'options': '-m -x +s',
         \  'down':    '40%'})
@@ -679,8 +679,11 @@ if IsPluginLoaded('neoclide/coc.nvim')
   endfunction
 
   " Use `[c` and `]c` for navigate diagnostics
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>coe <Plug>(coc-diagnostic-prev)
+  nmap <silent> <leader>cne <Plug>(coc-diagnostic-prev)
+  nmap <silent> <leader>cPe <Plug>(coc-diagnostic-prev)
+  nmap <silent> <leader>cpe <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>cNe <Plug>(coc-diagnostic-next)
 
   " Gotos
   nmap <silent> <Leader>d <Plug>(coc-definition)
@@ -721,6 +724,6 @@ endif
 
 " -- golden-ratio --
 
-if IsPluginLoaded('roman/golden-ratio')
-  let g:golden_ratio_autocommand=0
-endif
+" if IsPluginLoaded('roman/golden-ratio')
+"   let g:golden_ratio_autocommand=0
+" endif

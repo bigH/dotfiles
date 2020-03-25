@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # quotes mult-word parameters in order to make a command copy-paste with ease
-bash_quote() {
+quote_single_param() {
   if [[ "$1" = *' '* ]]; then
     echo "'$1'"
   else
@@ -25,7 +25,7 @@ indent() {
     REST=""
     for arg in "$@"; do
       if [ -n "$REST" ]; then
-        printf " %s" "$(bash_quote "$arg")"
+        printf " %s" "$(quote_single_param "$arg")"
       fi
       REST="YES"
     done

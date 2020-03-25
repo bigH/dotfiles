@@ -314,6 +314,8 @@ augroup ReHighlightAutomation
 
   autocmd CmdlineLeave * call s:ClearHighlightsIfSearched(v:event.abort, v:event.cmdtype)
 
+  " TODO this actually doesn't work because `winnr()` is not the same as the
+  " new window being created.
   autocmd WinNew * call s:HighlightNewWindow()
   autocmd ColorScheme * call s:ReHighlightAll()
 
@@ -322,8 +324,16 @@ augroup ReHighlightAutomation
   autocmd WinLeave * call SearchUtilsClearCurrent()
 augroup end
 
-nnoremap <silent> <Plug>(highlight-and-focus-next) nzz:call SearchUtilsHighlightCurrent()<CR>
-nnoremap <silent> <Plug>(highlight-and-focus-prev) Nzz:call SearchUtilsHighlightCurrent()<CR>
+if !exists('g:search_utils_rescroll') || g:search_utils_rescroll == 'no'
+  nnoremap <silent> <Plug>(highlight-and-focus-next) n:call SearchUtilsHighlightCurrent()<CR>
+  nnoremap <silent> <Plug>(highlight-and-focus-prev) N:call SearchUtilsHighlightCurrent()<CR>
+elseif g:search_utils_rescroll == 'directional'
+  nnoremap <silent> <Plug>(highlight-and-focus-next) nzb:call SearchUtilsHighlightCurrent()<CR>
+  nnoremap <silent> <Plug>(highlight-and-focus-prev) Nzt:call SearchUtilsHighlightCurrent()<CR>
+elseif g:search_utils_rescroll == 'center'
+  nnoremap <silent> <Plug>(highlight-and-focus-next) nzz:call SearchUtilsHighlightCurrent()<CR>
+  nnoremap <silent> <Plug>(highlight-and-focus-prev) Nzz:call SearchUtilsHighlightCurrent()<CR>
+endif
 
 if !exists('g:search_utils_no_mappings') || g:search_utils_no_mappings == 0
   if !exists('g:search_utils_no_highlight_current') || g:search_utils_no_highlight_current == 0

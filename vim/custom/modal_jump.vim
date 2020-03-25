@@ -7,14 +7,13 @@ let g:custom_modal_jump = 1
 
 " TODO
 " - highlight previous line when you move lines
-" - make it so when switching tabs in a loclist or quickfix mode, we jump to
-"   the first error after switching files (aucmd?)
+" - quickfix integration works nicely, but loclist doesn't
 
 let s:modes = ['Git Hunks',
         \      'Quickfix',
         \      'Loc List']
 
-let g:jk_mode = 0
+let g:jk_mode = 1
 
 function! s:COpenIfApplicable(jump_to_first)
   let current_window = winnr()
@@ -66,9 +65,12 @@ function! s:JKModeApply()
   let current = s:modes[g:jk_mode]
   if l:current == 'Git Hunks'
     call s:CloseBothLists()
+    GitGutterLineHighlightsEnable
   elseif l:current == 'Quickfix'
+    GitGutterLineHighlightsDisable
     call s:COpenIfApplicable(1)
   elseif l:current == 'Loc List'
+    GitGutterLineHighlightsDisable
     call s:LOpenIfApplicable(1)
   endif
   echo "=> " . l:current . " Mode"
@@ -93,6 +95,7 @@ function! s:JKModeJ()
   if l:current == 'Git Hunks'
     GitGutterNextHunk
   elseif l:current == 'Quickfix'
+    call s:COpenIfApplicable(0)
     silent! cnext
   elseif l:current == 'Loc List'
     silent! lnext

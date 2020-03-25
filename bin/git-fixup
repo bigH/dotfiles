@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# source `indent` function
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+ensure_no_conflicting_alias_or_function git
+
+git() {
+  command git --no-pager -c color.ui=always "$@"
+}
+
+git_fixup() {
+  if [ -n "$(git status -s)" ]; then
+    printf "%s" "$RED" "$BOLD" 'Found Changes. Squashing Working Copy...' "$NORMAL"
+    echo
+    indent --header git status -s
+    indent --header git log -1 '--pretty=format:%h : %s'
+    indent --header git add .
+  else
+    printf "%s" "$MAGENTA" "$BOLD" 'Found NO Changes. Squashing...' "$NORMAL"
+    echo
+    indent --header git log -2 '--pretty=format:%h : %s'
+    indent --header git reset --soft HEAD^
+  fi
+  indent --header git commit --amend --no-edit
+
+  unset -f git
+}
+
+git_fixup

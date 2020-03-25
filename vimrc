@@ -40,9 +40,15 @@ endif
 nnoremap p mmp=`]`m
 nnoremap P mmP=`]`m
 
+nnoremap <leader>p p
+nnoremap <leader>P P
+
 " Re-indent when pasting in visual mode
 vnoremap p p=']
 vnoremap P P=']
+
+vnoremap <leader>p p
+vnoremap <leader>P P
 
 "}}}
 

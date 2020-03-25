@@ -15,11 +15,6 @@ if [ -d "$HOME/go/bin" ]; then
   export PATH="$HOME/go/bin:$PATH"
 fi
 
-# Add Home `bin`
-if [ -d "$HOME/bin" ]; then
-  export PATH="$HOME/bin:$PATH"
-fi
-
 # Turn RUST_BACKTRACE on
 export RUST_BACKTRACE=1
 
@@ -107,3 +102,15 @@ fi
 # Add `made/*` - NB: always last
 export PATH="$DOT_FILES_DIR/made/bin:$PATH"
 export MANPATH="$DOT_FILES_DIR/made/doc:$MANPATH"
+
+# Add Home `bin`
+if [ -d "$HOME/bin" ]; then
+  export PATH="$HOME/bin:$PATH"
+fi
+
+# Add Home `local-bin` if present
+# useful for overriding and making local-specific installs
+if [ -d "$HOME/local-bin" ]; then
+  export PATH="$HOME/local-bin:$PATH"
+fi
+

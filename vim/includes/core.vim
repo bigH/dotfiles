@@ -291,10 +291,10 @@ nnoremap <silent> Y y$
 
 " Use `Y` to append text to clipboard & `<leader>Y` to clear
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
-vnoremap <silent> Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
-vnoremap <silent> <Leader>Y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
+vnoremap <silent> <Leader>Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
+vnoremap <silent> <Leader>y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
 
-nnoremap <silent> <Leader>Y :<C-U>let @+ = ''<CR>
+nnoremap <silent> <Leader>Y "+y_
 nnoremap <silent> <Leader>y "+y
 
 " Map K to `NoOp`

@@ -37,11 +37,46 @@ fi
 export GREY="$GRAY"
 
 # quotes mult-word parameters in order to make a command copy-paste with ease
-bash_quote() {
+quote_single_param() {
   if [[ "$1" = *' '* ]]; then
     echo "'$1'"
   else
     echo "$1"
+  fi
+}
+
+# quotes mult-word parameters in order to make a command copy-paste with ease
+error_exit() {
+  echo "${RED}${BOLD}ERROR${NORMAL}: \`mk_expected_dir\` requires 1 arguments"
+}
+
+# quotes a list of params using `"$@"`
+quote_params() {
+  for arg in "$@"; do
+    if [ -z "$FIRST" ]; then
+      printf "%s" "$(quote_single_param "$arg")"
+      FIRST=true
+    else
+      printf " %s" "$(quote_single_param "$arg")"
+    fi
+  done
+}
+
+# check for an alias/function
+ensure_no_conflicting_alias_or_function() {
+  if [ -z "$1" ]; then
+    # shellcheck disable=SC2016
+    error_exit 'expected at least one argument for `ensure_no_conflicting_alias_or_function`'
+  fi
+
+  if typeset -f "$1" > /dev/null 2>&1; then
+    # shellcheck disable=SC2016
+    error_exit '`'"$1".'` function found.'
+  fi
+
+  if alias git > /dev/null 2>&1; then
+    # shellcheck disable=SC2016
+    error_exit '`'"$1".'` function found.'
   fi
 }
 
@@ -50,24 +85,18 @@ indent() {
   if [ -n "$1" ] && [ "$1" = "--header" ]; then
     shift
     if [ -t 1 ]; then
-      printf "%s" "$GRAY"
-    fi
-    printf "\$ "
-    printf "%s" "$GREEN" "$BOLD"
-    printf "%s" "$1"
-    if [ -t 1 ]; then
-      printf "%s" "$NORMAL" "$GREEN"
+      printf "%s" "$GRAY" "\$ " "$GREEN" "$BOLD" "$(quote_single_param "$1")" "$NORMAL" "$GREEN"
+    else
+      printf "%s" "\$ " "$(quote_single_param "$1")"
     fi
     REST=""
     for arg in "$@"; do
       if [ -n "$REST" ]; then
-        printf " %s" "$(bash_quote "$arg")"
+        printf " %s" "$(quote_single_param "$arg")"
       fi
       REST="YES"
     done
-    if [ -t 1 ]; then
-      printf "%s" "$NORMAL"
-    fi
+    printf "%s" "$NORMAL"
     echo
   fi
 

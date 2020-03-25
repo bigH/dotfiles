@@ -1,4 +1,5 @@
 {
+  "coc.preferences.useQuickfixForLocations": true,
   "suggest.noselect": false,
   "suggest.acceptSuggestionOnCommitCharacter": true,
   "suggest.triggerAfterInsertEnter": false,

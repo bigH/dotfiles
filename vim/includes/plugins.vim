@@ -120,6 +120,7 @@ PlugMemoize 'derekwyatt/vim-scala'
 PlugMemoize 'masukomi/vim-markdown-folding'
 
 " typescript and jsx files
+PlugMemoize 'pangloss/vim-javascript'
 PlugMemoize 'leafgarland/typescript-vim'
 PlugMemoize 'mxw/vim-jsx'
 PlugMemoize 'HerringtonDarkholme/yats.vim'
@@ -225,7 +226,8 @@ PlugMemoize 'blueyed/vim-diminactive'
 " closing buffers should retain splits
 PlugMemoize 'qpkorr/vim-bufkill'
 
-" resizes window according to golden ratio (active window is bigger)
-PlugMemoize 'roman/golden-ratio', ForModes('vim', 'nvim')
+" TODO replace:
+"  - it chooses shitty sizes with too many windows and overrides wrap
+" PlugMemoize 'roman/golden-ratio'
 
 call plug#end()

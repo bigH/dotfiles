@@ -32,7 +32,10 @@
 
 [alias]
 # aliases
+# `git git` == `git`
 	git = !git
+# common typo
+	pul = pull
 	co = checkout
 	cob = checkout -b
 	comb = '!git checkout $(git mbh)'

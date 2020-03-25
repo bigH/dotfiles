@@ -4,7 +4,7 @@ ALIASES="$DOT_FILES_DIR/aliases"
 
 # utility just for this script
 function source_aliases_for_expected_command() {
-  if [ ! -z "$1" ]; then
+  if [ -n "$1" ]; then
     if command -v "$1" >/dev/null 2>&1; then
       auto_source "$ALIASES/$1.sh"
     else

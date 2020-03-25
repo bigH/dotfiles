@@ -108,8 +108,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       FILES="$(eval "git diff '$MERGE_BASE' --name-only | \
                        fzf --no-height --no-sort --multi --ansi \
                          $FZF_DEFAULT_OPTS_MULTI \
-                         --preview 'git diff '$MERGE_BASE' -- {} | diff-so-fancy' | \
-                         cut -c4-")"
+                         --preview 'git diff '$MERGE_BASE' -- {} | diff-so-fancy'")"
     fi
 
     if [ -n "$FILES" ]; then

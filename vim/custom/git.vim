@@ -37,6 +37,15 @@ function! s:GithubOpen(path)
   endif
 endfunction
 
+function! s:GithubOpenBranch(is_visual)
+  if s:SyscallSucceeded('is-in-git-repo')
+    let line_details = s:LineDetails(a:is_visual)
+    let branch = s:SyscallTrimmed('git branch-name')
+    let path = expand('%')
+    call s:GithubOpen('blob/' . l:branch . '/' . l:path . '#' . l:line_details)
+  endif
+endfunction
+
 function! s:GithubOpenMergeBase(is_visual)
   if s:SyscallSucceeded('is-in-git-repo')
     let line_details = s:LineDetails(a:is_visual)
@@ -76,8 +85,11 @@ function! s:DeleteAndGitRm()
   endif
 endfunction
 
-nmap <silent> <leader>gh :<C-U>call <SID>GithubOpenMergeBase(0)<CR>
-vmap <silent> <leader>gh :<C-U>call <SID>GithubOpenMergeBase(1)<CR>
+nmap <silent> <leader>gh :<C-U>call <SID>GithubOpenBranch(0)<CR>
+vmap <silent> <leader>gh :<C-U>call <SID>GithubOpenBranch(1)<CR>
+
+nmap <silent> <leader>gm :<C-U>call <SID>GithubOpenMergeBase(0)<CR>
+vmap <silent> <leader>gm :<C-U>call <SID>GithubOpenMergeBase(1)<CR>
 
 nmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(0)<CR>
 vmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(1)<CR>

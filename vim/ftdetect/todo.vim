@@ -91,7 +91,7 @@ function! s:ChangeState(char)
   call winrestview(l:save)
 endfunction
 
-function! s:ToggleTodoStateAll()
+function! s:CycleTodoState()
   let save = winsaveview()
   let search_reg = <SID>SaveReg("/")
   let state = <SID>GetCurrentStateChar()
@@ -113,20 +113,6 @@ function! s:ToggleTodoStateAll()
   call winrestview(l:save)
 endfunction
 
-function! s:ToggleTodoStateSimple()
-  let save = winsaveview()
-  let search_reg = <SID>SaveReg("/")
-  let state = <SID>GetCurrentStateChar()
-  if l:state is v:null
-  elseif l:state == 'x'
-    call <SID>SetTodoState(' ')
-  else
-    call <SID>SetTodoState('x')
-  endif
-  call <SID>RestoreReg("/", l:search_reg)
-  call winrestview(l:save)
-endfunction
-
 function! s:SetupTodoFile()
   setlocal filetype=markdown.todo
 
@@ -139,12 +125,16 @@ function! s:SetupTodoFile()
 
   " <C-X> to toggle done/not-done
   " NB: overrides <C-x> used for decrement
-  nmap <silent> <buffer> <C-x> :call <SID>ToggleTodoStateSimple()<CR>
-  imap <silent> <buffer> <C-x> <Esc>:call <SID>ToggleTodoStateSimple()<CR>a
+  nmap <silent> <buffer> <C-x> :call <SID>ChangeState('x')<CR>
+  imap <silent> <buffer> <C-x> <Esc>:call <SID>ChangeState('x')<CR>a
 
   " <C-\> to toggle done/not-done
-  nmap <silent> <buffer> <C-\> :call <SID>ToggleTodoStateAll()<CR>
-  imap <silent> <buffer> <C-\> <Esc>:call <SID>ToggleTodoStateAll()<CR>a
+  nmap <silent> <buffer> <C-\> :call <SID>CycleTodoState()<CR>
+  imap <silent> <buffer> <C-\> <Esc>:call <SID>CycleTodoState()<CR>a
+
+  " <C-\> to toggle done/not-done
+  nmap <silent> <buffer> <C-Space> :call <SID>ChangeState(' ')<CR>
+  imap <silent> <buffer> <C-Space> <Esc>:call <SID>ChangeState(' ')<CR>a
 
   " <C-F> focus on a cluster of TODOs
   nmap <silent> <buffer> <C-F> :call FocusOnCurrent()<CR>
