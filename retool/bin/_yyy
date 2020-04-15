@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
 cd "$RETOOL_DEV/hammerhead" || (echo 'ERROR: $RETOOL_DEV/hammerhead not found'; exit)
-yarn dev:onprem
+yarn install
+while true; do
+  yarn dev:onprem
+  sleep 1
+done

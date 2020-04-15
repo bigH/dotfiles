@@ -2,6 +2,7 @@
 
 # TODO: tune; currently, check every prompt while debugging
 export AUTO_SOURCER_CHECK_INTERVAL="10"
+export AUTO_SOURCING_FILE_CHANGED=""
 
 # NB: Auto-Sourcing this file will clobber auto-sourcing data this prevents the
 # file from being sourced more than once in a given shell
@@ -50,6 +51,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
 
     # only check after interval
     if [ "$NOW_UTC" -gt "$NEXT_CHECK_TIME" ]; then
+      AUTO_SOURCING_FILE_CHANGED="YES"
       for SOURCED_FILE in `echo $AUTO_SOURCED_FILES`; do
         if [[ "$SOURCED_FILE" == "$HOME"* ]]; then
           DISPLAY_PATH="~${SOURCED_FILE#"$HOME"}"
@@ -60,6 +62,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
           auto_source "$SOURCED_FILE"
         fi
       done
+      AUTO_SOURCING_FILE_CHANGED=""
       AUTO_SOURCER_LAST_CHECK="$NOW_UTC"
     fi
   }

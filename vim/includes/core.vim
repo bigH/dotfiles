@@ -204,7 +204,8 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
 " Desired `highlight` in comments
 augroup Todos
-  au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX|PR|NB):/
+  au Syntax * syn match MyTodo
+        \ /\v<(FIXME|NOTE|TODO|OPTIMIZE|MISSING|XXX|PR|NB):/
         \ containedin=.*Comment,vimCommentTitle
 augroup END
 
@@ -291,11 +292,14 @@ nnoremap <silent> Y y$
 
 " Use `Y` to append text to clipboard & `<leader>Y` to clear
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
+
 vnoremap <silent> <Leader>Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
 vnoremap <silent> <Leader>y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
 
 nnoremap <silent> <Leader>Y "+y_
 nnoremap <silent> <Leader>y "+y
+
+nnoremap <silent> yp :<C-U>let @+ = expand('%')<CR>
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>

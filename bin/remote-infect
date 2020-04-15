@@ -3,7 +3,7 @@
 remote-vimrc() {
   USAGE="Supported options: --fast-term --slow-term --help"
 
-  while [ "$#" -gt 0 ];
+  while [ $# -gt 0 ];
   do
     opt="$1"
     case "$1" in

@@ -1,22 +1,44 @@
 #!/usr/bin/env bash
 
-# source `indent` function
 . "$DOT_FILES_DIR/sh_utils.sh"
 
 git_toss_branch() {
-  ORIGINAL_BRANCH_NAME="$(git branch-name)"
-  MERGE_BASE_BRANCH_NAME="$(git merge-base-branch)"
+  CURRENT_BRANCH_NAME="$(git branch-name)"
 
-  if [ "$ORIGINAL_BRANCH_NAME" = "$MERGE_BASE_BRANCH_NAME" ]; then
-    echo "$(tput setaf 1)$(tput bold)ERROR:$(tput sgr0)$(tput setaf 1) Cannot \`toss-branch\` on '$(git branch-name)'"
-  else
+  BRANCH_NAME="${1:-$CURRENT_BRANCH_NAME}"
+  MERGE_BASE_BRANCH_NAME="$(git merge-base-branch)"
+  MERGE_BASE_REMOTE_NAME="$(git merge-base-remote)"
+
+  # in case the branch provided is invalid
+  if [ -n "$(git rev-parse "$1")" ]; then
+    BRANCH_NAME="$CURRENT_BRANCH_NAME"
+  fi
+
+  TOSSED_BRANCH="$BRANCH_NAME-$(date "+%Y-%m-%d-%H-%M-%S")"
+
+  if [ "$BRANCH_NAME" = "$MERGE_BASE_BRANCH_NAME" ]; then
+    log_warning "running \`toss-branch\` on '$BRANCH_NAME'"
+  fi
+
+  # create branches for preservation
+  indent --header git checkout -b "$TOSSED_BRANCH"
+  if [ -n "$(git status -s)" ]; then
+    log_warning "found working-copy changes..."
+    indent --header git checkout -b "$TOSSED_BRANCH-wip"
     indent --header git add -A
     indent --header git commit -m "WIP (git-toss-branch)"
-    indent --header git checkout -b "$ORIGINAL_BRANCH_NAME-$(date "+%Y-%m-%d-%H-%M-%S")"
-    indent --header git checkout "$MERGE_BASE_BRANCH_NAME"
-    indent --header git branch -D "$ORIGINAL_BRANCH_NAME"
-    indent --header git pull --rebase "$(git merge-base-remote)" "$MERGE_BASE_BRANCH_NAME"
-    indent --header git checkout -b "$ORIGINAL_BRANCH_NAME"
+  fi
+
+  # delete original(s) - including merge-base
+  indent --header git branch -D "$BRANCH_NAME"
+  if [ "$BRANCH_NAME" != "$MERGE_BASE_BRANCH_NAME" ]; then
+    indent --header git branch -D "$MERGE_BASE_BRANCH_NAME"
+  fi
+  indent --header git checkout -b "$MERGE_BASE_BRANCH_NAME" "$MERGE_BASE_REMOTE_NAME/$MERGE_BASE_BRANCH_NAME"
+  indent --header git pull --rebase "$MERGE_BASE_REMOTE_NAME" "$MERGE_BASE_BRANCH_NAME"
+
+  if [ "$BRANCH_NAME" != "$MERGE_BASE_BRANCH_NAME" ]; then
+    indent --header git checkout -b "$BRANCH_NAME"
   fi
 }
 

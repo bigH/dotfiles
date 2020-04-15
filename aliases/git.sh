@@ -1,3 +1,39 @@
+# shellcheck disable=2016
+
+# fzf pick a commit - see diff of just that commit
+fzf_present() {
+  type fzf >/dev/null 2>&1
+}
+
+alias_gh_one() {
+  # shellcheck disable=2139
+  # $1 = alias name
+  # $2 = command (using `$COMMIT`)
+  # choose commit -> `$2`
+  alias "$1"="$(echo '
+                COMMIT="$(gh_one)";
+                test -n "${COMMIT}"
+                  && '"$2"'
+                  || echo "ERROR: no commit selected"
+              ' | join-lines)"
+}
+
+alias_gb_gco() {
+  # shellcheck disable=2139
+  # $1 = alias name
+  # $2 = extra `checkout` options
+  # choose branch -> choose files -> `checkout $2`
+  alias "$1"="$(echo '
+                SOURCE_BRANCH="$(g branch | fzf +m --preview "git diff {2} | diff-so-fancy" | cut -c3-)" ;
+                test -n "${SOURCE_BRANCH}"
+                  && { FILES="$(gdmb "$SOURCE_BRANCH")" ;
+                      test -n "${FILES}"
+                        && g checkout '"$2"' "$SOURCE_BRANCH" -- $(echo $FILES | join-lines)
+                        || echo "WARNING: no files selected" }
+                  || echo "ERROR: no commit selected"
+              ' | join-lines)"
+}
+
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   # -- shared
   # NB: used by quite a few of the below aliases
@@ -7,7 +43,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcn='git -c color.ui=always --no-pager'
 
   # merge-base
-  alias gmb='g merge-base "$(g merge-base-remote)/$(g merge-base-branch)"'
+  alias gmb='g merge-base "$(g merge-base-absolute)"'
   alias gmbh='gmb HEAD'
   alias gmbr='gmb "$(g merge-base-remote)/$(g branch-name)"'
 
@@ -20,18 +56,38 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias wip='g commit --no-verify -a -m WIP'
 
   # -- shortcuts
+  # clone
+  alias gcl='g clone'
+
   # checkout
   alias gco='g checkout'
-  alias gcob='g checkout -b'
+  alias gcop='g checkout --patch'
+  alias gcoh='g checkout HEAD --'
+  alias gcoph='g checkout --patch HEAD --'
   alias gcomb='g checkout $(gmbh) --'
+  alias gcob='g checkout -b'
+
+  # checkout defaults to use fzf for file selection
+  if fzf_present; then
+    alias_gb_gco gcof
+    alias_gb_gco gcopf '--patch'
+  fi
+
+  # checkout
 
   # branch
   alias gbd='g branch -D'
 
   # add
   alias ga='g add'
-  alias gaa='g add .'
   alias gap='g add --patch'
+  alias gaa='g add .'
+
+  # add defaults to use fzf for file selection
+  if fzf_present; then
+    alias gaf='g add -- $(gd)'
+    alias gapf='g add --patch -- $(gd)'
+  fi
 
   # commit
   alias gc='g commit'
@@ -44,13 +100,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # status
   alias gs='g st'
-  alias gsf='g st | cut -c4-'
-  alias gst='ls -t $(g st | cut -c4-)'
-  alias gstr='ls -tr $(g st | cut -c4-)'
+  alias gsf='g fuzzy status'
 
   # show
-  if type fzf >/dev/null 2>&1; then
-    alias gsh='g show $(gh_one)'
+  if fzf_present; then
+    alias gsh='g show $(gh_one || echo HEAD)'
   else
     alias gsh='g show'
   fi
@@ -76,14 +130,22 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gpom='g pull $(g merge-base-remote) $(g merge-base-branch)'
   alias gprom='g pull --rebase $(g merge-base-remote) $(g merge-base-branch)'
   alias grpom='gprom'
+  alias pgrom='gprom'
 
   # reset
   alias gr='g reset'
+  alias grp='g reset --patch'
   alias grh='g reset --hard'
   alias grs='g reset --soft'
 
+  # reset - use fzf for file selection
+  if fzf_present; then
+    alias grf='g reset -- $(gds)'
+    alias grpf='g reset --patch -- $(gds)'
+  fi
+
   # reset & clean
-  alias grhh='g reset --hard ; g clean -df'
+  alias grhh='indent --header git reset --hard ; indent --header git clean -df ; indent --header git status --short'
 
   # cherry-pick
   alias gcp='g cherry-pick'
@@ -93,33 +155,35 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias grc='g rebase --continue'
   alias gra='g rebase --abort'
   alias gri='g rebase --interactive'
-  alias grif='g rebase --interactive "$(gh_one)^"'
-  alias grimb='g rebase --interactive "$(gmbh)^"'
+  alias grimb='g rebase --interactive "$(gmbh)"'
 
+  if fzf_present; then
+    # assumes parent of commit because you may want to modify the commit you selected
+    alias_gh_one 'grif' 'g rebase --interactive "${COMMIT}^"'
+  fi
   # push
   alias gp='g push origin $(g branch-name)'
-  alias gpf='g push --force origin $(g branch-name)'
+  alias gpf='g push --force-with-lease origin $(g branch-name)'
+  alias gpff='g push --force origin $(g branch-name)'
   alias gpu='g push -u origin $(g branch-name)'
 
   # diff variants
   alias gnd='gn diff'
 
-  if type fzf >/dev/null 2>&1; then
-    # prefer `fzf-diff` over `diff`
-    alias gd='g fzf-diff'
+  if fzf_present; then
+    # prefer `git fuzzy` over `diff`
+    alias gd='g fuzzy diff'
     alias gdd='g diff'
 
-    # TODO fzf pick a branch (and optionally a base) and see diff between them
-
-    # fzf pick a commit - see diff of just that commit
-    alias gdc='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gd "${COMMIT}^" "${COMMIT}" || echo "ERROR: no commit selected'
-    alias gddc='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gdd "${COMMIT}^" "${COMMIT}" || echo "ERROR: no commit selected'
-    alias gndc='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gnd "${COMMIT}^" "${COMMIT}" || echo "ERROR: no commit selected'
+    # fzf pick a commit - see its patch
+    alias_gh_one 'gdc' 'gd "${COMMIT}^" "${COMMIT}"'
+    alias_gh_one 'gddc' 'gdd "${COMMIT}^" "${COMMIT}"'
+    alias_gh_one 'gndc' 'gnd "${COMMIT}^" "${COMMIT}"'
 
     # fzf pick a commit - see diff against working copy
-    alias gdh='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gd "${COMMIT}" || echo "ERROR: no commit selected'
-    alias gddh='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gdd "${COMMIT}" || echo "ERROR: no commit selected'
-    alias gndh='COMMIT="$(gh_one)"; test -n "${COMMIT}" && gnd "${COMMIT}" || echo "ERROR: no commit selected'
+    alias_gh_one 'gdh' 'gd "${COMMIT}"'
+    alias_gh_one 'gddh' 'gdd "${COMMIT}"'
+    alias_gh_one 'gndh' 'gnd "${COMMIT}"'
   else
     alias gd='g diff'
   fi
@@ -150,9 +214,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # `gs` || `gdmb`
   alias vg='vim $(gfs)'
   # pick a commit then files
-  alias vh='vim $(gfc $(gh_one))'
-  # pick a commit then files
-  alias vh='vim $(gfc $(gh_one))'
-  # watch git status
+  alias vh='vim $(gfc $(gh_one || gmbh))'
+  # watch status
   alias gsw='watch -c "git -c color.ui=always status --short"'
 fi
+
+unset -f fzf_present
+unset -f alias_gh_one
+unset -f alias_gb_gco

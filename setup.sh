@@ -16,6 +16,8 @@ if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
 fi
 
 echo "${BLUE}${BOLD}..random directories..${NORMAL}"
+mk_expected_dir "$HOME/.backup"
+mk_expected_dir "$HOME/.screenlog"
 mk_expected_dir "$HOME/.local/share/fzf-history"
 mk_expected_dir "$DOT_FILES_DIR/logs"
 echo ""

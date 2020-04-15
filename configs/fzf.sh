@@ -13,15 +13,24 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   # Auto-completion
   [[ $- == *i* ]] && auto_source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
 
-  export FZF_DEFAULT_OPTS=" --border \
-                            --layout=reverse \
-                            --bind '?:toggle-preview' \
-                            --bind 'ctrl-s:toggle-sort' \
-                            --bind 'ctrl-e:preview-down' \
-                            --bind 'ctrl-y:preview-up' \
-                            --bind 'change:top' \
-                            --height '55%' \
-                            --preview-window 'right:50%' "
+  export FZF_DEFAULTS_BASIC="\
+  --border \
+  --layout=reverse \
+  --bind 'ctrl-space:toggle-preview' \
+  --bind 'ctrl-s:toggle-sort' \
+  --bind 'ctrl-e:preview-down' \
+  --bind 'ctrl-y:preview-up' \
+  --bind 'change:top' \
+  --no-height"
+
+  export FZF_DEFAULT_OPTS_MULTI="\
+    --bind alt-d:deselect-all \
+    --bind alt-a:select-all"
+
+  export FZF_DEFAULT_OPTS="\
+  $FZF_DEFAULTS_BASIC \
+  --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
+  --preview-window=right:50%"
 
   if type fd >/dev/null 2>&1; then
     # Use `fd` instead of the default find command for listing path candidates.

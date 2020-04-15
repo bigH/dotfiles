@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+export LIB_DIR="$DOT_FILES_DIR/bin/git-fuzzy-lib"
+
+# TODO turn off (or not...)
+DEBUG_MODE="YES"
+COMMAND_DEBUG_MODE="YES"
+
+# -----------------------------------------
+# NB: none of these files source anything
+# expectation is to source everything here
+
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+. "$LIB_DIR/debug.sh"
+. "$LIB_DIR/core.sh"
+
+. "$LIB_DIR/modules/main.sh"
+. "$LIB_DIR/modules/status.sh"
+. "$LIB_DIR/modules/diff.sh"
+# -----------------------------------------
+
+gf_configure() {
+  # TODO: placeholder
+  quote_params "$@"
+}
+
+gf_run() {
+  COMMAND="$1"
+  shift
+  PARAMETERS_QUOTED="$(quote_params "$@")"
+  NON_INTERACTIVE_FUNC="gf_${COMMAND}_direct"
+  INTERACTIVE_FUNC="gf_${COMMAND}"
+  if type "$NON_INTERACTIVE_FUNC" >/dev/null 2>&1; then
+    eval "$NON_INTERACTIVE_FUNC $PARAMETERS_QUOTED"
+  elif type "$INTERACTIVE_FUNC" >/dev/null 2>&1; then
+    eval "$INTERACTIVE_FUNC $PARAMETERS_QUOTED"
+  else
+    gf_log_error "\`$COMMAND\` not found."
+  fi
+}
+
+git_fuzzy() {
+  NON_CONFIG_PARAMS="$(gf_configure "$@")"
+  if [ -z "$NON_CONFIG_PARAMS" ]; then
+    gf_menu
+  else
+    # shellcheck disable=2086
+    gf_run $NON_CONFIG_PARAMS
+  fi
+}
+
+if gf_is_in_git_repo; then
+  git_fuzzy "$@"
+else
+  gf_log_error "not in git repo"
+  exit 1
+fi

@@ -20,6 +20,7 @@ augroup FiletypeSettings
 
   " properly detect dockerfiles
   au BufNewFile,BufRead *.dockerfile set filetype=dockerfile
+  au BufNewFile,BufRead Dockerfile.* set filetype=dockerfile
 
   " Wrap long lines in quickfix windows
   au FileType qf setlocal wrap

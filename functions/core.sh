@@ -108,10 +108,10 @@ every () {
     else
       NUM=$1
       shift
-      if [ "$#" -eq 0 ]; then
+      if [ $# -eq 0 ]; then
         perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")'
       else
-        while [ "$#" -ne 0 ]; do
+        while [ $# -ne 0 ]; do
           perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")' $1
           shift
         done
@@ -128,22 +128,6 @@ a() {
 # horizontal rule [hr]
 hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
-}
-
-# join lines into one, with provided separator character
-join-lines() {
-  SEP="$1"
-
-  # length includes new-line so off-by-one
-  LENGTH_OF_SEP="$(echo "$SEP" | wc -c)"
-
-  if [ $LENGTH_OF_SEP -eq 1 ]; then
-    paste -s -d' ' -
-  elif [ $LENGTH_OF_SEP -eq 2 ]; then
-    paste -s -d"$SEP" -
-  else
-    paste -s -d"%" - | sed "s/%/$SEP/g"
-  fi
 }
 
 # `which` with `ls -l $(which)`

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-FZF_HISTORY_DIR="$HOME/.local/share/fzf-history"
+export FZF_HISTORY_DIR="$HOME/.local/share/fzf-history"
 FZF_HISTORY_FOR_FILES="$FZF_HISTORY_DIR/sh_files"
 FZF_HISTORY_FOR_DIRECTORIES="$FZF_HISTORY_DIR/sh_directories"
+FZF_HISTORY_FOR_RIPGREP="$FZF_HISTORY_DIR/sh_ripgrep"
 
 touch "$FZF_HISTORY_FOR_FILES"
 touch "$FZF_HISTORY_FOR_DIRECTORIES"
@@ -11,8 +12,6 @@ DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
 if type exa >/dev/null 2>&1; then
   DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
 fi
-
-FZF_DEFAULT_OPTS_MULTI='--bind alt-d:deselect-all --bind alt-a:select-all'
 
 fzf-directory-selector() {
   eval "fd --type d --hidden --follow . | \
@@ -33,28 +32,42 @@ fzf-file-selector() {
           join-lines"
 }
 
-if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
-	# c - browse chrome history
-	c() {
-		local COLS SEP GOOGLE_HISTORY OPEN
-		COLS=$(( COLUMNS / 3 ))
-		SEP='{::}'
+RIPGREP_PREVIEW_COMMAND='echo {} | sed -E "s/(.*):([0-9]+):[0-9]+.*/bat \1/" | sh'
 
-		if [ "$(uname)" = "Darwin" ]; then
-			GOOGLE_HISTORY_DEFAULT="$HOME/Library/Application Support/Google/Chrome/Default/History"
-			GOOGLE_HISTORY="${GOOGLE_CHROME_HISTORY_LOCATION:-$GOOGLE_HISTORY_DEFAULT}"
-			OPEN=open
-		else
-			GOOGLE_HISTORY="$HOME/.config/google-chrome/Default/History"
-			OPEN=xdg-open
-		fi
-		command cp -f "$GOOGLE_HISTORY" /tmp/h
-		sqlite3 -separator $SEP /tmp/h \
-			"select substr(title, 1, $COLS), url
-					from urls order by last_visit_time desc" |
-						awk -F $SEP '{printf "%-'$COLS's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-						fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $OPEN > /dev/null 2> /dev/null
-					}
+fzf-ripgrep-selector() {
+  # Integration with ripgrep
+  RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+  INITIAL_QUERY="$BUFFER"
+  FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" \
+  fzf --bind "change:reload:$RG_PREFIX {q} || true" \
+      --ansi --phony --query "$INITIAL_QUERY" \
+      --preview "$RIPGREP_PREVIEW_COMMAND"
+}
+
+if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
+  # c - browse chrome history
+  c() {
+    local COLS SEP GOOGLE_HISTORY OPEN
+    COLS=$(( COLUMNS / 3 ))
+    SEP='{::}'
+
+    if [ "$(uname)" = "Darwin" ]; then
+      GOOGLE_HISTORY_DEFAULT="$HOME/Library/Application Support/Google/Chrome/Default/History"
+      GOOGLE_HISTORY="${GOOGLE_CHROME_HISTORY_LOCATION:-$GOOGLE_HISTORY_DEFAULT}"
+      OPEN=open
+    else
+      GOOGLE_HISTORY="$HOME/.config/google-chrome/Default/History"
+      OPEN=xdg-open
+    fi
+
+    command cp -f "$GOOGLE_HISTORY" /tmp/h
+
+    sqlite3 -separator $SEP /tmp/h \
+      "select substr(title, 1, $COLS), url
+          from urls order by last_visit_time desc" |
+            awk -F $SEP '{printf "%-'$COLS's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+            fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $OPEN > /dev/null 2> /dev/null
+  }
 fi
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then
@@ -97,6 +110,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     is-in-git-repo || return
 
     local FILES
+
     if [ -n "$(git status -s)" ]; then
       FILES="$(eval "git -c color.ui=always status --short | \
                        fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
@@ -111,11 +125,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
                          --preview 'git diff '$MERGE_BASE' -- {} | diff-so-fancy'")"
     fi
 
-    if [ -n "$FILES" ]; then
-      echo "$FILES"
-    else
-      fzf-file-selector
-    fi
+    echo "$FILES"
   }
 
   # Select file from git diff with commit (or merge-base)
@@ -174,7 +184,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   gitignore() {
     api="curl -L -s https://www.gitignore.io/api"
 
-    if [ "$#" -eq 0 ]; then
+    if [ $# -eq 0 ]; then
       result="$(eval "$api/list" | tr ',' '\n' | fzf --no-height --multi --preview "$api/{} | bat -p --color always -l gitignore" | paste -s -d "," -)"
       [ -n "$result" ] && eval "$api/$result"
     else

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git_merge_base_absolute() {
+  echo "$(git merge-base-remote)/$(git merge-base-branch)"
+}
+
+git_merge_base_absolute

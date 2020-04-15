@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-usage() {
-  echo 'TODO'
-}
+. "$DOT_FILES_DIR/sh_utils.sh"
 
-error_exit_usage() {
+usage() {
   echo 'TODO'
 }
 
@@ -22,6 +20,8 @@ case $ACTION in
     get "$@" | as_lines "$@" | fzf_wrapper "$@"
     ;;
   *)
-    error_exit_usage "Unknown action: $ACTION"
+    log_error "Unknown action: $ACTION"
+    usage
+    exit 1
     ;;
 esac

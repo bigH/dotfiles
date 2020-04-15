@@ -69,16 +69,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
 
   " Customize fzf to use tabs for <Enter>
   let g:fzf_action = {
-        \ '?':      'toggle-preview',
-        \ 'change': 'top',
-        \ 'ctrl-s': 'toggle-sort',
-        \ 'ctrl-e': 'preview-down',
-        \ 'ctrl-y': 'preview-up',
-        \ 'ctrl-m': 'e!',
-        \ 'ctrl-o': 'e!',
-        \ 'ctrl-t': 'tabedit',
-        \ 'ctrl-h': 'split',
-        \ 'ctrl-v': 'vsplit' }
+        \   'ctrl-m': 'e!',
+        \ }
 
   " Open old-files
   command! RecentFiles call fzf#run({
@@ -128,8 +120,9 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview and visual yank
   command! -bang -nargs=* RgVisual
         \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --color=always --smart-case '.
-        \       (<bang>0 ? '--no-ignore --hidden ' : '').
+        \   'rg --fixed-strings --column --line-number --no-heading '.
+        \       ' --color=always --smart-case '.
+        \       (<bang>0 ? ' --no-ignore --hidden ' : ' ').
         \       '"'.GetVisualSelectionAsString().'"',
         \   1,
         \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(1))
@@ -288,8 +281,9 @@ if IsPluginLoaded('dense-analysis/ale')
   let g:airline#extensions#ale#enabled = 1
 
   " replace git things
-  let g:airline_section_b = '%t'
-  let g:airline_section_c = ''
+  let g:airline_section_b = ''
+  let g:airline_section_c = '%f'
+  let g:airline_section_y = ''
 
   " Fix on Save (Sucks on Rubocop)
   let g:ale_fix_on_save = 1
@@ -688,7 +682,9 @@ if IsPluginLoaded('neoclide/coc.nvim')
   " Gotos
   nmap <silent> <Leader>d <Plug>(coc-definition)
   nmap <silent> <Leader>i <Plug>(coc-implementation)
-  nmap <silent> <Leader>r <Plug>(coc-references)
+  nmap <silent> <Leader>u <Plug>(coc-references)
+  nmap <silent> <Leader>r <Plug>(coc-rename)
+
   " overrides fzf `:Tags`
   nmap <silent> <Leader>t <Plug>(coc-type-definition)
 endif

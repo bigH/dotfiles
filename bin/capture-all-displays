@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# TODO restore crontab
+# * * * * * env HOME=/Users/hiren $HOME/bin/capture-all-displays
+
+# TODO need to prevent screenshots when the screen is locked.
+
+# TODO use a reasonable interval - this is once a minute
+INTERVAL=60
+
+RUNTIME=$(date '+%Y-%m-%d %H-%M-%S')
+SCREEN_LOG_DIR="/Users/hiren/.screenlog"
+
+SCREEN_DEBUG_INFO="$(/usr/sbin/screencapture -D0 -x 2>&1 >/dev/null)"
+SCREEN_ID_RANGE="$(echo "$SCREEN_DEBUG_INFO" | rev | cut -d' ' -f1 | rev)"
+
+if [ "$SCREEN_ID_RANGE" == "1." ] ; then
+  SCREEN_ID_MIN='1'
+  SCREEN_ID_MAX='1'
+elif [[ "$SCREEN_ID_RANGE" =~ [0-9]-[0-9] ]]; then
+  SCREEN_ID_MIN="$(echo "$SCREEN_ID_RANGE" | cut -d- -f1)"
+  SCREEN_ID_MAX="$(echo "$SCREEN_ID_RANGE" | cut -d- -f2)"
+else
+  echo "$RUNTIME" >> "$SCREEN_LOG_DIR/error"
+  echo "bailing" >> "$SCREEN_LOG_DIR/error"
+  echo "SCREEN_DEBUG_INFO=\"$SCREEN_DEBUG_INFO\"" >> "$SCREEN_LOG_DIR/error"
+  echo "SCREEN_ID_RANGE=\"$SCREEN_ID_RANGE\"" >> "$SCREEN_LOG_DIR/error"
+  exit 0
+fi
+
+SCREEN_CAP_DIR="$SCREEN_LOG_DIR/$(date '+%Y-%m-%d')"
+if [ ! -d "$SCREEN_CAP_DIR" ]; then
+  echo "making $SCREEN_CAP_DIR" >> "$SCREEN_LOG_DIR/log"
+  mkdir -p "$SCREEN_CAP_DIR"
+fi
+
+MINUTE_STAMP="$(date '+%H-%M')"
+
+for i in $(seq "$SCREEN_ID_MIN" "$SCREEN_ID_MAX"); do
+  for t in $(seq 0 $INTERVAL 59); do
+    if [ "$t" -lt "10" ]; then
+      TIMESTAMP="$MINUTE_STAMP-0$t"
+    else
+      TIMESTAMP="$MINUTE_STAMP-$t"
+    fi
+
+    echo "$i - $TIMESTAMP" >> "$SCREEN_LOG_DIR/log"
+    echo "$TIMESTAMP: $SCREEN_CAP_DIR/display-$i-$TIMESTAMP" >> "$SCREEN_CAP_DIR/display-$i-index"
+    /usr/sbin/screencapture -T"$t" -x -tjpg -D"$i" -C "$SCREEN_CAP_DIR/display-$i-$TIMESTAMP.jpg" &
+  done
+done
