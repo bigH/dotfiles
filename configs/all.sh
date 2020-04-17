@@ -7,6 +7,7 @@ function source_configs_for_expected_command() {
   FILENAME="$CONFIGS/$1.sh"
   SOURCED="NO"
   for POSSIBLE_COMMAND in "$@"; do
+    # source for all "aliases"
     if command -v "$POSSIBLE_COMMAND" >/dev/null 2>&1; then
       auto_source "$FILENAME"
       SOURCED="YES"
@@ -21,6 +22,7 @@ function source_configs_for_expected_command() {
 auto_source "$CONFIGS/core.sh"
 
 # source these only if they're "visible" commands
+source_configs_for_expected_command bat
 source_configs_for_expected_command ctags
 source_configs_for_expected_command fd fdfind
 source_configs_for_expected_command fzf
@@ -32,7 +34,7 @@ source_configs_for_expected_command journal
 unset -f source_configs_for_expected_command
 unset CONFIGS
 
-if [ ! -z "$DOT_FILES_ENV" ]; then
+if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh" ]; then
     auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh"
   elif [ -f "$CONFIGS/no-env-context.sh" ]; then

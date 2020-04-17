@@ -25,7 +25,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
       fi
 
       # only record if not already present
-      if [[ "$AUTO_SOURCED_FILES" != *"$1 "* ]]; then
+      if [[ "$AUTO_SOURCED_FILES" != *" $1 "* ]]; then
         AUTO_SOURCED_FILES+="$1 "
       fi
     fi

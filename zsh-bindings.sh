@@ -18,7 +18,7 @@ bindkey '^p' fzf-file-select-and-insert
 
 # Alt-P - select file based on ripgrep
 fzf-ripgrep-select-and-insert() {
-  LBUFFER+=$(fzf-ripgrep-selector)
+  LBUFFER+="$(fzf-ripgrep-selector)"
   zle redisplay
 }
 zle -N fzf-ripgrep-select-and-insert

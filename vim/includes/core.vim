@@ -299,7 +299,7 @@ vnoremap <silent> <Leader>y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
 nnoremap <silent> <Leader>Y "+y_
 nnoremap <silent> <Leader>y "+y
 
-nnoremap <silent> yp :<C-U>let @+ = expand('%')<CR>
+nnoremap <silent> yp :<C-U>let @+ = expand('%')<CR>:<C-U>let @" = expand('%')<CR>
 
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>

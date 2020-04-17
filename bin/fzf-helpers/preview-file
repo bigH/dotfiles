@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+preview_file() {
+  if [ "$#" -lt '2' ]; then
+    log_error "expected 2 or more arguments, got $#"
+    echo
+    echo "Usage: $0 <height of preview> '<file path>:<line number>...' [arguments for \`bat\`...]"
+    exit 1
+  fi
+
+  if [ -z "$2" ]; then
+    echo "nothing to display."
+    exit 0
+  fi
+
+  WINDOW_HEIGHT="$1"
+  MATCH_LINE="$2"
+
+  FILE_NAME="$(echo "$MATCH_LINE" | cut -d':' -f1)"
+  LINE_NUMBER="$(echo "$MATCH_LINE" | cut -d':' -f2)"
+  LINES_BEFORE_EXPR="(($WINDOW_HEIGHT + 1) / 2) - 1"
+  LINES_BEFORE="$(echo "$LINES_BEFORE_EXPR" | bc)"
+  LINES_AFTER_EXPR="($WINDOW_HEIGHT) / 2"
+  LINES_AFTER="$(echo "$LINES_AFTER_EXPR" | bc)"
+  LINE_START_EXPR="$LINE_NUMBER - $LINES_BEFORE"
+  LINE_START="$(echo "$LINE_START_EXPR" | bc)"
+  LINE_END_EXPR="$LINE_NUMBER + $LINES_AFTER"
+  LINE_END="$(echo "$LINE_END_EXPR" | bc)"
+
+  LINES_IN_FILE="$(wc -l "$FILE_NAME" | awk '{ print $1 }')"
+
+  LINE_RANGE="$LINE_START:$LINE_END"
+
+  if [ "$LINE_START" -lt "1" ]; then
+    LINE_RANGE=":$WINDOW_HEIGHT"
+  fi
+
+  if [ "$LINE_END" -gt "$LINES_IN_FILE" ]; then
+    LINE_START_EXPR="$LINES_IN_FILE - $WINDOW_HEIGHT + 1"
+    LINE_START="$(echo "$LINE_START_EXPR" | bc)"
+    LINE_RANGE="$LINE_START:"
+  fi
+
+  bat --color=always --line-range "$LINE_RANGE" --highlight-line "$LINE_NUMBER" "$FILE_NAME"
+}
+
+preview_file "$@"

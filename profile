@@ -17,7 +17,7 @@ auto_source "$DOT_FILES_DIR/sh_utils.sh"
 # configs/path (almost everything below needs them to work)
 auto_source "$DOT_FILES_DIR/configs/all.sh"
 
-if [ ! -z "$DOT_FILES_ENV" ]; then
+if [ -n "$DOT_FILES_ENV" ]; then
   if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/bin" ]; then
     export PATH="$DOT_FILES_DIR/$DOT_FILES_ENV/bin:$PATH"
   fi

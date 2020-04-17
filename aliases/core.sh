@@ -29,15 +29,8 @@ if type fdfind >/dev/null 2>&1; then
   alias fd=fdfind
 fi
 
-# TODO figure out - `which` is not the right answer
-# if type zsh >/dev/null 2>&1; then
-#   alias zsh="SHELL=\"$(which zsh)\" zsh"
-# fi
-
-# TODO figure out - `which` is not the right answer
-# if type bash >/dev/null 2>&1; then
-#   alias bash="SHELL=\"$(which bash)\" bash"
-# fi
+alias zsh="SHELL=\"/bin/zsh\" zsh"
+alias bash="SHELL=\"/bin/bash\" bash"
 
 # NB: removed because the output can cause annoying terminal delays
 # alias cp='cp -v'
@@ -67,9 +60,6 @@ alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d
 
 # go to dot files
 alias jh='cd $DOT_FILES_DIR'
-
-# `rg` - better colors
-alias rg="rg -S --hidden --colors 'match:fg:white' --colors 'match:style:bold' --colors 'line:fg:blue'"
 
 # `yarn` -> `y`
 if type yarn >/dev/null 2>&1; then

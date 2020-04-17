@@ -26,22 +26,29 @@ FILE_PREVIEW_COMMAND='bat {}'
 fzf-file-selector() {
   eval "fd --type f --hidden --follow . | \
           fzf -m --ansi --no-height \
-                 --history \"$FZF_HISTORY_FOR_FILES\" \
-                 $FZF_DEFAULT_OPTS_MULTI \
-                 --preview \"$FILE_PREVIEW_COMMAND\" | \
+              --history \"$FZF_HISTORY_FOR_FILES\" \
+              $FZF_DEFAULT_OPTS_MULTI \
+              --preview \"$FILE_PREVIEW_COMMAND\" | \
           join-lines"
 }
 
-RIPGREP_PREVIEW_COMMAND='echo {} | sed -E "s/(.*):([0-9]+):[0-9]+.*/bat \1/" | sh'
-
 fzf-ripgrep-selector() {
+  SEARCH_PREFIX="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH $(command -v rg) --line-number --no-heading --color=always "
+
+  # shellcheck disable=2016
+  PREVIEW_COMMAND="$DOT_FILES_DIR/bin/fzf-helpers/preview-file \"\$FZF_PREVIEW_LINES\""
+
   # Integration with ripgrep
-  RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
-  INITIAL_QUERY="$BUFFER"
-  FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" \
-  fzf --bind "change:reload:$RG_PREFIX {q} || true" \
-      --ansi --phony --query "$INITIAL_QUERY" \
-      --preview "$RIPGREP_PREVIEW_COMMAND"
+  INITIAL_QUERY=""
+  eval "echo '' | \
+          fzf -m --ansi --no-height --phony \
+              --history \"$FZF_HISTORY_FOR_RIPGREP\" \
+              $FZF_DEFAULT_OPTS_MULTI \
+              --bind 'change:reload($SEARCH_PREFIX {q} 2>/dev/null || true)' \
+              --preview '$PREVIEW_COMMAND {}' | \
+          sed -E 's/([^:]+):.*/\\1/' | \
+          sort -u | \
+          join-lines"
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then

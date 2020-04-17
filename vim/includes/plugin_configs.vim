@@ -319,6 +319,12 @@ if IsPluginLoaded('kana/vim-textobj-user')
   exec "source" $DOT_FILES_DIR . "/vim/custom/text_objects.vim"
 endif
 
+" -- kana/vim-textobj-indent --
+
+if IsPluginLoaded('kana/vim-textobj-indent')
+  nmap <silent> <leader>gs vii:sort<CR>
+endif
+
 " -- vim-angry [textobj] --
 
 if IsPluginLoaded('b4winckler/vim-angry')

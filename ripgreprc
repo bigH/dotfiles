@@ -1,0 +1,8 @@
+--smart-case
+--hidden
+--colors
+match:fg:yellow
+--colors
+match:style:bold
+--colors
+line:fg:blue

@@ -7,7 +7,7 @@ auto_source "$FUNCTIONS_DIR/core.sh"
 
 # utility just for this script
 function source_functions_for_expected_command() {
-  if [ ! -z "$1" ]; then
+  if [ -n "$1" ]; then
     if command -v "$1" >/dev/null 2>&1; then
       auto_source "$FUNCTIONS_DIR/$1.sh"
     else
@@ -23,7 +23,7 @@ source_functions_for_expected_command rg
 unset -f source_functions_for_expected_command
 unset ALIASES
 
-if [ ! -z "$DOT_FILES_ENV" ]; then
+if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/functions.sh" ]; then
     auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/functions.sh"
   fi

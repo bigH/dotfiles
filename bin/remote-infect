@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-remote-vimrc() {
+remote_vimrc() {
   USAGE="Supported options: --fast-term --slow-term --help"
 
-  while [ $# -gt 0 ];
-  do
+  while [ $# -gt 0 ]; do
     opt="$1"
     case "$1" in
       "--slow-term" )
@@ -16,7 +15,7 @@ remote-vimrc() {
       "--help")
         echo >&2 "$USAGE"
         exit 0
-        1;;
+        ;;
       *)
         echo >&2 "${RED}${BOLD}ERROR${NORMAL}: Invalid option: '$1'"
         echo >&2 "$USAGE"
@@ -167,4 +166,4 @@ remote-vimrc() {
   echo '}'
 }
 
-remote-vimrc "$@"
+remote_vimrc "$@"
