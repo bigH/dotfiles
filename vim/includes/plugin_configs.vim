@@ -99,15 +99,15 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
       if ratio < 2 && height > 100
         return 'down:70%'
       elseif ratio < 2 && height > 70
-        return 'down:55%'
+        return 'down:65%'
       elseif ratio < 2
-        return 'down:45%'
+        return 'down:55%'
       elseif width > 250
-        return 'right:60%'
+        return 'right:70%'
       elseif width > 220
-        return 'right:55%'
+        return 'right:65%'
       else
-        return 'right:50%'
+        return 'right:55%'
       endif
     end
   endfunction

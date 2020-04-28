@@ -19,13 +19,18 @@ gf_log_error() {
 # TODO make it possible to log all commands
 gf_command_log() {
   if [ -n "$COMMAND_DEBUG_MODE" ]; then
-    >&2 printf '%s%s%s%s' "$GRAY" "$BOLD" '$ ' "$NORMAL"
-    >&2 printf '%s%s%s%s' "$CYAN" "$BOLD" "$(quote_single_param "$1")" "$NORMAL"
-    >&2 shift
-    >&2 printf '%s' "$GREEN"
-    >&2 printf ' %s' "$(quote_params "$@")"
-    >&2 printf '%s' "$NORMAL"
-    >&2 echo
+    if [ "$#" -gt 0 ]; then
+      >&2 printf '%s%s%s%s' "$GRAY" "$BOLD" '$ ' "$NORMAL"
+      >&2 printf '%s%s%s%s' "$CYAN" "$BOLD" "$(quote_single_param "$1")" "$NORMAL"
+      >&2 shift
+      >&2 printf '%s' "$GREEN"
+      >&2 printf ' %s' "$(quote_params "$@")"
+      >&2 printf '%s' "$NORMAL"
+      >&2 echo
+    else
+      # shellcheck disable=2016
+      error_exit '`gf_command_log` requires an actual command'
+    fi
   fi
 }
 

@@ -256,6 +256,9 @@ function! s:LoadSearchOnEnter()
   if filereadable(g:search_data_save)
     exec "source" g:search_data_save
   endif
+  if (len(g:current_star_searches) > 0)
+    let @/ = s:GetCalculatedPattern()
+  endif
 endfunction
 
 function! s:SaveSearchOnExit()

@@ -17,7 +17,9 @@ COMMAND_DEBUG_MODE="YES"
 
 . "$LIB_DIR/modules/main.sh"
 . "$LIB_DIR/modules/status.sh"
+. "$LIB_DIR/modules/branch.sh"
 . "$LIB_DIR/modules/diff.sh"
+. "$LIB_DIR/modules/reflog.sh"
 # -----------------------------------------
 
 gf_configure() {
@@ -36,7 +38,7 @@ gf_run() {
   elif type "$INTERACTIVE_FUNC" >/dev/null 2>&1; then
     eval "$INTERACTIVE_FUNC $PARAMETERS_QUOTED"
   else
-    gf_log_error "\`$COMMAND\` not found."
+    gf_log_error "\`$COMMAND\` not found"
   fi
 }
 

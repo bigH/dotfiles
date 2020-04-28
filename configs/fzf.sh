@@ -23,7 +23,7 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   --bind 'change:top' \
   --no-height"
 
-  FZF_DEFAULT_OPTS_MULTI="\
+  export FZF_DEFAULT_OPTS_MULTI="\
     --bind alt-d:deselect-all \
     --bind alt-a:select-all"
 

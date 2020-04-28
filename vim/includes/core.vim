@@ -78,8 +78,8 @@ set vb
 
 " Move backups and temps into home directory
 set backup
-set backupdir=~/.vim/backup
-set directory=~/.vim/tmp
+set backupdir=~/.vim/backup//
+set directory=~/.vim/tmp//
 
 " Save undo-history
 set undolevels=5000

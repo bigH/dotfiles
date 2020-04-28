@@ -44,16 +44,16 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
   export GREY="$GRAY"
 
   # join lines into one, with provided separator character
-  join-lines() {
+  # NB: assumes '%' is not present in the input
+  join_lines() {
     DEFAULT_SEP=' '
     SEP="${1:-$DEFAULT_SEP}"
 
-    # NB: length includes new-line so off-by-one
-    LENGTH_OF_SEP="$(echo "$SEP" | wc -c)"
+    LENGTH_OF_SEP="${#SEP}"
 
-    if [ $LENGTH_OF_SEP -eq 1 ]; then
+    if [ "$LENGTH_OF_SEP" -eq 0 ]; then
       paste -s -d' ' -
-    elif [ $LENGTH_OF_SEP -eq 2 ]; then
+    elif [ "$LENGTH_OF_SEP" -eq 1 ]; then
       paste -s -d"$SEP" -
     else
       paste -s -d"%" - | sed "s/%/$SEP/g"
@@ -109,14 +109,34 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
   # MISSING: support for anything escapable (`\n`, `\t`, etc.?)
   # MISSING: support quotes in params (e.g. quoting `'a' "b'd"`)
   quote_params() {
-    FIRST=""
+    REST=""
     for arg in "$@"; do
-      if [ -z "$FIRST" ]; then
+      if [ -z "$REST" ]; then
         printf "%s" "$(quote_single_param "$arg")"
-        FIRST=true
+        REST=true
       else
         printf " %s" "$(quote_single_param "$arg")"
       fi
+    done
+  }
+
+  # filter out switches
+  remove_switches() {
+    REST=""
+    while [ "$#" -gt 0 ]; do
+      case "$1" in
+        --*) shift ;;
+        -*) shift ;;
+        *)
+          if [ -z "$REST" ]; then
+            printf '%s' "$(quote_single_param "$1")"
+            REST=true
+          else
+            printf ' %s' "$(quote_single_param "$1")"
+          fi
+          shift
+          ;;
+      esac
     done
   }
 
@@ -165,7 +185,7 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     fi
   }
 
-  function print_symbol_for_status {
+  print_symbol_for_status() {
     PRINT_PREFIX=""
     if [ $# -eq 0 ]; then
       echo ""

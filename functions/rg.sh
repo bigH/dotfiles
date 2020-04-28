@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## RG helpers
+## `rg` helpers
 
 # `rg` + a pager
 rgp() {

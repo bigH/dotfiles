@@ -4,15 +4,16 @@ gf_menu_content() {
   gf_menu_item "status" "manage current status"
   echo
   gf_menu_item "diff" "compare content across revisions"
-  gf_menu_item "browse" "browse files at a given commit"
-  gf_menu_item "branches" "manage and possibly browse branches"
+  gf_menu_item "branch" "manage and possibly browse branches"
   gf_menu_item "history" "browse history of a given file"
+  gf_menu_item "reflog" "browse history of a given file"
+  gf_menu_item "browse" "browse files at a given commit"
   echo
   gf_menu_exit
 }
 
 gf_fzf_main() {
-  gf_fzf_one "$NO_FZF_PREVIEW"
+  gf_fzf_one "$(hidden_preview_window_settings)"
 }
 
 gf_menu() {

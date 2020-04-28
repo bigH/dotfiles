@@ -16,19 +16,18 @@ gf_diff_menu_content() {
 
 # shellcheck disable=2016
 GF_DIFF_PREVIEW_COMMAND='
-REF={2}
-TYPE={1}
-{ [ -z "$TYPE" ] &&
-    echo "nothing to show" } ||
-{ [ "." = "$TYPE" ] &&
-    echo "git diff HEAD" | git diff HEAD | diff-so-fancy } ||
-{ [ "L" = "$TYPE" ] || [ "R" = "$TYPE" ] &&
-    echo git diff "$(git merge-base "$REF" "$(git merge-base-absolute)")" "$REF" |
+  REF={2}
+  TYPE={1}
+  { [ -z "$TYPE" ] &&
+      echo "nothing to show" } ||
+  { [ "." = "$TYPE" ] &&
+      git diff HEAD | diff-so-fancy } ||
+  { [ "L" = "$TYPE" ] || [ "R" = "$TYPE" ] &&
       git diff "$(git merge-base "$REF" "$(git merge-base-absolute)")" "$REF" |
-      diff-so-fancy } ||
-{ [ "C" = "$TYPE" ] &&
-    echo git show "$REF" | git show "$REF" | diff-so-fancy } ||
-echo
+        diff-so-fancy } ||
+  { [ "C" = "$TYPE" ] &&
+      git show "$REF" | diff-so-fancy } ||
+  echo
 '
 
 gf_fzf_diff_select() {

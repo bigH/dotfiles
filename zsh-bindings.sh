@@ -34,7 +34,7 @@ bindkey '^n' fzf-directory-select-and-insert
 
 # Ctrl-H - find commit SHA(s)
 fzf-gh-widget() {
-  local result=$(gh_many | join-lines);
+  local result=$(gh_many | join_lines);
   LBUFFER+=$result
   zle redisplay
 }
@@ -43,7 +43,7 @@ bindkey '^h' fzf-gh-widget
 
 # Alt-H - commit SHA range
 fzf-gh-range-widget() {
-  local result=$(gh_many | tac | join-lines '..');
+  local result=$(gh_many | tac | join_lines '..');
   LBUFFER+=$result
   zle redisplay
 }
@@ -55,14 +55,14 @@ fzf-git-files-from-commits() {
   local commits=$(gh_many)
   local num_commits=$(echo "$commits" | wc -l | bc)
   if [ "$num_commits" -eq 0 ]; then
-    local result=$(gfc | join-lines);
+    local result=$(gfc | join_lines);
     LBUFFER+=$result
   elif [ "$num_commits" -eq 1 ]; then
-    local result=$(gfc "$commits" | join-lines);
+    local result=$(gfc "$commits" | join_lines);
     LBUFFER+=$result
   elif [ "$num_commits" -eq 2 ]; then
-    local range=$(echo "$commits" | tac | join-lines '..')
-    local result=$(gfr "$range" | join-lines);
+    local range=$(echo "$commits" | tac | join_lines '..')
+    local result=$(gfr "$range" | join_lines);
     LBUFFER+=$result
   elif [ "$num_commits" -ge 2 ]; then
     # unsupported
@@ -74,7 +74,7 @@ bindkey '^[o' fzf-git-files-from-commits
 
 # Ctrl-O - open files differing from merge-base
 fzf-gfs-widget() {
-  local result=$(gfs | join-lines)
+  local result=$(gfs | join_lines)
   LBUFFER+=$result
   zle redisplay
 }
@@ -92,7 +92,7 @@ bindkey '^[f' emacs-forward-word
 # Alt-Space - see status
 zmodload -i zsh/parameter
 fzf-git-status() {
-  local result=$(gfs | join-lines);
+  local result=$(gfs | join_lines);
   LBUFFER+=$result
   zle redisplay
 }

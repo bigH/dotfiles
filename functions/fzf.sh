@@ -29,7 +29,7 @@ fzf-file-selector() {
               --history \"$FZF_HISTORY_FOR_FILES\" \
               $FZF_DEFAULT_OPTS_MULTI \
               --preview \"$FILE_PREVIEW_COMMAND\" | \
-          join-lines"
+          join_lines"
 }
 
 fzf-ripgrep-selector() {
@@ -48,7 +48,7 @@ fzf-ripgrep-selector() {
               --preview '$PREVIEW_COMMAND {}' | \
           sed -E 's/([^:]+):.*/\\1/' | \
           sort -u | \
-          join-lines"
+          join_lines"
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then

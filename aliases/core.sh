@@ -70,6 +70,7 @@ fi
 if type bat >/dev/null 2>&1; then
   if type prefer-bat >/dev/null 2>&1; then
     alias cat='prefer-bat'
+    alias ccat='command cat'
   fi
 fi
 

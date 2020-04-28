@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-# status represents if `git` commands will work
+# NB: old test (below) replaced with this as new repos don't have a HEAD yet
+#     git rev-parse HEAD > /dev/null 2>&1
 is_in_git_repo() {
+  test -e .git
   git rev-parse HEAD > /dev/null 2>&1
 }
 

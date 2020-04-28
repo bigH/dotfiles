@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 
-# cd by just typing in a directory name
-# I don't like this any-more. Here's why:
+# `autocd` allows you to cd by just typing in a directory name
+#
+# NB: I don't like this any-more because:
 #
 #   $ pwd
 #   /path/to
@@ -11,7 +12,7 @@
 #   $ pwd
 #   /path/to/somewhere
 #
-# setopt autocd
+setopt noautocd
 
 # warn me if a glob doesn't match anything
 setopt nomatch
