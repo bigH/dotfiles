@@ -78,3 +78,8 @@ fi
 if type tldr >/dev/null 2>&1; then
   alias tldr='tldr --theme base16'
 fi
+
+# `prettyping` -> `ping`
+if type prettyping >/dev/null 2>&1; then
+  alias ping='prettyping'
+fi

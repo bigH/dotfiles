@@ -2,7 +2,4 @@
 
 cd "$RETOOL_DEV/hammerhead" || (echo 'ERROR: $RETOOL_DEV/hammerhead not found'; exit)
 yarn install
-while true; do
-  yarn dev:onprem
-  sleep 1
-done
+_yy

@@ -68,6 +68,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gpo='g pull $(g merge-base-remote)'
   alias gpom='g pull $(g merge-base-remote) $(g merge-base-branch)'
   alias gprom='g pull --rebase $(g merge-base-remote) $(g merge-base-branch)'
+  alias gprob='g pull --rebase $(g merge-base-remote) $(g branch-name)'
+  # misspellings
   alias grpom='gprom'
   alias pgrom='gprom'
 
@@ -116,6 +118,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # --- vim things ---
   # watch status
   alias gsw='watch -c "git -c color.ui=always status --short"'
+
+  # --- fuzzy things ---
+  # `git fuzzy (status|diff|...)`
+  alias gf='g fuzzy'
 fi
 
 unset -f fzf_present

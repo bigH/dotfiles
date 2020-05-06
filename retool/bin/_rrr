@@ -2,4 +2,4 @@
 
 cd "$RETOOL_DEV/retool" || (echo 'ERROR: $RETOOL_DEV/retool not found'; exit)
 docker-compose down
-./run.sh
+_rr
