@@ -17,7 +17,7 @@
     },
     "sorbet": {
       "command": "srb",
-      "args": ["tc", "--lsp", "--enable-all-experimental-lsp-features", "--enable-experimental-lsp-autocomplete", "--disable-watchman", "--debug-log-file=/tmp/sorbet-nvim.log", "-e", "0"],
+      "args": ["tc", "--lsp", "--enable-all-experimental-lsp-features", "--disable-watchman", "--debug-log-file=/tmp/sorbet-nvim.log", "-e", "0"],
       "filetypes": ["ruby"],
       "rootPatterns": ["sorbet/config"],
       "initializationOptions": {},

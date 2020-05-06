@@ -84,7 +84,7 @@ set directory=~/.vim/tmp//
 " Save undo-history
 set undolevels=5000
 set undoreload=5000
-set undodir=~/.vim/undodir
+set undodir=~/.vim/undodir//
 set undofile
 
 " Indent wrapped lines up to the same level
@@ -104,6 +104,9 @@ set nowrap
 
 " Unfold everything by default
 set nofoldenable
+
+" When prose-ing, `J` doesnt put two spaces between sentences
+set nojoinspaces
 
 " Use the mouse
 set mouse=a
