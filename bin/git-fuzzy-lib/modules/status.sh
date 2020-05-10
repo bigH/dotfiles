@@ -17,6 +17,7 @@ gf_fzf_status() {
     --header-lines=2 \
     --preview "git fuzzy helper status_preview_content {1} {2}" \
     --bind "alt-c:execute(git commit)+$RELOAD" \
+    --bind "alt-e:execute($EDITOR {+2})+$RELOAD" \
     --bind "alt-s:execute-silent(git fuzzy helper status_add {+2})+down+$RELOAD" \
     --bind "alt-r:execute-silent(git fuzzy helper status_reset {+2})+down+$RELOAD" \
     --bind "alt-u:execute-silent(git fuzzy helper status_checkout_head {2})+down+$RELOAD" \
