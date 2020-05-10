@@ -50,7 +50,7 @@ gf_is_in_git_repo() {
 gf_command_logged() {
   gf_log_command "$@"
   if [ -n "$GF_COMMAND_LOG_OUTPUT" ]; then
-    "$@" 1>&2
+    "$@" >> "$GF_LOG_LOCATION" 2>&1
   else
     "$@" >/dev/null 2>&1
   fi
