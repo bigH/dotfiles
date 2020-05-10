@@ -5,6 +5,8 @@
 
 # Ideas
  - support hub things
+ - support `--fzf-opts`
+ - support `--fzf-opts-deep` as a way to propagate fzf props to deeper calls
  - clean up shortcuts in `fzf` global
  - build a JS specific workflow
      - madge dependency tree browsing???
