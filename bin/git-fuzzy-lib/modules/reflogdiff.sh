@@ -21,7 +21,7 @@ gf_fzf_reflogdiff() {
     --phony \
     --header-lines=2 \
     --header "$GF_REFLOGDIFF_HEADER" \
-    --preview 'git fuzzy helper reflogdiff_diff_content {1} {q}' \
+    --preview 'git fuzzy helper reflogdiff_preview_content {1} {q}' \
     --bind 'change:reload(git fuzzy helper reflogdiff_menu_content {q})' \
     --bind 'enter:execute(git fuzzy diff {1}^ {1})' \
     --bind 'ctrl-p:execute(git fuzzy diff {1})' \

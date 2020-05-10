@@ -12,6 +12,10 @@ export GF_COMMAND_LOG_OUTPUT="YES"
 # shellcheck disable=2034
 export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
+# TODO: Fix this highlight default
+# used for highlighting search terms in diff output
+export GREP_COLOR='1;30;48;5;15'
+
 # shellcheck disable=2034
 export GF_PREFILL_QUERY=""
 
@@ -25,13 +29,14 @@ export GF_PREFILL_QUERY=""
 
 . "$LIB_DIR/modules/main.sh"
 
-. "$LIB_DIR/modules/status.sh"
 . "$LIB_DIR/modules/branch.sh"
+. "$LIB_DIR/modules/diff-direct.sh"
+. "$LIB_DIR/modules/diff.sh"
 . "$LIB_DIR/modules/log.sh"
 . "$LIB_DIR/modules/logdiff.sh"
 . "$LIB_DIR/modules/reflog.sh"
 . "$LIB_DIR/modules/reflogdiff.sh"
-. "$LIB_DIR/modules/diff.sh"
+. "$LIB_DIR/modules/status.sh"
 
 # NB: these are never going to appear in the menu
 . "$LIB_DIR/modules/helpers.sh"

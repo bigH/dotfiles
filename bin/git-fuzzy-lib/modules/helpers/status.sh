@@ -10,7 +10,7 @@ if type bat >/dev/null 2>&1; then
   GF_STATUS_FILE_PREVIEW_COMMAND='bat --color=always'
 fi
 
-gf_helper_status_diff_content() {
+gf_helper_status_preview_content() {
   STATUS_CODE="$1"
   FILE_PATH="$2"
 
@@ -26,12 +26,12 @@ gf_helper_status_diff_content() {
     echo "\`$CYAN$FILE_PATH$NORMAL\` ${RED}${BOLD}Deleted${NORMAL}"
   else
     # TODO this doesn't work for renames
-    gf_command_with_header git diff HEAD -- "$FILE_PATH" | diff-so-fancy
+    gf_git_command_with_header diff HEAD -- "$FILE_PATH" | diff-so-fancy
   fi
 }
 
 gf_helper_status_menu_content() {
-  gf_command_with_header git -c color.ui=always status --short
+  gf_git_command_with_header status --short
 }
 
 gf_helper_status_add() {

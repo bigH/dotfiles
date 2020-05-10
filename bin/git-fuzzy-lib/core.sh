@@ -69,16 +69,6 @@ gf_fzf_one() {
           $(quote_params "$@")"
 }
 
-gf_menu_item() {
-  printf '%s%s%-10s%s %s%s%s' "$MAGENTA" "$BOLD" "$1" "$NORMAL" "$GRAY" "$2" "$NORMAL"
-  echo
-}
-
-gf_menu_header() {
-  printf '%s%s%s%s' "$CYAN" "$BOLD" "$1" "$NORMAL"
-  echo
-}
-
 gf_command_with_header() {
   printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
   # shellcheck disable=2046
@@ -87,6 +77,17 @@ gf_command_with_header() {
   echo
   echo
   "$@"
+}
+
+gf_git_command_with_header() {
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
+  # shellcheck disable=2046
+  printf "git "
+  printf "%s" "$(quote_params "$@")"
+  printf "%s" "$NORMAL"
+  echo
+  echo
+  git -c color.ui=always "$@"
 }
 
 gf_quit() {

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=2155
 
 if [ -z "$COLOR_SUPPORT" ]; then
   export COLOR_SUPPORT="YES"
@@ -23,6 +24,7 @@ if [ -z "$COLOR_SUPPORT" ]; then
   export DARKGREY="$DARK_GRAY"
   export GREY="$GRAY"
 fi
+
 
 # quotes mult-word parameters in order to make a command copy-paste with ease
 quote_single_param() {

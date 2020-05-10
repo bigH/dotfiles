@@ -21,7 +21,7 @@ gf_fzf_logdiff() {
     --phony \
     --header-lines=2 \
     --header "$GF_LOGDIFF_HEADER" \
-    --preview 'git fuzzy helper logdiff_diff_content {1} {q}' \
+    --preview 'git fuzzy helper logdiff_preview_content {1} {q}' \
     --bind 'change:reload(git fuzzy helper logdiff_menu_content {q})' \
     --bind 'enter:execute(git fuzzy diff {1}^ {1})' \
     --bind 'ctrl-p:execute(git fuzzy diff {1})' \

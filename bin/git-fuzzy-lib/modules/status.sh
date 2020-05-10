@@ -15,7 +15,7 @@ gf_fzf_status() {
   # shellcheck disable=2046,2016
   gf_fzf -m --header "$STATUS_HEADER" \
     --header-lines=2 \
-    --preview "git fuzzy helper status_diff_content {1} {2}" \
+    --preview "git fuzzy helper status_preview_content {1} {2}" \
     --bind "alt-c:execute(git commit)+$RELOAD" \
     --bind "alt-s:execute-silent(git fuzzy helper status_add {+2})+down+$RELOAD" \
     --bind "alt-r:execute-silent(git fuzzy helper status_reset {+2})+down+$RELOAD" \

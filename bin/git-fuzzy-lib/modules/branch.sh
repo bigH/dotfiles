@@ -25,7 +25,7 @@ gf_fzf_branch() {
     --bind "alt-d:$GF_BRANCH_DELETE_BINDING" \
     --bind "ctrl-p:execute(git fuzzy diff {1})" \
     --bind 'alt-p:execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})' \
-    --preview 'git fuzzy helper branch_diff_content {1}'
+    --preview 'git fuzzy helper branch_preview_content {1}'
 }
 
 gf_branch() {
