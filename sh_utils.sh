@@ -13,6 +13,7 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
   fi
 
   if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+    export DARK_GRAY="$(tput setaf 0)"
     export RED="$(tput setaf 1)"
     export GREEN="$(tput setaf 2)"
     export YELLOW="$(tput setaf 3)"
@@ -26,6 +27,7 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     export INVERT="$(tput sgr 1 0)"
     export NORMAL="$(tput sgr0)"
   else
+    export DARK_GRAY=""
     export RED=""
     export GREEN=""
     export YELLOW=""
@@ -40,7 +42,10 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     export NORMAL=""
   fi
 
-  # Mispelling
+  # Mispellings
+  export DARKGRAY="$DARK_GRAY"
+  export DARK_GREY="$DARK_GRAY"
+  export DARKGREY="$DARK_GRAY"
   export GREY="$GRAY"
 
   # join lines into one, with provided separator character
@@ -94,7 +99,7 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
 
   # quotes mult-word parameters in order to make a command copy-paste with ease
   quote_single_param() {
-    if [[ "$1" = *' '* ]]; then
+    if [ -z "$1" ] || [[ "$1" = *' '* ]]; then
       if [[ "$1" = *"'"* ]]; then
         echo "\"$1\""
       else

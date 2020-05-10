@@ -36,24 +36,47 @@ gf_fzf_diff_select() {
 }
 
 gf_fzf_display_diff() {
-  gf_log 'diff preview: git diff '"$PARAMETERS_QUOTED"' -- {} | diff-so-fancy'
-  gf_fzf -m --preview 'git diff '"$PARAMETERS_QUOTED"' -- {} | diff-so-fancy'
+  PARAMETERS_QUOTED="$(quote_params "$@")"
+
+  # shellcheck disable=2016
+  PREVIEW_COMMAND='
+    FILE={1}
+    QUERY={q}
+    { [ -z "$QUERY" ] &&
+      git diff -W '"$PARAMETERS_QUOTED"' -- "$FILE" | diff-so-fancy } ||
+      git diff -W -G "$QUERY" '"$PARAMETERS_QUOTED"' -- "$FILE" | diff-so-fancy ||
+      echo
+  '
+
+  HEADER='
+Query is a RegEx
+
+Files with matching patches:
+  '
+
+  RELOAD='git diff -G {q} --name-only '"$PARAMETERS_QUOTED"
+
+  gf_log_debug 'diff preview: git diff '"$PARAMETERS_QUOTED"' -- {} | diff-so-fancy'
+  gf_fzf -m --phony \
+    --header "$HEADER" \
+    --preview "$PREVIEW_COMMAND" \
+    --bind "change:reload($RELOAD)"
 }
 
 gf_diff_direct() {
   PARAMETERS_QUOTED="$(quote_params "$@")"
-  # TODO support fail on empty
-  gf_log "diff file-list: git diff --name-only $PARAMETERS_QUOTED"
-  git diff --name-only "$@" | gf_fzf_display_diff
+  gf_log_debug "diff file-list: git diff --name-only $PARAMETERS_QUOTED"
+  git diff --name-only "$@" | gf_fzf_display_diff "$@"
 }
 
+# TODO this is shitty
 gf_diff() {
   if [ $# -gt 0 ]; then
     gf_diff_direct "$@"
   else
     TARGET="$(gf_diff_menu_content | gf_fzf_diff_select)"
     if [ -z "$TARGET" ]; then
-      log_error "no diff target chosen"
+      gf_log_error "no diff target chosen"
     else
       if [ "$(echo "$TARGET" | wc -l)" -eq 1 ]; then
         TYPE="$(echo "$TARGET" | awk '{print $1;}')"

@@ -83,7 +83,8 @@ i_execute() {
         --no-height \
         --preview "$COMMAND" \
         --bind "enter:execute-silent(echo {q} >> $HISTORY_FILE)+reload(tac $HISTORY_FILE)" \
-        --bind "tab:replace-query"
+        --bind "tab:replace-query" \
+        --bind "esc:print-query"
 }
 
 i_execute "$@"

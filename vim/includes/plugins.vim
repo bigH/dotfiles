@@ -136,6 +136,9 @@ PlugMemoize 'HerringtonDarkholme/yats.vim'
 " surround things with `()`, etc.
 PlugMemoize 'tpope/vim-surround'
 
+" use smart-case `:S`
+PlugMemoize 'tpope/vim-abolish'
+
 " enables repetition of many things
 PlugMemoize 'tpope/vim-repeat'
 
@@ -148,9 +151,6 @@ PlugMemoize 'vim-scripts/ReplaceWithRegister'
 " automatically closes things you open `()`, `[]`, etc.
 " TODO annoying with typescript imports
 " PlugMemoize 'Townk/vim-autoclose'
-
-" highlights whitespace where it's not desired
-PlugMemoize 'ntpeters/vim-better-whitespace'
 
 " enables all the below `textobj` plugins
 PlugMemoize 'kana/vim-textobj-user'

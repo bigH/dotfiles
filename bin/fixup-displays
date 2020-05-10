@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if type displayplacer >/dev/null 2>&1; then
+  LIST="$(displayplacer list | grep 'Persistent')"
+
+  screen_id_present() {
+    if [[ "$LIST" =~ $1 ]]; then
+      /usr/bin/true
+    else
+      /usr/bin/false
+    fi
+  }
+
+  all_screen_ids_present() {
+    RESULT="/usr/bin/true"
+    if [ -n "$1" ]; then
+      if ! screen_id_present "$1"; then
+        RESULT="/usr/bin/false"
+      fi
+      shift
+    fi
+    eval "$RESULT"
+  }
+
+  if all_screen_ids_present "D5A39D6E-30E2-D1AB-B31A-5E31ACBD7D25" "DA616E30-0BB3-172D-A6C5-0222DA352979" "02CFC729-D850-0CD0-0951-2778E645261C"; then
+    displayplacer "id:D5A39D6E-30E2-D1AB-B31A-5E31ACBD7D25 res:2560x1440 hz:60 color_depth:8 scaling:on origin:(0,0) degree:0" \
+                  "id:02CFC729-D850-0CD0-0951-2778E645261C res:1080x1920 hz:60 color_depth:8 scaling:off origin:(2560,-204) degree:270" \
+                  "id:DA616E30-0BB3-172D-A6C5-0222DA352979 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(-1080,-225) degree:90"
+  fi
+fi

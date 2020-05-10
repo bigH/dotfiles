@@ -95,12 +95,13 @@ alias grimb='gri $(gmbh)'
 # `git branch`
 if fzf_present ; then
   gb() {
-    git fuzzy branch "$@"
+    git fuzzy branch
   }
+  alias gbd='gb'
 else
   alias gb='git branch'
+  alias gbd='gb --delete --force'
 fi
-alias gbd='gb --delete --force'
 
 # `git status`
 if fzf_present ; then

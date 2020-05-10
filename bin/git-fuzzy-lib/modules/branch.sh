@@ -1,42 +1,33 @@
 #!/usr/bin/env bash
-# shellcheck disable=2016
 
-gf_branch_menu_content() {
-  git for-each-ref --sort='-committerdate' \
-                   --format='%(refname)' \
-                   refs/heads | \
-    sed -e 's-refs/heads/--'
-}
+GF_BRANCH_HEADER='
+  Checkout                Patch                 !! DANGER !!
+┎───────────────────────┬────────────────────┰┰──────────────┒
+┃ CR = checkout         │ M-P = merge-base   ┃┃ M-D = delete ┃
+┃ (stashes any changes) │ C-P = working copy ┃┃ (local only) ┃
+┖───────────────────────┴────────────────────┸┸──────────────┚
 
-# shellcheck disable=2016
-GF_BRANCH_PREVIEW_COMMAND='
-  ref_focused={}
-  ref_base="$(git merge-base "$ref_focused" "$(git merge-base-absolute)")"
-  git diff "$ref_base" "$ref_focused" |
-    diff-so-fancy
 '
+
+GF_BRANCH_RELOAD="reload(git fuzzy helper branch_menu_content)"
+
+GF_ATTEMPT_CHECKOUT="git fuzzy helper branch_checkout {1}"
+GF_BRANCH_ENTER_BINDING="execute-silent($GF_ATTEMPT_CHECKOUT)+$GF_BRANCH_RELOAD"
+
+GF_ATTEMPT_DELETE="git fuzzy helper branch_delete {1}"
+GF_BRANCH_DELETE_BINDING="execute-silent($GF_ATTEMPT_DELETE)+$GF_BRANCH_RELOAD"
 
 gf_fzf_branch() {
   # shellcheck disable=2046,2016
-  gf_fzf_one -m --preview "$GF_BRANCH_PREVIEW_COMMAND"
-}
-
-gf_branch_direct() {
-  ref_provided="$(remove_switches "$@")"
-  if [ -z "$ref_provided" ]; then
-    ref_selected="$(gf_branch_menu_content | gf_fzf_branch)"
-    if [ -z "$ref_selected" ]; then
-      gf_log "no branch selected"
-    else
-      gf_log "git branch $(quote_params "$@") '$ref_selected'"
-      git branch "$@" "$ref_selected"
-    fi
-  else
-    git branch "$@"
-  fi
+  gf_fzf_one -m \
+    --header "$GF_BRANCH_HEADER" \
+    --bind "enter:$GF_BRANCH_ENTER_BINDING" \
+    --bind "alt-d:$GF_BRANCH_DELETE_BINDING" \
+    --bind "ctrl-p:execute(git fuzzy diff {1})" \
+    --bind 'alt-p:execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})' \
+    --preview 'git fuzzy helper branch_diff_content {1}'
 }
 
 gf_branch() {
-  ref_selected="$(gf_branch_menu_content | gf_fzf_branch)"
-  # TODO: gotta implement something here.
+  gf_helper_branch_menu_content | gf_fzf_branch
 }

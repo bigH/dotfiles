@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-FZF_DEFAULT_OPTS=""
+export FZF_DEFAULT_OPTS="\
+  --border \
+  --layout=reverse \
+  --bind 'ctrl-space:toggle-preview' \
+  --bind 'ctrl-d:half-page-down' \
+  --bind 'ctrl-u:half-page-up' \
+  --bind 'ctrl-s:toggle-sort' \
+  --bind 'ctrl-e:preview-down' \
+  --bind 'ctrl-y:preview-up' \
+  --bind 'change:top' \
+  --no-height"
+
+# shellcheck disable=2034
+GF_BASE_BRANCH="$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')"
 
 preview_window_settings() {
   WIDTH="$(tput cols)"
@@ -34,9 +47,17 @@ gf_is_in_git_repo() {
   git rev-parse HEAD > /dev/null 2>&1
 }
 
+gf_command_logged() {
+  gf_log_command "$@"
+  if [ -n "$GF_COMMAND_LOG_OUTPUT" ]; then
+    "$@" 1>&2
+  else
+    "$@" >/dev/null 2>&1
+  fi
+}
+
 gf_fzf() {
   eval "fzf --ansi --no-sort \
-          $FZF_DEFAULTS_BASIC \
           $FZF_DEFAULT_OPTS_MULTI \
           $(preview_window_settings) \
           $(quote_params "$@")"
@@ -44,20 +65,31 @@ gf_fzf() {
 
 gf_fzf_one() {
   eval "fzf +m --ansi --no-sort \
-          $FZF_DEFAULTS_BASIC \
           $(preview_window_settings) \
           $(quote_params "$@")"
 }
 
 gf_menu_item() {
-  echo "${MAGENTA}${BOLD}${1}${NORMAL}: ${GRAY}${2}${NORMAL}"
+  printf '%s%s%-10s%s %s%s%s' "$MAGENTA" "$BOLD" "$1" "$NORMAL" "$GRAY" "$2" "$NORMAL"
+  echo
 }
 
-gf_menu_exit() {
-  gf_menu_item "quit" "exit without error"
+gf_menu_header() {
+  printf '%s%s%s%s' "$CYAN" "$BOLD" "$1" "$NORMAL"
+  echo
+}
+
+gf_command_with_header() {
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
+  # shellcheck disable=2046
+  printf "%s " $(quote_params "$@")
+  printf "%s" "$NORMAL"
+  echo
+  echo
+  "$@"
 }
 
 gf_quit() {
-  gf_log "exiting"
+  gf_log_debug "exiting"
   exit 0
 }
