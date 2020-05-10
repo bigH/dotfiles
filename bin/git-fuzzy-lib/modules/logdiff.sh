@@ -29,5 +29,5 @@ gf_fzf_logdiff() {
 }
 
 gf_logdiff() {
-  gf_helper_logdiff_menu_content | gf_fzf_logdiff
+  git fuzzy helper logdiff_menu_content | gf_fzf_logdiff
 }

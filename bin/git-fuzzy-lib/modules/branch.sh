@@ -29,5 +29,5 @@ gf_fzf_branch() {
 }
 
 gf_branch() {
-  gf_helper_branch_menu_content | gf_fzf_branch
+  git fuzzy helper branch_menu_content | gf_fzf_branch
 }

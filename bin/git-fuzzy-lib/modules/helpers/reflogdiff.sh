@@ -13,7 +13,7 @@ gf_helper_reflogdiff_diff_query() {
 
 gf_helper_reflogdiff_menu_content() {
   if [ -n "$1" ]; then
-    QUERY="$(gf_helper_reflogdiff_log_query "$1")"
+    QUERY="$(git fuzzy helper reflogdiff_log_query "$1")"
     # shellcheck disable=2086
     gf_command_with_header git -c color.ui=always reflog $QUERY
   else
@@ -26,7 +26,7 @@ gf_helper_reflogdiff_diff_content() {
     echo "nothing to show"
   else
     REF="$1"
-    QUERY="$(gf_helper_reflogdiff_diff_query "$2")"
+    QUERY="$(git fuzzy helper reflogdiff_diff_query "$2")"
     # shellcheck disable=2086
     gf_command_with_header git diff "$REF" "$(git merge-base "$GF_BASE_BRANCH" "$REF")" $QUERY | diff-so-fancy
   fi

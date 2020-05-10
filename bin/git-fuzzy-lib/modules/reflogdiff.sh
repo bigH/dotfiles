@@ -29,5 +29,5 @@ gf_fzf_reflogdiff() {
 }
 
 gf_reflogdiff() {
-  gf_helper_reflogdiff_menu_content | gf_fzf_reflogdiff
+  git fuzzy helper reflogdiff_menu_content | gf_fzf_reflogdiff
 }

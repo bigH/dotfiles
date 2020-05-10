@@ -30,6 +30,10 @@ gf_helper_status_diff_content() {
   fi
 }
 
+gf_helper_status_menu_content() {
+  gf_command_with_header git -c color.ui=always status --short
+}
+
 gf_helper_status_add() {
   gf_command_logged git add -- "$@"
 }
@@ -43,6 +47,14 @@ gf_helper_status_checkout_head() {
     gf_log_error 'tried to checkout in status with no file(s)'
   else
     gf_command_logged git checkout HEAD -- "$@"
+  fi
+}
+
+gf_helper_status_edit() {
+  if [ "$#" = 0 ]; then
+    gf_log_error 'tried to checkout in status with no file(s)'
+  else
+    gf_command_logged "$EDITOR" "$@"
   fi
 }
 

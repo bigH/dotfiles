@@ -49,7 +49,7 @@ gf_helper_branch_checkout() {
   if [ -n "$(git status --short)" ]; then
     gf_command_logged git stash
   fi
-  if gf_helper_branch_is_local "$1"; then
+  if git fuzzy helper branch_is_local "$1"; then
     gf_command_logged git checkout "$1"
   else
     STRIPPED_REMOTE="${1#*/}"
@@ -58,7 +58,7 @@ gf_helper_branch_checkout() {
 }
 
 gf_helper_branch_delete() {
-  if gf_helper_branch_is_local "$1"; then
+  if git fuzzy helper branch_is_local "$1"; then
     gf_command_logged git branch -D "$1"
   else
     STRIPPED_REMOTE="${1#*/}"
