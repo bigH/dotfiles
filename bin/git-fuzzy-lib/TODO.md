@@ -1,6 +1,5 @@
 # TODO
- - need to support `fuzzy` cli commands (like `query` which would preload queries - such as for `logdiff`)
- - diff target selection needs work
+ - need to support `fuzzy` cli switches (like `query` which would use `"$PREFILL_QUERY"` queries - such as for `logdiff`)
  - prevent blinkyness
     - idea: move all output to a particular file and tail it in the background into STDERR; kill the process before exiting
 

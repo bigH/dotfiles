@@ -31,10 +31,10 @@ gf_helper_branch_menu_content() {
 }
 
 gf_helper_branch_diff_content() {
-  REF="$1"
-  if [ -z "$REF" ]; then
+  if [ -z "$1" ]; then
     echo "nothing to show"
   else
+    REF="$1"
     # shellcheck disable=2086
     gf_command_with_header git diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" | diff-so-fancy
   fi
