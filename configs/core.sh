@@ -118,5 +118,10 @@ fi
 # useful for overriding and making local-specific installs
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
+
+  export GF_DEBUG_MODE=""
+  export GF_COMMAND_DEBUG_MODE=""
+  export GF_COMMAND_LOG_OUTPUT=""
+  export GF_INTERNAL_COMMAND_DEBUG_MODE=""
 fi
 
