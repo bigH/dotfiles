@@ -288,9 +288,12 @@ function! SearchUtilsHighlightCurrent()
     catch /.*/
     endtry
   end
-  let matchlen = strlen(matchstr(strpart(getline('.'),column-1),@/))
+  let matchlen = strlen(matchstr(strpart(getline('.'), column-1), @/))
   let target_pat = '\c\%#\%('.@/.'\)'
-  let w:current_match_metadata = matchadd('SearchCurrentResult', target_pat, 101)
+  try
+    let w:current_match_metadata = matchadd('SearchCurrentResult', target_pat, 101)
+  catch /.*/
+  endtry
 endfunction
 
 vnoremap <silent> <Plug>(VisualPushBoundedSearch) :<C-U>call PushBoundedSearch(1, 0)<CR>:set hlsearch<CR>:call SearchUtilsHighlightCurrent()<CR>
