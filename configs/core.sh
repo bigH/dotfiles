@@ -114,3 +114,9 @@ if [ -d "$HOME/local-bin" ]; then
   export PATH="$HOME/local-bin:$PATH"
 fi
 
+# Add Home `local-bin` if present
+# useful for overriding and making local-specific installs
+if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
+  export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
+fi
+
