@@ -36,43 +36,21 @@
 	git = !git
 # common typo
 	pul = pull
-	co = checkout
-	cob = checkout -b
-	comb = '!git checkout $(git mbh)'
+# common rename
 	blame = annotate
 # Show Status in Summary Form
 	st = status --short
-# List History
-	ls = "log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\""
-# List History in Long Format
-	ll = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --numstat"
-# List History with Relative Dates
-	ld = "log --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate --date=relative"
-# List History with Short Format
-	le = "log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --decorate"
-# List a File's Log
-	filelog = log -u
-# Last Commit Diff
-	lastdiff = diff --cached HEAD^
-# Diff Against `master`
-	masterdiff = diff origin/master --
-	mbh = '!echo $(git merge-base-remote)/$(git merge-base-branch)'
-# Last Commit Info
-	last = "!git --no-pager log -1"
-# Files Containing $1
-	find = "!git ls-files | grep -i"
-# Ignore Case by Default
-	grep = grep -Ii
 # Print Aliases
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
-# No Pager
-	n = "!git --no-pager"
-# Rework previous commit
-	rework = "reset --soft HEAD~1"
 # list tags
 	tags = "!git tag --list | sort --version-sort --reverse"
 
-# git with `diff-so-fancy`
+# used for git-fuzzy
+[pretty]
+	gflog = "%C(magenta bold)%h%Creset %s %Cgreen(%cr) %C(bold blue)%al%Creset%C(yellow)%d%Creset"
+	gfreflog = "%C(magenta bold)%h%Creset %s %Cgreen(%cr) %C(bold blue)%al%Creset%C(yellow)%d%Creset"
+
+# `diff-so-fancy`-specific
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52

@@ -275,7 +275,10 @@ endfunction
 
 function! SearchUtilsClearCurrent()
   if exists('w:current_match_metadata')
-    call matchdelete(w:current_match_metadata)
+    try
+      call matchdelete(w:current_match_metadata)
+    catch /.*/
+    endtry
   end
 endfunction
 

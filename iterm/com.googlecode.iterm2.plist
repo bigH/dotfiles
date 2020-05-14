@@ -5548,9 +5548,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>-1030 1012 620 392 -1440 -596 1440 2537 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>2583 -271 745 502 2560 -316 1080 1920 </string>
+	<string>2560 -259 1080 920 2560 -276 1080 1897 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>2560 1102 745 502 2560 -316 1080 1920 </string>
+	<string>0 80 1276 1337 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>0 298 745 502 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -6223,7 +6223,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Hasklig-Regular 16</string>
+			<string>Hasklig-Regular 13</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
@@ -6368,6 +6368,10 @@
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>2</integer>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
+	<integer>0</integer>
 	<key>NoSyncFrame_SessionsPreferences</key>
 	<dict>
 		<key>screenFrame</key>
@@ -6378,16 +6382,16 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{2560, -316}, {1080, 1920}}</string>
+		<string>{{2560, -276}, {1080, 1920}}</string>
 		<key>topLeft</key>
-		<string>{2642, 798}</string>
+		<string>{2642, 556}</string>
 	</dict>
 	<key>NoSyncHaveUsedCopyMode</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>58572D5A-D64D-471D-9EA9-21E79A8B87CC</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>112</integer>
+	<integer>159</integer>
 	<key>NoSyncNeverAskAboutSettingAlternateMouseScroll</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
@@ -7178,7 +7182,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-03-18T20:02:56Z</date>
+	<date>2020-05-14T18:00:01Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>

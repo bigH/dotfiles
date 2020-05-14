@@ -117,11 +117,26 @@ fi
 # Add Home `local-bin` if present
 # useful for overriding and making local-specific installs
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
-  export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
+  # export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
+  export PATH="$HOME/dev/mine/git-fuzzy/bin:$PATH"
 
   export GF_DEBUG_MODE=""
   export GF_COMMAND_DEBUG_MODE=""
+  export GF_COMMAND_FZF_DEBUG_MODE=""
   export GF_COMMAND_LOG_OUTPUT=""
   export GF_INTERNAL_COMMAND_DEBUG_MODE=""
+
+  # export GF_DEBUG_MODE="YES"
+  # export GF_COMMAND_DEBUG_MODE="YES"
+  # export GF_COMMAND_FZF_DEBUG_MODE="YES"
+  # export GF_COMMAND_LOG_OUTPUT="YES"
+  # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
+
+  export GF_BAT_STYLE="changes"
+  export GF_BAT_THEME="zenburn"
+
+  export GF_GREP_COLOR='1;30;48;5;15'
+  export GF_LOG_MENU_PARAMS='--pretty=gflog'
+  export GF_REFLOG_MENU_PARAMS='--pretty=gfreflog'
 fi
 
