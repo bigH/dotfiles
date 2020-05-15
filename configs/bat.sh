@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export BAT_STYLE='changes,numbers'
-export BAT_THEME='zenburn'
+export BAT_THEME='gruvbox'
 
 # BAT_THEME_DIR="$(bat --config-dir)/themes"
 

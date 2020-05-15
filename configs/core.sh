@@ -132,6 +132,8 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   # export GF_COMMAND_LOG_OUTPUT="YES"
   # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
+  export GF_PREFERRED_PAGER="diff-so-fancy"
+
   export GF_BAT_STYLE="changes"
   export GF_BAT_THEME="zenburn"
 

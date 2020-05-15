@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 git_web() {
-  git merge-base-remote-url | sed -E 's#^.*@(.*):(.*)(\.git)?#https://\1/\2#'
+  git merge-base-remote-url | sed -E 's#^.*@(.*):([^.]*)(\.git)?#https://\1/\2#'
 }
 
 git_web "$@"
