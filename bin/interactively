@@ -66,9 +66,8 @@ i_project() {
 
   if [ -n "$FZF_HISTORY_DIR" ]; then
     HISTORY_FILE="$FZF_HISTORY_DIR/interactively_$COMMAND_NAME"
-    if [ ! -e "$FZF_HISTORY_DIR" ]; then
-      touch "$HISTORY_FILE"
-    fi
+    mkdir -p "$FZF_HISTORY_DIR"
+    touch "$HISTORY_FILE"
   fi
 }
 

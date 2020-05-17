@@ -52,8 +52,8 @@
 
 # used for git-fuzzy
 [pretty]
-	gflog = "%C(magenta bold)%h%Creset %s %Cgreen(%cr) %C(bold blue)%al%Creset%C(yellow)%d%Creset"
-	gfreflog = "%C(magenta bold)%h%Creset %s %Cgreen(%cr) %C(bold blue)%al%Creset%C(yellow)%d%Creset"
+	gflog = "%C(magenta bold)%h%Creset %C(bold blue)%an%Creset %Cgreen(%cr)%C(yellow)%d%Creset %s"
+	gfreflog = "%C(magenta bold)%h%Creset %C(bold blue)%an%Creset %Cgreen(%cr)%C(yellow)%d%Creset %s"
 
 # `diff-so-fancy`-specific
 [color "diff-highlight"]

@@ -1,5 +1,6 @@
 .hiren/
 .git-fuzzy-config
+.git-fuzzy-snapshots
 .DS_Store
 tags
 .tags
