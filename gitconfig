@@ -10,12 +10,10 @@
 	preloadindex = true
 	excludesfile = ~/.gitignore_global
 	editor = /usr/local/bin/nvim
-#	pager = delta --theme='gruvbox' --highlight-removed
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta --theme='gruvbox' --highlight-removed
 
 [interactive]
-#	diffFilter = delta --color-only --theme='gruvbox' --highlight-removed
-	diffFilter = diff-so-fancy
+	diffFilter = delta --color-only --theme='gruvbox' --highlight-removed
 
 [color]
 	ui = true

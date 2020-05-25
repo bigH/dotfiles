@@ -342,6 +342,12 @@ if IsPluginLoaded('b4winckler/vim-angry')
   " omap <silent> iA <Plug>AngryInnerSuffix
 end
 
+" -- vim-angry [textobj] --
+
+if IsPluginLoaded('pangloss/vim-javascript')
+  let g:javascript_plugin_jsdoc = 1
+end
+
 " -- vim-surround --
 
 if IsPluginLoaded('tpope/vim-surround')

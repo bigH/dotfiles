@@ -114,8 +114,11 @@ if [ -d "$HOME/local-bin" ]; then
   export PATH="$HOME/local-bin:$PATH"
 fi
 
-# Add Home `local-bin` if present
-# useful for overriding and making local-specific installs
+# Add `.local/bin` - used by (Haskell) `stack`
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   # export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
   export PATH="$HOME/dev/mine/git-fuzzy/bin:$PATH"

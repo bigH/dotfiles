@@ -70,6 +70,9 @@ call plug#begin('~/.vim/bundle')
 " For helptags only
 PlugMemoize 'junegunn/vim-plug'
 
+" enables all the below `textobj` plugins
+PlugMemoize 'kana/vim-textobj-user'
+
 " -- GENERAL --
 " status line and other edgy niceties
 PlugMemoize 'vim-airline/vim-airline'
@@ -122,7 +125,7 @@ PlugMemoize 'masukomi/vim-markdown-folding'
 " typescript and jsx files
 PlugMemoize 'pangloss/vim-javascript'
 PlugMemoize 'leafgarland/typescript-vim'
-PlugMemoize 'mxw/vim-jsx'
+PlugMemoize 'MaxMEllon/vim-jsx-pretty'
 PlugMemoize 'HerringtonDarkholme/yats.vim'
 
 " TODO get rid of this if `ale` doesn't do it
@@ -142,7 +145,7 @@ PlugMemoize 'tpope/vim-abolish'
 " enables repetition of many things
 PlugMemoize 'tpope/vim-repeat'
 
-" comment toggling with  `cm<motion>`
+" comment toggling with `cm<motion>`
 PlugMemoize 'tpope/vim-commentary'
 
 " replace with register `gr` (a paste operator which doesn't yank)
@@ -151,9 +154,6 @@ PlugMemoize 'vim-scripts/ReplaceWithRegister'
 " automatically closes things you open `()`, `[]`, etc.
 " TODO annoying with typescript imports
 " PlugMemoize 'Townk/vim-autoclose'
-
-" enables all the below `textobj` plugins
-PlugMemoize 'kana/vim-textobj-user'
 
 " adds motion to select indent level (`ii`) or do so ignoring `\n` (`ai`)
 PlugMemoize 'kana/vim-textobj-indent'
@@ -164,8 +164,8 @@ PlugMemoize 'kana/vim-textobj-entire'
 " adds `al` and `il` to select a line with and without indent (respectively)
 PlugMemoize 'kana/vim-textobj-line'
 
-" adds `ac` and `ic` to select a 'chunk'
-PlugMemoize 'Chun-Yang/vim-textobj-chunk'
+" adds `ax` and `ix` to select a JSX attribute
+PlugMemoize 'inside/vim-textobj-jsxattr'
 
 " adds a `i,` and `a,` motion for parameters (works on kwargs)
 PlugMemoize 'b4winckler/vim-angry'

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 if [ -t 1 ]; then
-  bat "$@"
+  # use plain style to avoid line numbers and git info
+  bat --style=plain "$@"
 else
   cat "$@"
 fi

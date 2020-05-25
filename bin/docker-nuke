@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 
+source "$DOT_FILES_DIR/sh_utils.sh"
+
 docker_nuke() {
   # Stop all containers
-  indent --header docker stop `docker ps -qa`
+  indent --header docker stop $(docker ps -qa)
 
   # Remove all containers
-  indent --header docker rm `docker ps -qa`
+  indent --header docker rm $(docker ps -qa)
 
   # Remove all images
-  indent --header docker rmi -f `docker images -qa `
+  indent --header docker rmi -f $(docker images -qa)
 
   # Remove all volumes
   indent --header docker volume rm $(docker volume ls -qf)
 
   # Remove all networks
-  indent --header docker network rm `docker network ls -q`
+  indent --header docker network rm $(docker network ls -q)
 }
 
 docker_nuke
