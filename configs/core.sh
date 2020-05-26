@@ -120,8 +120,7 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
-  # export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
-  export PATH="$HOME/dev/mine/git-fuzzy/bin:$PATH"
+  export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
 
   export GF_DEBUG_MODE=""
   export GF_COMMAND_DEBUG_MODE=""
@@ -135,7 +134,11 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   # export GF_COMMAND_LOG_OUTPUT="YES"
   # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
-  export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
+  if type delta >/dev/null 2>&1; then
+    export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
+  else
+    export GF_PREFERRED_PAGER="diff-so-fancy"
+  fi
 
   export GF_SNAPSHOT_DIRECTORY="./.git-fuzzy-snapshots"
 
