@@ -77,6 +77,14 @@ function! FocusOnCurrent()
   call setpos('.', l:save_cursor)
 endfunction
 
+function! UnfoldDefault()
+  let current_search = @/
+  let @/ = '(DEFAULT)'
+  normal! ggn
+  call FocusOnCurrent()
+  let @/ = l:current_search
+endfunction
+
 "}}}
 
 
@@ -102,14 +110,19 @@ function! s:LoadJournal()
   execute 'edit' s:TodoPath()
   execute 'filetype' 'detect'
   hi clear markdownCodeBlock
+  call UnfoldDefault()
+
   execute 'vsplit' s:NotesPath()
   execute 'filetype' 'detect'
   hi clear markdownCodeBlock
+  call UnfoldDefault()
+
   let journal_path = s:DailyJournalPath()
   if split(system('cat ' . l:journal_path), '\n')[-1] != '<!-- EOM -->'
     execute 'vsplit' l:journal_path
     execute 'filetype' 'detect'
     hi clear markdownCodeBlock
+    normal zR
   endif
 
   SyncJournalAsync

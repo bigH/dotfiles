@@ -31,9 +31,6 @@ source_configs_for_expected_command helm
 source_configs_for_expected_command rg
 source_configs_for_expected_command journal
 
-unset -f source_configs_for_expected_command
-unset CONFIGS
-
 if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh" ]; then
     auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh"
@@ -41,3 +38,10 @@ if [ -n "$DOT_FILES_ENV" ]; then
     auto_source "$CONFIGS/no-env-context.sh"
   fi
 fi
+
+if [ -e "$CONFIGS/local.sh" ]; then
+  auto_source "$CONFIGS/local.sh"
+fi
+
+unset -f source_configs_for_expected_command
+unset CONFIGS
