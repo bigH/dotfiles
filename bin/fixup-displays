@@ -21,10 +21,21 @@ if type displayplacer >/dev/null 2>&1; then
     fi
     eval "$RESULT"
   }
+  SCREEN_RECT=""
 
   if all_screen_ids_present "D5A39D6E-30E2-D1AB-B31A-5E31ACBD7D25" "DA616E30-0BB3-172D-A6C5-0222DA352979" "02CFC729-D850-0CD0-0951-2778E645261C"; then
     displayplacer "id:D5A39D6E-30E2-D1AB-B31A-5E31ACBD7D25 res:2560x1440 hz:60 color_depth:8 scaling:on origin:(0,0) degree:0" \
                   "id:02CFC729-D850-0CD0-0951-2778E645261C res:1080x1920 hz:60 color_depth:8 scaling:off origin:(2560,-330) degree:270" \
-                  "id:DA616E30-0BB3-172D-A6C5-0222DA352979 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(-1080,-312) degree:90"
+                  "id:DA616E30-0BB3-172D-A6C5-0222DA352979 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(-1080,-330) degree:90"
+    SCREEN_RECT="-1080,-330,4720,1920"
   fi
+
+  if all_screen_ids_present "8207179A-05BB-5C0C-B47B-767C8B3AC429" "4D2BFD25-A981-4582-2180-94B1A6068AC5" "46A041CF-5649-8EB2-62CA-625C0B625049"; then
+    displayplacer "id:8207179A-05BB-5C0C-B47B-767C8B3AC429 res:2560x1440 color_depth:8 scaling:off origin:(0,0) degree:0" \
+                  "id:4D2BFD25-A981-4582-2180-94B1A6068AC5 res:1440x900 color_depth:4 scaling:on origin:(-1440,761) degree:0" \
+                  "id:46A041CF-5649-8EB2-62CA-625C0B625049 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(2560,-243) degree:90"
+    SCREEN_RECT="-1440,-243,5080,1920"
+  fi
+
+  export SCREEN_RECT
 fi

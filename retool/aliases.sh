@@ -3,6 +3,7 @@
 # goto retool directories
 alias jham='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/hammerhead'
 alias jret='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/retool'
+alias jku='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/retool-k8s'
 
 # run front-end
 alias yy='jham && _yy'

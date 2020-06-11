@@ -36,16 +36,8 @@ endif
 
 "{{{ Pasting Only Useful in Code (TODO consider a different solution)??
 
-" Re-indent when pasting
-nnoremap p mmp=`]`m
-nnoremap P mmP=`]`m
-
 nnoremap <leader>p p
 nnoremap <leader>P P
-
-" Re-indent when pasting in visual mode
-vnoremap p p=']
-vnoremap P P=']
 
 vnoremap <leader>p p
 vnoremap <leader>P P

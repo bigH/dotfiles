@@ -117,13 +117,15 @@ function! s:LoadJournal()
   hi clear markdownCodeBlock
   call UnfoldDefault()
 
-  let journal_path = s:DailyJournalPath()
-  if split(system('cat ' . l:journal_path), '\n')[-1] != '<!-- EOM -->'
-    execute 'vsplit' l:journal_path
-    execute 'filetype' 'detect'
-    hi clear markdownCodeBlock
-    normal zR
-  endif
+  execute 'vsplit' ($JOURNAL_PATH . '/work/rules.md')
+  execute 'filetype' 'detect'
+  hi clear markdownCodeBlock
+  normal zR
+
+  execute 'split' ($JOURNAL_PATH . '/log-current.md')
+  execute 'filetype' 'detect'
+  hi clear markdownCodeBlock
+  normal zR
 
   SyncJournalAsync
 

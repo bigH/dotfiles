@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+# shellcheck disable=2016
+USAGE='
+Usage:
+
+  azf [resource...]
+
+Examples:
+
+  azf                  # top-level browser
+  azf network          # select a network resource to drill down into
+  azf ad sp            # look at service-principals
+
+Details:
+
+  In most situations, `azf` will use `list` and `show` together to make
+  your browsing experience nicer. You can also generally expect that the
+  `fzf` prompt will be used in one of these ways:
+
+   - when listing subcommands or resources, to filter the list in the
+     usual `fzf` way
+   - when showing, to build a `jq` query
+'
+
+usage() {
+  echo "$USAGE"
+}
+
+if type fzf >/dev/null 2>&1; then
+  if ! type az >/dev/null 2>&1; then
+    # shellcheck disable=2016
+    log_error '`az` not found; it is required for `azf` to work.'
+    exit 1
+  fi
+
+  if ! type fzf >/dev/null 2>&1; then
+    # shellcheck disable=2016
+    log_error '`fzf` not found; it is required for `azf` to work.'
+    exit 1
+  fi
+
+  FZF_VERSION="$(fzf --version)"
+  MIN_FZF_VERSION="0.21"
+  if [ "$FZF_VERSION" = "$(echo -e "$FZF_VERSION\n$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
+    # shellcheck disable=2016
+    log_warning '`fzf` is too old and may not work properly'
+  fi
+fi
+
+if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ] && [ -w "$TMPDIR" ]; then
+  temp_file="$(mktemp)"
+  az "@$" > "$temp_file" 2>&1
+  if [ "$?" == 0 ]; then
+    echo "TODO"
+  else
+    echo "TODO"
+  fi
+else
+  # shellcheck disable=2016
+  log_error '$TMPDIR not set. it is required for `azf` to work properly'
+fi
+

@@ -70,3 +70,4 @@ function! s:SetupNotesFile()
 endfunction
 
 autocmd BufNewFile,BufRead notes-*.md call <SID>SetupNotesFile()
+autocmd BufNewFile,BufRead log-current.md call <SID>SetupNotesFile()

@@ -37,8 +37,6 @@ func! ModalPasteApply()
     set number
     set relativenumber
     set list
-    nnoremap <silent> p mmp=`]`m
-    nnoremap <silent> P mmP=`]`m
     nnoremap <silent> gp p
     nnoremap <silent> gP P
     vnoremap <silent> p p=']
@@ -54,8 +52,6 @@ func! ModalPasteApply()
     set number
     set norelativenumber
     set list
-    nnoremap <silent> p mmp=`]`m
-    nnoremap <silent> P mmP=`]`m
     nnoremap <silent> gp p
     nnoremap <silent> gP P
     vnoremap <silent> p p=']

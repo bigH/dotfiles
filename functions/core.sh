@@ -118,9 +118,12 @@ wh() {
   fi
 }
 
+if type jq >/dev/null 2>&1; then
+  jqc() {
+    cat - | jq -C .
+  }
 
-if type displayplacer >/dev/null 2>&1; then
-  home-desk() {
-    displayplacer "id:D5A39D6E-30E2-D1AB-B31A-5E31ACBD7D25 res:2560x1440 hz:60 color_depth:8 scaling:on origin:(0,0) degree:0" "id:02CFC729-D850-0CD0-0951-2778E645261C res:1080x1920 hz:60 color_depth:8 scaling:off origin:(2560,-204) degree:270" "id:DA616E30-0BB3-172D-A6C5-0222DA352979 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(-1080,-225) degree:90"
+  jqcp() {
+    cat - | jq -C . | less -REX
   }
 fi

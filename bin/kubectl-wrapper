@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+log_context() {
+  CURRENT_CONTEXT="$(command kubectl config current-context)"
+  if [[ "$CURRENT_CONTEXT" == *'prod'* ]]; then
+    echo "${YELLOW}current context is ${RED}${BOLD}$CURRENT_CONTEXT${NORMAL}"
+  else
+    echo "${YELLOW}current context is ${GREEN}${BOLD}$CURRENT_CONTEXT${NORMAL}"
+  fi
+  echo
+}
+
+if [ "$#" -gt 0 ] && [ "$1" == '--log-context' ]; then
+  shift
+  log_context
+  kubectl "$@"
+else
+  CURRENT_CONTEXT="$(command kubectl config current-context)"
+  if [[ "$CURRENT_CONTEXT" == *'prod'* ]]; then
+    log_context
+    echo -n "    continue? (Y/n): "
+    read -r CONTINUE
+
+    if [ "$CONTINUE" = "Y" ]; then
+      kubectl "$@"
+    fi
+  else
+    kubectl "$@"
+  fi
+fi
+

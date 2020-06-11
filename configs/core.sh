@@ -34,6 +34,11 @@ if [ -d '/usr/local/opt/bison/bin' ]; then
   export PATH="/usr/local/opt/bison/bin:$PATH"
 fi
 
+# Add `coreutils` 'g' prefixed
+if [ -d '/usr/local/opt/coreutils/bin' ]; then
+  export PATH="/usr/local/opt/coreutils/bin:$PATH"
+fi
+
 if [ -d '/usr/local/opt/bison/lib' ]; then
   export LDFLAGS="-L/usr/local/opt/bison/lib"
 fi
@@ -97,6 +102,17 @@ fi
 # Setup Helm in path
 if [ -d "$HOME/opt/helm-2.14.3" ]; then
   export PATH="$HOME/opt/helm-2.14.3:$PATH"
+  export HELM_V2_HOME=$HOME/.helm2
+  export HELM_HOME="$HOME/.helm2"
+fi
+
+# Setup Helm in path
+if [ -d "$HOME/opt/helm-3.2.1" ]; then
+  export PATH="$HOME/opt/helm-3.2.1:$PATH"
+  export HELM_V3_CONFIG=$HOME/.helm3
+  if [ -z "$HELM_HOME" ]; then
+    export HELM_HOME="$HOME/.helm3"
+  fi
 fi
 
 # Add `made/*` - NB: always last
@@ -128,11 +144,11 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export GF_COMMAND_LOG_OUTPUT=""
   export GF_INTERNAL_COMMAND_DEBUG_MODE=""
 
-#   export GF_DEBUG_MODE="YES"
-#   export GF_COMMAND_DEBUG_MODE="YES"
-#   export GF_COMMAND_FZF_DEBUG_MODE="YES"
-#   export GF_COMMAND_LOG_OUTPUT="YES"
-#   export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
+  # export GF_DEBUG_MODE="YES"
+  # export GF_COMMAND_DEBUG_MODE="YES"
+  # export GF_COMMAND_FZF_DEBUG_MODE="YES"
+  # export GF_COMMAND_LOG_OUTPUT="YES"
+  # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
   if type delta >/dev/null 2>&1; then
     export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
@@ -150,5 +166,9 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export GF_GREP_COLOR='1;30;48;5;15'
   export GF_LOG_MENU_PARAMS='--pretty=gflog'
   export GF_REFLOG_MENU_PARAMS='--pretty=gfreflog'
+fi
+
+if [ -d "$DOT_FILES_DIR/interactively" ]; then
+  export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
 fi
 
