@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+if [ -z "$1" ]; then
+  log_error 'this script requires at least one param. e.g. disconnect-from staging'
+  exit 1
+fi
+
+ENVIRONMENT="$1"
+
+if [ -n "$2" ]; then
+  CLUSTER="$ENVIRONMENT-$2"
+else
+  CLUSTER="$ENVIRONMENT"
+fi
+
+echo
+echo "${RED}${BOLD}Disconnecting${NORMAL} from '${MAGENTA}${BOLD}$CLUSTER-*${NORMAL}'"
+echo
+
+kubectl config unset "contexts.$CLUSTER-main"
+kubectl config unset "contexts.$CLUSTER-dbconnector"
+kubectl config unset "contexts.$CLUSTER-services"

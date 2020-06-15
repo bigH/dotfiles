@@ -139,7 +139,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
               indent --header git clean -df ;
               indent --header git status --short'
 
-  alias gacane='indent --header git add -a ;
+  alias gacane='indent --header git add -A ;
                 indent --header git commit --amend --no-edit'
 
   alias gacanepf='gacane ; gpf'
