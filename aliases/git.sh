@@ -51,12 +51,15 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   gcob() {
     if [ "$#" = 1 ]; then
       if git rev-parse --verify "$1" > /dev/null 2>&1 ; then
-        gco "$1"
+        indent --header git checkout "$1"
       else
-        gco -b "$1"
+        indent --header git checkout -b "$1"
       fi
     else
-      gco "$(gb)"
+      BRANCH_NAME="$(gb)"
+      if [ -n "$BRANCH_NAME" ]; then
+        indent --header git checkout "$BRANCH_NAME"
+      fi
     fi
   }
 
@@ -92,6 +95,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gd='gf diff'
   alias gds='gf diff --staged'
   alias gdh='gf diff HEAD'
+  alias gdo='gf diff "$(git merge-base-remote)/$(git branch-name)"'
   alias gdmb='gf diff $(gmbh)'
   alias glm='gl $(gmbh)..HEAD'
 
@@ -132,6 +136,16 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias grp='git reset --patch'
   alias grh='git reset --hard'
   alias grs='git reset --soft'
+
+  # rebase
+  alias gri='git rebase --interactive'
+  alias grimb='gri $(gmbh)'
+  grif() {
+    COMMIT="$(git fuzzy log)"
+    if [ -n "$COMMIT" ]; then
+      gri "$COMMIT"
+    fi
+  }
 
   # combined actions
   alias grhh='indent --header git status --short ;

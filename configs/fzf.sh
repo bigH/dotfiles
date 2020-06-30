@@ -15,6 +15,8 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
 
   export FZF_DEFAULTS_BASIC="\
   --border \
+  --pointer='» ' \
+  --marker='◈ ' \
   --layout=reverse \
   --bind 'ctrl-space:toggle-preview' \
   --bind 'ctrl-s:toggle-sort' \

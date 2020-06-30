@@ -2,11 +2,16 @@
 
 alias k='kubectl-wrapper'
 alias kg='kubectl-wrapper --log-context get'
+alias ke='kubectl-wrapper --log-context edit'
 alias kd='kubectl-wrapper --log-context describe'
 alias kl='kubectl-wrapper --log-context logs'
 alias kc='kubectl-wrapper config'
 
 alias kcc='kubectl config current-context'
+
+kv() {
+  kubectl-wrapper --log-context get -o yaml "$@" | bat --language=yaml --style=plain
+}
 
 ksc() {
   CURRENT_CONTEXT_INFO='
@@ -33,4 +38,14 @@ ksn() {
       --header "$CURRENT_CONTEXT_INFO" \
       --no-preview | \
       xargs kubectl config set-context "$(kubectl config current-context)" --namespace
+}
+
+kdiff() {
+  LEFT="$1"
+  RIGHT="$2"
+
+  shift
+  shift
+
+  diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@")
 }

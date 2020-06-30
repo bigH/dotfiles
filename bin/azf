@@ -23,7 +23,22 @@ Details:
    - when listing subcommands or resources, to filter the list in the
      usual `fzf` way
    - when showing, to build a `jq` query
+
+Configuration:
+
+  AZF_TEMP_FILES_DIR=<< path to store azure output if needed >>
+
 '
+
+if [ -z "$AZF_TEMP_FILES_DIR" ]; then
+  if [ -n "$TMPDIR" ] && [ -d "$TMPDIR" ] && [ -w "$TMPDIR" ]; then
+    AZF_TEMP_FILES_DIR="$(cd "$TMPDIR" ; pwd)"
+  fi
+fi
+
+if [ -z "$AZF_TEMP_FILES_DIR" ]; then
+  log_error "expected AZF_TEMP_FILES_DIR or TMPDIR to be set and writeable"
+fi
 
 usage() {
   echo "$USAGE"
