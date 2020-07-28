@@ -168,7 +168,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export GF_REFLOG_MENU_PARAMS='--pretty=gfreflog'
 fi
 
-if [ -d "$DOT_FILES_DIR/interactively" ]; then
-  export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
-fi
+# if [ -d "$DOT_FILES_DIR/interactively" ]; then
+#   export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
+# fi
 

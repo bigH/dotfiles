@@ -32,6 +32,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # branch
   alias gb="gf branch"
+  alias gbd="g branch -D"
 
   # merge-base
   gmb() {
@@ -81,6 +82,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # add
   alias ga='git add'
+  alias gaa='git add --all'
   alias gap='git add --patch'
 
   # stash list
