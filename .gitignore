@@ -1,18 +1,25 @@
+# local things
+configs/local.sh
+
+# ephemeral things
+logs/
+made/
 .DS_Store
 .local/
 .metals/
 .oh-my-zsh/
 .screenlog/
 .vim/
+
+# external things
 bat/
 dircolors-solarized/
 env-context
 fd/
 fzf/
 git-fuzzy/
-logs/
-made/
+interactively/
 pure/
+retool-sh/
 ripgrep/
 solarized/
-configs/local.sh
