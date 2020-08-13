@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+if [ "$#" -lt 2 ]; then
+  echo 'ERROR: Provide the candidate name. (first and last at least)'
+fi
+
+if [ -z "$JOURNAL_PATH" ]; then
+  echo 'ERROR: no $JOURNAL_PATH'
+elif [ -d "$JOURNAL_PATH" ]; then
+  NAME=""
+  for PART in "$@"; do
+    NAME="$NAME-$PART"
+  done
+  FILENAME="$JOURNAL_PATH/work/interviews/$(date +%F)$NAME.md"
+  if ! [ -f "$FILENAME" ]; then
+    echo "# $*" >  "$FILENAME"
+    echo ""     >> "$FILENAME"
+  fi
+  $EDITOR -u "$DOT_FILES_DIR/vim/apps/interview.vim" "$FILENAME"
+else
+  echo "ERROR: '$JOURNAL_PATH' not a directory"
+fi

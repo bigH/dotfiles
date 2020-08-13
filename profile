@@ -23,9 +23,9 @@ if [ -n "$DOT_FILES_ENV" ]; then
   fi
 fi
 
-# may require `bin` and things from `configs`
-auto_source "$DOT_FILES_DIR/aliases/all.sh"
+# NB: may require `bin` and things from `configs`
 auto_source "$DOT_FILES_DIR/functions/all.sh"
+auto_source "$DOT_FILES_DIR/aliases/all.sh"
 
 if [[ "$SHELL" == *'zsh' ]]; then
   auto_source "$DOT_FILES_DIR/zsh-bindings.sh"

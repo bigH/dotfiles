@@ -4,18 +4,23 @@ source "$DOT_FILES_DIR/sh_utils.sh"
 
 docker_nuke() {
   # Stop all containers
+  # shellcheck disable=2046
   indent --header docker stop $(docker ps -qa)
 
   # Remove all containers
+  # shellcheck disable=2046
   indent --header docker rm $(docker ps -qa)
 
   # Remove all images
+  # shellcheck disable=2046
   indent --header docker rmi -f $(docker images -qa)
 
   # Remove all volumes
+  # shellcheck disable=2046
   indent --header docker volume rm $(docker volume ls -qf)
 
   # Remove all networks
+  # shellcheck disable=2046
   indent --header docker network rm $(docker network ls -q)
 }
 

@@ -49,3 +49,13 @@ kdiff() {
 
   diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@")
 }
+
+kbash() {
+  POD_NAME=$(__kubectl_select_one pod "$@")
+  if [ -n "$POD_NAME" ]; then
+    log_info "selected '$POD_NAME'"
+    kubectl exec -it "$POD_NAME" "$@" bash
+  else
+    log_warning "no pod selected"
+  fi
+}

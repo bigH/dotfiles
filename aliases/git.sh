@@ -145,7 +145,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   grif() {
     COMMIT="$(git fuzzy log)"
     if [ -n "$COMMIT" ]; then
-      gri "$COMMIT"
+      git rebase --interactive "$COMMIT"
     fi
   }
 

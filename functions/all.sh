@@ -19,6 +19,7 @@ function source_functions_for_expected_command() {
 # source or at least warn
 source_functions_for_expected_command fzf
 source_functions_for_expected_command rg
+source_functions_for_expected_command kubectl
 
 unset -f source_functions_for_expected_command
 unset ALIASES
