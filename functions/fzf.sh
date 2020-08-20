@@ -7,6 +7,7 @@ FZF_HISTORY_FOR_RIPGREP="$FZF_HISTORY_DIR/sh_ripgrep"
 
 touch "$FZF_HISTORY_FOR_FILES"
 touch "$FZF_HISTORY_FOR_DIRECTORIES"
+touch "$FZF_HISTORY_FOR_DIRECTORIES"
 
 DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
 if type exa >/dev/null 2>&1; then
@@ -38,18 +39,38 @@ fzf-ripgrep-selector() {
   # shellcheck disable=2016
   PREVIEW_COMMAND="$DOT_FILES_DIR/bin/fzf-helpers/preview-file \"\$FZF_PREVIEW_LINES\""
 
-  # Integration with ripgrep
-  INITIAL_QUERY=""
+  RIPGREP_STORAGE="$(mktemp -t ripgrep-storage)"
+
   eval "echo '' | \
           fzf -m --ansi --no-height --phony \
               --history \"$FZF_HISTORY_FOR_RIPGREP\" \
               $FZF_DEFAULT_OPTS_MULTI \
+              --print-query \
               --bind 'change:reload($SEARCH_PREFIX {q} 2>/dev/null || true)' \
-              --preview '$PREVIEW_COMMAND {}' | \
-          sed -E 's/([^:]+):.*/\\1/' | \
-          sort -u | \
-          join_lines"
-  # TODO
+              --preview '$PREVIEW_COMMAND {}'" > "$RIPGREP_STORAGE"
+
+  if [ "$(wc -l "$RIPGREP_STORAGE" | awk '{ print $1 }')" -le "1" ]; then
+    echo ''
+  else
+    FILE_NAMES="$(tail -n +2 "$RIPGREP_STORAGE" | \
+                    sed -E 's/([^:]+):.*/\1/' | \
+                    sort -u | \
+                    sed -E "s/^(.*)$/'\\1'/" | \
+                    join_lines)"
+
+    if [ "$1" = "vim" ] || [ "$1" = "vim " ]; then
+      QUERY="$(head -n1 "$RIPGREP_STORAGE")"
+      CFILE="$(mktemp -t "ripgrep-fzf")"
+      tail -n +2 "$RIPGREP_STORAGE" > "$CFILE"
+      QUERY_ITEM="'+/$QUERY'"
+      if [ "$1" = 'vim' ]; then
+        QUERY_ITEM=" '+/$QUERY'"
+      fi
+      echo "$QUERY_ITEM '+cfile $CFILE' $FILE_NAMES"
+    else
+      echo "$FILE_NAMES"
+    fi
+  fi
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
@@ -79,115 +100,6 @@ if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
 fi
 
 if [ -z "$DISABLE_GIT_THINGS" ]; then
-  # View the history of a file interactively [-d|--diff] for diff only
-  ghist() {
-    is-in-git-repo || return
-
-    DIFF=no
-    CHECK_PATHS="$@"
-    if [ "$1" = "-p" ] || [ "$1" = "--patch" ]; then
-      DIFF=patch
-      shift
-      CHECK_PATHS="$@"
-    elif [ "$1" = "-d" ] || [ "$1" = "--diff" ]; then
-      DIFF=diff
-      shift
-      CHECK_PATHS="$@"
-    fi
-
-    if [ "$DIFF" = "patch" ]; then
-      # For some reason, eval makes this work. otherwise, the `fzf` list never populates
-      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
-            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git diff {2}~ {2} -- $CHECK_PATHS | diff-so-fancy\" |\
-            true"
-    elif [ "$DIFF" = "diff" ]; then
-      # For some reason, eval makes this work. otherwise, the `fzf` list never populates
-      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- $CHECK_PATHS |\
-            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git diff {2} -- $CHECK_PATHS | diff-so-fancy\" |\
-            true"
-    else
-      # Using eval only for consistency
-      eval "git log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --color=always -- \"$CHECK_PATHS\" |\
-            fzf --multi --ansi --no-height $FZF_DEFAULT_OPTS_MULTI --preview \"git show {2}:\"$CHECK_PATHS\" | bat -p --color always -l \"\${\$(basename $CHECK_PATHS)##*.}\"\" |\
-            true"
-    fi
-  }
-
-  # Select file from git status, fall back to `gfc`
-  gfs() {
-    is-in-git-repo || return
-
-    local FILES
-
-    if [ -n "$(git status -s)" ]; then
-      FILES="$(eval "git -c color.ui=always status --short | \
-                       fzf --no-height --no-sort --multi --ansi --nth '2..,..' \
-                         $FZF_DEFAULT_OPTS_MULTI \
-                         --preview 'git diff HEAD -- {2} | diff-so-fancy' | \
-                         cut -c4-")"
-    else
-      MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
-      FILES="$(eval "git diff '$MERGE_BASE' --name-only | \
-                       fzf --no-height --no-sort --multi --ansi \
-                         $FZF_DEFAULT_OPTS_MULTI \
-                         --preview 'git diff '$MERGE_BASE' -- {} | diff-so-fancy'")"
-    fi
-
-    echo "$FILES"
-  }
-
-  # Select file from git diff with commit (or merge-base)
-  gfc() {
-    is-in-git-repo || return
-
-    MERGE_BASE=$(g merge-base "$(g merge-base-remote)/$(g merge-base-branch)" HEAD)
-    REF="${1:-$MERGE_BASE}"
-
-    eval "git diff $REF --name-only |
-            fzf --no-height -m --ansi --nth '2..,..' \
-                $FZF_DEFAULT_OPTS_MULTI \
-                --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
-  }
-
-  # Select file from git range
-  gfr() {
-    is-in-git-repo || return
-    test -n "$1" || return
-
-    REF="$1"
-
-    eval "git diff $REF --name-only |
-            fzf --no-height -m --ansi --nth '2..,..' \
-                $FZF_DEFAULT_OPTS_MULTI \
-                --preview \"(git diff $REF -- {-1} | diff-so-fancy)\""
-  }
-
-  # Select commit from git history
-  gh_many() {
-    is-in-git-repo || return
-
-    REF="${1:-HEAD}"
-
-    eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
-      fzf --no-height --ansi --no-sort --multi \
-      $FZF_DEFAULT_OPTS_MULTI \
-      --preview 'grep -o \"[a-f0-9]\{7,\}\" <<< {} | xargs git show -p | diff-so-fancy' |
-      grep -o \"[a-f0-9]\{7,\}\""
-  }
-
-  # Select commit from git history
-  gh_one() {
-    is-in-git-repo || return
-
-    REF="${1:-HEAD}"
-
-    eval "git log --date=short --format='%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)' --graph --color=always $REF |
-            fzf --no-height --ansi --no-sort --multi \
-                $FZF_DEFAULT_OPTS_MULTI \
-                --preview 'grep -o \"[a-f0-9]\{7,\}\" <<< {} | xargs git show -p | diff-so-fancy' |
-            grep -o \"[a-f0-9]\{7,\}\""
-  }
-
   # Create useful gitignore files
   gitignore() {
     api="curl -L -s https://www.gitignore.io/api"
