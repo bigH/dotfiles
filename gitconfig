@@ -18,7 +18,10 @@
 	ui = true
 
 [push]
-	default = upstream
+	default = nothing
+
+[pull]
+	rebase = true
 
 [diff]
 # seems to break somethings
