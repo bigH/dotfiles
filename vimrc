@@ -6,6 +6,7 @@ exec "source" $DOT_FILES_DIR . "/" . "vim/custom/git.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
 
 "}}}
 
@@ -41,40 +42,6 @@ nnoremap <leader>P P
 
 vnoremap <leader>p p
 vnoremap <leader>P P
-
-"}}}
-
-
-"{{{ Window Management
-
-" Kill current split
-nmap <silent> <M-x> :close<CR>
-imap <silent> <M-x> <Esc>:close<CR>
-nmap <silent> <M-X> :only<CR>
-imap <silent> <M-X> <Esc>:only<CR>
-
-" Move between windows using <M-H/J/K/L> keys
-nmap <silent> <M-h> :wincmd h<CR>
-imap <silent> <M-h> <Esc>:wincmd h<CR>
-nmap <silent> <M-j> :wincmd j<CR>
-imap <silent> <M-j> <Esc>:wincmd j<CR>
-nmap <silent> <M-k> :wincmd k<CR>
-imap <silent> <M-k> <Esc>:wincmd k<CR>
-nmap <silent> <M-l> :wincmd l<CR>
-imap <silent> <M-l> <Esc>:wincmd l<CR>
-
-" Split windows using <M-S-H/J/K/L> keys
-nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>
-imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>
-nmap <silent> <M-J> :split<CR>
-imap <silent> <M-J> <Esc>:split<CR>
-nmap <silent> <M-K> :split<CR>:wincmd k<CR>
-imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>
-nmap <silent> <M-L> :vsplit<CR>
-imap <silent> <M-L> <Esc>:vsplit<CR>
-
-" Move Buffers
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
 
 "}}}
 

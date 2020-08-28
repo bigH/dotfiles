@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # shellcheck disable=2016
 
 fzf_present() {
@@ -48,6 +50,24 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # checkout
   alias gco='indent --header git checkout'
 
+  gcof() {
+    FILES=""
+    for arg in "$@"; do
+      if [ -n "$FILES" ]; then
+        ((FILES+=1))
+      fi
+      if [ "$arg" = "--" ]; then
+        FILES=0
+      fi
+    done
+
+    if [ -n "$FILES" ] && [ "$FILES" -gt 0 ]; then
+      git checkout "$@"
+    else
+      log_error "no files selected; aborting"
+    fi
+  }
+
   # checkout a branch
   gcob() {
     if [ "$#" = 1 ]; then
@@ -86,6 +106,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gap='git add --patch'
 
   # stash list
+  alias gfs='gf stash'
   alias gst='indent --header git stash'
   alias gsls='gst list --stat'
   alias gssh='gst show --patch'
@@ -102,23 +123,34 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias glm='gl $(gmbh)..HEAD'
 
   # original diff
-  alias gdd='g diff'
+  alias ggd='g diff'
+  alias ggds='g diff --staged'
+  alias ggdh='g diff HEAD'
+  alias ggdo='g diff "$(git merge-base-remote)/$(git branch-name)"'
+  alias ggdmb='g diff $(gmbh)'
+  alias gglm='g log $(gmbh)..HEAD'
 
   # show
   gsh() {
     if [ "$#" = 0 ]; then
-      gf diff HEAD^ HEAD
+      git fuzzy diff HEAD^ HEAD
     elif [ "$#" = 1 ]; then
-      gf diff "$1^" "$1"
+      git fuzzy diff "$1^" "$1"
     else
       >&2 echo 'ERROR: `gsh` only supports 0 args or 1 arg (a commit)'
     fi
   }
 
+  # original show
+  alias ggsh='git show'
+
   # log
   alias gl='gf log'
   alias glr='git fetch "$(git merge-base-remote)" && gl "$(git merge-base-remote)/$(git branch-name)"'
   alias glm='gl $(gmbh)..HEAD'
+  alias ggl='g log'
+  alias gglr='git fetch "$(git merge-base-remote)" && ggl "$(git merge-base-remote)/$(git branch-name)"'
+  alias gglm='ggl $(gmbh)..HEAD'
 
   # log - no pager
   alias gnl='git --no-pager log'
@@ -129,19 +161,20 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gprom='indent --header git pull --rebase $(git merge-base-remote) $(git merge-base-branch)'
   alias gprob='indent --header git pull --rebase $(git merge-base-remote) $(git branch-name)'
 
-  # pull - misspellings
+  # pull - misspellings of most used ones
   alias grpom='gprom'
   alias pgrom='gprom'
 
   # reset
-  alias gr='git reset'
-  alias grp='git reset --patch'
-  alias grh='git reset --hard'
-  alias grs='git reset --soft'
+  alias gr='g reset'
+  alias grp='gr --patch'
+  alias grh='gr --hard'
+  alias grs='gr --soft'
 
   # rebase
   alias gri='git rebase --interactive'
   alias grimb='gri $(gmbh)'
+
   grif() {
     COMMIT="$(git fuzzy log)"
     if [ -n "$COMMIT" ]; then
