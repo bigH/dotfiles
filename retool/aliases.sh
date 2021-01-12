@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # goto retool directories
-alias jham='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/hammerhead'
-alias jret='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/retool'
+alias jret='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV'
+alias jfront='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/frontend'
+alias jback='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/backend'
 alias jku='[ -d "$RETOOL_DEV" ] && cd $RETOOL_DEV/retool-k8s'
 
 # run front-end

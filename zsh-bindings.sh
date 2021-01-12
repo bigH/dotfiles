@@ -41,7 +41,7 @@ fzf-git-files-from-commits() {
     local result="$(git fuzzy diff $(git merge-base HEAD $(git merge-base-absolute)) | join_lines);"
     LBUFFER+="$result"
   elif [ "$num_commits" -eq 1 ]; then
-    local result="$(git fuzzy diff "$commits" | join_lines);"
+    local result="$(git fuzzy diff "$commits"^ | join_lines);"
     LBUFFER+="$result"
   elif [ "$num_commits" -eq 2 ]; then
     local range="$(echo "$commits" | tac | join_lines '..')"

@@ -240,7 +240,7 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 " Desired `highlight` in comments
 augroup Todos
   au Syntax * syn match MyTodo
-        \ /\v<(FIXME|NOTE|TODO|OPTIMIZE|MISSING|XXX|PR|NB):/
+        \ /\v<(FIXME|NOTES|NOTE|TODO|OPTIMIZE|MISSING|XXX|PR|NB):/
         \ containedin=.*Comment,vimCommentTitle
 augroup END
 

@@ -17,12 +17,18 @@ Usage:
   # interactively selects namespace to apply command to
   kfn <action> ...
 
+  # interactively selects context to apply command to
+  kfc <action> ...
+
+  # interactively selects context and namespace to apply command to
+  kfcn <action> ...
+
 Arguments:
   `--` splits the arg list into 3 useful parts
   `---` is equivalent to `-- --`
 
   `kf <command> [type] [...global args] -- [...get args] -- [...action args]`
-  `kf <command> [type] --- [...action args]
+  `kf <command> [type] [...global args] --- [...action args]
 
   `kf exec --context=foo -- -n bar -- -it psql` results in:
 

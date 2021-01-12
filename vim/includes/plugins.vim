@@ -99,7 +99,7 @@ PlugMemoize 'airblade/vim-gitgutter', ForModes('vim', 'nvim')
 PlugMemoize 'morhetz/gruvbox'
 
 " not always used, but useful for `scratch` and `journal`
-PlugMemoize '907th/vim-auto-save', ExcludeModes('vim', 'nvim')
+PlugMemoize '907th/vim-auto-save'
 
 " LSP makes this obsolete - fzf for tags
 " PlugMemoize 'zackhsi/fzf-tags', ForModes('vim', 'nvim')

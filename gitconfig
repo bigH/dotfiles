@@ -10,6 +10,7 @@
 	preloadindex = true
 	excludesfile = ~/.gitignore_global
 	pager = delta --theme='gruvbox' --highlight-removed
+	precomposeUnicode = true
 
 [interactive]
 	diffFilter = delta --color-only --theme='gruvbox' --highlight-removed

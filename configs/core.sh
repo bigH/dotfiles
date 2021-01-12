@@ -100,8 +100,8 @@ if type rbenv >/dev/null 2>&1; then
 fi
 
 # Setup Helm in path
-if [ -d "$HOME/opt/helm-2.14.3" ]; then
-  export PATH="$HOME/opt/helm-2.14.3:$PATH"
+if [ -d "$HOME/opt/helm-2.17.0" ]; then
+  export PATH="$HOME/opt/helm-2.17.0:$PATH"
   export HELM_V2_HOME=$HOME/.helm2
   export HELM_HOME="$HOME/.helm2"
 fi

@@ -2,9 +2,15 @@
 
 # jj - list autojump directories
 if type autojump >/dev/null 2>&1; then
-  jj() {
-    autojump -s
-  }
+  if type fzf >/dev/null 2>&1; then
+    jj() {
+      autojump -s | cut -f2 | file-must-exist
+    }
+  else
+    jj() {
+      autojump -s
+    }
+  fi
 fi
 
 # portcheck - check if a port is available
@@ -88,6 +94,17 @@ hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 }
 
+WH_LS_COMMAND='ls --color=always'
+WH_CAT_COMMAND='cat'
+
+if type bat >/dev/null 2>&1; then
+  WH_CAT_COMMAND='bat --color=always'
+fi
+
+if type bat >/dev/null 2>&1; then
+  WH_CAT_COMMAND='exa --color=always'
+fi
+
 # `which` with `ls -l $(which)`
 wh() {
   if [ -z "$1" ]; then
@@ -103,11 +120,14 @@ wh() {
       wh "$PATH_TO_FILE"
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
-      indent --header ls -ld "$1"
+      # shellcheck disable=2086
+      indent --header $WH_LS_COMMAND -ld "$1"
     elif [ -d "$1" ]; then
       echo "${CYAN} -- found a directory -- ${NORMAL}"
-      indent --header ls -ld "$1"
-      indent --header ls -l "$1"
+      # shellcheck disable=2086
+      indent --header $WH_LS_COMMAND -ld "$1"
+      # shellcheck disable=2086
+      indent --header $WH_CAT_COMMAND -l "$1"
     else
       indent --header which "$1"
       PATH_TO_COMMAND="$(which "$1")"

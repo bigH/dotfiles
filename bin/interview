@@ -11,9 +11,13 @@ elif [ -d "$JOURNAL_PATH" ]; then
   for PART in "$@"; do
     NAME="$NAME-$PART"
   done
-  FILENAME="$JOURNAL_PATH/work/interviews/$(date +%F)$NAME.md"
-  if ! [ -f "$FILENAME" ]; then
+  POSSIBLE_PATH="$(find "$JOURNAL_PATH/work/interviews" -name "*$NAME.md")"
+  if [ -f "$POSSIBLE_PATH" ]; then
+    FILENAME="$POSSIBLE_PATH"
+  else
+    FILENAME="$JOURNAL_PATH/work/interviews/$(date +%F)$NAME.md"
     echo "# $*" >  "$FILENAME"
+    echo ""     >> "$FILENAME"
     echo ""     >> "$FILENAME"
   fi
   $EDITOR -u "$DOT_FILES_DIR/vim/apps/interview.vim" "$FILENAME"

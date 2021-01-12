@@ -40,7 +40,11 @@ preview_file() {
   if [ "$LINE_END" -gt "$LINES_IN_FILE" ]; then
     LINE_START_EXPR="$LINES_IN_FILE - $WINDOW_HEIGHT + 1"
     LINE_START="$(echo "$LINE_START_EXPR" | bc)"
-    LINE_RANGE="$LINE_START:"
+    if [ "$LINE_START" -lt "1" ]; then
+      LINE_RANGE="1:"
+    else
+      LINE_RANGE="$LINE_START:"
+    fi
   fi
 
   bat --color=always --line-range "$LINE_RANGE" --highlight-line "$LINE_NUMBER" "$FILE_NAME"

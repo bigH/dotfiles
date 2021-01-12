@@ -117,16 +117,6 @@ function! s:LoadJournal()
   hi clear markdownCodeBlock
   call UnfoldDefault()
 
-  execute 'vsplit' ($JOURNAL_PATH . '/work/rules.md')
-  execute 'filetype' 'detect'
-  hi clear markdownCodeBlock
-  normal zR
-
-  execute 'split' ($JOURNAL_PATH . '/log-current.md')
-  execute 'filetype' 'detect'
-  hi clear markdownCodeBlock
-  normal zR
-
   SyncJournalAsync
 
   execute 'wincmd' 'h'
