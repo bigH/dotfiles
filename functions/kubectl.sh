@@ -3,7 +3,7 @@
 if [ -z "$KUBECTL_YAML_VIEWER" ]; then
   KUBECTL_YAML_VIEWER="less"
   if type bat >/dev/null 2>&1; then
-    KUBECTL_YAML_VIEWER="bat --language=yaml --style=plain"
+    KUBECTL_YAML_VIEWER="bat --color=always --language=yaml --style=plain"
   fi
 fi
 
@@ -19,7 +19,7 @@ __kubectl_select_one() {
       --no-multi \
       --ansi \
       --header-lines=1 \
-      --preview "kubectl get $SUBJECT {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
+      --preview "kubectl get $SUBJECT $(printf '%q ' "$@") {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
     awk '{ print $1 }'
 }
 
@@ -35,7 +35,7 @@ __kubectl_select_many() {
       --multi \
       --ansi \
       --header-lines=1 \
-      --preview "kubectl get $SUBJECT {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
+      --preview "kubectl get $SUBJECT $(printf '%q ' "$@") {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
     awk '{ print $1 }'
 }
 

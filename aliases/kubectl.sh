@@ -20,9 +20,6 @@ Usage:
   # interactively selects context to apply command to
   kfc <action> ...
 
-  # interactively selects context and namespace to apply command to
-  kfcn <action> ...
-
 Arguments:
   `--` splits the arg list into 3 useful parts
   `---` is equivalent to `-- --`
@@ -30,15 +27,15 @@ Arguments:
   `kf <command> [type] [...global args] -- [...get args] -- [...action args]`
   `kf <command> [type] [...global args] --- [...action args]
 
-  `kf exec --context=foo -- -n bar -- -it psql` results in:
+  `kf exec --context=foo -n bar --- -it psql` results in:
 
     # loading the list of items
     `kubectl get pod --context=foo -n bar`
 
     # applying the action chosen to the selection
-    `kubectl describe pod <selection> --context=foo -it psql`
+    `kubectl describe pod <selection> --context=foo -n bar -it psql`
 
-Actions:
+Commands:
 
   # `kubectl get -o yaml`
   kf get <type> [...args]
@@ -49,7 +46,7 @@ Actions:
   # `kubectl edit`
   kf edit <type> [...args]
 
-  # `kubectl exec`
+  # `kubectl exec` (does not require a resource type)
   kf exec [...args]
 
 Gotchas:
@@ -116,19 +113,16 @@ Gotchas:
     done
 
     # get user's selected object
+    echo __kubectl_select_one "$TYPE" "${GET_ARGS[@]}"
     SELECTION="$(__kubectl_select_one "$TYPE" "${GET_ARGS[@]}")"
 
     if [ -n "$SELECTION" ]; then
       case "$ACTION" in
         get)
-          if type bat >/dev/null 2>&1; then
-            kubectl get "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | bat --language=yaml --style=plain
-          else
-            kubectl get "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | less
-          fi
+          kubectl get -o yaml "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER"
           ;;
         describe)
-          kubectl describe "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" ;;
+          kubectl describe "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER" ;;
         edit)
           kubectl edit "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" ;;
         exec)
@@ -141,7 +135,7 @@ Gotchas:
 }
 
 kfn() {
-  KUBECTL_FORCE_NAMESPACE="$(__kubectl_select_one 'namespace')"
+  KUBECTL_FORCE_NAMESPACE="$(__kubectl_select_one namespace)"
   if [ -n "$KUBECTL_FORCE_NAMESPACE" ]; then
     kf "$@"
   else
@@ -158,30 +152,6 @@ kfc() {
     log_warning "no context selected"
   fi
   unset KUBECTL_FORCE_CONTEXT
-}
-
-kv() {
-  if [ "$#" -eq 0 ]; then
-    # shellcheck disable=2016
-    log_error 'nothing to `view`'
-  elif [ "$#" -eq 1 ]; then
-    kf get "$1" --- -o yaml
-  else
-    # use `kubectl` since `view` is a non-destructive action
-    kubectl get -o yaml "$@" | bat --language=yaml --style=plain
-  fi
-}
-
-ke() {
-  if [ "$#" -eq 0 ]; then
-    # shellcheck disable=2016
-    log_error 'nothing to `view`'
-  elif [ "$#" -eq 1 ]; then
-    kf edit "$1"
-  else
-    # use `kubectl-wrapper` since `view` is a non-destructive action
-    kubectl-wrapper edit "$@"
-  fi
 }
 
 alias kfv='kf get'
@@ -210,13 +180,15 @@ ksc() {
 
 ksn() {
   CURRENT_CONTEXT="$(kubectl config current-context)"
-  KUBECTL_SELECTED_NAMESPACE="$(__kubectl_select_one 'namespace')"
+  KUBECTL_SELECTED_NAMESPACE="$(__kubectl_select_one namespace)"
   if [ -n "$KUBECTL_SELECTED_NAMESPACE" ]; then
     kubectl config set-context "$CURRENT_CONTEXT" --namespace "$KUBECTL_SELECTED_NAMESPACE"
   else
     log_warning "no namespace selected"
   fi
 }
+
+alias kscn='ksc ; ksn'
 
 kdiff() {
   LEFT="$1"
@@ -225,11 +197,15 @@ kdiff() {
   shift
   shift
 
-  diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@")
+  if [ -t 1 ]; then
+    diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@") | eval "$DIFF_PAGER"
+  else
+    diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@")
+  fi
 }
 
 kbash() {
-  POD_NAME=$(__kubectl_select_one pod "$@")
+  POD_NAME="$(__kubectl_select_one pod "$@")"
   if [ -n "$POD_NAME" ]; then
     log_info "selected '$POD_NAME'"
     kubectl exec -it "$POD_NAME" "$@" bash
@@ -238,23 +214,25 @@ kbash() {
   fi
 }
 
-# NB: notice that the function body uses `'`, therefore, `$2` should not use them because the interpreter will choke
+# build a table for all pods with status
+kube-events-sorted() {
+  kubectl get event --sort-by=".metadata.managedFields[0].time" "$@"
+}
+
+# NB: make sure to escape double-quotes (!!!!!!!!!!!!!)
 build_watchable_command() {
   FUNCTION_NAME="$1"
   COMMAND_LINE="$2"
+  FILTER="$3"
 
-  eval "$FUNCTION_NAME() { eval '$COMMAND_LINE' }"
-  eval "watch-$FUNCTION_NAME() { watch -n \"\${1:-10}\" '$COMMAND_LINE' }"
+  eval "$FUNCTION_NAME() { eval \"$COMMAND_LINE \$(printf '%q' \"\$@\") | $FILTER\" }"
+  eval "watch-$FUNCTION_NAME() { watch \"$COMMAND_LINE \$(printf '%q' \"\$@\") | $FILTER\" }"
 }
 
 # build a table for all pods with status
-KUBE_POD_COUNTS_COMMAND='kubectl get pods -o jsonpath="{range .items[*]}{.spec.containers[0].image}#{.metadata.labels.app}#{.status.phase}#{.status.reason}#{.status.message}{\"\n\"}{end}"'
-build_watchable_command 'kube-pod-counts' "$KUBE_POD_COUNTS_COMMAND | sort | uniq -c | column -t -s \"#\""
+KUBE_POD_COUNT_BY_IMAGE_COMMAND='kubectl get pods -o jsonpath=\"{range .items[*]}{.spec.containers[0].image}#{.metadata.labels.app}#{.status.phase}#{.status.reason}#{.status.message}{\\\"\n\\\"}{end}\"'
+build_watchable_command 'kube-pod-count-by-image' "$KUBE_POD_COUNT_BY_IMAGE_COMMAND" 'sort | uniq -c | column -t -s \"#\"'
 
 # build a table for all pods with status
-KUBE_POD_LIVE_COUNTS_COMMAND='kubectl get pods -o jsonpath="{range .items[?(@.status.phase==\"Running\")]}{.spec.containers[0].image}#{.metadata.labels.app}#{.status.phase}#{.status.reason}#{.status.message}{\"\n\"}{end}"'
-build_watchable_command 'kube-pod-live-counts' "$KUBE_POD_LIVE_COUNTS_COMMAND | sort | uniq -c | column -t -s \"#\""
-
-# build a table for all pods with status
-KUBE_NODE_LAYOUT_COMMAND='kubectl get pods -o jsonpath="{range .items[?(@.status.phase==\"Running\")]}{.spec.nodeName}#{.metadata.name}#{.status.hostIP}#{.status.podIP}#{.status.podIP}{\"\n\"}{end}"'
-build_watchable_command 'kube-node-layout' "$KUBE_NODE_LAYOUT_COMMAND | column -t -s \"#\" | sort"
+KUBE_NODE_LAYOUT_COMMAND='kubectl get pods -o jsonpath=\"{range .items[?(@.status.phase==\\\"Running\\\")]}{.spec.nodeName}#{.status.hostIP}#{.metadata.name}#{.status.podIP}{\\\"\n\\\"}{end}\"'
+build_watchable_command 'kube-node-layout' "$KUBE_NODE_LAYOUT_COMMAND" 'column -t -s \"#\" | sort'

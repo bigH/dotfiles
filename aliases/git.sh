@@ -50,6 +50,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # checkout
   alias gco='indent --header git checkout'
 
+  # checkout files "safely" aborts if no filenames provided (useful for command substitution)
   gcof() {
     FILES=""
     for arg in "$@"; do
@@ -64,11 +65,32 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     if [ -n "$FILES" ] && [ "$FILES" -gt 0 ]; then
       git checkout "$@"
     else
-      log_error "no files selected; aborting"
+      log_warning "no files selected; using diff to select files"
+      IFS=$'\r\n' eval 'FILES=($(git fuzzy diff "$@"))'
+      if [ "${#FILES[@]}" -gt 0 ]; then
+        gcof "$@" -- "${FILES[@]}"
+      else
+        log_error "no files selected; aborting"
+      fi
     fi
   }
 
-  # checkout a branch
+  # interactively select files in patch (against merge base) to apply
+  gabmb() {
+    if [ "$#" = 1 ]; then
+      MERGE_BASE="$(git merge-base "$1" "$(git merge-base-remote)/$(git merge-base-branch)")"
+      IFS=$'\r\n' eval 'FILES=($(git fuzzy diff "$MERGE_BASE" "$1"))'
+      if [ "${#FILES[@]}" -gt 0 ]; then
+        git apply <(git diff "$MERGE_BASE" "$1" -- "${FILES[@]}")
+      else
+        log_error "no files selected; aborting"
+      fi
+    else
+      log_error "no commit or branch provided; aborting"
+    fi
+  }
+
+  # checkout a branch or commit
   gcob() {
     if [ "$#" = 1 ]; then
       if git rev-parse --verify "$1" > /dev/null 2>&1 ; then

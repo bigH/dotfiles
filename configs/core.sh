@@ -90,11 +90,6 @@ if [ -d '/usr/local/sbin' ]; then
 fi
 
 # Initialize `rbenv`
-if type docker >/dev/null 2>&1; then
-  alias d=docker
-fi
-
-# Initialize `rbenv`
 if type rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
@@ -107,8 +102,8 @@ if [ -d "$HOME/opt/helm-2.17.0" ]; then
 fi
 
 # Setup Helm in path
-if [ -d "$HOME/opt/helm-3.2.1" ]; then
-  export PATH="$HOME/opt/helm-3.2.1:$PATH"
+if [ -d "$HOME/opt/helm-3.5.2" ]; then
+  export PATH="$HOME/opt/helm-3.5.2:$PATH"
   export HELM_V3_CONFIG=$HOME/.helm3
   if [ -z "$HELM_HOME" ]; then
     export HELM_HOME="$HOME/.helm3"
@@ -135,6 +130,14 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+if type delta >/dev/null 2>&1; then
+  export DIFF_PAGER="delta --theme=gruvbox --highlight-removed"
+elif type diff-so-fancy >/dev/null 2>&1; then
+  export DIFF_PAGER="diff-so-fancy"
+else
+  export DIFF_PAGER="cat -"
+fi
+
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export PATH="$DOT_FILES_DIR/git-fuzzy/bin:$PATH"
 
@@ -150,10 +153,10 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   # export GF_COMMAND_LOG_OUTPUT="YES"
   # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
+  export GF_PREFERRED_PAGER="$DIFF_PAGER"
   if type delta >/dev/null 2>&1; then
-    export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
-  else
-    export GF_PREFERRED_PAGER="diff-so-fancy"
+    # only add `__WIDTH__` if using `delta` - other pagers don't support it
+    export GF_PREFERRED_PAGER="$GF_PREFERRED_PAGER -w __WIDTH__"
   fi
 
   export GF_HUB_PR_FORMAT="%pC%I%Creset %Cyellow(%ur)%Creset %Cmagenta(%au)%Creset %t %l%n"
@@ -168,7 +171,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export GF_REFLOG_MENU_PARAMS='--pretty=gfreflog'
 fi
 
-# if [ -d "$DOT_FILES_DIR/interactively" ]; then
-#   export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
-# fi
+if [ -d "$DOT_FILES_DIR/interactively" ]; then
+  export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
+fi
 

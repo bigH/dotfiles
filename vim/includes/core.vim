@@ -257,8 +257,8 @@ set ruler
 " Display current mode
 set showmode
 
-" Automatically set scroll
-autocmd BufEnter * set scroll=5
+" Set scroll
+set scroll=5
 
 " Delete comment character when joining lines
 set formatoptions+=j

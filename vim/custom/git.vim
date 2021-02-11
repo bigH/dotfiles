@@ -94,7 +94,12 @@ vmap <silent> <leader>gm :<C-U>call <SID>GithubOpenMergeBase(1)<CR>
 nmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(0)<CR>
 vmap <silent> <leader>gb :<C-U>call <SID>GithubOpenBlame(1)<CR>
 
-nmap <silent> <leader>ga :<C-U>call <SID>SaveAndGitAdd()<CR>
-nmap <silent> <leader>gA :<C-U>call <SID>SaveAndGitAddAll()<CR>
+nmap <silent> <leader>gaf :<C-U>call <SID>SaveAndGitAdd()<CR>
+nmap <silent> <leader>gaa :<C-U>call <SID>SaveAndGitAddAll()<CR>
+
+if IsPluginLoaded('airblade/vim-gitgutter')
+  nmap <silent> <leader>gpp :<C-U>GitGutterPreviewHunk<CR>
+  nmap <silent> <leader>gap :<C-U>GitGutterStageHunk<CR>
+endif
 
 nmap <silent> <leader>grm :<C-U>call <SID>DeleteAndGitRm()<CR>:BD<CR>

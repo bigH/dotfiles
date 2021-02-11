@@ -4,7 +4,8 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
   SOURCE_SH_UTILS="YES"
 
   if [ -z "$SH_UTILS_LOG_MODES" ]; then
-    export SH_UTILS_LOG_MODES=":INFO:WARN:ERROR:DEBUG:"
+    # export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:DEBUG:"
+    export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:"
   fi
 
   # Defaults
@@ -13,34 +14,34 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
   fi
 
   if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-    export DARK_GRAY="$(tput setaf 0)"
-    export RED="$(tput setaf 1)"
-    export GREEN="$(tput setaf 2)"
-    export YELLOW="$(tput setaf 3)"
-    export BLUE="$(tput setaf 4)"
-    export MAGENTA="$(tput setaf 5)"
-    export CYAN="$(tput setaf 6)"
-    export WHITE="$(tput setaf 7)"
-    export GRAY="$(tput setaf 8)"
-    export BOLD="$(tput bold)"
-    export UNDERLINE="$(tput sgr 0 1)"
-    export INVERT="$(tput sgr 1 0)"
-    export NORMAL="$(tput sgr0)"
-  else
-    export DARK_GRAY=""
-    export RED=""
-    export GREEN=""
-    export YELLOW=""
-    export BLUE=""
-    export MAGENTA=""
-    export CYAN=""
-    export WHITE=""
-    export GRAY=""
-    export BOLD=""
-    export UNDERLINE=""
-    export INVERT=""
-    export NORMAL=""
+    DARK_GRAY="$(tput setaf 0)"
+    RED="$(tput setaf 1)"
+    GREEN="$(tput setaf 2)"
+    YELLOW="$(tput setaf 3)"
+    BLUE="$(tput setaf 4)"
+    MAGENTA="$(tput setaf 5)"
+    CYAN="$(tput setaf 6)"
+    WHITE="$(tput setaf 7)"
+    GRAY="$(tput setaf 8)"
+    BOLD="$(tput bold)"
+    UNDERLINE="$(tput sgr 0 1)"
+    INVERT="$(tput sgr 1 0)"
+    NORMAL="$(tput sgr0)"
   fi
+
+  export DARK_GRAY
+  export RED
+  export GREEN
+  export YELLOW
+  export BLUE
+  export MAGENTA
+  export CYAN
+  export WHITE
+  export GRAY
+  export BOLD
+  export UNDERLINE
+  export INVERT
+  export NORMAL
 
   # Mispellings
   export DARKGRAY="$DARK_GRAY"
