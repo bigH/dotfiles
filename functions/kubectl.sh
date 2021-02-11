@@ -14,12 +14,14 @@ __kubectl_select_one() {
     shift
   fi
 
+  ARGS="$([ $# -eq 0 ] && printf '' || printf '%q ' "$@")"
+
   kubectl get "$SUBJECT" "$@" | \
     fzf \
       --no-multi \
       --ansi \
       --header-lines=1 \
-      --preview "kubectl get $SUBJECT $(printf '%q ' "$@") {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
+      --preview "kubectl get $SUBJECT $ARGS {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
     awk '{ print $1 }'
 }
 
@@ -30,12 +32,14 @@ __kubectl_select_many() {
     shift
   fi
 
+  ARGS="$([ $# -eq 0 ] && printf '' || printf '%q ' "$@")"
+
   kubectl get "$SUBJECT" "$@" | \
     fzf \
       --multi \
       --ansi \
       --header-lines=1 \
-      --preview "kubectl get $SUBJECT $(printf '%q ' "$@") {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
+      --preview "kubectl get $SUBJECT $ARGS {1} -o yaml | $KUBECTL_YAML_VIEWER" | \
     awk '{ print $1 }'
 }
 

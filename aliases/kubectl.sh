@@ -204,6 +204,7 @@ kdiff() {
   fi
 }
 
+# start a shell on a pod (treats args as query)
 kbash() {
   POD_NAME="$(__kubectl_select_one pod "$@")"
   if [ -n "$POD_NAME" ]; then
@@ -214,19 +215,21 @@ kbash() {
   fi
 }
 
-# build a table for all pods with status
+# all kube events sorted by time (passes args to kubectl)
 kube-events-sorted() {
-  kubectl get event --sort-by=".metadata.managedFields[0].time" "$@"
+  kubectl get event --all-namespaces --sort-by=".metadata.managedFields[0].time" "$@"
 }
 
 # NB: make sure to escape double-quotes (!!!!!!!!!!!!!)
 build_watchable_command() {
   FUNCTION_NAME="$1"
-  COMMAND_LINE="$2"
+  COMMAND_PREFIX="$2"
   FILTER="$3"
 
-  eval "$FUNCTION_NAME() { eval \"$COMMAND_LINE \$(printf '%q' \"\$@\") | $FILTER\" }"
-  eval "watch-$FUNCTION_NAME() { watch \"$COMMAND_LINE \$(printf '%q' \"\$@\") | $FILTER\" }"
+  COMMAND_STRING="$COMMAND_PREFIX \$([ \$# -eq 0 ] && printf '' || printf '%q' \"\$@\") | $FILTER"
+
+  eval "$FUNCTION_NAME() { eval \"$COMMAND_STRING\" }"
+  eval "watch-$FUNCTION_NAME() { watch \"$COMMAND_STRING\" }"
 }
 
 # build a table for all pods with status
