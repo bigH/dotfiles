@@ -155,16 +155,19 @@ kfc() {
 }
 
 alias kfv='kf get'
+alias kfg='kf get'
 alias kfd='kf describe'
 alias kfe='kf edit'
 alias kfx='kf exec'
 
 alias kfnv='kfn get'
+alias kfng='kfn get'
 alias kfnd='kfn describe'
 alias kfne='kfn edit'
 alias kfnx='kfn exec'
 
 alias kfcv='kfc get'
+alias kfcg='kfc get'
 alias kfcd='kfc describe'
 alias kfce='kfc edit'
 alias kfcx='kfc exec'
