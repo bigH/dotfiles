@@ -58,26 +58,11 @@ Gotchas:
   if [ "$#" -eq 0 ]; then
     log_error "${BOLD}action${NORMAL} (exec, describe, etc.) is ${BOLD}required${NORMAL}"
     echo "$HELP_TEXT"
+    return 1
   else
     # get action
     ACTION="$1"
     shift
-
-    # some actions take a type
-    case "$ACTION" in
-      'get' | 'describe' | 'edit')
-        if [ "$#" -eq 0 ]; then
-          log_error "${BOLD}type${NORMAL} (pod, deploy, ing, svc, etc.) is ${BOLD}required${NORMAL}"
-          echo "$HELP_TEXT"
-        else
-          TYPE="$1"
-          shift
-        fi
-        ;;
-      'exec')
-        TYPE="pod"
-        ;;
-    esac
 
     # split the arg list
     ARG_TYPE='0'
@@ -94,6 +79,26 @@ Gotchas:
       ACTION_ARGS+=(--context "$KUBECTL_FORCE_CONTEXT")
       GET_ARGS+=(--context "$KUBECTL_FORCE_CONTEXT")
     fi
+
+    # some actions take a type
+    case "$ACTION" in
+      'get' | 'describe' | 'edit')
+        if [ "$#" -eq 0 ]; then
+          log_warning "${BOLD}type${NORMAL} (pod, deploy, ing, svc, etc.) not provided; prompting..."
+          TYPE="$(__kubectl_select_resource_type "${GET_ARGS[@]}")"
+          if [ -z "$TYPE" ]; then
+            log_error "${BOLD}type${NORMAL} (pod, deploy, ing, svc, etc.) not selected or provided"
+            return 1
+          fi
+        else
+          TYPE="$1"
+          shift
+        fi
+        ;;
+      'exec')
+        TYPE="pod"
+        ;;
+    esac
 
     for arg in "$@"; do
       if [ "$arg" = '--' ]; then
@@ -113,14 +118,12 @@ Gotchas:
     done
 
     # get user's selected object
-    echo __kubectl_select_one "$TYPE" "${GET_ARGS[@]}"
     SELECTION="$(__kubectl_select_one "$TYPE" "${GET_ARGS[@]}")"
 
     if [ -n "$SELECTION" ]; then
       case "$ACTION" in
         get)
-          kubectl get -o yaml "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER"
-          ;;
+          kubectl get -o yaml "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER" ;;
         describe)
           kubectl describe "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER" ;;
         edit)

@@ -63,32 +63,6 @@ shuf() {
   perl -MList::Util=shuffle -e 'print shuffle<STDIN>'
 }
 
-# every
-every () {
-  if [ -z "$1" ]; then
-    # shellcheck disable=2016
-    echo 'ERROR: specify the `n` in `nth`.'
-    exit 1
-  else
-    re='^[0-9]+$'
-    if ! [[ $1 =~ $re ]] ; then
-      echo 'ERROR: argument must be a number.'
-      exit 2
-    else
-      NUM=$1
-      shift
-      if [ $# -eq 0 ]; then
-        perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")'
-      else
-        while [ $# -ne 0 ]; do
-          perl -ne 'print ((0 == $. % '"$NUM"') ? $_ : "")' "$1"
-          shift
-        done
-      fi
-    fi
-  fi
-}
-
 # horizontal rule [hr]
 hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
@@ -101,8 +75,8 @@ if type bat >/dev/null 2>&1; then
   WH_CAT_COMMAND='bat --color=always'
 fi
 
-if type bat >/dev/null 2>&1; then
-  WH_CAT_COMMAND='exa --color=always'
+if type exa >/dev/null 2>&1; then
+  WH_LS_COMMAND='exa --color=always'
 fi
 
 # `which` with `ls -l $(which)`
@@ -121,13 +95,13 @@ wh() {
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
       # shellcheck disable=2086
-      indent --header $WH_LS_COMMAND -ld "$1"
+      eval "indent --header $WH_LS_COMMAND -ld \"$1\""
     elif [ -d "$1" ]; then
       echo "${CYAN} -- found a directory -- ${NORMAL}"
       # shellcheck disable=2086
-      indent --header $WH_LS_COMMAND -ld "$1"
+      eval "indent --header $WH_LS_COMMAND -ld \"$1\""
       # shellcheck disable=2086
-      indent --header $WH_CAT_COMMAND -l "$1"
+      eval "indent --header $WH_CAT_COMMAND -l \"$1\""
     else
       indent --header which "$1"
       PATH_TO_COMMAND="$(which "$1")"

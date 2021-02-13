@@ -25,6 +25,18 @@ __kubectl_select_one() {
     awk '{ print $1 }'
 }
 
+__kubectl_select_resource_type() {
+  ARGS="$([ $# -eq 0 ] && printf '' || printf '%q ' "$@")"
+
+  kubectl api-resources "$@" | \
+    fzf \
+      --no-multi \
+      --ansi \
+      --header-lines=1 \
+      --preview "kubectl get {1} $ARGS | $KUBECTL_YAML_VIEWER" | \
+    awk '{ print $1 }'
+}
+
 __kubectl_select_many() {
   SUBJECT=pods
   if [ "$#" -gt 0 ]; then
@@ -49,6 +61,7 @@ __kubectl_select_context() {
   '
 
   kubectl config get-contexts | \
+    fzf \
       cut -c11- | \
       awk '{ print $1 }' | \
       tail +2 | \
