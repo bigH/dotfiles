@@ -130,6 +130,11 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Add `utils` - all externally sourced scripts
+if [ -d "$DOT_FILES_DIR/utils" ]; then
+  export PATH="$DOT_FILES_DIR/utils:$PATH"
+fi
+
 if type delta >/dev/null 2>&1; then
   export DIFF_PAGER="delta --theme=gruvbox --highlight-removed"
 elif type diff-so-fancy >/dev/null 2>&1; then

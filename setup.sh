@@ -68,8 +68,8 @@ echo "ViM Setup ${BLUE}${BOLD}Complete${NORMAL}!"
 echo ""
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
-printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
 if type fzf >/dev/null 2>&1; then
+  printf "  - ${BLUE}Found \`fzf\` ...${NORMAL}"
   print_symbol_for_status "found" "true"
   if [[ "$OSTYPE" == "darwin"* ]]; then
     print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
@@ -77,37 +77,60 @@ if type fzf >/dev/null 2>&1; then
     print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
   fi
 else
+  printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
   print_symbol_for_status "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
 echo ""
 
-printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
 if type rg >/dev/null 2>&1; then
+  printf "  - ${BLUE}Found \`ripgrep\` ...${NORMAL}"
   print_symbol_for_status "found" "true"
 else
+  printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
   print_symbol_for_status "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
 echo ""
 
-printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
 if type bat >/dev/null 2>&1; then
+  printf "  - ${BLUE}Found \`bat\` ...${NORMAL}"
   print_symbol_for_status "found" "true"
 else
+  printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
   print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
 echo ""
 
-printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
 if type fd >/dev/null 2>&1; then
-  print_symbol_for_status "found fd" "true"
+  printf "  - ${BLUE}Found \`fd\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
 elif type fdfind >/dev/null 2>&1; then
-  print_symbol_for_status "found fdfind" "true"
+  printf "  - ${BLUE}Found \`fdfind\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
 else
+  printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
   print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
+fi
+echo ""
+
+if [ -d "$DOT_FILES_DIR/interactively" ]; then
+  printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
+else
+  printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
+fi
+echo ""
+
+if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
+  printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
+else
+  printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
 fi
 echo ""
 
@@ -141,24 +164,6 @@ printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
 print_symbol_for_status "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
 print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
 print_symbol_for_status "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
-echo ""
-
-if [ -d "$DOT_FILES_DIR/interactively" ]; then
-  printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
-else
-  printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
-fi
-echo ""
-
-if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
-  printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
-else
-  printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
-fi
 echo ""
 
 echo ""
