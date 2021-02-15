@@ -131,8 +131,34 @@ printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
 echo ""
 
+printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
+print_symbol_for_status "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
+print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh"
+print_symbol_for_status "chmod" "chmod +x $DOT_FILES_DIR/utils/cht.sh"
+echo ""
+
 printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
+print_symbol_for_status "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
 print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
+print_symbol_for_status "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
+echo ""
+
+if [ -d "$DOT_FILES_DIR/interactively" ]; then
+  printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
+  print_symbol_for_status "noop" "true"
+else
+  printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
+fi
+echo ""
+
+if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
+  printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
+  print_symbol_for_status "true"
+else
+  printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
+fi
 echo ""
 
 echo ""
