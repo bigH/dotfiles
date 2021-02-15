@@ -145,7 +145,7 @@ echo ""
 
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
-  print_symbol_for_status "noop" "true"
+  print_symbol_for_status "found" "true"
 else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
@@ -154,7 +154,7 @@ echo ""
 
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
-  print_symbol_for_status "true"
+  print_symbol_for_status "found" "true"
 else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
