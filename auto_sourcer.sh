@@ -45,7 +45,7 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
     fi
   }
 
-  auto_source_check_sources_zsh() {
+  auto_source_check_and_reload_sources() {
     NOW_UTC="$(date +%s)"
     NEXT_CHECK_TIME="$(echo "$AUTO_SOURCER_LAST_CHECK + $AUTO_SOURCER_CHECK_INTERVAL" | bc)"
 
@@ -69,14 +69,5 @@ if [ -z "$AUTO_SOURCED_FILES" ] ; then
 
   auto_source_initialize() {
     AUTO_SOURCER_LAST_CHECK="$(date +%s)"
-    if [[ "$SHELL" == *'zsh' ]]; then
-      precmd() {
-        auto_source_check_sources_zsh
-      }
-    elif [[ "$SHELL" == *'bash' ]]; then
-      echo "TODO: support bash in \`auto_source\`"
-    else
-      echo "ERROR: \`auto_source\` doens't support \`$SHELL\`"
-    fi
   }
 fi

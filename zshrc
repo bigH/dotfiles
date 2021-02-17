@@ -107,8 +107,15 @@ export DOT_FILES_DIR=$HOME/.hiren
 
 source $ZSH/oh-my-zsh.sh
 source "$DOT_FILES_DIR/auto_sourcer.sh"
-auto_source $DOT_FILES_DIR/profile
+
+auto_source "$DOT_FILES_DIR/profile"
+
 auto_source_initialize
+
+precmd() {
+  auto_source_check_and_reload_sources
+  build_fzf_defaults
+}
 
 autoload -U +X bashcompinit && bashcompinit
 

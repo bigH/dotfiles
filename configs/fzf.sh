@@ -12,6 +12,7 @@ fi
 if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   # Auto-completion
   [[ $- == *i* ]] && auto_source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
+  auto_source "$DOT_FILES_DIR/auto-sized-fzf/auto-sized-fzf.sh" 2> /dev/null
 
   export FZF_DEFAULTS_BASIC="\
   --border \
@@ -29,10 +30,15 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
     --bind alt-d:deselect-all \
     --bind alt-a:select-all"
 
-  export FZF_DEFAULT_OPTS="\
-  $FZF_DEFAULTS_BASIC \
-  --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
-  --preview-window=right:50%"
+  build_fzf_defaults() {
+    FZF_DEFAULT_OPTS="\
+      $FZF_DEFAULTS_BASIC \
+      --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
+      $(fzf_sizer_preview_window_settings)"
+    export FZF_DEFAULT_OPTS
+  }
+
+  build_fzf_defaults
 
   if type fd >/dev/null 2>&1; then
     # Use `fd` instead of the default find command for listing path candidates.

@@ -61,9 +61,7 @@ __kubectl_select_context() {
   '
 
   kubectl config get-contexts | \
-    fzf \
-      cut -c11- | \
-      awk '{ print $1 }' | \
+      awk '{ print $2 }' | \
       tail +2 | \
       fzf +m \
         --header "$CURRENT_CONTEXT_INFO" \
