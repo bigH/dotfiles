@@ -134,6 +134,15 @@ else
 fi
 echo ""
 
+if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
+  printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
+else
+  printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
+fi
+echo ""
+
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo ""
