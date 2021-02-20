@@ -221,9 +221,35 @@ kbash() {
   fi
 }
 
+# really get _all_ the things (highlighting regexes provided as arguments)
+kgetall() {
+  QUERY="($([ $# -eq 0 ] && printf '' || printf '%s|' "$@")\$)"
+  for i in $(kubectl api-resources --verbs=list -o name | sort | uniq); do
+    echo
+    echo "\$ kubectl get --all-namespaces --ignore-not-found ${i}"
+    if [ -n "$QUERY" ]; then
+      kubectl get --all-namespaces --ignore-not-found "${i}" | grep --color=always -E "$QUERY"
+    else
+      kubectl get --all-namespaces --ignore-not-found "${i}"
+    fi
+  done
+}
+
+# examine secrets as though they are certificates
+kcert() {
+  ARGS="$([ $# -eq 0 ] && printf '' || printf '%q ' "$@")"
+  kubectl get secret "$@" | \
+    fzf \
+      --no-multi \
+      --ansi \
+      --header-lines=1 \
+      --preview "echo {1} ; kubectl get secret {1} $ARGS -o jsonpath='{.data.tls\\.crt}' | xargs echo | base64 -D | openssl x509 -text -noout" | \
+    awk '{ print $1 }'
+}
+
 # all kube events sorted by time (passes args to kubectl)
 kube-events-sorted() {
-  kubectl get event --all-namespaces --sort-by=".metadata.managedFields[0].time" "$@"
+  kubectl get event --all-namespaces --sort-by=".metadata.creationTimestamp" "$@"
 }
 
 # NB: make sure to escape double-quotes (!!!!!!!!!!!!!)

@@ -98,8 +98,9 @@ nmap <silent> <leader>gaf :<C-U>call <SID>SaveAndGitAdd()<CR>
 nmap <silent> <leader>gaa :<C-U>call <SID>SaveAndGitAddAll()<CR>
 
 if IsPluginLoaded('airblade/vim-gitgutter')
-  nmap <silent> <leader>gpp :<C-U>GitGutterPreviewHunk<CR>
+  nmap <silent> <leader>gsp :<C-U>GitGutterPreviewHunk<CR>
   nmap <silent> <leader>gap :<C-U>GitGutterStageHunk<CR>
+  nmap <silent> <leader>gcp :<C-U>GitGutterUndoHunk<CR>
 endif
 
 nmap <silent> <leader>grm :<C-U>call <SID>DeleteAndGitRm()<CR>:BD<CR>

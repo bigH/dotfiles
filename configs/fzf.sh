@@ -14,6 +14,9 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   [[ $- == *i* ]] && auto_source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
   auto_source "$DOT_FILES_DIR/auto-sized-fzf/auto-sized-fzf.sh" 2> /dev/null
 
+  export FZF_SIZER_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='max(60, min(80, 100 - ((7000 + (11 * __WIDTH__))  / __WIDTH__)))'
+  export FZF_SIZER_VERTICAL_PREVIEW_PERCENT_CALCULATION='max(60, min(80, 100 - ((3000 + (5 * __HEIGHT__)) / __HEIGHT__)))'
+
   export FZF_DEFAULTS_BASIC="\
   --border \
   --pointer='» ' \
