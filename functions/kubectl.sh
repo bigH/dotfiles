@@ -60,9 +60,7 @@ __kubectl_select_context() {
   Current Context: '"$RED$BOLD$(kubectl config current-context)$NORMAL"'
   '
 
-  kubectl config get-contexts | \
-      awk '{ print $2 }' | \
-      tail +2 | \
+  kubectl config get-contexts -o name | \
       fzf +m \
         --header "$CURRENT_CONTEXT_INFO" \
         --no-preview

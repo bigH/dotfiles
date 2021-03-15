@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# set input according to arguments
+if [ $# -eq 0 ]; then
+  echo "ERROR: no arguments provided! expecting perl test expression(s)."
+else
+  cat - | perl -ne "chomp(); if ($* \$_) {print \"\$_\\n\"}"
+fi
+

@@ -12,6 +12,7 @@ made/
 .vim/
 
 # external things
+auto-sized-fzf/
 bat/
 dircolors-solarized/
 env-context
@@ -23,4 +24,3 @@ pure/
 ripgrep/
 solarized/
 utils/
-auto-sized-fzf/

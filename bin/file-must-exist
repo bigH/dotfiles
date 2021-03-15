@@ -2,8 +2,8 @@
 
 # set input according to arguments
 if [ $# -ge 1 ]; then
-  for i in $*; do
-    echo $i
+  for i in "$@"; do
+    echo "$i"
   done | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'
 else
   cat - | perl -ne 'chomp(); if (-e $_) {print "$_\n"}'

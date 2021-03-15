@@ -4,7 +4,7 @@
 if type autojump >/dev/null 2>&1; then
   if type fzf >/dev/null 2>&1; then
     jj() {
-      autojump -s | cut -f2 | file-must-exist
+      autojump -s | cut -f2 | must -e -f
     }
   else
     jj() {

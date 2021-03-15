@@ -93,12 +93,16 @@ function! ToggleTimestamps(...)
       iunmap <CR>
       nunmap O
       nunmap o
+      iunmap <BS>
+
       let g:interview_timestamps_enabled = 0
       echo "Timestamps DISABLED"
     else
       inoremap <silent> <CR> <CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
       nnoremap <silent> O <Esc>kA<CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
       nnoremap <silent> o <Esc>A<CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
+      inoremap <expr> <BS> InterviewDeleteCharacter()
+
       let g:interview_timestamps_enabled = 1
       echo "Timestamps ENABLED"
     end
@@ -177,11 +181,12 @@ function! s:LoadInterview()
   nnoremap <silent> <F1> :<C-U>ToggleTimestamps<CR>
   inoremap <silent> <F1> <Esc>:<C-U>ToggleTimestamps<CR>a
 
-  " delete line if we backspace into the timestamp
-  inoremap <expr> <BS> InterviewDeleteCharacter()
-
   " default enter behavior always with meta enter
   inoremap <silent> <M-CR> <CR>
+
+  " default enter behavior always with meta enter
+  nnoremap <silent> <C-A> mm0f]h<C-A>`m
+  nnoremap <silent> <C-X> mm0f]h<C-X>`m
 
   call s:SetupInterviewBuffer()
 endfunction
