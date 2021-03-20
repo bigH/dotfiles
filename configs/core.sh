@@ -110,6 +110,17 @@ if [ -d "$HOME/opt/helm-3.5.2" ]; then
   fi
 fi
 
+# NB: this alias must be here for completion to be configured correctly in `configs/helm.sh`
+# if helm is not defined yet
+if ! type helm >/dev/null 2>&1; then
+  # helm3 > helm2
+  if type helm3 >/dev/null 2>&1; then
+    alias helm=helm3
+  elif type helm2 >/dev/null 2>&1; then
+    alias helm=helm2
+  fi
+fi
+
 # Add `made/*` - NB: always last
 export PATH="$DOT_FILES_DIR/made/bin:$PATH"
 export MANPATH="$DOT_FILES_DIR/made/doc:$MANPATH"
