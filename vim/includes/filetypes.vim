@@ -10,7 +10,8 @@ function s:SetupJSBindings()
   endif
 
   " go create a variable with . & " registers
-  nmap <silent> <leader>gc oconst <C-R>. = <C-R>"
+  nnoremap <silent> <leader>gc oconst <C-R>. = <C-R>"
+  nnoremap <silent> <leader>gl olet <C-R>. = <C-R>"
 endfunction
 
 " Defaults for certain files
@@ -18,6 +19,10 @@ augroup FiletypeSettings
   " Always use tabs in gitconfig
   au BufNewFile,BufRead gitconfig set filetype=gitconfig
   au FileType gitconfig setlocal noexpandtab
+
+  " 4-space-y languages
+  au FileType go setlocal tabstop=4 | setlocal shiftwidth=4
+  au FileType java setlocal tabstop=4 | setlocal shiftwidth=4
 
   " TypeScript and JavaScript `gf`
   au FileType typescriptreact setlocal suffixesadd=.ts,.tsx,.js,.jsx | call s:SetupJSBindings()

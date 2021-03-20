@@ -46,10 +46,19 @@ vnoremap <leader>P P
 "}}}
 
 
-"{{{ Load ENV_SPECIFIC things
+"{{{ Load DOT_FILES_ENV things
 
 if filereadable($DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vim")
   execute "source" $DOT_FILES_DIR . "/" . $DOT_FILES_ENV . "/after.vim"
+endif
+
+"}}}
+
+
+"{{{ Turn on project-specific vimrc loading
+
+if filereadable($PWD . "/.vimrc")
+  execute "source" $PWD . "/.vimrc"
 endif
 
 "}}}

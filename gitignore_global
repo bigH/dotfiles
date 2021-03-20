@@ -1,6 +1,5 @@
 .hiren/
 .git-fuzzy-config
-.git-fuzzy-snapshots
+.git-fuzzy-snapshots/
 .DS_Store
-tags
-.tags
+.vimrc

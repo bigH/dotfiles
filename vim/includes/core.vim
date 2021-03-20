@@ -194,6 +194,10 @@ function! CopyPlusToStar(name)
   endif
 endfunction
 
+command! EnableYankToClipboard let g:copy_all_registers_to_clipboard = 1
+command! DisableYankToClipboard let g:copy_all_registers_to_clipboard = 0
+command! ToggleYankToClipboard let g:copy_all_registers_to_clipboard = !(g:copy_all_registers_to_clipboard)
+
 autocmd TextYankPost * call CopyPlusToStar(v:event.regname)
 
 "}}}
