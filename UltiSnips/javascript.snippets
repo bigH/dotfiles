@@ -1,6 +1,10 @@
 priority 10
 
 snippet hcl "debug with console.log"
-console.log('HIRENDEBUG: ${1:foo}', `!p snip.rv = t[1] if t[1] else ""`)
+console.log('HIRENDEBUG: ${1:foo}'`!p snip.rv = (", " + t[1]) if t[1] else ""`)
+endsnippet
+
+snippet hcj "debug with console.log as JSON"
+console.log('HIRENDEBUG: ${1:foo}'`!p snip.rv = (", JSON.stringify(" + t[1] + ", null, 4)") if t[1] else ""`)
 endsnippet
 
