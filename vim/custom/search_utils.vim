@@ -7,7 +7,8 @@ execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
 
 let g:custom_search_utils = 1
 
-let g:search_data_save = "./.hiren/search_utils_save.vim"
+let g:search_data_save_dir = $PWD . "/.hiren"
+let g:search_data_save = g:search_data_save_dir . "/search_utils_save.vim"
 
 let g:current_star_searches = []
 let g:current_star_search_history = [[]]
@@ -262,7 +263,8 @@ function! s:LoadSearchOnEnter()
 endfunction
 
 function! s:SaveSearchOnExit()
-  call system('mkdir -p "./.hiren"')
+  call system('mkdir -p "' . g:search_data_save_dir . '"')
+  call system('touch "' . g:search_data_save . '"')
   if filewritable(g:search_data_save)
     let out = ["let g:current_star_searches = " . string(g:current_star_searches),
              \ "let g:current_star_search_history = " . string(g:current_star_search_history)]

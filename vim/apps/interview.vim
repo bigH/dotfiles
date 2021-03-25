@@ -146,15 +146,20 @@ function! s:SetupInterviewBuffer()
   syntax match interviewerSaid /\c\<i:/
   syntax match candidateSaid /\c\<c:/
   syntax match interviewerNote /\c\<note:/
-  syntax match interviewerHint /\c\<hint\>/
+  syntax match interviewerHint /\c\<hint\(ed\|ing\|s\|\)\>/
+  syntax match interviewerExplain /\c\<explain\(ed\|ing\|s\|\)\>/
 
-  syntax match quote /".\{-}"/ contains=@SubHighlights
+  syntax match quote2 /".\{-}"/ contains=@SubHighlights
+
+  syntax match timestamp /\[[0-9][0-9]:[0-9][0-9]\]/
 
   highlight default link interviewerSaid GruvboxGreenBold
   highlight default link candidateSaid GruvboxBlueBold
   highlight default interviewerNote cterm=bold,italic ctermfg=white
   highlight default interviewerHint cterm=bold,italic ctermfg=white ctermbg=darkred
-  highlight default link quote GruvboxOrangeBold
+  highlight default interviewerExplain cterm=bold,italic ctermfg=white ctermbg=darkyellow
+  highlight default link quote2 GruvboxOrangeBold
+  highlight default link timestamp GruvboxGray
 endfunction
 
 au FileType markdown call s:SetupInterviewBuffer()

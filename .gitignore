@@ -1,3 +1,7 @@
+# NB: caused by `.hiren` name clash
+# `.hiren` is both the `gitignore`d directory and what I call the clone of `dotfiles`.
+search_utils_save.vim
+
 # local things
 configs/local.sh
 
