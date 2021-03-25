@@ -86,6 +86,9 @@ echo ""
 if type rg >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`ripgrep\` ...${NORMAL}"
   print_symbol_for_status "found" "true"
+elif type rgrep >/dev/null 2>&1; then
+  printf "  - ${BLUE}Found \`rgrep\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
 else
   printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
   print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
@@ -95,6 +98,9 @@ echo ""
 
 if type bat >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`bat\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
+elif type batcat >/dev/null 2>&1; then
+  printf "  - ${BLUE}Found \`batcat\` ...${NORMAL}"
   print_symbol_for_status "found" "true"
 else
   printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"

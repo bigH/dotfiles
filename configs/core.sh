@@ -3,6 +3,19 @@
 # turn off certain `shellcheck` errors
 export SHELLCHECK_OPTS="-e SC1090"
 
+# these aliases have to be defined so these commands are seen to exist
+if type fdfind >/dev/null 2>&1; then
+  alias fd=fdfind
+fi
+
+if type batcat >/dev/null 2>&1; then
+  alias bat=batcat
+fi
+
+if type rgrep >/dev/null 2>&1; then
+  alias rg=rgrep
+fi
+
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
   auto_source $HOME/.ghcup/env

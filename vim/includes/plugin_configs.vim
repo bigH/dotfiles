@@ -3,8 +3,28 @@ if exists('g:plugin_configs')
 endif
 let g:plugin_configs = 1
 
-
 "{{{ Plugin Configurations
+
+" -- globals --
+" support alternate naming of CLI utilities
+
+let g:rg_name = 'rg'
+
+if executable('rgrep')
+  let g:rg_name = 'rgrep'
+endif
+
+let g:fd_name = 'fd'
+
+if executable('fdfind')
+  let g:fd_name = 'fdfind'
+endif
+
+let g:bat_name = 'bat'
+
+if executable('batcat')
+  let g:bat_name = 'batcat'
+endif
 
 " -- fzf-tags --
 
@@ -83,7 +103,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   function! FzfFindInDirectoryfunc()
     wincmd l
     call fzf#vim#grep(
-          \   'rg --column --line-number --no-heading --color=always --smart-case '.
+          \   g:rg_name . ' --column --line-number --no-heading --color=always --smart-case '.
           \   shellescape(<q-args>).' ',
           \   0,
           \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
@@ -120,7 +140,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview and visual yank
   command! -bang -nargs=* RgVisual
         \ call fzf#vim#grep(
-        \   'rg --fixed-strings --column --line-number --no-heading '.
+        \   g:rg_name . ' --fixed-strings --column --line-number --no-heading '.
         \       ' --color=always --smart-case '.
         \       (<bang>0 ? ' --no-ignore --hidden ' : ' ').
         \       '"'.GetVisualSelectionAsString().'"',
@@ -132,7 +152,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview
   command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --color=always --smart-case '.
+        \   g:rg_name . ' --column --line-number --no-heading --color=always --smart-case '.
         \     shellescape(<q-args>),
         \   1,
         \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(1))
@@ -141,7 +161,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
 
   function! OptionsForFiles(additional_fd_opts)
     return {
-        \    'source': 'fd --hidden --color=always ' . a:additional_fd_opts,
+        \    'source': g:fd_name . ' --hidden --color=always ' . a:additional_fd_opts,
         \    'options': [
         \      '--ansi',
         \      '--layout=reverse',
@@ -172,7 +192,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
         \                  'grep -o "[a-f0-9]\{7,\}" | ' .
         \                  'head -1 | ' .
         \                  'xargs -I COMMIT_SHA git show -W COMMIT_SHA:"' . expand('%') . '" | ' .
-        \                  'bat -p --color always -l ' . &l:filetype)
+        \                  g:bat_name . ' -p --color always -l ' . &l:filetype)
         \               : ('echo {} | ' .
         \                  'grep -o "[a-f0-9]\{7,\}" | ' .
         \                  'head -1 | ' .
