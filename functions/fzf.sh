@@ -108,7 +108,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       result="$(eval "$api/list" | tr ',' '\n' | fzf --no-height --multi --preview "$api/{} | bat -p --color always -l gitignore" | paste -s -d "," -)"
       [ -n "$result" ] && eval "$api/$result"
     else
-      $api/$*
+      eval "$api/$*"
     fi
   }
 fi
