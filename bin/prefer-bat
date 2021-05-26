@@ -2,7 +2,13 @@
 
 if [ -t 1 ]; then
   # use plain style to avoid line numbers and git info
-  bat --style=plain "$@"
+  if type batcat >/dev/null 2>&1; then
+    command batcat --style=plain "$@"
+  elif type bat >/dev/null 2>&1; then
+    command bat --style=plain "$@"
+  else
+    command cat "$@"
+  fi
 else
-  cat "$@"
+  command cat "$@"
 fi

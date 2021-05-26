@@ -8,12 +8,6 @@ let g:plugin_configs = 1
 " -- globals --
 " support alternate naming of CLI utilities
 
-let g:rg_name = 'rg'
-
-if executable('rgrep')
-  let g:rg_name = 'rgrep'
-endif
-
 let g:fd_name = 'fd'
 
 if executable('fdfind')
@@ -103,7 +97,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   function! FzfFindInDirectoryfunc()
     wincmd l
     call fzf#vim#grep(
-          \   g:rg_name . ' --column --line-number --no-heading --color=always --smart-case '.
+          \   'rg --column --line-number --no-heading --color=always --smart-case '.
           \   shellescape(<q-args>).' ',
           \   0,
           \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] })
@@ -140,7 +134,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview and visual yank
   command! -bang -nargs=* RgVisual
         \ call fzf#vim#grep(
-        \   g:rg_name . ' --fixed-strings --column --line-number --no-heading '.
+        \   'rg --fixed-strings --column --line-number --no-heading '.
         \       ' --color=always --smart-case '.
         \       (<bang>0 ? ' --no-ignore --hidden ' : ' ').
         \       '"'.GetVisualSelectionAsString().'"',
@@ -152,7 +146,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Rg with preview
   command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
-        \   g:rg_name . ' --column --line-number --no-heading --color=always --smart-case '.
+        \   'rg --column --line-number --no-heading --color=always --smart-case '.
         \     shellescape(<q-args>),
         \   1,
         \   <bang>0 ? fzf#vim#with_preview(g:fzf_config_for_rg, GetFzfSetup(1))

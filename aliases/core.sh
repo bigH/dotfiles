@@ -28,7 +28,6 @@ alias kls=ls
 # see config/core.sh for aliases below if they're needed (e.g. for Ubuntu)
 # $ alias fd=fdfind
 # $ alias bat=batcat
-# $ alias rg=rgrep
 
 alias zsh="SHELL=\"/bin/zsh\" zsh"
 alias bash="SHELL=\"/bin/bash\" bash"

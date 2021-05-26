@@ -4,7 +4,12 @@
 if type autojump >/dev/null 2>&1; then
   if type fzf >/dev/null 2>&1; then
     jj() {
-      autojump -s | cut -f2 | must -e -f
+      DIRECTORY="$(autojump -s | cut -f2 | must -e -d | fzf +m --query="$*" --preview='ls --color=always -l {1..}')"
+      if [ -d "$DIRECTORY" ]; then
+        cd "$DIRECTORY" || echo "ERROR: could not \`cd\` into '$DIRECTORY'"
+      else
+        echo "ERROR: no directory selected"
+      fi
     }
   else
     jj() {

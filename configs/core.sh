@@ -12,10 +12,6 @@ if type batcat >/dev/null 2>&1; then
   alias bat=batcat
 fi
 
-if type rgrep >/dev/null 2>&1; then
-  alias rg=rgrep
-fi
-
 # Add Haskell configs
 if [ -e $HOME/.ghcup/env ]; then
   auto_source $HOME/.ghcup/env
@@ -204,3 +200,9 @@ if [ -d "$DOT_FILES_DIR/interactively" ]; then
   export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
 fi
 
+if [ -d "$HOME/.sdkman" ]; then
+  export SDKMAN_DIR="$HOME/.sdkman"
+  if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
+    source "$SDKMAN_DIR/bin/sdkman-init.sh"
+  fi
+fi
