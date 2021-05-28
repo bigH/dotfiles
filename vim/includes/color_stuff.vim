@@ -22,7 +22,7 @@ func! ColorSchemeLightDark()
 endfunc
 
 nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
-inoremap <silent> <F12> <Esc>:call ColorSchemeLightDark()<CR>a
+inoremap <silent> <F12> <C-O>:call ColorSchemeLightDark()<CR>
 
 "}}}
 

@@ -169,7 +169,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Files with preview
   command! -bang -nargs=? -complete=dir Files
         \ call fzf#vim#files(<q-args>,
-        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore --exclude ".git/"'), GetFzfSetup(1), '?')
+        \   <bang>0 ? fzf#vim#with_preview(OptionsForFiles('--no-ignore --type f --exclude ".git/"'), GetFzfSetup(1), '?')
         \           : fzf#vim#with_preview(OptionsForFiles(''), GetFzfSetup(0)),
         \   <bang>0)
 
@@ -239,10 +239,10 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   nmap <silent> <leader>E :<C-U>Files!<CR>
   nmap <silent> <leader>e :<C-U>Files<CR>
 
-  " Map `\o` to FZF file lister
+  " Map `\O` to FZF recent file lister
   nmap <silent> <leader>O :<C-U>RecentFiles<CR>
 
-  " Map `\O` to FZF git file lister
+  " Map `\o` to FZF git file lister
   nmap <silent> <leader>o :<C-U>GFiles?<CR>
 
   " Set history directory
@@ -505,27 +505,27 @@ if IsPluginLoaded('scrooloose/nerdtree')
   endfun
 
   nnoremap <silent> <F1> :<C-U>call SmartNERDTree()<CR>
-  inoremap <silent> <F1> <Esc>:<C-U>call SmartNERDTree()<CR>a
+  inoremap <silent> <F1> <C-O>:<C-U>call SmartNERDTree()<CR>
 endif
 
 " F2 opens Tagbar
 if IsPluginLoaded('majutsushi/tagbar')
   nmap <silent> <F2> :<C-U>TagbarOpen<CR>
-  imap <silent> <F2> <Esc>:<C-U>TagbarOpen<CR>a
+  imap <silent> <F2> <C-O>:<C-U>TagbarOpen<CR>
 endif
 
 " F3 closes Tagbar & NERDTree
 if IsPluginLoaded('scrooloose/nerdtree', 'majutsushi/tagbar')
   nmap <silent> <F3> :<C-U>TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>
-  imap <silent> <F3> <Esc>:<C-U>TagbarClose<CR>:NERDTreeClose<CR>:pclose<CR>:cclose<CR>:lclose<CR>a
+  imap <silent> <F3> <C-O>:<C-U>TagbarClose<CR><C-O>:NERDTreeClose<CR><C-O>:pclose<CR><C-O>:cclose<CR><C-O>:lclose<CR>
 endif
 
 " F4 and <leader>b
 if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   nmap <silent> <F4> :<C-U>Buffers<CR>
-  imap <silent> <F4> <Esc>:<C-U>Buffers<CR>
+  imap <silent> <F4> <C-O>:<C-U>Buffers<CR>
 
-  nmap <silent> <leader>b <Esc>:<C-U>Buffers<CR>
+  nmap <silent> <leader>b :<C-U>Buffers<CR>
 endif
 
 " functions for use below to make NERDTree switch windows in the editor region
@@ -685,7 +685,7 @@ if IsPluginLoaded('neoclide/coc.nvim')
   autocmd FileType json syntax match Comment +\/\/.\+$+
 
   " Use <C-Space> to trigger
-  inoremap <silent><expr> <c-space> coc#refresh()
+  inoremap <silent> <expr> <c-space> coc#refresh()
 
   " Use K to show documentation in preview window
   nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -699,11 +699,10 @@ if IsPluginLoaded('neoclide/coc.nvim')
   endfunction
 
   " Use `[c` and `]c` for navigate diagnostics
-  nmap <silent> <leader>coe <Plug>(coc-diagnostic-prev)
-  nmap <silent> <leader>cne <Plug>(coc-diagnostic-prev)
-  nmap <silent> <leader>cPe <Plug>(coc-diagnostic-prev)
-  nmap <silent> <leader>cpe <Plug>(coc-diagnostic-next)
-  nmap <silent> <leader>cNe <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>cne <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>cPe <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>cpe <Plug>(coc-diagnostic-prev)
+  nmap <silent> <leader>cNe <Plug>(coc-diagnostic-prev)
 
   " Gotos
   nmap <silent> <Leader>d <Plug>(coc-definition)

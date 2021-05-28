@@ -153,6 +153,11 @@ printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo ""
 
+printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
+print_symbol_for_status "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
+print_symbol_for_status "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
+echo ""
+
 printf "  - ${BLUE}Installing \`zsh-autosuggestions\` ...${NORMAL}"
 print_symbol_for_status "clone" "git clone https://github.com/zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 echo ""

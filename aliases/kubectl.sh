@@ -196,6 +196,8 @@ ksn() {
 
 alias kscn='ksc ; ksn'
 
+export KDIFF_RENDERER="cat -"
+
 kdiff() {
   LEFT="$1"
   RIGHT="$2"
@@ -203,10 +205,13 @@ kdiff() {
   shift
   shift
 
-  if [ -t 1 ]; then
-    diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@") | eval "$DIFF_PAGER"
+  if [ -t 1 ] && [ -n "$DIFF_PAGER" ]; then
+    diff -u <(eval "kubectl \"--context=$LEFT\" $(printf ' %q' "$@") | $KDIFF_RENDERER") \
+            <(eval "kubectl \"--context=$RIGHT\" $(printf ' %q' "$@") | $KDIFF_RENDERER") \
+            | eval "$DIFF_PAGER"
   else
-    diff -u <(kubectl "--context=$LEFT" "$@") <(kubectl "--context=$RIGHT" "$@")
+    diff -u <(eval "kubectl \"--context=$LEFT\" $(printf ' %q' "$@") | $KDIFF_RENDERER") \
+            <(eval "kubectl \"--context=$RIGHT\" $(printf ' %q' "$@") | $KDIFF_RENDERER")
   fi
 }
 

@@ -39,15 +39,10 @@ kube-events() {
   KILL_COMMAND="$KILL_COMMAND $!"
 }
 
-kube-events "$CLUSTER-main"
-kube-events "$CLUSTER-dbconnector"
-kube-events "$CLUSTER-services"
-
 CLEANED_UP="no"
 
 cleanup-kube-commands() {
   if [ "$CLEANED_UP" = "no" ]; then
-    log_info "got signal: $1"
     log_info "running: $KILL_COMMAND"
     eval "$KILL_COMMAND"
     rm -rf "$EVENT_FIFO"
@@ -55,8 +50,10 @@ cleanup-kube-commands() {
   fi
 }
 
-trap "cleanup-kube-commands EXIT" EXIT
-trap "cleanup-kube-commands INT" INT
-trap "cleanup-kube-commands TERM" TERM
+trap "cleanup-kube-commands ; exit 1" 0 SIGHUP SIGINT SIGQUIT SIGPIPE SIGTERM
+
+kube-events "$CLUSTER-main"
+kube-events "$CLUSTER-dbconnector"
+kube-events "$CLUSTER-services"
 
 command cat "$EVENT_FIFO"

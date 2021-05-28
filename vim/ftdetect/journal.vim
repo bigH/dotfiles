@@ -25,6 +25,8 @@ function! s:SetupJournalFile()
     " fold everything
     setlocal foldenable
   endif
+
+  exec "source" $DOT_FILES_DIR . "/" . "vim/includes/writing_highlights.vim"
 endfunction
 
 autocmd BufNewFile,BufRead journal-*.md call <SID>SetupJournalFile()

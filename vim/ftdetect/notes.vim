@@ -45,13 +45,13 @@ function! s:SetupNotesFile()
 
   " Indent/Outdent
   nmap <silent> <buffer> <Tab> :call <SID>PerformAppropriateDent(1)<CR>
-  imap <silent> <buffer> <Tab> <Esc>:call <SID>PerformAppropriateDent(1)<CR>a
+  imap <silent> <buffer> <Tab> <C-O>:call <SID>PerformAppropriateDent(1)<CR>
   nmap <silent> <buffer> <S-Tab> :call <SID>PerformAppropriateDent(0)<CR>
-  imap <silent> <buffer> <S-Tab> <Esc>:call <SID>PerformAppropriateDent(0)<CR>a
+  imap <silent> <buffer> <S-Tab> <C-O>:call <SID>PerformAppropriateDent(0)<CR>
 
   " <C-F> focus on a cluster of notes
   nmap <silent> <buffer> <C-F> :call FocusOnCurrent()<CR>
-  imap <silent> <buffer> <C-F> <Esc>:call FocusOnCurrent()<CR>a
+  imap <silent> <buffer> <C-F> <C-O>:call FocusOnCurrent()<CR>
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
@@ -67,6 +67,8 @@ function! s:SetupNotesFile()
     " fold everything
     setlocal foldenable
   endif
+
+  exec "source" $DOT_FILES_DIR . "/" . "vim/includes/writing_highlights.vim"
 endfunction
 
 autocmd BufNewFile,BufRead notes-*.md call <SID>SetupNotesFile()

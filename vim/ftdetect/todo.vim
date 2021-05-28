@@ -126,25 +126,25 @@ function! s:SetupTodoFile()
   " <C-X> to toggle done/not-done
   " NB: overrides <C-x> used for decrement
   nmap <silent> <buffer> <C-x> :call <SID>ChangeState('x')<CR>
-  imap <silent> <buffer> <C-x> <Esc>:call <SID>ChangeState('x')<CR>a
+  imap <silent> <buffer> <C-x> <C-O>:call <SID>ChangeState('x')<CR>
 
   " <C-\> to toggle done/not-done
   nmap <silent> <buffer> <C-\> :call <SID>CycleTodoState()<CR>
-  imap <silent> <buffer> <C-\> <Esc>:call <SID>CycleTodoState()<CR>a
+  imap <silent> <buffer> <C-\> <C-O>:call <SID>CycleTodoState()<CR>
 
   " <C-\> to toggle done/not-done
   nmap <silent> <buffer> <C-Space> :call <SID>ChangeState(' ')<CR>
-  imap <silent> <buffer> <C-Space> <Esc>:call <SID>ChangeState(' ')<CR>a
+  imap <silent> <buffer> <C-Space> <C-O>:call <SID>ChangeState(' ')<CR>
 
   " <C-F> focus on a cluster of TODOs
   nmap <silent> <buffer> <C-F> :call FocusOnCurrent()<CR>
-  imap <silent> <buffer> <C-F> <Esc>:call FocusOnCurrent()<CR>a
+  imap <silent> <buffer> <C-F> <C-O>:call FocusOnCurrent()<CR>
 
   " Indent/Outdent
   nmap <silent> <buffer> <Tab> :call <SID>PerformAppropriateDent(1)<CR>
-  imap <silent> <buffer> <Tab> <Esc>:call <SID>PerformAppropriateDent(1)<CR>a
+  imap <silent> <buffer> <Tab> <C-O>:call <SID>PerformAppropriateDent(1)<CR>
   nmap <silent> <buffer> <S-Tab> :call <SID>PerformAppropriateDent(0)<CR>
-  imap <silent> <buffer> <S-Tab> <Esc>:call <SID>PerformAppropriateDent(0)<CR>a
+  imap <silent> <buffer> <S-Tab> <C-O>:call <SID>PerformAppropriateDent(0)<CR>
 
   " Indent wrapped lines up to the same level
   if exists('&breakindent')
@@ -160,6 +160,8 @@ function! s:SetupTodoFile()
     " fold everything
     setlocal foldenable
   endif
+
+  exec "source" $DOT_FILES_DIR . "/" . "vim/includes/writing_highlights.vim"
 endfunction
 
 autocmd BufNewFile,BufRead todo-*.md call <SID>SetupTodoFile()

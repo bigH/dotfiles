@@ -136,9 +136,8 @@ set cursorline
 filetype on
 filetype plugin on
 
-" Split Naturally
-set splitbelow
-set splitright
+" Allow movement beyond line
+set virtualedit=onemore
 
 " TODO: Fix Splits when Resizing
 " autocmd VimResized * wincmd =
@@ -148,31 +147,35 @@ set splitright
 
 "{{{ Basic Window Management
 
+" Split Naturally (pair with mappings below)
+set splitbelow
+set splitright
+
 " Kill current split
 nmap <silent> <M-x> :close<CR>
-imap <silent> <M-x> <Esc>:close<CR>
+imap <silent> <M-x> <C-O>:close<CR>
 nmap <silent> <M-X> :only<CR>
-imap <silent> <M-X> <Esc>:only<CR>
+imap <silent> <M-X> <C-O>:only<CR>
 
 " Move between windows using <M-H/J/K/L> keys
 nmap <silent> <M-h> :wincmd h<CR>
-imap <silent> <M-h> <Esc>:wincmd h<CR>
+imap <silent> <M-h> <C-O>:wincmd h<CR>
 nmap <silent> <M-j> :wincmd j<CR>
-imap <silent> <M-j> <Esc>:wincmd j<CR>
+imap <silent> <M-j> <C-O>:wincmd j<CR>
 nmap <silent> <M-k> :wincmd k<CR>
-imap <silent> <M-k> <Esc>:wincmd k<CR>
+imap <silent> <M-k> <C-O>:wincmd k<CR>
 nmap <silent> <M-l> :wincmd l<CR>
-imap <silent> <M-l> <Esc>:wincmd l<CR>
+imap <silent> <M-l> <C-O>:wincmd l<CR>
 
 " Split windows using <M-S-H/J/K/L> keys
 nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>
-imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>
+imap <silent> <M-H> <C-O>:vsplit<CR><C-O>:wincmd h<CR>
 nmap <silent> <M-J> :split<CR>
-imap <silent> <M-J> <Esc>:split<CR>
+imap <silent> <M-J> <C-O>:split<CR>
 nmap <silent> <M-K> :split<CR>:wincmd k<CR>
-imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>
+imap <silent> <M-K> <C-O>:split<CR><C-O>:wincmd k<CR>
 nmap <silent> <M-L> :vsplit<CR>
-imap <silent> <M-L> <Esc>:vsplit<CR>
+imap <silent> <M-L> <C-O>:vsplit<CR>
 
 
 "}}}
@@ -321,6 +324,10 @@ inoremap <silent> <C-L> <Right>
 " Up and down are more logical with g..
 nnoremap <silent> k gk
 nnoremap <silent> j gj
+
+" Still want the illogical ability at times
+nnoremap <silent> gk k
+nnoremap <silent> gj j
 
 " Alt-Enter or <leader><CR> - insert a new-line here
 nnoremap <silent> <leader><CR> i<CR><Esc>

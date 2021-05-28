@@ -70,7 +70,7 @@ function! s:GetNextSearchTerm(is_visual)
 endfunction
 
 function! s:EscapeSearch(search)
-  return escape(a:search, '\\/.*$^~[]')
+  return escape(a:search, '\\/')
 endfunction
 
 function! s:BoundSearch(search)

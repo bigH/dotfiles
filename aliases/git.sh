@@ -20,21 +20,40 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias itg=git
 
   # commit wip
-  alias wip='git commit --no-verify -a -m WIP'
+  wip() {
+    if [ $# -gt 0 ]; then
+      indent --header git commit --no-verify -a -m "WIP $@"
+    else
+      indent --header git commit --no-verify -a -m "WIP"
+    fi
+  }
+
+  unwip() {
+    if ! is-in-git-repo; then
+      log_error 'could not `unwip`: must be a `git` repository'
+    elif [ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:WIP' ]; then
+      log_error 'could not `unwip`: last commit is not `wip`'
+    elif [ -n "$(git status -s)" ]; then
+      log_error 'could not `unwip`: uncommited/unstaged changes'
+    else
+      indent --header git reset --soft HEAD^
+    fi
+  }
 
   # -- shortcuts
   # fuzzy
-  alias gf="git fuzzy"
+  alias gf='git fuzzy'
 
   # clone
   alias gcl='git clone'
 
   # status
-  alias gs="gf status"
+  alias gs='gf status'
+  alias gss='g status --short'
 
   # branch
-  alias gb="gf branch"
-  alias gbd="g branch -D"
+  alias gb='gf branch'
+  alias gbd='g branch -D'
 
   # merge-base
   gmb() {
@@ -192,6 +211,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias grp='gr --patch'
   alias grh='gr --hard'
   alias grs='gr --soft'
+  alias grsh='gr --soft HEAD^'
 
   # rebase
   alias gri='git rebase --interactive'
@@ -209,6 +229,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
               indent --header git reset --hard ;
               indent --header git clean -df ;
               indent --header git status --short'
+
+  alias wiprom='wip &&
+                gprom &&
+                unwip'
 
   alias gacane='indent --header git add -A ;
                 indent --header git commit --amend --no-edit'

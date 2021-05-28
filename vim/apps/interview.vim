@@ -1,7 +1,7 @@
 " Source main `vim`
 
 let g:app_plugin_set = 'interview'
-exec "source" $DOT_FILES_DIR . "/vim/includes/core.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 
 "{{{ Basics
 
@@ -41,7 +41,7 @@ command SyncJournal call system($JOURNAL_PATH . '/system/sync_journal.sh journal
 
 "{{{ Functions used below
 
-let g:line_begins_with_prefix = '^\s*-\(\s\[[0-9][0-9]:[0-9][0-9]\]\)\?\s*'
+let g:line_begins_with_prefix = '^-\(\s\[[0-9][0-9]:[0-9][0-9]\]\)\?\s*'
 let g:line_is_prefix = g:line_begins_with_prefix . '$'
 
 function! CursorAfterLinePrefix()
@@ -80,10 +80,14 @@ function! InterviewDeleteCharacter()
   endif
 endfunction
 
-"}}}
-
-
-"{{{ Enable/Disable Timestamping
+function! InterviewCarriageReturn()
+  let line = getline('.')
+  if l:line =~ g:line_is_prefix
+    return "\<Esc>0C- [\<C-R>=trim(system('date +%I:%M'))\<CR>]\<Space>"
+  else
+    return "\<CR>- [\<C-R>=trim(system('date +%I:%M'))\<CR>]\<Space>"
+  endif
+endfunction
 
 let g:interview_timestamps_enabled = 0
 
@@ -98,10 +102,11 @@ function! ToggleTimestamps(...)
       let g:interview_timestamps_enabled = 0
       echo "Timestamps DISABLED"
     else
-      inoremap <silent> <CR> <CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
+      inoremap <silent> <expr> <CR> InterviewCarriageReturn()
+      " <CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
       nnoremap <silent> O <Esc>kA<CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
       nnoremap <silent> o <Esc>A<CR>- [<C-R>=trim(system('date +%I:%M'))<CR>]<Space>
-      inoremap <expr> <BS> InterviewDeleteCharacter()
+      inoremap <silent> <expr> <BS> InterviewDeleteCharacter()
 
       let g:interview_timestamps_enabled = 1
       echo "Timestamps ENABLED"
@@ -113,9 +118,45 @@ function! ToggleTimestamps(...)
   end
 endfunction
 
+function! UpdateTimestamp(amount)
+  let line = getline('.')
+  if l:line =~ g:line_begins_with_prefix
+    let cursor = getpos('.')
+
+    let m = str2nr(l:line[6:7]) + a:amount
+    let h = str2nr(l:line[3:4])
+
+    if l:m >= 60
+      let m = l:m - 60
+      let h = l:h + 1
+      if l:h > 12
+        let h = 1
+      endif
+    elseif l:m < 0
+      let m = l:m + 60
+      let h = l:h - 1
+      if l:h < 1
+        let h = 12
+      endif
+    endif
+
+    let g:last_info = l:h . ':' . l:m
+
+    call setline(line('.'), '- [' . printf('%02d', l:h) . ':' . printf('%02d', l:m) . '] ' . l:line[10:])
+  endif
+endfunction
+
+"}}}
+
+
+"{{{ Enable/Disable Timestamping
+
 command EnableTimestamps call ToggleTimestamps(1)
 command DisableTimestamps call ToggleTimestamps(0)
 command ToggleTimestamps call ToggleTimestamps()
+
+command IncrementTimestamp call UpdateTimestamp(1)
+command DecrementTimestamp call UpdateTimestamp(-1)
 
 "}}}
 
@@ -124,42 +165,57 @@ command ToggleTimestamps call ToggleTimestamps()
 
 function! s:SetupInterviewBuffer()
   " Desired `highlight` in comments
+  exec "source" $DOT_FILES_DIR . "/" . "vim/includes/writing_highlights.vim"
+
+  syntax match interviewerHint /\c\<hint\(ed\|ing\|s\|\)\>/
+  syntax match interviewerExplain /\c\<explain\(ed\|ing\|s\|\)\>/
+
+  highlight default interviewerHint cterm=bold,italic ctermfg=white ctermbg=darkred
+  highlight default interviewerExplain cterm=bold,italic ctermfg=white ctermbg=darkyellow
+
   syntax match helpfulMarkerXX /(XX)/
   syntax match helpfulMarkerYY /(YY)/
   syntax match helpfulMarkerZZ /(ZZ)/
 
-  syntax cluster SubHighlights contains=markdownCode
+  highlight default helpfulMarkerXX cterm=bold ctermfg=white ctermbg=darkblue
+  highlight default helpfulMarkerYY cterm=bold ctermfg=white ctermbg=darkgreen
+  highlight default helpfulMarkerZZ cterm=bold ctermfg=white ctermbg=darkcyan
+
+  syntax match timestamp /\[[0-9][0-9]:[0-9][0-9]\]/
+
+  highlight default link timestamp GruvboxGray
+
+  syntax cluster SubHighlights contains=timestamp
+
+  syntax cluster SubHighlights add=helpfulMarkerXX
+  syntax cluster SubHighlights add=helpfulMarkerYY
+  syntax cluster SubHighlights add=helpfulMarkerZZ
+
+  syntax cluster SubHighlights add=interviewerHint
+  syntax cluster SubHighlights add=interviewerExplain
+
+  syntax cluster SubHighlights add=weaselyWords
+  syntax cluster SubHighlights add=passiveyWords
 
   syntax cluster SubHighlights add=markdownBold
   syntax cluster SubHighlights add=markdownBoldDelimiter
   syntax cluster SubHighlights add=markdownItalic
   syntax cluster SubHighlights add=markdownItalicDelimiter
 
-  syntax cluster SubHighlights add=helpfulMarkerXX
-  syntax cluster SubHighlights add=helpfulMarkerYY
-  syntax cluster SubHighlights add=helpfulMarkerZZ
-
-  highlight default helpfulMarkerXX cterm=bold ctermfg=white ctermbg=darkblue
-  highlight default helpfulMarkerYY cterm=bold ctermfg=white ctermbg=darkgreen
-  highlight default helpfulMarkerZZ cterm=bold ctermfg=white ctermbg=darkcyan
+  syntax cluster SubHighlights add=markdownCode
 
   syntax match interviewerSaid /\c\<i:/
   syntax match candidateSaid /\c\<c:/
   syntax match interviewerNote /\c\<note:/
-  syntax match interviewerHint /\c\<hint\(ed\|ing\|s\|\)\>/
-  syntax match interviewerExplain /\c\<explain\(ed\|ing\|s\|\)\>/
-
-  syntax match quote2 /".\{-}"/ contains=@SubHighlights
-
-  syntax match timestamp /\[[0-9][0-9]:[0-9][0-9]\]/
 
   highlight default link interviewerSaid GruvboxGreenBold
   highlight default link candidateSaid GruvboxBlueBold
   highlight default interviewerNote cterm=bold,italic ctermfg=white
-  highlight default interviewerHint cterm=bold,italic ctermfg=white ctermbg=darkred
-  highlight default interviewerExplain cterm=bold,italic ctermfg=white ctermbg=darkyellow
-  highlight default link quote2 GruvboxOrangeBold
-  highlight default link timestamp GruvboxGray
+
+  syntax match quote2 /".\{-}"/ contains=@SubHighlights
+
+  highlight default link quote2 GruvboxPurpleBold
+
 endfunction
 
 au FileType markdown call s:SetupInterviewBuffer()
@@ -184,14 +240,18 @@ function! s:LoadInterview()
   EnableTimestamps
 
   nnoremap <silent> <F1> :<C-U>ToggleTimestamps<CR>
-  inoremap <silent> <F1> <Esc>:<C-U>ToggleTimestamps<CR>a
+  inoremap <silent> <F1> <C-O>:<C-U>ToggleTimestamps<CR>
 
   " default enter behavior always with meta enter
   inoremap <silent> <M-CR> <CR>
 
-  " default enter behavior always with meta enter
-  nnoremap <silent> <C-A> mm0f]h<C-A>`m
-  nnoremap <silent> <C-X> mm0f]h<C-X>`m
+  " C-A increment time
+  nnoremap <silent> <C-A> :<C-U>IncrementTimestamp<CR>
+  inoremap <silent> <C-A> <C-O>:<C-U>IncrementTimestamp<CR>
+
+  " C-X decrement time
+  nnoremap <silent> <C-X> :<C-U>DecrementTimestamp<CR>
+  inoremap <silent> <C-X> <C-O>:<C-U>DecrementTimestamp<CR>
 
   call s:SetupInterviewBuffer()
 endfunction

@@ -1,7 +1,15 @@
 " Source main `vim`
 
 let g:app_plugin_set = 'journal'
-exec "source" $DOT_FILES_DIR . "/vim/includes/core.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
+
+"{{{ Decide the style of split
+
+let g:ratio_of_h_w = (&columns * 1.0) / (&lines * 1.0)
+let g:journal_split_type = (g:ratio_of_h_w < 2.5) ? 'split' : 'vsplit'
+
+"}}}
+
 
 "{{{ Basics
 
@@ -112,7 +120,7 @@ function! s:LoadJournal()
   hi clear markdownCodeBlock
   call UnfoldDefault()
 
-  execute 'vsplit' s:NotesPath()
+  execute g:journal_split_type s:NotesPath()
   execute 'filetype' 'detect'
   hi clear markdownCodeBlock
   call UnfoldDefault()
@@ -155,12 +163,12 @@ nmap <silent> <M-k> :wincmd k<CR>
 nmap <silent> <M-l> :wincmd l<CR>
 
 " Move between windows using <M-H/J/K/L> keys
-imap <silent> <M-h> <Esc>:wincmd h<CR>i
-imap <silent> <M-j> <Esc>:wincmd j<CR>i
-imap <silent> <M-k> <Esc>:wincmd k<CR>i
-imap <silent> <M-l> <Esc>:wincmd l<CR>i
-
+imap <silent> <M-h> <C-O>:wincmd h<CR>
+imap <silent> <M-j> <C-O>:wincmd j<CR>
+imap <silent> <M-k> <C-O>:wincmd k<CR>
+imap <silent> <M-l> <C-O>:wincmd l<CR>
 " Q does nothing
 nnoremap <silent> Q <Nop>
 
 "}}}
+

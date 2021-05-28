@@ -15,6 +15,12 @@
       "rootPatterns": ["build.sbt"],
       "filetypes": ["scala", "sbt"]
     },
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
     "sorbet": {
       "command": "srb",
       "args": ["tc", "--lsp", "--enable-all-experimental-lsp-features", "--disable-watchman", "--debug-log-file=/tmp/sorbet-nvim.log", "-e", "0"],
