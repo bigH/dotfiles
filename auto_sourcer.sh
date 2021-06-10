@@ -3,14 +3,15 @@
 # TODO: tune; currently, check every prompt while debugging
 export AUTO_SOURCER_CHECK_INTERVAL="10"
 export AUTO_SOURCING_FILE_CHANGED=""
+export AUTO_SOURCED_FILES=""
 
 # NB: Auto-Sourcing this file will clobber auto-sourcing data this prevents the
 # file from being sourced more than once in a given shell
 if [ -z "$AUTO_SOURCED_FILES" ] ; then
   # NB: these cannot be an `export` because we don't want it propagating to
   # child shells
-  AUTO_SOURCED_FILES=" "
   AUTO_SOURCER_LAST_CHECK=""
+  AUTO_SOURCED_FILES=" "
 
   auto_source() {
     # TODO make sure to re-source only if it is changed
