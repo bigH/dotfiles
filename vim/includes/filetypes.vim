@@ -21,6 +21,7 @@ augroup FiletypeSettings
   au FileType gitconfig setlocal noexpandtab
 
   " 4-space-y languages
+  au FileType solidity setlocal tabstop=4 | setlocal shiftwidth=4
   au FileType go setlocal tabstop=4 | setlocal shiftwidth=4
   au FileType java setlocal tabstop=4 | setlocal shiftwidth=4
 

@@ -81,9 +81,14 @@ fi
 
 if [ -x '/usr/libexec/java_home' ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
-  if [ -n "$JAVA_HOME" ]; then
-    export JAVA_HOME
-  fi
+fi
+
+if [ -d '/usr/local/opt/openjdk@11' ]; then
+  JAVA_HOME="/usr/local/opt/openjdk@11"
+fi
+
+if [ -n "$JAVA_HOME" ]; then
+  export JAVA_HOME
 fi
 
 # Add iTerm2 things

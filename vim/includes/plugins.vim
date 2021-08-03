@@ -128,6 +128,9 @@ PlugMemoize 'leafgarland/typescript-vim'
 PlugMemoize 'MaxMEllon/vim-jsx-pretty'
 PlugMemoize 'HerringtonDarkholme/yats.vim'
 
+" solidity support
+PlugMemoize 'tomlion/vim-solidity'
+
 " TODO get rid of this if `ale` doesn't do it
 " PlugMemoize 'prettier/vim-prettier'
 

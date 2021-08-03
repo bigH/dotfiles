@@ -65,7 +65,7 @@ endfunc
 
 func! ModalPasteRotate()
   let g:paste_mode = (g:paste_mode + 1) % 3
-  call ApplyPasteMode()
+  call ModalPasteApply()
 endfunc
 
 " <F10> to rotate paste-mode

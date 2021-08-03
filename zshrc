@@ -103,10 +103,11 @@ autoload -U compinit && compinit
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export SHELL="/bin/zsh"
 
-export DOT_FILES_DIR=$HOME/.hiren
+export DOT_FILES_DIR="$HOME/.hiren"
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 source "$DOT_FILES_DIR/auto_sourcer.sh"
 
 auto_source "$DOT_FILES_DIR/profile"

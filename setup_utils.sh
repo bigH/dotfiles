@@ -2,9 +2,9 @@
 
 export DOT_FILES_DIR=$HOME/.hiren
 
-source $DOT_FILES_DIR/sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
 
-touch $DOT_FILES_DIR/env-context
+touch "$DOT_FILES_DIR/env-context"
 
 if [ $# -eq 1 ]; then
   echo "$1" > $DOT_FILES_DIR/env-context

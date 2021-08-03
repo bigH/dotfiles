@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DOT_FILES_DIR=$HOME/.hiren
+export DOT_FILES_DIR="$HOME/.hiren"
 source "$DOT_FILES_DIR/setup_utils.sh"
 
 if ! command -v zsh >/dev/null 2>&1; then

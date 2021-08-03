@@ -136,9 +136,6 @@ set cursorline
 filetype on
 filetype plugin on
 
-" Allow movement beyond line
-set virtualedit=onemore
-
 " TODO: Fix Splits when Resizing
 " autocmd VimResized * wincmd =
 
@@ -315,11 +312,22 @@ map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
 
-" Move in insert mode using <C-H/J/K/L> keys
-inoremap <silent> <C-H> <Left>
-inoremap <silent> <C-J> <Down>
-inoremap <silent> <C-K> <Up>
-inoremap <silent> <C-L> <Right>
+" TODO this is mutually exclusive with the section after
+" " Move in insert mode using <C-H/J/K/L> keys
+" inoremap <silent> <C-H> <Left>
+" inoremap <silent> <C-J> <Down>
+" inoremap <silent> <C-K> <Up>
+" inoremap <silent> <C-L> <Right>
+
+" TODO consider
+" enable moving line up and down while working on it
+inoremap <silent> <C-K> <Esc>:m .-2<CR>i
+inoremap <silent> <C-J> <Esc>:m .+1<CR>i
+
+" TODO consider
+" enable moving lines up and down when visually selected
+vnoremap <silent> <C-J> :m '>+1<CR>gv
+vnoremap <silent> <C-K> :m '<-2<CR>gv
 
 " Up and down are more logical with g..
 nnoremap <silent> k gk
@@ -334,7 +342,7 @@ nnoremap <silent> <leader><CR> i<CR><Esc>
 nnoremap <silent> <M-CR> i<CR><Esc>
 
 " Sane Y
-nnoremap <silent> Y y$
+nnoremap <silent> Y yg_
 
 " Use `Y` to append text to clipboard & `<leader>Y` to clear
 execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
@@ -342,7 +350,7 @@ execute "source" $DOT_FILES_DIR . "/" . "vim/includes/get_visual_selection.vim"
 vnoremap <silent> <Leader>Y :<C-U>let @+ .= GetVisualSelectionAsString()<CR>
 vnoremap <silent> <Leader>y :<C-U>let @+ = GetVisualSelectionAsString()<CR>
 
-nnoremap <silent> <Leader>Y "+y_
+nnoremap <silent> <Leader>Y "+yg_
 nnoremap <silent> <Leader>y "+y
 
 nnoremap <silent> yp :<C-U>let @+ = expand('%')<CR>:<C-U>let @" = expand('%')<CR>
