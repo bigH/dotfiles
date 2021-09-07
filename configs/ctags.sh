@@ -2,7 +2,7 @@
 
 # find ctags directory using brew
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  CTAGS_HOME=`brew info ctags | grep /usr/local/Cellar | cut -d' ' -f1`
+  CTAGS_HOME=`brew info universal-ctags | grep /usr/local/Cellar | cut -d' ' -f1`
 
   if [ -d "$CTAGS_HOME" ]; then
     export PATH="$CTAGS_HOME/bin:$PATH"

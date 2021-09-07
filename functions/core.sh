@@ -4,7 +4,14 @@
 if type autojump >/dev/null 2>&1; then
   if type fzf >/dev/null 2>&1; then
     jj() {
-      DIRECTORY="$(autojump -s | cut -f2 | must -e -d | fzf +m --query="$*" --preview='ls --color=always -l {1..}')"
+      if type exa >/dev/null 2>&1; then
+        PREVIEW="exa --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1..}"
+      else
+        PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1..}"
+      fi
+
+      DIRECTORY="$(autojump -s | cut -f2 | must -e -d | fzf +m --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings))"
+
       if [ -d "$DIRECTORY" ]; then
         cd "$DIRECTORY" || echo "ERROR: could not \`cd\` into '$DIRECTORY'"
       else
