@@ -359,6 +359,9 @@ nnoremap <silent> <Leader>y "+y
 
 nnoremap <silent> yp :<C-U>let @+ = expand('%')<CR>:<C-U>let @" = expand('%')<CR>
 
+" Map ZZ to `:wqa`
+nnoremap <silent> ZZ :<C-U>wqa<CR>
+
 " Map K to `NoOp`
 nnoremap <silent> K <Nop>
 
