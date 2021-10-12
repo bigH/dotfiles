@@ -134,6 +134,12 @@ PlugMemoize 'tomlion/vim-solidity'
 " TODO get rid of this if `ale` doesn't do it
 " PlugMemoize 'prettier/vim-prettier'
 
+" prisma (db schema language) support
+PlugMemoize 'pantharshit00/vim-prisma'
+
+" graphql support
+PlugMemoize 'jparise/vim-graphql'
+
 " -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 " NB: this plugin remaps <CR> and causes weird issues when using <C-P>

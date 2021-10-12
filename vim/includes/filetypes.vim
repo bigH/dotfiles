@@ -7,6 +7,9 @@ function s:SetupJSBindings()
   " go sort the list
   if IsPluginLoaded('kana/vim-textobj-indent')
     nmap <silent> <leader>gs vii:sort<CR>
+    if IsPluginLoaded('AndrewRadev/splitjoin.vim')
+      nmap <silent> <leader>si sjjvii:sort<CR>
+    endif
   endif
 
   " go create a variable with . & " registers

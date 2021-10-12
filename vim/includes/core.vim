@@ -185,10 +185,10 @@ let g:copy_all_registers_to_clipboard = 0
 function! CopyPlusToStar(name)
   if g:copy_all_registers_to_clipboard || a:name == '+'
     let contents = getreg(a:name)
-    if a:name == '+'
+    if a:name != '+'
       silent! call setreg('*', l:contents)
     endif
-    if a:name == '+'
+    if a:name == '*'
       silent! call setreg('+', l:contents)
     endif
   endif
@@ -336,6 +336,10 @@ nnoremap <silent> j gj
 " Still want the illogical ability at times
 nnoremap <silent> gk k
 nnoremap <silent> gj j
+
+" f/F with <CR>
+nnoremap <silent> f<CR> }
+nnoremap <silent> F<CR> {
 
 " Alt-Enter or <leader><CR> - insert a new-line here
 nnoremap <silent> <leader><CR> i<CR><Esc>

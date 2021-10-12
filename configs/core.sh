@@ -108,6 +108,11 @@ if type rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
+# Initialize `direnv`
+if type direnv >/dev/null 2>&1; then
+  eval "$(direnv hook $SHELL_NAME)"
+fi
+
 # Setup Helm in path
 if [ -d "$HOME/opt/helm-2.17.0" ]; then
   export PATH="$HOME/opt/helm-2.17.0:$PATH"

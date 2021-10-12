@@ -29,7 +29,7 @@ font:
     x: 0
     y: 0
 
-  size: 14.0
+  size: 15.0
 
   use_thin_strokes: true
 
@@ -85,9 +85,10 @@ visual_bell:
 background_opacity: 1.0
 
 key_bindings:
+  - { key: W,        mods: Command,       action: None                         }
   - { key: V,        mods: Command,       action: Paste                        }
   - { key: C,        mods: Command,       action: Copy                         }
-  - { key: Q,        mods: Command,       action: Quit                         }
+  - { key: Q,        mods: Command,       action: None                         }
   - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
   - { key: H,        mods: Command,       chars: "H"                           }
@@ -241,8 +242,9 @@ cursor:
 live_config_reload: true
 
 shell:
-  program: login
-  args: ["-fp", "hiren"]
+  program: /bin/zsh
+  args:
+    - --login
 
 debug:
   # Should display the render timer

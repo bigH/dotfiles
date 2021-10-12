@@ -6,6 +6,14 @@ fzf_present() {
   type fzf >/dev/null 2>&1
 }
 
+heroku_present() {
+  type heroku >/dev/null 2>&1
+}
+
+heroku_remote() {
+  git remote | grep heroku >/dev/null 2>&1
+}
+
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   # -- shared
   # NB: used by quite a few of the below aliases
@@ -22,7 +30,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # commit wip
   wip() {
     if [ $# -gt 0 ]; then
-      indent --header git commit --no-verify -a -m "WIP $@"
+      indent --header git commit --no-verify -a -m "WIP $*"
     else
       indent --header git commit --no-verify -a -m "WIP"
     fi
@@ -96,7 +104,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # interactively select files in patch (against merge base) to apply
   gabmb() {
-    if [ "$#" = 1 ]; then
+    if [ "$#" -eq 1 ]; then
       MERGE_BASE="$(git merge-base "$1" "$(git merge-base-remote)/$(git merge-base-branch)")"
       IFS=$'\r\n' eval 'FILES=($(git fuzzy diff "$MERGE_BASE" "$1"))'
       if [ "${#FILES[@]}" -gt 0 ]; then
@@ -111,7 +119,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # checkout a branch or commit
   gcob() {
-    if [ "$#" = 1 ]; then
+    if [ "$#" -eq 1 ]; then
       if git rev-parse --verify "$1" > /dev/null 2>&1 ; then
         indent --header git checkout "$1"
       else
@@ -137,9 +145,27 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcamend='git commit --amend'
 
   # commit - non-interactive
-  alias gcm='indent --header git commit -m'
-  alias gcam='indent --header git commit -a -m'
   alias gcane='indent --header git commit --amend --no-edit'
+
+  gcm() {
+    if [ "$#" -gt 1 ]; then
+      indent --header git commit -m "$*"
+    elif [ "$#" -eq 1 ]; then
+      indent --header git commit -m "$1"
+    else
+      log_error "expect arguments for commit message"
+    fi
+  }
+
+  gcam() {
+    if [ "$#" -gt 1 ]; then
+      indent --header git commit -a -m "$*"
+    elif [ "$#" -eq 1 ]; then
+      indent --header git commit -a -m "$1"
+    else
+      log_error "expect arguments for commit message"
+    fi
+  }
 
   # add
   alias ga='git add'
@@ -209,9 +235,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # reset
   alias gr='g reset'
   alias grp='gr --patch'
-  alias grh='gr --hard'
+  alias grH='gr --hard'
   alias grs='gr --soft'
   alias grsh='gr --soft HEAD^'
+
+  grh() {
+    if [ "$#" -eq 0 ]; then
+      log_error 'requires parameters for safety use `grH` instead if you want to clobber working-copy'
+    else
+      indent --header git reset --hard "$@"
+    fi
+  }
 
   # rebase
   alias gri='git rebase --interactive'
@@ -253,6 +287,20 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gpf='indent --header git push --force-with-lease origin $(git branch-name)'
   alias gpff='indent --header git push --force origin $(git branch-name)'
   alias gpu='indent --header git push -u origin $(git branch-name)'
+  gph() {
+    if heroku_present; then
+      if heroku_remote; then
+        git push heroku "$(git branch-name):main"
+      else
+        log_error '`heroku` remote not found in `git remote`; ignoring command'
+      fi
+    else
+      log_error '`heroku` command not found; ignoring command'
+    fi
+  }
+
+  # remotes
+  alias grv='git remote -v'
 
   # --- random higher-order things ---
   # toss the branch and make a new one

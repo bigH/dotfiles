@@ -5,9 +5,9 @@ exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/git.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_tabs.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/enlarge_view.vim"
 
 "}}}
 

@@ -104,6 +104,7 @@ autoload -U compinit && compinit
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export SHELL="/bin/zsh"
+export SHELL_NAME="zsh"
 
 export DOT_FILES_DIR="$HOME/.hiren"
 
