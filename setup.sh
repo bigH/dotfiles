@@ -122,6 +122,15 @@ else
 fi
 echo ""
 
+if [ -d "$DOT_FILES_DIR/arcanist" ]; then
+  printf "  - ${BLUE}Found \`arcanist\` ...${NORMAL}"
+  print_symbol_for_status "found" "true"
+else
+  printf "  - ${BLUE}Installing \`arcanist\` ...${NORMAL}"
+  print_symbol_for_status "clone" "git clone https://github.com/phacility/arcanist.git $DOT_FILES_DIR/arcanist"
+fi
+echo ""
+
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
   print_symbol_for_status "found" "true"

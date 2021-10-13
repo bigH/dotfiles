@@ -210,6 +210,10 @@ if [ -d "$DOT_FILES_DIR/interactively" ]; then
   export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
 fi
 
+if [ -d "$DOT_FILES_DIR/arcanist" ]; then
+  export PATH="$DOT_FILES_DIR/arcanist/bin:$PATH"
+fi
+
 if [ -d "$HOME/.sdkman" ]; then
   export SDKMAN_DIR="$HOME/.sdkman"
   if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then

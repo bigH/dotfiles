@@ -16,6 +16,7 @@ made/
 .vim/
 
 # external things
+arcanist/
 auto-sized-fzf/
 bat/
 dircolors-solarized/
