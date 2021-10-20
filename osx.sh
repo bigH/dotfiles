@@ -546,6 +546,14 @@ defaults write com.google.Chrome ExtensionInstallSources -array "https://*.githu
 defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
 
 ###############################################################################
+# Inrease file open limit (mainly for huge codebases)
+# source: https://apple.stackexchange.com/questions/32235/how-to-properly-increase-a-ulimit-n-limits
+###############################################################################
+echo 'kern.maxfiles=20480' | sudo tee -a /etc/sysctl.conf
+echo -e 'limit maxfiles 8192 20480\nlimit maxproc 1000 2000' | sudo tee -a /etc/launchd.conf
+echo 'ulimit -n 4096' | sudo tee -a /etc/profile
+
+###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
 

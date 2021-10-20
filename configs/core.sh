@@ -79,16 +79,26 @@ if [ -d '/usr/local/opt/llvm/bin/' ]; then
   export PATH="/usr/local/opt/llvm/bin/:$PATH"
 fi
 
+# Various `java`s
 if [ -x '/usr/libexec/java_home' ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
 fi
 
 if [ -d '/usr/local/opt/openjdk@11' ]; then
-  JAVA_HOME="/usr/local/opt/openjdk@11"
+  JAVA_HOME='/usr/local/opt/openjdk@11'
+fi
+
+if [ -d '/usr/local/opt/openjdk@8' ]; then
+  JAVA_HOME='/usr/local/opt/openjdk@8'
 fi
 
 if [ -n "$JAVA_HOME" ]; then
   export JAVA_HOME
+fi
+
+# add brew path
+if [ -d "$JAVA_HOME" ]; then
+  export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
 # Add iTerm2 things
@@ -208,10 +218,6 @@ fi
 
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   export PATH="$DOT_FILES_DIR/interactively/bin:$PATH"
-fi
-
-if [ -d "$DOT_FILES_DIR/arcanist" ]; then
-  export PATH="$DOT_FILES_DIR/arcanist/bin:$PATH"
 fi
 
 if [ -d "$HOME/.sdkman" ]; then

@@ -29,7 +29,5 @@ unset ALIASES
 if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh" ]; then
     auto_source "$DOT_FILES_DIR/$DOT_FILES_ENV/aliases.sh"
-  elif [ -f "$ALIASES/no-env-context.sh" ]; then
-    auto_source "$ALIASES/no-env-context.sh"
   fi
 fi
