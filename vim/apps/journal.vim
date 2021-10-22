@@ -3,18 +3,7 @@
 let g:app_plugin_set = 'journal'
 exec "source" $DOT_FILES_DIR . "/" . "vim/includes/core.vim"
 
-"{{{ Decide the style of split
-
-let g:ratio_of_h_w = (&columns * 1.0) / (&lines * 1.0)
-let g:journal_split_type = (g:ratio_of_h_w < 2.5) ? 'split' : 'vsplit'
-
-"}}}
-
-
 "{{{ Basics
-
-" override nowrap - vertical splits
-set wrap
 
 " turn off all gutter stuff
 set nolist
@@ -54,19 +43,11 @@ endif
 "{{{ Paths
 
 function! s:TodoPath()
-  return $JOURNAL_PATH . '/todo-current.md'
+  return $JOURNAL_PATH . '/todo.md'
 endfunction
 
-function! s:LatestDatedFile(pattern)
-  return trim(system('ls ' . $JOURNAL_PATH . '/' . a:pattern . '-* | sort | tail -1'))
-endfunction
-
-function! s:NotesPath()
-  return s:LatestDatedFile('notes')
-endfunction
-
-function! s:DailyJournalPath()
-  return s:LatestDatedFile('journal')
+function! s:NewMenuPath()
+  return $JOURNAL_PATH . '/new_menu.txt'
 endfunction
 
 "}}}
@@ -85,6 +66,7 @@ function! FocusOnCurrent()
   call setpos('.', l:save_cursor)
 endfunction
 
+" TODO remove?
 function! UnfoldDefault()
   let current_search = @/
   let @/ = '(DEFAULT)'
@@ -112,23 +94,6 @@ function! s:LoadJournal()
   AutoSaveToggle
 
   execute 'cd' $JOURNAL_PATH
-
-  call system($JOURNAL_PATH . '/system/rejournal.sh')
-
-  execute 'edit' s:TodoPath()
-  execute 'filetype' 'detect'
-  hi clear markdownCodeBlock
-  call UnfoldDefault()
-
-  execute g:journal_split_type s:NotesPath()
-  execute 'filetype' 'detect'
-  hi clear markdownCodeBlock
-  call UnfoldDefault()
-
-  SyncJournalAsync
-
-  execute 'wincmd' 'h'
-  execute 'wincmd' 'h'
 endfunction
 
 "}}}
@@ -137,7 +102,6 @@ endfunction
 "{{{ Autogroups
 
 augroup SetupJournal
-  autocmd VimEnter * call <SID>LoadJournal()
   autocmd VimLeave * SyncJournal
   autocmd FocusGained * SyncJournalAsync
   autocmd FocusLost * stopinsert
@@ -167,6 +131,7 @@ imap <silent> <M-h> <C-O>:wincmd h<CR>
 imap <silent> <M-j> <C-O>:wincmd j<CR>
 imap <silent> <M-k> <C-O>:wincmd k<CR>
 imap <silent> <M-l> <C-O>:wincmd l<CR>
+
 " Q does nothing
 nnoremap <silent> Q <Nop>
 
