@@ -80,20 +80,17 @@ endfunction
 
 "{{{ File Management
 
-command SyncJournalAsync call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim')
-command SyncJournal call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim --now')
+command SyncJournalAsync writeall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim')
+command SyncJournal writeall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim --now')
 
 function! s:LoadJournal()
+  execute 'cd' $JOURNAL_PATH
+
   syntax enable
   filetype on
   filetype plugin on
 
   let g:markdown_fold_style = 'nested'
-  let g:auto_save_postsave_hook = 'SyncJournalAsync'
-
-  AutoSaveToggle
-
-  execute 'cd' $JOURNAL_PATH
 endfunction
 
 "}}}
@@ -102,6 +99,7 @@ endfunction
 "{{{ Autogroups
 
 augroup SetupJournal
+  autocmd VimEnter * call s:LoadJournal()
   autocmd VimLeave * SyncJournal
   autocmd FocusGained * SyncJournalAsync
   autocmd FocusLost * stopinsert

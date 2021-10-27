@@ -126,10 +126,36 @@ wh() {
 
 if type jq >/dev/null 2>&1; then
   jqc() {
-    cat - | jq -C .
+    cat - | jq -C . "$@"
   }
 
-  jqcp() {
-    cat - | jq -C . | less -REX
+  jqC() {
+    cat - | jq -C . "$@" | less -REX
   }
+
+  jqp() {
+    pbpaste | jq -C . "$@"
+  }
+
+  jqP() {
+    pbpaste | jq -C . "$@" | less -REX
+  }
+
+  if type interactively >/dev/null 2>&1; then
+    ijqp() {
+      interactively --name fx 'pbpaste | jq -C {q}'
+    }
+  fi
+fi
+
+if type fx >/dev/null 2>&1; then
+  fxp() {
+    pbpaste | fx "$@"
+  }
+
+  if type interactively >/dev/null 2>&1; then
+    ifxp() {
+      interactively --name fx 'pbpaste | fx {q} | jq -C .'
+    }
+  fi
 fi

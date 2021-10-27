@@ -39,8 +39,8 @@ mkdir_if_not_exists "$DOT_FILES_DIR/.vim/scratch"
 echo ""
 
 printf "${BLUE}${BOLD}Download \`vim-plug\`${NORMAL}"
-print_symbol_for_status "vim" "curl -fLo $DOT_FILES_DIR/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-print_symbol_for_status "nvim" "curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+run_and_print_status_symbol "vim" "curl -fLo $DOT_FILES_DIR/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+run_and_print_status_symbol "nvim" "curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 echo ""
 echo ""
 
@@ -70,129 +70,129 @@ echo ""
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
 if type fzf >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`fzf\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
+    run_and_print_status_symbol "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
   else
-    print_symbol_for_status "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
+    run_and_print_status_symbol "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
   fi
 else
   printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
-  print_symbol_for_status "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
+  run_and_print_status_symbol "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
+  run_and_print_status_symbol "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
 echo ""
 
 if type rg >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`ripgrep\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 elif type rgrep >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`rgrep\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
-  print_symbol_for_status "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
+  run_and_print_status_symbol "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
+  run_and_print_status_symbol "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
 echo ""
 
 if type bat >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`bat\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 elif type batcat >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`batcat\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
-  print_symbol_for_status "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
+  run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
+  run_and_print_status_symbol "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
 echo ""
 
 if type fd >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`fd\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 elif type fdfind >/dev/null 2>&1; then
   printf "  - ${BLUE}Found \`fdfind\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
-  print_symbol_for_status "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
+  run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
+  run_and_print_status_symbol "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 fi
 echo ""
 
 if [ -d "$DOT_FILES_DIR/arcanist" ]; then
   printf "  - ${BLUE}Found \`arcanist\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`arcanist\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/phacility/arcanist.git $DOT_FILES_DIR/arcanist"
+  run_and_print_status_symbol "clone" "git clone https://github.com/phacility/arcanist.git $DOT_FILES_DIR/arcanist"
 fi
 echo ""
 
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
 fi
 echo ""
 
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
 fi
 echo ""
 
 if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
   printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
-  print_symbol_for_status "found" "true"
+  run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
-  print_symbol_for_status "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
 fi
 echo ""
 
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
+run_and_print_status_symbol "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo ""
 
 printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
-print_symbol_for_status "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
+run_and_print_status_symbol "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
+run_and_print_status_symbol "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
 echo ""
 
 printf "  - ${BLUE}Installing \`zsh-autosuggestions\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 echo ""
 
 printf "  - ${BLUE}Installing \`zsh-syntax-highlighting\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 echo ""
 
 printf "  - ${BLUE}Installing \`zsh-completions\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
+run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
 echo ""
 
 printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
-print_symbol_for_status "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
+run_and_print_status_symbol "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
 echo ""
 
 printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
-print_symbol_for_status "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
-print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh"
-print_symbol_for_status "chmod" "chmod +x $DOT_FILES_DIR/utils/cht.sh"
+run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
+run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh"
+run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/cht.sh"
 echo ""
 
 printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
-print_symbol_for_status "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
-print_symbol_for_status "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
-print_symbol_for_status "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
+run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
+run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
+run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
 echo ""
 
 echo ""
@@ -225,10 +225,11 @@ link_if_possible "$DOT_FILES_DIR/ackrc" "$HOME/.ackrc"
 link_if_possible "$DOT_FILES_DIR/alacritty.yml" "$HOME/.alacritty.yml"
 link_if_possible "$DOT_FILES_DIR/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
 link_if_possible "$DOT_FILES_DIR/ctags" "$HOME/.ctags"
+link_if_possible "$DOT_FILES_DIR/fdignore" "$HOME/.fdignore"
+link_if_possible "$DOT_FILES_DIR/fxrc" "$HOME/.fxrc"
 link_if_possible "$DOT_FILES_DIR/inputrc" "$HOME/.inputrc"
 link_if_possible "$DOT_FILES_DIR/pryrc" "$HOME/.pryrc"
 link_if_possible "$DOT_FILES_DIR/rgignore" "$HOME/.rgignore"
-link_if_possible "$DOT_FILES_DIR/fdignore" "$HOME/.fdignore"
 link_if_possible "$DOT_FILES_DIR/tigrc" "$HOME/.tigrc"
 link_if_possible "$DOT_FILES_DIR/nice-noise-loops" "$HOME/nice-noise-loops"
 echo ""
@@ -239,7 +240,7 @@ echo ""
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "${BLUE}${BOLD}Installing iTerm2 shell integration ...${NORMAL}"
-  print_symbol_for_status "execute" "curl -L https://iterm2.com/misc/install_shell_integration.sh | bash"
+  run_and_print_status_symbol "execute" "curl -L https://iterm2.com/misc/install_shell_integration.sh | bash"
   echo ""
   echo ""
 fi
@@ -262,9 +263,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "     ... installs dependencies"
   echo "     \`brew install ack autojump bat broot cabal cloc coreutils \\"
   echo "                   direnv exa fd fzf gh ghc git-delta glances go \\"
-  echo "                   htop lnav multitail neovim python3 rbenv ripgrep \\"
-  echo "                   rustup-init shellcheck swaks tig wget \\"
-  echo "                   universal-ctags\`"
+  echo "                   htop jq lnav multitail neovim prettyping python3 \\"
+  echo "                   rbenv ripgrep rustup-init shellcheck swaks tldr \\"
+  echo "                   tig wget universal-ctags\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
   echo ""

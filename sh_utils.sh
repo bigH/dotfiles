@@ -164,14 +164,24 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     fi
   }
 
-  log_command() {
+  log_command_oneline() {
     printf '%s%s%s%s' "$GRAY" "$BOLD" '$ ' "$NORMAL"
     printf '%s%s%s%s' "$CYAN" "$BOLD" "$(quote_single_param "$1")" "$NORMAL"
     shift
     printf '%s' "$GREEN"
     printf ' %s' "$(quote_params "$@")"
     printf '%s' "$NORMAL"
+  }
+
+  log_command() {
+    log_command_oneline "$@"
     echo
+  }
+
+  silently_run_and_report() {
+    log_command "$@"
+    TMP_FILE_FOR_SILENT_RUN="$(mktemp)"
+    eval "$@"
   }
 
   # nicely indents both stderr and stdout
@@ -191,31 +201,75 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     fi
   }
 
-  print_symbol_for_status() {
+  run_and_print_status_symbol() {
     PRINT_PREFIX=""
     if [ $# -eq 0 ]; then
       echo ""
-      echo "${RED}${BOLD}ERROR${NORMAL}: \`print_symbol_for_status\` requires 1 or 2 parameters, 0 provided"
+      echo "${RED}${BOLD}ERROR${NORMAL}: \`run_and_print_status_symbol\` requires 1 or 2 parameters, 0 provided"
     elif [ $# -ge 3 ]; then
       echo ""
-      echo "${RED}${BOLD}ERROR${NORMAL}: \`print_symbol_for_status\` requires 1 or 2 parameters, $# provided"
+      echo "${RED}${BOLD}ERROR${NORMAL}: \`run_and_print_status_symbol\` requires 1 or 2 parameters, $# provided"
     else
       if [ $# -eq 1 ]; then
         COMMAND_TO_EXECUTE="$1"
       elif [ $# -eq 2 ]; then
-        PRINT_PREFIX="$1: "
+        PRINT_PREFIX="$1"
         COMMAND_TO_EXECUTE="$2"
       fi
 
       bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
+      print_status_symbol "$?" "$PRINT_PREFIX"
+      return "$STATUS"
+    fi
+  }
+
+  silently_run_and_report() {
+    PRINT_PREFIX=""
+    if [ $# -eq 0 ]; then
+      echo ""
+      echo "${RED}${BOLD}ERROR${NORMAL}: \`silently_run_and_report\` requires an un-quoted command"
+    else
+      log_command_oneline "$@"
+
+      LOG_FILE="$(mktemp)"
+
+      touch "$LOG_FILE"
+      touch "$LOG_FILE.error"
+
+      eval "$(printf '%q ' "$@")" > "$LOG_FILE" 2> "$LOG_FILE.error"
       STATUS="$?"
 
-      if [ "$STATUS" -eq 0 ]; then
-        printf " [${PRINT_PREFIX}${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
-      else
-        printf " [${RED}${BOLD}${PRINT_PREFIX}\xE2\x9C\x98${NORMAL}]"
+      print_status_symbol "$STATUS"
+      echo
+
+      if [ "$STATUS" -ne 0 ]; then
+        echo " - \`stdout\` was preserved in '$LOG_FILE'"
+        echo " - \`stderr\` was preserved in '$LOG_FILE.error'"
+        echo
       fi
+
       return "$STATUS"
+    fi
+  }
+
+  print_status_symbol() {
+    PRINT_PREFIX=""
+    if [ "$#" -ge 1 ]; then
+      if [ "$#" -gt 1 ] && [ -n "$2" ]; then
+        if [ "$1" -eq 0 ]; then
+          printf " [${GREEN}${$2}${NORMAL}: ${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
+        else
+          printf " [${RED}${BOLD}${$2}${NORMAL}: ${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
+        fi
+      else
+        if [ "$1" -eq 0 ]; then
+          printf " [${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
+        else
+          printf " [${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
+        fi
+      fi
+    else
+      log_error '`print_status_symbol` called incorrectly: no args'
     fi
   }
 fi

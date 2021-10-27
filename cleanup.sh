@@ -8,21 +8,24 @@ source "$DOT_FILES_DIR/setup_utils.sh"
 # unlinks
 unlink "$HOME/.ackrc"
 unlink "$HOME/.alacritty.yml"
-unlink "$HOME/.config/alacritty/alacritty.yml"
 unlink "$HOME/.ctags"
+unlink "$HOME/.fdignore"
+unlink "$HOME/.fxrc"
 unlink "$HOME/.gitconfig"
 unlink "$HOME/.gitignore_global"
 unlink "$HOME/.inputrc"
 unlink "$HOME/.pryrc"
 unlink "$HOME/.rgignore"
-unlink "$HOME/.fdignore"
 unlink "$HOME/.tigrc"
+
+# big ones
 unlink "$HOME/.vimrc"
 unlink "$HOME/.bashrc"
 unlink "$HOME/.zshrc"
 
 # unlink, but directory can remain
 unlink "$HOME/.vim/coc-settings.json"
+unlink "$HOME/.config/alacritty/alacritty.yml"
 unlink "$HOME/.config/nvim/coc-settings.json"
 unlink "$HOME/.config/nvim/init.vim"
 
