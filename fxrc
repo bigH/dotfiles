@@ -1,2 +1,5 @@
 const _ = require('lodash')
 global._ = _
+global.k = Object.keys
+global.v = Object.values
+global.e = Object.entries
