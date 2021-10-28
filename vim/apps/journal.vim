@@ -80,8 +80,8 @@ endfunction
 
 "{{{ File Management
 
-command SyncJournalAsync writeall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim')
-command SyncJournal writeall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim --now')
+command SyncJournalAsync wall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim')
+command SyncJournal wall | call system($JOURNAL_PATH . '/system/sync_journal.sh journal.vim --now')
 
 function! s:LoadJournal()
   execute 'cd' $JOURNAL_PATH
