@@ -309,7 +309,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # --- github things ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='git pull-request'
-  alias gprl='gf pr'
+  alias gfpr='gf pr'
+  alias gw='git web'
 
   # --- vim things ---
   # watch status

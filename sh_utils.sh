@@ -219,7 +219,7 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
 
       bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
       print_status_symbol "$?" "$PRINT_PREFIX"
-      return "$STATUS"
+      return $STATUS
     fi
   }
 
@@ -257,9 +257,9 @@ if [ -n "$AUTO_SOURCING_FILE_CHANGED" ] || [ -z "$SOURCE_SH_UTILS" ]; then
     if [ "$#" -ge 1 ]; then
       if [ "$#" -gt 1 ] && [ -n "$2" ]; then
         if [ "$1" -eq 0 ]; then
-          printf " [${GREEN}${$2}${NORMAL}: ${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
+          printf " [${GREEN}$2${NORMAL}: ${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
         else
-          printf " [${RED}${BOLD}${$2}${NORMAL}: ${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
+          printf " [${RED}${BOLD}$2${NORMAL}: ${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
         fi
       else
         if [ "$1" -eq 0 ]; then
