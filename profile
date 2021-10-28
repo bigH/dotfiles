@@ -12,7 +12,7 @@ fi
 
 # basics with no dependencies
 # NB: technically doesn't support auto_source
-auto_source "$DOT_FILES_DIR/sh_utils.sh"
+source "$DOT_FILES_DIR/sh_utils.sh"
 
 # configs/path (almost everything below needs them to work)
 auto_source "$DOT_FILES_DIR/configs/all.sh"

@@ -2,7 +2,7 @@
 
 if [ -z "$KUBECTL_YAML_VIEWER" ]; then
   KUBECTL_YAML_VIEWER="less"
-  if type bat >/dev/null 2>&1; then
+  if command_exists bat; then
     KUBECTL_YAML_VIEWER="bat --color=always --language=yaml --style=plain"
   fi
 fi

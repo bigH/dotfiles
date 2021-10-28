@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if type helm >/dev/null 2>&1; then
+if command_exists helm; then
   if [[ "$SHELL" == *'zsh' ]]; then
     source <(helm completion zsh)
   elif [[ "$SHELL" == *'bash' ]]; then
@@ -8,7 +8,7 @@ if type helm >/dev/null 2>&1; then
   fi
 fi
 
-if type helm2 >/dev/null 2>&1; then
+if command_exists helm2; then
   if [[ "$SHELL" == *'zsh' ]]; then
     source <(helm2 completion zsh)
   elif [[ "$SHELL" == *'bash' ]]; then
@@ -16,7 +16,7 @@ if type helm2 >/dev/null 2>&1; then
   fi
 fi
 
-if type helm3 >/dev/null 2>&1; then
+if command_exists helm3; then
   if [[ "$SHELL" == *'zsh' ]]; then
     source <(helm3 completion zsh)
   elif [[ "$SHELL" == *'bash' ]]; then

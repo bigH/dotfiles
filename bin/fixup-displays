@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-if type displayplacer >/dev/null 2>&1; then
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+if command_exists displayplacer; then
   LIST="$(displayplacer list | grep 'Persistent')"
 
   screen_id_present() {

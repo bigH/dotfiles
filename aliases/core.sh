@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ls override from oh-my-zsh
-if type exa >/dev/null 2>&1; then
+if command_exists exa; then
   export EXA_DEFAULT_OPTS='--sort=type --color=auto --group-directories-first'
   export EXA_LONG_OPTS='--classify --time-style=long-iso --git --color-scale --long'
 
@@ -16,7 +16,7 @@ if type exa >/dev/null 2>&1; then
 
   # shellcheck disable=2139
   alias la="exa $EXA_DEFAULT_OPTS $EXA_LONG_OPTS -a"
-elif type gls >/dev/null 2>&1; then
+elif command_exists gls; then
   alias ls='gls -p --color=auto -G --group-directories-first'
 else
   alias ls='ls -p --color=auto -G --group-directories-first'
@@ -46,7 +46,7 @@ alias tree='tree --dirsfirst'
 # alias k9='kill -9'
 
 # use `nvim` if present, otherwise `vim`
-if type nvim >/dev/null 2>&1; then
+if command_exists nvim; then
   alias vim='nvim'
   alias vi='nvim'
   alias v='nvim'
@@ -62,24 +62,24 @@ alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d
 alias jh='cd $DOT_FILES_DIR'
 
 # `yarn` -> `y`
-if type yarn >/dev/null 2>&1; then
+if command_exists yarn; then
   alias y='yarn'
 fi
 
 # `tldr` is like `man`
-if type bat >/dev/null 2>&1; then
-  if type prefer-bat >/dev/null 2>&1; then
+if command_exists bat; then
+  if command_exists prefer-bat; then
     alias cat='prefer-bat'
     alias ccat='command cat'
   fi
 fi
 
 # `tldr` is like `man`
-if type tldr >/dev/null 2>&1; then
+if command_exists tldr; then
   alias tldr='tldr --theme base16'
 fi
 
 # `prettyping` -> `ping`
-if type prettyping >/dev/null 2>&1; then
+if command_exists prettyping; then
   alias ping='prettyping'
 fi

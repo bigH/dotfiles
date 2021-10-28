@@ -10,7 +10,7 @@ touch "$FZF_HISTORY_FOR_DIRECTORIES"
 touch "$FZF_HISTORY_FOR_DIRECTORIES"
 
 DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
-if type exa >/dev/null 2>&1; then
+if command_exists exa; then
   DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
 fi
 

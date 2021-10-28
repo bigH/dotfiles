@@ -4,11 +4,11 @@
 export SHELLCHECK_OPTS="-e SC1090"
 
 # these aliases have to be defined so these commands are seen to exist
-if type fdfind >/dev/null 2>&1; then
+if command_exists fdfind; then
   alias fd=fdfind
 fi
 
-if type batcat >/dev/null 2>&1; then
+if command_exists batcat; then
   alias bat=batcat
 fi
 
@@ -118,12 +118,12 @@ if [ -d '/usr/local/sbin' ]; then
 fi
 
 # Initialize `rbenv`
-if type rbenv >/dev/null 2>&1; then
+if command_exists rbenv; then
   eval "$(rbenv init -)"
 fi
 
 # Initialize `direnv`
-if type direnv >/dev/null 2>&1; then
+if command_exists direnv; then
   eval "$(direnv hook $SHELL_NAME)"
 fi
 
@@ -145,11 +145,11 @@ fi
 
 # NB: this alias must be here for completion to be configured correctly in `configs/helm.sh`
 # if helm is not defined yet
-if ! type helm >/dev/null 2>&1; then
+if ! command_exists helm; then
   # helm3 > helm2
-  if type helm3 >/dev/null 2>&1; then
+  if command_exists helm3; then
     alias helm=helm3
-  elif type helm2 >/dev/null 2>&1; then
+  elif command_exists helm2; then
     alias helm=helm2
   fi
 fi
@@ -179,9 +179,9 @@ if [ -d "$DOT_FILES_DIR/utils" ]; then
   export PATH="$DOT_FILES_DIR/utils:$PATH"
 fi
 
-if type delta >/dev/null 2>&1; then
+if command_exists delta; then
   export DIFF_PAGER="delta --theme=gruvbox --highlight-removed"
-elif type diff-so-fancy >/dev/null 2>&1; then
+elif command_exists diff-so-fancy; then
   export DIFF_PAGER="diff-so-fancy"
 else
   export DIFF_PAGER="cat -"
@@ -203,7 +203,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   # export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 
   export GF_PREFERRED_PAGER="$DIFF_PAGER"
-  if type delta >/dev/null 2>&1; then
+  if command_exists delta; then
     # only add `__WIDTH__` if using `delta` - other pagers don't support it
     export GF_PREFERRED_PAGER="$GF_PREFERRED_PAGER -w __WIDTH__"
   fi

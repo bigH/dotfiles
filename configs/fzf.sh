@@ -43,7 +43,7 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
 
   build_fzf_defaults
 
-  if type fd >/dev/null 2>&1; then
+  if command_exists fd; then
     # Use `fd` instead of the default find command for listing path candidates.
     _fzf_compgen_path() {
       fd --hidden --follow . "$1"
@@ -62,10 +62,10 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
     export FZF_CTRL_R_OPTS='--preview "echo {}" --height 50% --preview-window down:5:wrap --bind "?:toggle-preview"'
   fi
 
-  if type exa >/dev/null 2>&1; then
+  if command_exists exa; then
     export DIR_PREVIEW_COMMAND='exa --color=always -l --color-scale --classify --sort=type --git'
   else
-    if type gls >/dev/null 2>&1; then
+    if command_exists gls; then
       # `gls` installed by `coreutils`
       export DIR_PREVIEW_COMMAND='gls --color=always -G'
     else

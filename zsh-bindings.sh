@@ -72,13 +72,22 @@ fzf-open-git-widget() {
 zle -N fzf-open-git-widget
 bindkey '^O' fzf-open-git-widget
 
-# Alt-B/F - back / forward by word
-bindkey '^[b' backward-word
-bindkey '^[f' forward-word
+# Ctrl-B/F - back / forward by word (instead of Alt)
+# frees up Alt for other uses
+bindkey '^b' backward-word
+bindkey '^f' forward-word
 
-# Ctrl-B/F - back / forward by word
-bindkey '^b' emacs-backward-word
-bindkey '^f' emacs-forward-word
+# Alt-B inserts branch
+if command_exists git-fuzzy; then
+  insert-git-branch-name() {
+    LBUFFER+="$(git-fuzzy branch)"
+  }
+
+  zle -N insert-git-branch-name
+  bindkey '^[b' insert-branch-name
+fi
+
+# bindkey '^[f' emacs-forward-word
 
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line

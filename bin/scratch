@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "$DOT_FILES_DIR/sh_utils.sh"
+
 TYPE="${1:-pry}"
 
 case $TYPE in

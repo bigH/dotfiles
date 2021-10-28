@@ -44,14 +44,14 @@ usage() {
   echo "$USAGE"
 }
 
-if type fzf >/dev/null 2>&1; then
-  if ! type az >/dev/null 2>&1; then
+if command_exists fzf; then
+  if ! command_exists az; then
     # shellcheck disable=2016
     log_error '`az` not found; it is required for `azf` to work.'
     exit 1
   fi
 
-  if ! type fzf >/dev/null 2>&1; then
+  if ! command_exists fzf; then
     # shellcheck disable=2016
     log_error '`fzf` not found; it is required for `azf` to work.'
     exit 1

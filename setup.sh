@@ -68,7 +68,7 @@ echo "ViM Setup ${BLUE}${BOLD}Complete${NORMAL}!"
 echo ""
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
-if type fzf >/dev/null 2>&1; then
+if command_exists fzf; then
   printf "  - ${BLUE}Found \`fzf\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
   if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -83,10 +83,10 @@ else
 fi
 echo ""
 
-if type rg >/dev/null 2>&1; then
+if command_exists rg; then
   printf "  - ${BLUE}Found \`ripgrep\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
-elif type rgrep >/dev/null 2>&1; then
+elif command_exists rgrep; then
   printf "  - ${BLUE}Found \`rgrep\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
@@ -96,10 +96,10 @@ else
 fi
 echo ""
 
-if type bat >/dev/null 2>&1; then
+if command_exists bat; then
   printf "  - ${BLUE}Found \`bat\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
-elif type batcat >/dev/null 2>&1; then
+elif command_exists batcat; then
   printf "  - ${BLUE}Found \`batcat\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
@@ -109,10 +109,10 @@ else
 fi
 echo ""
 
-if type fd >/dev/null 2>&1; then
+if command_exists fd; then
   printf "  - ${BLUE}Found \`fd\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
-elif type fdfind >/dev/null 2>&1; then
+elif command_exists fdfind; then
   printf "  - ${BLUE}Found \`fdfind\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
@@ -246,7 +246,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
-if type nvim >/dev/null 2>&1; then
+if command_exists nvim; then
   zsh -c 'nvim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'
 else
   zsh -c 'vim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'

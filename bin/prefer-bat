@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+source "$DOT_FILES_DIR/sh_utils.sh"
+
 if [ -t 1 ]; then
   # use plain style to avoid line numbers and git info
-  if type batcat >/dev/null 2>&1; then
+  if command_exists batcat; then
     command batcat --style=plain "$@"
-  elif type bat >/dev/null 2>&1; then
+  elif command_exists bat; then
     command bat --style=plain "$@"
   else
     command cat "$@"

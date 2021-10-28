@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # jj - list autojump directories
-if type autojump >/dev/null 2>&1; then
-  if type fzf >/dev/null 2>&1; then
+if command_exists autojump; then
+  if command_exists fzf; then
     jj() {
-      if type exa >/dev/null 2>&1; then
+      if command_exists exa; then
         PREVIEW="exa --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1..}"
       else
         PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1..}"
@@ -83,11 +83,11 @@ hr() {
 WH_LS_COMMAND='ls --color=always'
 WH_CAT_COMMAND='cat'
 
-if type bat >/dev/null 2>&1; then
+if command_exists bat; then
   WH_CAT_COMMAND='bat --color=always'
 fi
 
-if type exa >/dev/null 2>&1; then
+if command_exists exa; then
   WH_LS_COMMAND='exa --color=always'
 fi
 
@@ -124,7 +124,7 @@ wh() {
   fi
 }
 
-if type jq >/dev/null 2>&1; then
+if command_exists jq; then
   jqc() {
     cat - | jq -C . "$@"
   }
@@ -141,19 +141,19 @@ if type jq >/dev/null 2>&1; then
     pbpaste | jq -C . "$@" | less -REX
   }
 
-  if type interactively >/dev/null 2>&1; then
+  if command_exists interactively; then
     ijqp() {
       interactively --name fx 'pbpaste | jq -C {q}'
     }
   fi
 fi
 
-if type fx >/dev/null 2>&1; then
+if command_exists fx; then
   fxp() {
     pbpaste | fx "$@"
   }
 
-  if type interactively >/dev/null 2>&1; then
+  if command_exists interactively; then
     ifxp() {
       interactively --name fx 'pbpaste | fx {q} | jq -C .'
     }

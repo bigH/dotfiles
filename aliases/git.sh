@@ -2,14 +2,6 @@
 
 # shellcheck disable=2016
 
-fzf_present() {
-  type fzf >/dev/null 2>&1
-}
-
-heroku_present() {
-  type heroku >/dev/null 2>&1
-}
-
 heroku_remote() {
   git remote | grep heroku >/dev/null 2>&1
 }
@@ -288,7 +280,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gpff='indent --header git push --force origin $(git branch-name)'
   alias gpu='indent --header git push -u origin $(git branch-name)'
   gph() {
-    if heroku_present; then
+    if command_exists 'heroku'; then
       if heroku_remote; then
         git push heroku "$(git branch-name):main"
       else
@@ -317,4 +309,4 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gsw='watch -c "git -c color.ui=always status --short"'
 fi
 
-unset -f fzf_present
+unset -f heroku_remote
