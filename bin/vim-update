@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+. "$DOT_FILES_DIR/sh_utils.sh"
+
+
+if [[ "$EDITOR" = *"vim"* ]]; then
+  vim -u "$DOT_FILES_DIR/vim/includes/plugins.vim" +PlugClean +PlugUpdate +PlugInstall +qa
+else
+  log_error "EDITOR is set to '$EDITOR'; must be a \`vim\`"
+fi

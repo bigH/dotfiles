@@ -111,6 +111,13 @@ PlugMemoize 'honza/vim-snippets', ForModes('vim', 'nvim')
 " linting integration
 PlugMemoize 'dense-analysis/ale', ForModes('vim', 'nvim')
 
+" -- UX things --
+" make inactive panes dimmed
+PlugMemoize 'blueyed/vim-diminactive'
+
+" closing buffers should retain splits
+PlugMemoize 'qpkorr/vim-bufkill'
+
 " -- LANGUAGES --
 " ruby language pack
 " motions `[` and `]` support ruby; `[ai][mM]` for methods and classes
@@ -139,6 +146,10 @@ PlugMemoize 'pantharshit00/vim-prisma'
 
 " graphql support
 PlugMemoize 'jparise/vim-graphql'
+
+" jenkins support
+PlugMemoize 'martinda/Jenkinsfile-vim-syntax'
+PlugMemoize 'vim-scripts/groovy.vim'
 
 " -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
@@ -214,10 +225,14 @@ PlugMemoize 'chrisbra/Colorizer'
 " - it doesn't break badly, so keeping it for when it works
 PlugMemoize 'luochen1990/rainbow'
 
+" nvim native LSP
+PlugMemoize 'neovim/nvim-lspconfig',
+      \ ForModes('nvim')
+
 " Command over Completion
-PlugMemoize 'neoclide/coc.nvim',
-      \ ForModes('nvim'),
-      \ {'branch': 'release'}
+" PlugMemoize 'neoclide/coc.nvim',
+"       \ ForModes('nvim'),
+"       \ {'branch': 'release'}
 
 " For LSP support
 " PlugMemoize 'autozimu/LanguageClient-neovim',
@@ -225,15 +240,6 @@ PlugMemoize 'neoclide/coc.nvim',
 "       \ 'branch': 'next',
 "       \ 'do': 'bash install.sh',
 "       \ }
-
-" provides a concentration writing mode `:Goyo`
-PlugMemoize 'junegunn/goyo.vim'
-
-" make inactive panes dimmed
-PlugMemoize 'blueyed/vim-diminactive'
-
-" closing buffers should retain splits
-PlugMemoize 'qpkorr/vim-bufkill'
 
 " TODO replace:
 "  - it chooses shitty sizes with too many windows and overrides wrap

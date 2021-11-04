@@ -221,6 +221,7 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   " Map `\f` to FZF search all files with Rg full screen
   nmap <silent> <leader>F :<C-U>Rg!<CR>
   nmap <silent> <leader>f :<C-U>Rg<CR>
+
   " Use selected text to prepopulate
   vmap <silent> <leader>F :<C-U>RgVisual!<CR>
   vmap <silent> <leader>f :<C-U>RgVisual<CR>
@@ -232,8 +233,8 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   vmap <silent> <leader>H :<C-U>VisualFileHistoryDiff!<CR>
   vmap <silent> <leader>h :<C-U>VisualFileHistoryDiff<CR>
 
-  " Map `\t` to FZF tag finder - gets overriden below by other bindings
-  nmap <silent> <leader>t :<C-U>Tags<CR>
+  " " Map `\t` to FZF tag finder - gets overriden below by other bindings
+  " nmap <silent> <leader>t :<C-U>Tags<CR>
 
   " Map `\e` to FZF file lister
   nmap <silent> <leader>E :<C-U>Files!<CR>
@@ -667,6 +668,12 @@ endif
 if IsPluginLoaded('tommcdo/vim-exchange')
   " reindent after exchange
   let g:exchange_indent = 1
+endif
+
+" -- nvim-lspconfig --
+
+if IsPluginLoaded('neovim/nvim-lspconfig')
+  exec "source" $DOT_FILES_DIR . "/" . "vim/includes/lsp_config.lua"
 endif
 
 " -- coc.nvim --

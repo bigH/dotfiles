@@ -84,7 +84,7 @@ if command_exists git-fuzzy; then
   }
 
   zle -N insert-git-branch-name
-  bindkey '^[b' insert-branch-name
+  bindkey '^[b' insert-git-branch-name
 fi
 
 # bindkey '^[f' emacs-forward-word
