@@ -23,6 +23,7 @@ dircolors-solarized/
 env-context
 fd/
 fzf/
+fzf-tab-completion/
 git-fuzzy/
 interactively/
 pure/

@@ -195,6 +195,10 @@ run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
 echo ""
 
+printf "  - ${BLUE}Installing \`fzf-tab-completion\` ...${NORMAL}"
+run_and_print_status_symbol "clone" "git clone https://github.com/lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
+echo ""
+
 echo ""
 
 echo "${BLUE}${BOLD}Linking Bash Setup${NORMAL}"

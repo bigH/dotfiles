@@ -219,7 +219,7 @@ run_and_print_status_symbol() {
 
     bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
     print_status_symbol "$?" "$PRINT_PREFIX"
-    return "$STATUS"
+    return $STATUS
   fi
 }
 
