@@ -127,9 +127,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # check out specific uses
   alias gcop='gco --patch '
-  alias gcoh='gco HEAD --'
-  alias gcoph='gco --patch HEAD --'
-  alias gcomb='gco $(gmbh) --'
+  alias gcoh='gcof HEAD'
+  alias gcoph='gco --patch HEAD'
+  alias gcomb='gcof $(gmbh)'
 
   # commit - interactive
   alias gc='git commit'

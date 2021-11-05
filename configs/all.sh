@@ -21,6 +21,9 @@ function source_configs_for_expected_command() {
 # expect this one to be there
 auto_source "$CONFIGS/core.sh"
 
+# journal command is provided from `JOURNAL_PATH`
+auto_source "$CONFIGS/journal.sh"
+
 # source these only if they're "visible" commands
 source_configs_for_expected_command bat
 source_configs_for_expected_command ctags
@@ -29,7 +32,6 @@ source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
 source_configs_for_expected_command helm
 source_configs_for_expected_command rg
-source_configs_for_expected_command journal
 
 if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh" ]; then

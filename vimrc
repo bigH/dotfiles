@@ -7,7 +7,7 @@ exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_jump.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/modal_paste.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/ctags.vim"
 exec "source" $DOT_FILES_DIR . "/" . "vim/custom/buffer_nav.vim"
-exec "source" $DOT_FILES_DIR . "/" . "vim/custom/enlarge_view.vim"
+exec "source" $DOT_FILES_DIR . "/" . "vim/custom/window_man.vim"
 
 "}}}
 
