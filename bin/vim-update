@@ -4,7 +4,7 @@
 
 
 if [[ "$EDITOR" = *"vim"* ]]; then
-  vim -u "$DOT_FILES_DIR/vim/includes/plugins.vim" +PlugClean +PlugUpdate +PlugInstall +qa
+  vim -u "$DOT_FILES_DIR/vim/includes/plugins.vim" +PlugClean +PlugUpdate +qa
 else
   log_error "EDITOR is set to '$EDITOR'; must be a \`vim\`"
 fi
