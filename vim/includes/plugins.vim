@@ -105,8 +105,8 @@ PlugMemoize '907th/vim-auto-save'
 " PlugMemoize 'zackhsi/fzf-tags', ForModes('vim', 'nvim')
 
 " snippet engine for vim and a snippet library
-PlugMemoize 'SirVer/UltiSnips', ForModes('vim', 'nvim')
-PlugMemoize 'honza/vim-snippets', ForModes('vim', 'nvim')
+" PlugMemoize 'SirVer/UltiSnips', ForModes('vim', 'nvim')
+" PlugMemoize 'honza/vim-snippets', ForModes('vim', 'nvim')
 
 " linting integration
 PlugMemoize 'dense-analysis/ale', ForModes('vim', 'nvim')
@@ -227,6 +227,20 @@ PlugMemoize 'luochen1990/rainbow'
 
 " nvim native LSP
 PlugMemoize 'neovim/nvim-lspconfig',
+      \ ForModes('nvim')
+PlugMemoize 'hrsh7th/cmp-nvim-lsp',
+      \ ForModes('nvim')
+PlugMemoize 'hrsh7th/cmp-buffer',
+      \ ForModes('nvim')
+PlugMemoize 'hrsh7th/cmp-path',
+      \ ForModes('nvim')
+PlugMemoize 'hrsh7th/cmp-cmdline',
+      \ ForModes('nvim')
+PlugMemoize 'hrsh7th/nvim-cmp',
+      \ ForModes('nvim')
+PlugMemoize 'L3MON4D3/LuaSnip',
+      \ ForModes('nvim')
+PlugMemoize 'saadparwaiz1/cmp_luasnip',
       \ ForModes('nvim')
 
 " Command over Completion
