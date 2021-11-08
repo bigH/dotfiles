@@ -486,6 +486,7 @@ command! WS w !sudo tee %
 "{{{ Custom Personal Stuff
 
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/duplicate.vim"
+execute "source" $DOT_FILES_DIR . "/" . "vim/custom/print_position.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/highlight_cursor_word.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/search_utils.vim"
 execute "source" $DOT_FILES_DIR . "/" . "vim/custom/until.vim"
