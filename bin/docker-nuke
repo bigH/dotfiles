@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck source=../sh_utils.sh
 source "$DOT_FILES_DIR/sh_utils.sh"
 
 docker_nuke() {

@@ -46,16 +46,20 @@ alias tree='tree --dirsfirst'
 # alias k9='kill -9'
 
 # use `nvim` if present, otherwise `vim`
-if command_exists nvim; then
+if ! command_exists nvim; then
+  alias vi='vim'
+  alias v='vim'
+else
   alias vim='nvim'
   alias vi='nvim'
   alias v='nvim'
-else
-  alias vi='vim'
-  alias v='vim'
+
+  # TODO get rid of these once new vim setup is done
+  alias nv='nvim -u "$DOT_FILES_DIR/nvim/init.lua"'
 fi
 
 # chrome memory
+# shellcheck disable=2142
 alias chromem='ps -ev | grep -i chrome | awk '"'"'{print $12}'"'"' | paste -s -d"+" - | bc'
 
 # go to dot files
@@ -82,4 +86,9 @@ fi
 # `prettyping` -> `ping`
 if command_exists prettyping; then
   alias ping='prettyping'
+fi
+
+# `blender` cli
+if [ -f '/Applications/Blender.app/Contents/MacOS/Blender' ]; then
+  alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
 fi

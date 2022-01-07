@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export DOT_FILES_DIR="$HOME/.hiren"
 source "$DOT_FILES_DIR/setup_utils.sh"
@@ -266,11 +266,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo ""
   echo "     ... installs dependencies"
   echo "     \`brew install ack autojump bat bpytop broot cabal cloc \\"
-  echo "                   coreutils direnv entr exa fd fzf gh ghc  \\"
-  echo "                   git-deltaglances go htop jq lnav multitail \\"
+  echo "                   coreutils direnv entr exa fd fzf fx gh ghc  \\"
+  echo "                   git-deltaglances go hot htop jq lnav multitail \\"
   echo "                   neovim prettyping python3 rbenv ripgrep \\"
-  echo "                   rustup-initshellcheck swaks tldr tig wget \\"
-  echo "                   universal-ctags\`"
+  echo "                   rustup-init shellcheck swaks tldr tig watch \\"
+  echo "                   wget universal-ctags\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
   echo ""

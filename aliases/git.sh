@@ -6,6 +6,10 @@ heroku_remote() {
   git remote | grep heroku >/dev/null 2>&1
 }
 
+if command_exists lazygit; then
+  alias lg=lazygit
+fi
+
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   # -- shared
   # NB: used by quite a few of the below aliases
@@ -18,6 +22,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gti=git
   alias igt=git
   alias itg=git
+
+  # print sha
+  alias gsha='git rev-parse HEAD'
 
   # commit wip
   wip() {
@@ -126,9 +133,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # check out specific uses
-  alias gcop='gco --patch '
-  alias gcoh='gcof HEAD'
-  alias gcoph='gco --patch HEAD'
+  alias gcop='git checkout --patch'
   alias gcomb='gcof $(gmbh)'
 
   # commit - interactive
@@ -160,15 +165,33 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # add
-  alias ga='git add'
-  alias gaa='git add --all'
+  alias ga='indent --header git add'
+  alias gaa='indent --header git add --all'
   alias gap='git add --patch'
 
   # stash list
   alias gfs='gf stash'
   alias gst='indent --header git stash'
   alias gsls='gst list --stat'
-  alias gssh='gst show --patch'
+
+  gssh() {
+    if [ "$#" -ge 1 ]; then
+      re='^[0-9]+$'
+      if [ "$#" -eq 1 ] && [[ "$1" =~ $re ]]; then
+        indent --header git -c color.ui=always stash show --patch "stash@{$1}"
+      else
+        indent --header git -c color.ui=always stash show --patch "$@"
+      fi
+    else
+      selection="$(git fuzzy stash)"
+      if [ -n "$selection" ]; then
+        indent --header git -c color.ui=always stash show --patch "${selection%%:*}"
+      else
+        log_error "no selection made"
+      fi
+    fi
+  }
+
   alias gsd='gst drop'
   alias gsa='gst apply'
   alias gsp='gst pop'
@@ -205,10 +228,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # log
   alias gl='gf log'
-  alias glr='git fetch "$(git merge-base-remote)" && gl "$(git merge-base-remote)/$(git branch-name)"'
+  alias glr='indent --header git fetch "$(git merge-base-remote)" && git fuzzy log "$(git merge-base-remote)/$(git branch-name)"'
   alias glm='gl $(gmbh)..HEAD'
   alias ggl='g log'
-  alias gglr='git fetch "$(git merge-base-remote)" && ggl "$(git merge-base-remote)/$(git branch-name)"'
+  alias gglr='indent --header git fetch "$(git merge-base-remote)" && git log "$(git merge-base-remote)/$(git branch-name)"'
   alias gglm='ggl $(gmbh)..HEAD'
 
   # log - no pager
@@ -263,7 +286,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gacane='indent --header git add -A ;
                 indent --header git commit --amend --no-edit'
 
-  alias gacanepf='gacane ; gpf'
+  alias gcanepf='gcane; gpf'
+  alias gacanepf='gaa; gcane ; gpf'
 
   # cherry-pick
   alias gcp='git cherry-pick'

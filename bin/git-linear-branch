@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # source `indent` function
-. "$DOT_FILES_DIR/sh_utils.sh"
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
 
 LINEAR_KEY="6CUrp6YVDq1fpeKy3TNHFz9d1xHjQkHTsDejcRsJ"
 
