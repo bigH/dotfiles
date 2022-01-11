@@ -72,7 +72,7 @@ if command_exists fzf; then
   printf "  - ${BLUE}Found \`fzf\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    run_and_print_status_symbol "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
+    run_and_print_status_symbol "completions" "/opt/homebrew/opt/fzf/install --key-bindings --completion --no-update-rc"
   else
     run_and_print_status_symbol "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
   fi

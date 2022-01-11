@@ -2,17 +2,22 @@
 
 export DOT_FILES_DIR="$HOME/.hiren"
 
-export DOT_FILES_ENV="$(cat $DOT_FILES_DIR/env-context)"
+export DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/env-context")"
 
 if type nvim >/dev/null 2>&1; then
-  export EDITOR="$(which nvim)"
+  EDITOR="$(which nvim)"
 else
-  export EDITOR="$(which vim)"
+  EDITOR="$(which vim)"
 fi
+export EDITOR
 
 # basics with no dependencies
 # NB: technically doesn't support auto_source
 source "$DOT_FILES_DIR/sh_utils.sh"
+
+if [ -x '/opt/homebrew/bin/brew' ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # configs/path (almost everything below needs them to work)
 auto_source "$DOT_FILES_DIR/configs/all.sh"

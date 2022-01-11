@@ -178,12 +178,6 @@ log_command() {
   echo
 }
 
-silently_run_and_report() {
-  log_command "$@"
-  TMP_FILE_FOR_SILENT_RUN="$(mktemp)"
-  eval "$@"
-}
-
 # nicely indents both stderr and stdout
 indent() {
   HEADER=""
