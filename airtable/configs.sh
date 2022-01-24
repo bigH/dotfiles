@@ -3,8 +3,9 @@
 if [ -d "$HOME/h" ]; then
   export HYPERBASE_ROOT="$HOME/h"
   # NOTE: if this is sourced more than once, it'll cause subsequent path updates to disappear
-  auto_source "$HYPERBASE_ROOT/config/envrc"
-  export BUNYAN_LOG_LEVEL=warn
+  source "$HYPERBASE_ROOT/config/envrc"
+  BUNYAN_LOG_LEVEL=info
+  export BUNYAN_LOG_LEVEL
 fi
 
 if [ -d "$HYPERBASE_ROOT/source/hyperbase" ]; then

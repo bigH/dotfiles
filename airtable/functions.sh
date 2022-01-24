@@ -44,7 +44,11 @@ bll_list() {
 }
 
 bll() {
-  export BUNYAN_LOG_LEVEL="$(bll_list | fzf +m --preview-window=hidden)"
+  BUNYAN_LOG_LEVEL="$(bll_list | fzf +m --preview-window=hidden)"
+  if [ -z "$BUNYAN_LOG_LEVEL" ]; then
+    BUNYAN_LOG_LEVEL=info
+  fi
+  export BUNYAN_LOG_LEVEL
 }
 
 blf_list() {
@@ -58,7 +62,8 @@ blf_list() {
 }
 
 blf() {
-  export BUNYAN_FORMAT="$(blf_list | fzf +m --preview-window=hidden | cut -d':' -f1)"
+  BUNYAN_FORMAT="$(blf_list | fzf +m --preview-window=hidden | cut -d':' -f1)"
+  export BUNYAN_FORMAT
 }
 
 rehyperdb() {
