@@ -329,7 +329,7 @@ inoremap <silent> <C-J> <Esc>:m .+1<CR>i
 vnoremap <silent> <C-J> :m '>+1<CR>gv
 vnoremap <silent> <C-K> :m '<-2<CR>gv
 
-" Up and down are more logical with g..
+" Up and down are more logical with g
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 

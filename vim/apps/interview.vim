@@ -170,8 +170,8 @@ function! s:SetupInterviewBuffer()
   syntax match interviewerHint /\c\<hint\(ed\|ing\|s\|\)\>/
   syntax match interviewerExplain /\c\<explain\(ed\|ing\|s\|\)\>/
 
-  highlight default interviewerHint cterm=bold,italic ctermfg=white ctermbg=darkred
-  highlight default interviewerExplain cterm=bold,italic ctermfg=white ctermbg=darkyellow
+  highlight default interviewerHint cterm=bold,italic ctermfg=black ctermbg=red
+  highlight default interviewerExplain cterm=bold,italic ctermfg=black ctermbg=yellow
 
   syntax match helpfulMarkerXX /(XX)/
   syntax match helpfulMarkerYY /(YY)/

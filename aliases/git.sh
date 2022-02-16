@@ -6,6 +6,18 @@ heroku_remote() {
   git remote | grep heroku >/dev/null 2>&1
 }
 
+define_fzf_completion_for() {
+  if [ "$#" -lt 2 ]; then
+    log_error "expected at least 2 arguments for \`define_fzf_completion_for\`"
+    return 1
+  fi
+  while [ "$#" -gt 1 ]; do
+    # shellcheck disable=2082
+    eval "_fzf_complete_$1() { eval $(printf '%q' "${$((#))}") }"
+    shift
+  done
+}
+
 if command_exists lazygit; then
   alias lg=lazygit
 fi
@@ -318,19 +330,29 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # remotes
   alias grv='git remote -v'
 
-  # --- random higher-order things ---
+  # --- random higher-order ---
   # toss the branch and make a new one
   alias gtoss='git toss-branch'
 
-  # --- github things ---
+  # --- github ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='git pull-request'
   alias gfpr='gf pr'
   alias gw='git web'
 
-  # --- vim things ---
+  # --- watch ---
   # watch status
   alias gsw='watch -c "git -c color.ui=always status --short"'
+
+  # --- vim ---
+  vd() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vd`: must be a `git` repository'
+    else
+      BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" HEAD)"
+      vim $(git diff --name-only $BASE_COMMIT | xargs -1 printf '%q')
+    fi
+  }
 fi
 
 unset -f heroku_remote
