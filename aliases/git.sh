@@ -311,10 +311,11 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # some others in `functions/git.sh`
 
   # push
-  alias gp='indent --header git push origin $(git branch-name)'
-  alias gpf='indent --header git push --force-with-lease origin $(git branch-name)'
-  alias gpff='indent --header git push --force origin $(git branch-name)'
-  alias gpu='indent --header git push -u origin $(git branch-name)'
+  alias gp='block-on-merge-base && indent --header git push origin $(git branch-name)'
+  alias gpf='block-on-merge-base && indent --header git push --force-with-lease origin $(git branch-name)'
+  alias gpff='block-on-merge-base && indent --header git push --force origin $(git branch-name)'
+  alias gpu='block-on-merge-base && indent --header git push -u origin $(git branch-name)'
+
   gph() {
     if command_exists 'heroku'; then
       if heroku_remote; then

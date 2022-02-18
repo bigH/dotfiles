@@ -4,7 +4,7 @@ git_merge_base_branch() {
   if [ -f .hiren/merge-base-branch ]; then
     cat .hiren/merge-base-branch
   else
-    echo 'master'
+    echo 'main'
   fi
 }
 
