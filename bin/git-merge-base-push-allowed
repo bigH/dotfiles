@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git_merge_base_push_allowed() {
+  if [ -f .hiren/merge-base-push-allowed ]; then
+    true
+  else
+    false
+  fi
+}
+
+git_merge_base_push_allowed

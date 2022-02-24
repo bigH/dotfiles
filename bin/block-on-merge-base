@@ -4,7 +4,7 @@
 source "$DOT_FILES_DIR/sh_utils.sh"
 
 block_on_merge_base() {
-  if [ "$(git merge-base-branch)" = "$(git branch-name)" ]; then
+  if ! git merge-base-push-allowed && [ "$(git merge-base-branch)" = "$(git branch-name)" ]; then
     log_error "'$(git branch-name)' is your configured merge-base-branch; aborting!"
     exit 1
   else
