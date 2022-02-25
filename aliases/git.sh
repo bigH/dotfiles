@@ -238,16 +238,21 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # original show
   alias ggsh='git show'
 
-  # log
+  # git fuzzy log
   alias gl='gf log'
   alias glr='indent --header git fetch "$(git merge-base-remote)" && git fuzzy log "$(git merge-base-remote)/$(git branch-name)"'
   alias glm='gl $(gmbh)..HEAD'
+
+  # git log
   alias ggl='g log'
   alias gglr='indent --header git fetch "$(git merge-base-remote)" && git log "$(git merge-base-remote)/$(git branch-name)"'
   alias gglm='ggl $(gmbh)..HEAD'
 
   # log - no pager
   alias gnl='git --no-pager log'
+
+  # merge
+  alias gmm='indent --header git fetch $(git merge-base-remote) && indent --header git merge "$(git merge-base-remote)/$(git merge-base-branch)"'
 
   # pull
   alias gpo='indent --header git pull $(git merge-base-remote)'
