@@ -307,7 +307,31 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gacanepf='gaa; gcane ; gpf'
 
   # cherry-pick
-  alias gcp='git cherry-pick'
+  gcp() {
+    if [ "$#" -gt 0 ]; then
+      git cherry-pick "$@"
+    else
+      BRANCH="$(git fuzzy branch)"
+      if [ -n "$BRANCH" ]; then
+        SELECTIONS="$(git fuzzy log "$BRANCH")"
+        if [ -n "$SELECTIONS" ]; then
+          echo "$SELECTIONS" | xargs -n 1 sh -c '
+            echo git cherry-pick $0
+            git cherry-pick $0 || (
+              echo
+              echo "ERROR: cherry-pick for $0 failed! Exiting."
+              echo
+              exit 255
+            )
+          '
+        else
+          log_error "expected at least one commit to be selected"
+        fi
+      else
+        log_error "expected a branch to be selected"
+      fi
+    fi
+  }
 
   # rebase
   alias greb='git rebase'
@@ -356,7 +380,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       log_error 'could not `vd`: must be a `git` repository'
     else
       BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" HEAD)"
-      vim $(git diff --name-only $BASE_COMMIT | xargs -1 printf '%q')
+      # shellcheck disable=2046
+      vim $(git diff --name-only "$BASE_COMMIT" | xargs -1 printf '%q')
     fi
   }
 fi
