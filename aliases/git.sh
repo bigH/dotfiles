@@ -39,6 +39,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gsha='git rev-parse HEAD'
 
   # commit wip
+  # shellcheck disable=2120
   wip() {
     if [ $# -gt 0 ]; then
       indent --header git commit --no-verify -a -m "WIP $*"
@@ -130,8 +131,12 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # checkout a branch or commit
   gcob() {
-    if [ "$#" -eq 1 ]; then
-      if git rev-parse --verify "$1" > /dev/null 2>&1 ; then
+    if [ "$#" -gt 1 ]; then
+      log_error 'could not `gcob`: >1 arguments'
+    elif [ "$#" -eq 1 ]; then
+      if [ "$1" = '-' ]; then
+        indent --header git checkout "$1"
+      elif git rev-parse --verify "$1" > /dev/null 2>&1 ; then
         indent --header git checkout "$1"
       else
         indent --header git checkout -b "$1"
@@ -364,6 +369,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # toss the branch and make a new one
   alias gtoss='git toss-branch'
 
+  # wip / switch / unwip
+  wcob() {
+    wip
+    if [ $# -gt 0 ]; then
+      gcob "$@"
+    else
+      gcob
+    fi
+    unwip
+  }
+
   # --- github ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='git pull-request'
@@ -375,15 +391,43 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gsw='watch -c "git -c color.ui=always status --short"'
 
   # --- vim ---
+  vmb() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vmb`: must be a `git` repository'
+    else
+      BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" HEAD)"
+      eval "vim $(git diff -z --name-only "$BASE_COMMIT" | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
+    fi
+  }
+
+  vs() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vs`: must be a `git` repository'
+    else
+      eval "vim $(git status --porcelain --short | cut -c4- | file-must-exist | tr '\n' '\0' | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
+    fi
+  }
+
   vd() {
     if ! is-in-git-repo; then
       log_error 'could not `vd`: must be a `git` repository'
+    elif [ -n "$(git status --short)" ]; then
+      vs
     else
-      BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" HEAD)"
-      # shellcheck disable=2046
-      vim $(git diff --name-only "$BASE_COMMIT" | xargs -1 printf '%q')
+      vmb
     fi
   }
+
+  # wip/switch/unwip/vd
+  vcob() {
+    if [ $# -gt 0 ]; then
+      wcob "$@"
+    else
+      wcob
+    fi
+    vd
+  }
+
 fi
 
 unset -f heroku_remote

@@ -100,14 +100,18 @@ log_debug() {
 
 # quotes mult-word parameters in order to make a command copy-paste with ease
 quote_single_param() {
-  if [ -z "$1" ] || [[ "$1" = *' '* ]]; then
-    if [[ "$1" = *"'"* ]]; then
-      echo "\"$1\""
-    else
-      echo "'$1'"
-    fi
-  else
+  if [[ "$(printf '%q' "$1")" = "$1" ]]; then
+    # quoted is same as original (means it has no special characters and no spaces)
     echo "$1"
+  elif [[ "$1" != *"'"* ]]; then
+    # has no single quotes
+    echo "'$1'"
+  elif [[ "$1" != *'"'* ]]; then
+    # has no double quotes
+    echo "'$1'"
+  else
+    # has some mixture of quotes, so use bash quoting
+    printf '%q\n' "$1"
   fi
 }
 

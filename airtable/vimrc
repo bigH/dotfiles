@@ -1,2 +1,3 @@
 " TODO source this
-" TODO set shiftwidth and tabstop
+set shiftwidth=4
+set tabstop=4

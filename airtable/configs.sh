@@ -15,6 +15,10 @@ if [ -d "$HYPERBASE_ROOT/source/hyperbase" ]; then
   export HYPERBASE_DEV_PATH="$HYPERBASE_ROOT/source/hyperbase"
 fi
 
+if [ -d "$HYPERBASE_ROOT/source/a-cli" ]; then
+  export A_CLI_DEV_PATH="$HYPERBASE_ROOT/source/a-cli"
+fi
+
 if [ -d "$DOT_FILES_DIR/arcanist" ]; then
   export PATH="$DOT_FILES_DIR/arcanist/bin:$PATH"
 fi

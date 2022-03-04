@@ -2,6 +2,7 @@
 
 # ls override from oh-my-zsh
 if command_exists exa; then
+  # want all these options to expand in alias rather than when alias is triggered
   export EXA_DEFAULT_OPTS='--sort=type --color=auto --group-directories-first'
   export EXA_LONG_OPTS='--classify --time-style=long-iso --git --color-scale --long'
 
