@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
+# just for this script (unset below)
 FUNCTIONS_DIR="$DOT_FILES_DIR/functions"
+
+# just for this script (unset below)
+source_functions_for_expected_command() {
+  FILENAME="$FUNCTIONS_DIR/$1.sh"
+  if one_command_exists "$@"; then
+    auto_source "$FILENAME"
+  else
+    echo "${YELLOW}WARN${NORMAL}: Skipping '$FILENAME'; couldn't find $(quote_params "$@"))"
+  fi
+}
 
 # basic functions
 auto_source "$FUNCTIONS_DIR/core.sh"
-
-# utility just for this script
-function source_functions_for_expected_command() {
-  if [ -n "$1" ]; then
-    if command -v "$1" >/dev/null 2>&1; then
-      auto_source "$FUNCTIONS_DIR/$1.sh"
-    else
-      echo "${YELLOW}WARN${NORMAL}: Skipping '$FUNCTIONS_DIR/$1.sh' as '$1' not found"
-    fi
-  fi
-}
 
 # source or at least warn
 source_functions_for_expected_command fzf

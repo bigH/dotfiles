@@ -4,6 +4,14 @@ command_exists() {
   [ -n "$1" ] && type "$1" >/dev/null 2>&1
 }
 
+one_command_exists() {
+  if [ $# -gt 0 ]; then
+    type "$1" >/dev/null 2>&1 || (shift && one_command_exists "$@")
+  else
+    return 1
+  fi
+}
+
 if [ -z "$SH_UTILS_LOG_MODES" ]; then
   # export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:DEBUG:"
   export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:"

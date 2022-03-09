@@ -1,28 +1,23 @@
 #!/usr/bin/env bash
 
-CONFIGS="$DOT_FILES_DIR/configs"
+# just for this script (unset below)
+CONFIGS_DIR="$DOT_FILES_DIR/configs"
 
-# utility just for this script
-function source_configs_for_expected_command() {
-  FILENAME="$CONFIGS/$1.sh"
-  SOURCED="NO"
-  for POSSIBLE_COMMAND in "$@"; do
-    # source for all "aliases"
-    if command -v "$POSSIBLE_COMMAND" >/dev/null 2>&1; then
-      auto_source "$FILENAME"
-      SOURCED="YES"
-    fi
-  done
-  if [[ "$SOURCED" = "NO" ]]; then
-    echo "${YELLOW}WARN${NORMAL}: Skipping '$FILENAME' as none of ($@) found"
+# just for this script (unset below)
+source_configs_for_expected_command() {
+  FILENAME="$CONFIGS_DIR/$1.sh"
+  if one_command_exists "$@"; then
+    auto_source "$FILENAME"
+  else
+    echo "${YELLOW}WARN${NORMAL}: Skipping '$FILENAME'; couldn't find $(quote_params "$@"))"
   fi
 }
 
 # expect this one to be there
-auto_source "$CONFIGS/core.sh"
+auto_source "$CONFIGS_DIR/core.sh"
 
-# journal command is provided from `JOURNAL_PATH`
-auto_source "$CONFIGS/journal.sh"
+# journal command is provided from `JOURNAL_PATH` - set in this file, so can't command check
+auto_source "$CONFIGS_DIR/journal.sh"
 
 # source these only if they're "visible" commands
 source_configs_for_expected_command bat
@@ -40,4 +35,4 @@ if [ -n "$DOT_FILES_ENV" ]; then
 fi
 
 unset -f source_configs_for_expected_command
-unset CONFIGS
+unset CONFIGS_DIR
