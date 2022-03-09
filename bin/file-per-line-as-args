@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+cat - | files_per_line_as_args

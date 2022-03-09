@@ -74,6 +74,11 @@ join_lines() {
   fi
 }
 
+file_per_line_as_args() {
+  # shellcheck disable=2016
+  tr '\n' '\0' | xargs -0 -n1 bash -c 'printf " %q" "$0"'
+}
+
 # returns first param with limited quoting support
 first_param() {
   if [ -n "$1" ]; then

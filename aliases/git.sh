@@ -404,7 +404,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     if ! is-in-git-repo; then
       log_error 'could not `vs`: must be a `git` repository'
     else
-      eval "vim $(git status --porcelain --short | cut -c4- | file-must-exist | tr '\n' '\0' | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
+      eval "vim $(git status --porcelain --short | cut -c4- | file-must-exist | file-per-line-as-args)"
     fi
   }
 
@@ -416,7 +416,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     elif ! git status --short | grep -q '^UU'; then
       log_error 'no conflicts in status'
     else
-      eval "vim $(git status --short | grep '^UU')"
+      eval "vim $(git status --porcelain --short | grep '^UU' | cut -c4- | file-must-exist | file-per-line-as-args)"
     fi
   }
 
