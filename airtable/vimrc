@@ -1,3 +1,5 @@
 " TODO source this
-set shiftwidth=4
-set tabstop=4
+if stridx($PWD, $HYPERBASE_ROOT) >= 0
+    set shiftwidth=4
+    set tabstop=4
+endif

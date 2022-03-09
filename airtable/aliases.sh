@@ -6,5 +6,7 @@ alias opendev='open https://hyperbasedev.com:3000/'
 alias godev='cd $HYPERBASE_DEV_PATH'
 
 # a-cli development alias
-alias aa='$A_CLI_DEV_PATH/bin/run'
 alias jac='cd $A_CLI_DEV_PATH'
+
+alias adev='alias a="$A_CLI_DEV_PATH/bin/run"'
+alias aprod='alias a="command a"'
