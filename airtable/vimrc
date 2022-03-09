@@ -1,5 +1,6 @@
 " TODO source this
-if stridx($PWD, $HYPERBASE_ROOT) >= 0
+if stridx($PWD, $HYPERBASE_ROOT) == 0
+    set colorcolumn=120
     set shiftwidth=4
     set tabstop=4
 endif

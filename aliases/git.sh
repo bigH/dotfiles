@@ -408,6 +408,18 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
+  vcon() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vmb`: must be a `git` repository'
+    elif [ -z "$(git status --short)" ]; then
+      log_error 'no changes in status'
+    elif ! git status --short | grep -q '^UU'; then
+      log_error 'no conflicts in status'
+    else
+      eval "vim $(git status --short | grep '^UU')"
+    fi
+  }
+
   vd() {
     if ! is-in-git-repo; then
       log_error 'could not `vd`: must be a `git` repository'
