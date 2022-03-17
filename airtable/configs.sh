@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-BUNYAN_LOG_LEVEL=info
-export BUNYAN_LOG_LEVEL
+export BUNYAN_LOG_LEVEL=warn
 
 # if command_exists pyenv; then
 #   eval "$(pyenv init -)"
@@ -17,10 +16,6 @@ fi
 
 if [ -d "$HYPERBASE_ROOT/source/a-cli" ]; then
   export A_CLI_DEV_PATH="$HYPERBASE_ROOT/source/a-cli"
-fi
-
-if [ -d "$DOT_FILES_DIR/arcanist" ]; then
-  export PATH="$DOT_FILES_DIR/arcanist/bin:$PATH"
 fi
 
 if [ -d "/usr/local/mysql/bin" ]; then
