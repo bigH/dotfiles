@@ -1,1 +1,1 @@
-alias a='$A_CLI_DEV_PATH/bin/run'
+alias a="/Users/hiren.hiranandani/h/source/a-cli/bin/run"

@@ -366,6 +366,16 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias grv='git remote -v'
 
   # --- random higher-order ---
+  # create a flake branch
+  gflake() {
+    BRANCH_NAME="hiren/fix-flake-$(date +%F)"
+    if git rev-parse --verify "$BRANCH_NAME" > /dev/null 2>&1; then
+      log_error "branch '$BRANCH_NAME' already exists"
+    else
+      gcob "$BRANCH_NAME"
+    fi
+  }
+
   # toss the branch and make a new one
   alias gtoss='git toss-branch'
 
@@ -408,15 +418,26 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
+  MERGE_CONFLICT_VIM_REGEX="+/<<<<<<<\|=======\|>>>>>>>"
+  MERGE_CONFLICT_IN_STATUS_REGEX='^(UU|U | U)'
+
   vcon() {
     if ! is-in-git-repo; then
       log_error 'could not `vmb`: must be a `git` repository'
     elif [ -z "$(git status --short)" ]; then
       log_error 'no changes in status'
-    elif ! git status --short | grep -q '^UU'; then
+    elif ! git status --short | grep -q -e "$MERGE_CONFLICT_IN_STATUS_REGEX"; then
       log_error 'no conflicts in status'
     else
-      eval "vim $(git status --porcelain --short | grep '^UU' | cut -c4- | file-must-exist | file-per-line-as-args)"
+      eval "vim '$MERGE_CONFLICT_VIM_REGEX' $(git status --porcelain --short | grep -e "$MERGE_CONFLICT_IN_STATUS_REGEX" | cut -c4- | file-must-exist | file-per-line-as-args)"
+    fi
+  }
+
+  vh() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vmb`: must be a `git` repository'
+    else
+      eval "vim $(git diff -z --name-only HEAD^ | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
     fi
   }
 

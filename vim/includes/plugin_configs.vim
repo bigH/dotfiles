@@ -384,6 +384,18 @@ if IsPluginLoaded('tpope/vim-surround')
   nmap SS <Plug>YSsurround
   xmap s  <Plug>VSurround
   xmap S  <Plug>VgSurround
+
+  " escaped quotes
+  let g:surround_{char2nr('Q')} = "\\\"\r\\\""
+
+  " bash command substitution with quotes
+  let g:surround_{char2nr('x')} = "\"$(\r)\""
+
+  " bash command substitution with quotes escaped
+  let g:surround_{char2nr('X')} = "\\\"$(\r)\\\""
+
+  " bash command substitution with quotes escaped
+  let g:surround_{char2nr('B')} = "\\\`\r\\\`"
 endif
 
 " -- vim-commentary --

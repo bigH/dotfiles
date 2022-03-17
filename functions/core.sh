@@ -5,12 +5,19 @@ if command_exists autojump; then
   if command_exists fzf; then
     jj() {
       if command_exists exa; then
-        PREVIEW="exa --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1..}"
+        PREVIEW="ls {1..}"
       else
         PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1..}"
       fi
 
-      DIRECTORY="$(autojump -s | cut -f2 | must -e -d | fzf +m --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings))"
+      # shellcheck disable=2046
+      DIRECTORY="$(\
+        autojump -s | \
+        cut -f2 | \
+        must -e -d | \
+        sed "s:$HOME:~:g ; s:$(pwd):.:g ; s:$TMPDIR:\$TMPDIR/:g" | \
+        fzf +m --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings) \
+      )"
 
       if [ -d "$DIRECTORY" ]; then
         cd "$DIRECTORY" || echo "ERROR: could not \`cd\` into '$DIRECTORY'"
