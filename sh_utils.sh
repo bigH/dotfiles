@@ -229,8 +229,10 @@ run_and_print_status_symbol() {
     fi
 
     bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
-    print_status_symbol "$?" "$PRINT_PREFIX"
-    return $STATUS
+
+    STATUS=$?
+    print_status_symbol "$STATUS" "$PRINT_PREFIX"
+    return "$STATUS"
   fi
 }
 
@@ -239,6 +241,7 @@ silently_run_and_report() {
   if [ $# -eq 0 ]; then
     echo ""
     echo "${RED}${BOLD}ERROR${NORMAL}: \`silently_run_and_report\` requires an un-quoted command"
+    return 0
   else
     log_command_oneline "$@"
 
@@ -256,7 +259,9 @@ silently_run_and_report() {
     if [ "$STATUS" -ne 0 ]; then
       echo " - \`stdout\` was preserved in '$LOG_FILE'"
       echo " - \`stderr\` was preserved in '$LOG_FILE.error'"
-      echo
+      return $STATUS
+    else
+      return 0
     fi
   fi
 }
@@ -266,18 +271,23 @@ print_status_symbol() {
   if [ "$#" -ge 1 ]; then
     if [ "$#" -gt 1 ] && [ -n "$2" ]; then
       if [ "$1" -eq 0 ]; then
+        # shellcheck disable=2059
         printf " [${GREEN}$2${NORMAL}: ${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
       else
+        # shellcheck disable=2059
         printf " [${RED}${BOLD}$2${NORMAL}: ${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
       fi
     else
       if [ "$1" -eq 0 ]; then
+        # shellcheck disable=2059
         printf " [${GREEN}${BOLD}\xE2\x9C\x94${NORMAL}]"
       else
+        # shellcheck disable=2059
         printf " [${RED}${BOLD}\xE2\x9C\x98${NORMAL}]"
       fi
     fi
   else
+    # shellcheck disable=2016
     log_error '`print_status_symbol` called incorrectly: no args'
   fi
 }
