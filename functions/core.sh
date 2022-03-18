@@ -5,9 +5,9 @@ if command_exists autojump; then
   if command_exists fzf; then
     jj() {
       if command_exists exa; then
-        PREVIEW="ls {1..}"
+        PREVIEW="exa --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1}"
       else
-        PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1..}"
+        PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1}"
       fi
 
       # shellcheck disable=2046
@@ -15,8 +15,10 @@ if command_exists autojump; then
         autojump -s | \
         cut -f2 | \
         must -e -d | \
-        sed "s:$HOME:~:g ; s:$(pwd):.:g ; s:$TMPDIR:\$TMPDIR/:g" | \
-        fzf +m --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings) \
+        sed "s:\(.*\):\1\t\1:" | \
+        sed "s:\t$HOME:\t~:g ; s:\t$(pwd):\t.:g ; s:\t$TMPDIR:\t\$TMPDIR/:g" | \
+        fzf +m -d $'\t' --nth 2 --with-nth 2 --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings) | \
+        cut -d$'\t' -f1 \
       )"
 
       if [ -d "$DIRECTORY" ]; then
