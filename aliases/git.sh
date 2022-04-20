@@ -42,7 +42,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # shellcheck disable=2120
   wip() {
     if [ $# -gt 0 ]; then
-      indent --header git commit --no-verify -a -m "WIP $*"
+      indent --header git commit --no-verify -a -m "WIP: $*"
     else
       indent --header git commit --no-verify -a -m "WIP"
     fi
@@ -51,7 +51,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   unwip() {
     if ! is-in-git-repo; then
       log_error 'could not `unwip`: must be a `git` repository'
-    elif [ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:WIP' ]; then
+    elif [[ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:WIP'* ]]; then
       log_error 'could not `unwip`: last commit is not `wip`'
     elif [ -n "$(git status -s)" ]; then
       log_error 'could not `unwip`: uncommited/unstaged changes'
@@ -368,7 +368,19 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # --- random higher-order ---
   # create a flake branch
   gflake() {
+    if [ -n "$(git status --short)" ]; then
+      wip 'for flake'
+    fi
+
+    indent --header git checkout "$(git merge-base-branch)"
+    indent --header git pull "$(git merge-base-remote)" "$(git merge-base-branch)"
+
     BRANCH_NAME="hiren/fix-flake-$(date +%F)"
+    while [ "$#" -gt 0 ]; do
+      BRANCH_NAME="$BRANCH_NAME-$1"
+      shift
+    done
+
     if git rev-parse --verify "$BRANCH_NAME" > /dev/null 2>&1; then
       log_error "branch '$BRANCH_NAME' already exists"
     else
@@ -407,6 +419,26 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     else
       BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" HEAD)"
       eval "vim $(git diff -z --name-only "$BASE_COMMIT" | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
+    fi
+  }
+
+  vmbb() {
+    if ! is-in-git-repo; then
+      log_error 'could not `vmbb`: must be a `git` repository'
+    else
+      BRANCH_NAME=
+      if [ "$#" -gt 0 ]; then
+        BRANCH_NAME="$1"
+      else
+        BRANCH_NAME="$(gb)"
+      fi
+
+      if ! git rev-parse --verify "$BRANCH_NAME" > /dev/null 2>&1; then
+        log_error "branch '$BRANCH_NAME' not found"
+      else
+        BASE_COMMIT="$(git merge-base "$(git merge-base-absolute)" "$BRANCH_NAME")"
+        eval "vim $(git diff -z --name-only "$BASE_COMMIT" | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
+      fi
     fi
   }
 

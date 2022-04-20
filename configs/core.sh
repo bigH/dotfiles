@@ -30,7 +30,7 @@ export RUST_BACKTRACE=1
 # Setup `dircolors`
 # `dircolors` isn't on the path
 if [ -e "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
-  eval `/usr/local/opt/coreutils/libexec/gnubin/dircolors $DOT_FILES_DIR/gruvbox.dircolors`
+  eval "$(/usr/local/opt/coreutils/libexec/gnubin/dircolors "$DOT_FILES_DIR/gruvbox.dircolors")"
 fi
 
 # Add `linuxbrew` to path if present
@@ -52,14 +52,22 @@ if [ -d '/usr/local/opt/bison/lib' ]; then
   export LDFLAGS="-L/usr/local/opt/bison/lib"
 fi
 
-# Add `cargo`
-if [ -f "$HOME/.cargo/env" ]; then
-  auto_source $HOME/.cargo/env
+if [ -d '/Applications/Postgres.app/Contents/Versions/latest/bin/' ]; then
+  export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
 fi
 
-# Add `cargo`
-if [ -d "$HOME/.rustup" ]; then
-  export RUSTUP_HOME="$HOME/.rustup"
+# Since airtable uses a different cargo/rust installation...
+if ! [ "$DOT_FILES_ENV" = 'airtable' ]; then
+  # Add `rustup`
+  if [ -d "$HOME/.rustup" ]; then
+    export RUSTUP_HOME="$HOME/.rustup"
+  fi
+
+  # Add `cargo`
+  if [ -f "$HOME/.cargo/env" ]; then
+    # shellcheck disable=1091
+    source "$HOME/.cargo/env"
+  fi
 fi
 
 # Add `emacs`
@@ -124,7 +132,7 @@ fi
 
 # Initialize `direnv`
 if command_exists direnv; then
-  eval "$(direnv hook $SHELL_NAME)"
+  eval "$(direnv hook "$SHELL_NAME")"
 fi
 
 # Setup Helm in path

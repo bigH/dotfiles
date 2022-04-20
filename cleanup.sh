@@ -8,6 +8,7 @@ source "$DOT_FILES_DIR/setup_utils.sh"
 # unlinks
 unlink "$HOME/.ackrc"
 unlink "$HOME/.alacritty.yml"
+unlink "$HOME/.clocignore"
 unlink "$HOME/.ctags"
 unlink "$HOME/.fdignore"
 unlink "$HOME/.fxrc"

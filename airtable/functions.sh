@@ -66,6 +66,44 @@ blf() {
   export BUNYAN_FORMAT
 }
 
+teams() {
+  yq -M 'keys | join(" ")' "$HYPERBASE_DEV_PATH/TEAMS.yaml"
+}
+
+test_owners_json() {
+  (cd "$HYPERBASE_DEV_PATH" && "bin/who_owns.js" --json $(fd '.*\.(spec|test)\.tsx'))
+}
+
+owner_stats() {
+  test_owners_json |
+    jq -r '.[] | .team // "NO_OWNER"' |
+    sort |
+    uniq -c |
+    sort -nr
+}
+
+list_owners() {
+  test_owners_json |
+    jq -r '.[] | .path + "%" + (.team // "None")' |
+    sort |
+    column -t -s '%'
+}
+
+browse_owners() {
+  # shellcheck disable=2046,2086
+  list_owners |
+    eval "h None 'team-.*' team-dev-effectiveness team-core-product" |
+    fzf --ansi -m --preview-window=hidden
+}
+
+select_unowned() {
+  # shellcheck disable=2046,2086
+  test_owners_json |
+    jq -r '.[] | select(.team == null) | .path' |
+    sort |
+    fzf --ansi -m --preview-window=hidden
+}
+
 rehyperdb() {
   if [ "$PWD" = "$(cd "$HYPERBASE_DEV_PATH" && pwd)" ]; then
     silently_run_and_report mysql -u root -proot -e "DROP DATABASE hyperbase_app;"

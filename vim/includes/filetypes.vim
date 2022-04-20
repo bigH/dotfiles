@@ -23,6 +23,9 @@ augroup FiletypeSettings
   au BufNewFile,BufRead gitconfig set filetype=gitconfig
   au FileType gitconfig setlocal noexpandtab
 
+  " Gitignore filenames
+  au BufNewFile,BufRead *gitignore* set filetype=gitignore
+
   " 4-space-y languages
   au FileType solidity setlocal tabstop=4 | setlocal shiftwidth=4
   au FileType go setlocal tabstop=4 | setlocal shiftwidth=4
