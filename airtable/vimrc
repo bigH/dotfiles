@@ -1,5 +1,6 @@
 set tabstop=4
 set shiftwidth=4
+set colorcolumn=100
 
 let g:team_highlight_colors = [
       \   'ctermfg=darkred         guifg=darkred',

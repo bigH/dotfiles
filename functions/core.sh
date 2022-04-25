@@ -168,3 +168,49 @@ if command_exists fx; then
     }
   fi
 fi
+
+mkd() {
+  if [ "$#" -ne 1 ]; then
+    log_error "expect exactly 1 argument - directory to create" 1>&2
+    return 1
+  else
+    mkdir -p "$1"
+    echo "$1"
+    return 0
+  fi
+}
+
+watch_and_print_on_change() {
+  if [ "$#" -ne 1 ]; then
+    log_error "expect exactly 1 argument - command to run" 1>&2
+    return 1
+  else
+    local command_to_run
+    local last_output
+    local current_output
+    local started_at
+    local date_now
+
+    command_to_run="$1"
+    shift
+
+    last_output=""
+    started_at="$(date +%s)"
+    date_now="$started_at"
+
+    echo "${YELLOW}Started at: ${WHITE}${BOLD}$(date)${NORMAL}"
+    echo
+
+    while true; do
+      current_output="$(eval "$command_to_run")"
+      if [ "$current_output" != "$last_output" ]; then
+        printf "%s+ %s%5ds%s | %s%s%s\n" "$BOLD" "$CYAN" "$((date_now - started_at))" "$NORMAL" "$MAGENTA" "$current_output" "$NORMAL"
+        last_output="$current_output"
+      fi
+      sleep 1
+
+      # this is to make first print have a '+0s' prefix
+      date_now="$(date +%s)"
+    done
+  fi
+}

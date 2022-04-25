@@ -112,16 +112,19 @@ log_debug() {
 }
 
 # quotes mult-word parameters in order to make a command copy-paste with ease
+# NB: this could be much nicer using some sort of `eval` based checking, but
+# that's risky as the strings provided could be dangerous and use `$()`
 quote_single_param() {
-  if [[ "$(printf '%q' "$1")" = "$1" ]]; then
-    # quoted is same as original (means it has no special characters and no spaces)
+  # shellcheck disable=2116
+  if [[ "$(printf '%q' "$1")" = "$(echo "$1")" ]]; then
+    # quoted is same as original (means it has no special chars or spaces)
     echo "$1"
-  elif [[ "$1" != *"'"* ]]; then
-    # has no single quotes
+  elif [[ "$1" = *'"'* ]] && [[ "$1" != *"'"* ]]; then
+    # has only double quotes
     echo "'$1'"
-  elif [[ "$1" != *'"'* ]]; then
-    # has no double quotes
-    echo "'$1'"
+  elif [[ "$1" != *'"'* ]] && [[ "$1" = *"'"* ]]; then
+    # has only single quotes
+    echo '"'"$1"'"'
   else
     # has some mixture of quotes, so use bash quoting
     printf '%q\n' "$1"
