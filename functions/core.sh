@@ -109,9 +109,12 @@ wh() {
       echo "${CYAN} -- found a symlink -- ${NORMAL}"
       if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "${GRAY}(using \`readlink-f\` to support OS X)${NORMAL}"
+        indent --header readlink-f "$1"
+        PATH_TO_FILE="$(readlink-f "$1")"
+      else
+        indent --header readlink -f "$1"
+        PATH_TO_FILE="$(readlink -f "$1")"
       fi
-      indent --header 'readlink-f' "$1"
-      PATH_TO_FILE="$('readlink-f' "$1")"
       wh "$PATH_TO_FILE"
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
@@ -213,4 +216,16 @@ watch_and_print_on_change() {
       date_now="$(date +%s)"
     done
   fi
+}
+
+test_true() {
+    echo 'STDOUT: running 0'
+    echo 'STDERR: running 0' 1>&2
+    return 0
+}
+
+test_false() {
+    echo 'STDOUT: running 1'
+    echo 'STDERR: running 1' 1>&2
+    return 1
 }
