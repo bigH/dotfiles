@@ -126,3 +126,43 @@ rehyperdb() {
     log_error "you must be in the \`\$HYPERBASE_DEV_PATH\` (\`$HYPERBASE_DEV_PATH\`)"
   fi
 }
+
+pyenv_ci() {
+    DESIRED_VENV="$HYPERBASE_DEV_PATH/ci/py/.pyenv"
+
+    if [ "$VIRTUAL_ENV" = "$DESIRED_VENV" ]; then
+        log_info "already active: venv at $VIRTUAL_ENV"
+    else
+        if [ -n "$VIRTUAL_ENV" ]; then
+            log_info "deactivating: venv at $VIRTUAL_ENV"
+            deactivate
+        fi
+
+        if [ -d "$DESIRED_VENV" ]; then
+            log_info "activating: venv at $DESIRED_VENV"
+            # shellcheck disable=1091
+            . "$DESIRED_VENV/bin/activate"
+        else
+            log_info "creating: venv at $DESIRED_VENV"
+            python3 -m venv "$DESIRED_VENV"
+
+            log_info "activating: venv at $DESIRED_VENV"
+            # shellcheck disable=1091
+            . "$DESIRED_VENV/bin/activate"
+
+            log_info "setting up: venv at $DESIRED_VENV"
+            pip install -r requirements-dev.txt
+        fi
+    fi
+}
+
+load_ci_tokens() {
+    indent --header "$HYPERBASE_DEV_PATH/bin/get-aws-creds" --stage development --role AirtableDeveloperAdminAccessViaOkta --type hyperbase
+
+    GITHUB_AUTH_TOKEN="$(aws --profile=hyperbase_development_AirtableDeveloperAdminAccessViaOkta secretsmanager get-secret-value --region=us-west-2 --secret-id=/github/CI_PY_TESTS_GITHUB_AUTH_TOKEN | jq -r .SecretString)"
+    export GITHUB_AUTH_TOKEN
+
+    SLACK_TOKEN="$(aws --profile=hyperbase_development_AirtableDeveloperAdminAccessViaOkta secretsmanager get-secret-value --region=us-west-2 --secret-id=/github/JENKINS_SLACK_TOKEN | jq -r .SecretString)"
+    export SLACK_TOKEN
+}
+

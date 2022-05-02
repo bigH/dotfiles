@@ -28,137 +28,108 @@ remote_vimrc() {
   echo 'vim () {'
     printf '  command vim -u'
       printf ' <(echo'
-        printf " '"
-          printf ' : set nocompatible'
-          printf ' | set hidden'
+        echo " '"
+          echo 'set nocompatible'
+          echo 'set hidden'
 
-          printf ' | syntax enable'
+          echo 'syntax enable'
 
-          printf ' | set hlsearch'
-          printf ' | set ignorecase'
-          printf ' | set smartcase'
-          printf ' | set infercase'
+          echo 'set tabstop=4'
+          echo 'set shiftwidth=4'
 
-          printf ' | filetype on'
-          printf ' | filetype plugin on'
+          echo 'set hlsearch'
+          echo 'set ignorecase'
+          echo 'set smartcase'
+          echo 'set infercase'
+
+          echo 'filetype on'
+          echo 'filetype plugin on'
 
           if [ -n "$OPT_FAST_TERM" ]; then
-            printf ' | set incsearch'
-            printf ' | if exists("&inccommand") | set inccommand=split | endif'
+            echo 'set incsearch'
+            echo 'if exists("&inccommand") | set inccommand=split | endif'
           fi
 
           if [ -z "$OPT_SLOW_TERM" ]; then
-            printf ' | set path+=**'
-            printf ' | set wildmenu'
-            printf ' | set wildmode=list:longest,full'
+            echo 'set path+=**'
+            echo 'set wildmenu'
+            echo 'set wildmode=list:longest,full'
 
-            printf ' | if exists("&showcommand") | set showcommand | endif'
+            echo 'if exists("&showcommand") | set showcommand | endif'
           fi
 
           if [ -n "$OPT_FAST_TERM" ]; then
-            printf ' | set cursorline'
+            echo 'set cursorline'
 
-            printf ' | set ruler'
+            echo 'set ruler'
 
-            printf ' | set showmode'
+            echo 'set showmode'
 
-            printf ' | set relativenumber'
-            printf ' | set number'
+            echo 'set relativenumber'
+            echo 'set number'
           fi
 
-          printf ' | set backspace=indent,eol,start'
-          printf ' | set autoindent'
+          echo 'set backspace=indent,eol,start'
+          echo 'set autoindent'
 
-          printf ' | set splitbelow'
-          printf ' | set splitright'
+          echo 'set splitbelow'
+          echo 'set splitright'
 
-          printf ' | nmap <silent> <CR> :'
+          echo 'nmap <silent> <CR> :'
 
-          printf ' | nmap <silent> <Space> <Leader>'
-
-          # Move between windows using <M-H/J/K/L> keys
-          printf ' | nmap <silent> <M-h> :wincmd h<CR>'
-          printf ' | nmap <silent> <M-j> :wincmd j<CR>'
-          printf ' | nmap <silent> <M-k> :wincmd k<CR>'
-          printf ' | nmap <silent> <M-l> :wincmd l<CR>'
+          echo 'nmap <silent> <Space> <Leader>'
 
           # Move between windows using <M-H/J/K/L> keys
-          printf ' | imap <silent> <M-h> <Esc>:wincmd h<CR>i'
-          printf ' | imap <silent> <M-j> <Esc>:wincmd j<CR>i'
-          printf ' | imap <silent> <M-k> <Esc>:wincmd k<CR>i'
-          printf ' | imap <silent> <M-l> <Esc>:wincmd l<CR>i'
+          echo 'nmap <silent> <M-h> :wincmd h<CR>'
+          echo 'nmap <silent> <M-j> :wincmd j<CR>'
+          echo 'nmap <silent> <M-k> :wincmd k<CR>'
+          echo 'nmap <silent> <M-l> :wincmd l<CR>'
 
           # Split windows using <M-S-H/J/K/L> keys
-          printf ' | nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>'
-          printf ' | nmap <silent> <M-J> :split<CR>'
-          printf ' | nmap <silent> <M-K> :split<CR>:wincmd k<CR>'
-          printf ' | nmap <silent> <M-L> :vsplit<CR>'
-
-          # Split windows using <M-S-H/J/K/L> keys
-          printf ' | imap <silent> <M-H> <Esc>:vsplit<CR>:wincmd h<CR>i'
-          printf ' | imap <silent> <M-J> <Esc>:split<CR>i'
-          printf ' | imap <silent> <M-K> <Esc>:split<CR>:wincmd k<CR>i'
-          printf ' | imap <silent> <M-L> <Esc>:vsplit<CR>i'
+          echo 'nmap <silent> <M-H> :vsplit<CR>:wincmd h<CR>'
+          echo 'nmap <silent> <M-J> :split<CR>'
+          echo 'nmap <silent> <M-K> :split<CR>:wincmd k<CR>'
+          echo 'nmap <silent> <M-L> :vsplit<CR>'
 
           # Move Buffers
-          printf ' | nmap <silent> <C-H> :bfirst!<CR>'
-          printf ' | nmap <silent> H :bprevious!<CR>'
-          printf ' | nmap <silent> L :bnext!<CR>'
-          printf ' | nmap <silent> <C-L> :blast!<CR>'
+          echo 'nmap <silent> <C-H> :bfirst!<CR>'
+          echo 'nmap <silent> H :bprevious!<CR>'
+          echo 'nmap <silent> L :bnext!<CR>'
+          echo 'nmap <silent> <C-L> :blast!<CR>'
 
           # Disable Ex-Mode and map Q to close buffers
-          printf ' | nnoremap <silent> Q :q<CR>'
-          printf ' | nnoremap <silent> K <Nop>'
+          echo 'nnoremap <silent> Q :q<CR>'
+          echo 'nnoremap <silent> K <Nop>'
 
           # since we set hlsearch
-          printf ' | let @/ = "search_term_placeholder"'
-
-          # Remap Arrow Keys
-          printf ' | map <Up> <Nop>'
-          printf ' | map <Down> <Nop>'
-          printf ' | map <Left> <Nop>'
-          printf ' | map <Right> <Nop>'
-
-          # Move in insert mode using <C-H/J/K/L> keys
-          printf ' | inoremap <silent> <C-H> <Left>'
-          printf ' | inoremap <silent> <C-J> <Down>'
-          printf ' | inoremap <silent> <C-K> <Up>'
-          printf ' | inoremap <silent> <C-L> <Right>'
+          echo 'let @/ = "search_term_placeholder"'
 
           # Up and down are more logical with g..
-          printf ' | nnoremap <silent> k gk'
-          printf ' | nnoremap <silent> j gj'
+          echo 'nnoremap <silent> k gk'
+          echo 'nnoremap <silent> j gj'
 
           # Alt-Enter or <leader><CR> - insert a new-line here
-          printf ' | nnoremap <silent> <leader><CR> i<CR><Esc>'
-          printf ' | nnoremap <silent> <M-CR> i<CR><Esc>'
+          echo 'nnoremap <silent> <leader><CR> i<CR><Esc>'
+          echo 'nnoremap <silent> <M-CR> i<CR><Esc>'
 
           # Sane Y
-          printf ' | nnoremap <silent> Y y$'
-
-          # Use Y to put text into clipboard
-          printf ' | vnoremap <silent> Y "+y'
+          echo 'nnoremap <silent> Y y$'
 
           # Map K to `NoOp`
-          printf ' | nnoremap <silent> K <Nop>'
+          echo 'nnoremap <silent> K <Nop>'
 
           # Map Q to `NoOp`
-          printf ' | nnoremap <silent> K <Nop>'
-
-          # Prevent (mis|slow)-types of below from triggering orignal vim commands
-          # NB: Later get re-mapped to using `vim-surround`
-          printf ' | nnoremap <silent> s <Nop>'
-          printf ' | nnoremap <silent> S <Nop>'
+          echo 'nnoremap <silent> K <Nop>'
 
           # `macOS` emulation
           # TODO map <Command-BS> in iTerm/Alacritty
-          printf ' | imap <silent> <M-BS> <C-W>'
+          echo 'imap <silent> <M-BS> <C-W>'
 
           # `bash` emulation
-          printf ' | imap <silent> <C-A> <Esc>I'
-          printf ' | imap <silent> <C-E> <Esc>A'
-          printf ' | imap <silent> <C-B> <Esc>bi'
-          printf ' | imap <silent> <C-F> <Esc>wi'
+          echo 'imap <silent> <C-A> <Esc>I'
+          echo 'imap <silent> <C-E> <Esc>A'
+          echo 'imap <silent> <C-B> <Esc>bi'
+          echo 'imap <silent> <C-F> <Esc>wi'
         printf "'"
       printf ')'
     printf ' "$@"'

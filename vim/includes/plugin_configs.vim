@@ -269,19 +269,19 @@ if IsPluginLoaded('dense-analysis/ale')
   let g:ale_sign_error = '✘'
   let g:ale_sign_warning = '▲'
 
-  " Execution configs
-  let g:ale_linters = {}
-  let g:ale_linters['ruby'] = ['rubocop']
-  let g:ale_linters['javascript'] = ['prettier', 'eslint']
-  let g:ale_linters['haskell'] = ['stack-ghc-mod', 'hlint']
-
-  let g:ale_fixers = {
+  " Programs to use
+  let g:ale_linters = {
   \   'ruby': ['rubocop'],
-  \   'javascript': ['prettier'],
-  \   'typescript': ['prettier'],
-  \   'typescriptreact': ['prettier'],
+  \   'javascript': ['prettier', 'eslint'],
+  \   'javascriptreact': ['prettier', 'eslint'],
+  \   'typescript': ['prettier', 'eslint'],
+  \   'typescriptreact': ['prettier', 'eslint'],
   \   'css': ['prettier'],
+  \   'python': ['black'],
+  \   'haskell': ['stack-ghc-mod', 'hlint'],
   \ }
+
+  let g:ale_fixers = g:ale_linters
 
   " Use `bundle`
   let g:ale_ruby_rubocop_executable = 'bundle'
