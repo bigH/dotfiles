@@ -218,7 +218,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
 
   export GF_HUB_PR_FORMAT="%pC%I%Creset %Cyellow(%ur)%Creset %Cmagenta(%au)%Creset %t %l%n"
 
-  export GF_SNAPSHOT_DIRECTORY="./.git-fuzzy-snapshots"
+  export GF_SNAPSHOT_DIRECTORY="$HOME/.git-fuzzy-snapshots"
 
   export GF_BAT_STYLE="changes"
   export GF_BAT_THEME="gruvbox"

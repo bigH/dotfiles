@@ -221,6 +221,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gdmb='gf diff $(gmbh)'
   alias glm='gl $(gmbh)..HEAD'
 
+  function gdhh() {
+    if [ "$#" -eq 0 ]; then
+      gdhh 1
+    elif [ "$#" -eq 1 ]; then
+      # shellcheck disable=2046
+      git fuzzy diff HEAD"$(printf -- '^%.0s' $(eval "echo {1..$1}"))"
+    else
+      log_error 'too many arguments provided; `gdhh` or `gdhh <N>`'
+    fi
+  }
+
   # original diff
   alias ggd='g diff'
   alias ggds='g diff --staged'
@@ -257,6 +268,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gnl='git --no-pager log'
 
   # merge
+  alias gm='indent --header git merge'
   alias gmm='indent --header git fetch $(git merge-base-remote) && indent --header git merge "$(git merge-base-remote)/$(git merge-base-branch)"'
 
   # pull
@@ -308,6 +320,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gacane='indent --header git add -A ;
                 indent --header git commit --amend --no-edit'
 
+  alias gacne='indent --header git add -A ;
+               indent --header git commit --no-edit'
+
   alias gcanepf='gcane; gpf'
   alias gacanepf='gaa; gcane ; gpf'
 
@@ -345,10 +360,43 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # some others in `functions/git.sh`
 
   # push
-  alias gp='block-on-merge-base && indent --header git push origin $(git branch-name)'
-  alias gpf='block-on-merge-base && indent --header git push --force-with-lease origin $(git branch-name)'
-  alias gpff='block-on-merge-base && indent --header git push --force origin $(git branch-name)'
-  alias gpu='block-on-merge-base && indent --header git push -u origin $(git branch-name)'
+  git_push_wrapper() {
+    OPTIONS=''
+    SECOND_TRY_OPTIONS=''
+    if [ "$#" -gt 0 ]; then
+      POSSIBLE_SWITCHES="$1"
+      if [[ "$POSSIBLE_SWITCHES" =~ ^[fun]+$ ]]; then
+        # remaining options are for the `push` command
+        shift
+
+        # force options
+        case "$POSSIBLE_SWITCHES" in
+          *ff*)
+            OPTIONS="$OPTIONS -f" ;;
+          *f*)
+            OPTIONS="$OPTIONS --force-with-lease" ;;
+        esac
+
+        # upstream options
+        case "$POSSIBLE_SWITCHES" in
+          *u*)
+            OPTIONS="$OPTIONS -u" ;;
+        esac
+
+        # upstream options
+        case "$POSSIBLE_SWITCHES" in
+          *nn*)
+            OPTIONS="--no-verify $OPTIONS" ;;
+          *n*)
+            SECOND_TRY_OPTIONS="--no-verify $SECOND_TRY_OPTIONS" ;;
+        esac
+      fi
+    fi
+    block-on-merge-base && eval "indent --header git push origin $OPTIONS '$(git branch-name)' $(printf ' %q' "$@")"
+  }
+  alias gp='git_push_wrapper'
+  alias gpf='git_push_wrapper f'
+  alias gpu='git_push_wrapper u'
 
   gph() {
     if command_exists 'heroku'; then
@@ -455,19 +503,19 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   vcon() {
     if ! is-in-git-repo; then
-      log_error 'could not `vmb`: must be a `git` repository'
+      log_error 'could not `vcon`: must be a `git` repository'
     elif [ -z "$(git status --short)" ]; then
       log_error 'no changes in status'
-    elif ! git status --short | grep -q -e "$MERGE_CONFLICT_IN_STATUS_REGEX"; then
+    elif ! git status --short --porcelain | grep -q -E "$MERGE_CONFLICT_IN_STATUS_REGEX"; then
       log_error 'no conflicts in status'
     else
-      eval "vim '$MERGE_CONFLICT_VIM_REGEX' $(git status --porcelain --short | grep -e "$MERGE_CONFLICT_IN_STATUS_REGEX" | cut -c4- | file-must-exist | file-per-line-as-args)"
+      eval "vim '$MERGE_CONFLICT_VIM_REGEX' $(git status --porcelain --short | grep -E "$MERGE_CONFLICT_IN_STATUS_REGEX" | cut -c4- | file-must-exist | file-per-line-as-args)"
     fi
   }
 
   vh() {
     if ! is-in-git-repo; then
-      log_error 'could not `vmb`: must be a `git` repository'
+      log_error 'could not `vh`: must be a `git` repository'
     else
       eval "vim $(git diff -z --name-only HEAD^ | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
     fi
@@ -476,6 +524,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   vd() {
     if ! is-in-git-repo; then
       log_error 'could not `vd`: must be a `git` repository'
+    elif [ "$#" -gt 0 ]; then
+      eval "vim $(git diff  -z --name-only "$@" | xargs -0 -n1 bash -c 'printf " %q" "$0"')"
     elif [ -n "$(git status --short)" ]; then
       vs
     else

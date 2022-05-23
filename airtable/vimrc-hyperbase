@@ -17,7 +17,7 @@ function! s:mod(n,m)
 endfunction
 
 function! s:TeamHighlights()
-  let l:team_names_hyperbase = system('echo "$(yq -M "keys | join(\" \")" TEAMS.yaml)"')
+  let l:team_names_hyperbase = split(system('yq -M "keys | .[]" TEAMS.yaml'))
 
   let l:length_of_colors = len(g:team_highlight_colors)
 
@@ -29,7 +29,7 @@ function! s:TeamHighlights()
   endfor
 
   let l:color_idx = 0
-  for l:team_name_line in split(l:team_names_hyperbase, " ")
+  for l:team_name_line in l:team_names_hyperbase
     let l:highlight_name = "TeamColor" . l:color_idx
     call matchadd(l:highlight_name, l:team_name_line, 70 + l:color_idx)
     let l:color_idx = s:mod(l:color_idx + 1, l:length_of_colors)

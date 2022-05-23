@@ -28,9 +28,13 @@ autocmd BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 "{{{ Needed for UltiSnips
 
 if IsPluginLoaded('SirVer/UltiSnips')
-  " Setup Python
-  let g:python2_host_prog = '/usr/local/bin/python2'
-  let g:python3_host_prog = '/usr/local/bin/python3'
+  if has('python2')
+    let g:python2_host_prog = trim(system('which python2'))
+  endif
+
+  if has('python3')
+    let g:python3_host_prog = trim(system('which python3'))
+  endif
 endif
 
 "}}}

@@ -105,8 +105,8 @@ PlugMemoize '907th/vim-auto-save'
 " PlugMemoize 'zackhsi/fzf-tags', ForModes('vim', 'nvim')
 
 " snippet engine for vim and a snippet library
-" PlugMemoize 'SirVer/UltiSnips', ForModes('vim', 'nvim')
-" PlugMemoize 'honza/vim-snippets', ForModes('vim', 'nvim')
+PlugMemoize 'SirVer/UltiSnips', ForModes('vim', 'nvim')
+PlugMemoize 'honza/vim-snippets', ForModes('vim', 'nvim')
 
 " linting integration
 PlugMemoize 'dense-analysis/ale', ForModes('vim', 'nvim')

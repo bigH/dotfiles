@@ -24,6 +24,9 @@
 [pull]
 	rebase = true
 
+[gc]
+	autoDetach = false
+
 [diff]
 # seems to break somethings
 	renameLimit = 100
@@ -50,6 +53,10 @@
 	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
 # list tags
 	tags = "!git tag --list | sort --version-sort --reverse"
+# shorthands
+	c = commit
+	co = checkout
+	b = branch
 
 # used for git-fuzzy
 [pretty]

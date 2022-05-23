@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 db() {
   mysql -u root -proot "$@"
 }
@@ -67,7 +69,7 @@ blf() {
 }
 
 teams() {
-  yq -M 'keys | join(" ")' "$HYPERBASE_DEV_PATH/TEAMS.yaml"
+  yq -M 'keys | .[]' "$HYPERBASE_DEV_PATH/TEAMS.yaml"
 }
 
 test_owners_json() {
@@ -127,7 +129,7 @@ rehyperdb() {
   fi
 }
 
-pyenv_ci() {
+ci_activate_python_environment() {
     DESIRED_VENV="$HYPERBASE_DEV_PATH/ci/py/.pyenv"
 
     if [ "$VIRTUAL_ENV" = "$DESIRED_VENV" ]; then
@@ -156,7 +158,7 @@ pyenv_ci() {
     fi
 }
 
-load_ci_tokens() {
+ci_load_tokens_from_aws_secrets() {
     indent --header "$HYPERBASE_DEV_PATH/bin/get-aws-creds" --stage development --role AirtableDeveloperAdminAccessViaOkta --type hyperbase
 
     GITHUB_AUTH_TOKEN="$(aws --profile=hyperbase_development_AirtableDeveloperAdminAccessViaOkta secretsmanager get-secret-value --region=us-west-2 --secret-id=/github/CI_PY_TESTS_GITHUB_AUTH_TOKEN | jq -r .SecretString)"
@@ -166,3 +168,76 @@ load_ci_tokens() {
     export SLACK_TOKEN
 }
 
+cienv() {
+    if [ "$1" = '--full' ]; then
+        ci_load_tokens_from_aws_secrets
+    fi
+
+    ci_activate_python_environment
+}
+
+# NOTES:
+# I used this to diff 2 dependency graphs that may have been created with file
+# scan order being different or had incremental updates while being captured on
+# the same code state.
+#
+# After saving this I discovered `jd` a JSON diff tool that provides the option
+# to treat arrays as sets and specify keys for which this needs to be done.
+#
+# $1 and $2 are files
+dependency_graph_same() {
+  QUERY='{
+    reversedDependencies: (
+        .reversedDependencies |
+            to_entries |
+            map({key: .key, value: (.value | sort)}) |
+            from_entries
+    ),
+    dependencies: (
+        .dependencies |
+            to_entries |
+            map({key: .key, value: (.value | sort)}) |
+            from_entries
+    )
+  }'
+  diff -u <(jq -MS "$QUERY" "$1") <(jq -MS "$QUERY" "$2") |
+    delta --side-by-side --default-language JSON
+}
+
+# NOTES:
+# I used this to verify that the partial dependency graph saved (when pressing
+# Ctrl-C) had all dependencies of a file listed correctly both when a complete
+# dependency graph is dumped and an incomplete one is
+#
+# $1 is the source of file list
+# $2 is being checked against this
+dependency_graph_same_by_file() {
+  QUERY='{
+    dependencies: (
+      .dependencies["{1}"] |
+        sort
+    ),
+    reversedDependencies: (
+      .reversedDependencies |
+        to_entries |
+        map(
+          select(
+            .value |
+              map(. == "{1}") |
+              any
+          ) |
+          .key
+        ) |
+        sort
+    ),
+  }'
+  jq -r '.dependencies | keys | sort | .[]' "$1" |
+    fzf -m --preview-window="bottom:80%:wrap" \
+        --preview="\
+          echo {1}; \
+          echo; \
+          diff --new-line-format='+%L' --old-line-format='-%L' --unchanged-line-format=' %L' \
+            <(jq -CS '$QUERY' '$1') \
+            <(jq -CS '$QUERY' '$2') | \
+          delta --default-language=json --color-only"
+}
