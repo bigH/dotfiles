@@ -153,7 +153,7 @@ ci_activate_python_environment() {
             . "$DESIRED_VENV/bin/activate"
 
             log_info "setting up: venv at $DESIRED_VENV"
-            pip install -r requirements-dev.txt
+            pip install -r "$HYPERBASE_DEV_PATH/ci/py/requirements-dev.txt"
         fi
     fi
 }
