@@ -4,14 +4,6 @@ endif
 let g:overriding_filetype_defaults = 1
 
 function s:SetupJSBindings()
-  " go sort the list
-  if IsPluginLoaded('kana/vim-textobj-indent')
-    nmap <silent> <leader>gs vii:sort<CR>
-    if IsPluginLoaded('AndrewRadev/splitjoin.vim')
-      nmap <silent> <leader>si sjjvii:sort<CR>
-    endif
-  endif
-
   " go create a variable with . & " registers
   nnoremap <silent> <leader>gc oconst <C-R>. = <C-R>"
   nnoremap <silent> <leader>gl olet <C-R>. = <C-R>"

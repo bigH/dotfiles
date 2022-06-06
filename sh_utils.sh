@@ -167,10 +167,10 @@ remove_switches() {
 }
 
 # check for an alias/function
-ensure_no_conflicting_alias_or_function() {
+log_if_conflicting_alias_or_function() {
   if [ -z "$1" ]; then
     # shellcheck disable=2016
-    log_error 'expected at least one argument for `ensure_no_conflicting_alias_or_function`'
+    log_error 'expected at least one argument for `log_if_conflicting_alias_or_function`'
   fi
 
   if typeset -f "$1" > /dev/null 2>&1; then
@@ -180,7 +180,7 @@ ensure_no_conflicting_alias_or_function() {
 
   if alias git > /dev/null 2>&1; then
     # shellcheck disable=2016
-    log_error '`'"$1".'` function found.'
+    log_error '`'"$1".'` alias found.'
   fi
 }
 

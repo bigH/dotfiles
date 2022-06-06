@@ -4,7 +4,7 @@
 # shellcheck source=../sh_utils.sh
 source "$DOT_FILES_DIR/sh_utils.sh"
 
-ensure_no_conflicting_alias_or_function git
+log_if_conflicting_alias_or_function git
 
 git() {
   command git --no-pager -c color.ui=always "$@"

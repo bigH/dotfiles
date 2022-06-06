@@ -38,6 +38,7 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
       $FZF_DEFAULTS_BASIC \
       --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
       $(fzf_sizer_preview_window_settings)"
+    # shellcheck disable=2090
     export FZF_DEFAULT_OPTS
   }
 
@@ -46,18 +47,18 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   if command_exists fd; then
     # Use `fd` instead of the default find command for listing path candidates.
     _fzf_compgen_path() {
-      fd --hidden --follow . "$1"
+      fd --color=always --strip-cwd-prefix --hidden --follow . "$1"
     }
 
     # Use `fd` to generate the list for directory completion
     _fzf_compgen_dir() {
-      fd --type d --hidden --follow . "$1"
+      fd --color=always --strip-cwd-prefix --type d --hidden --follow . "$1"
     }
 
     # use `fd`
-    export FZF_DEFAULT_COMMAND='fd --hidden --follow .'
-    export FZF_CTRL_T_COMMAND='fd --hidden --follow .'
-    export FZF_ALT_C_COMMAND='fd --type d --hidden --follow .'
+    export FZF_DEFAULT_COMMAND='fd --color=always --strip-cwd-prefix --hidden --follow .'
+    export FZF_CTRL_T_COMMAND='fd --color=always --strip-cwd-prefix --hidden --follow .'
+    export FZF_ALT_C_COMMAND='fd --color=always --strip-cwd-prefix --type d --hidden --follow .'
 
     export FZF_CTRL_R_OPTS='--preview "echo {}" --height 50% --preview-window down:5:wrap --bind "?:toggle-preview"'
   fi

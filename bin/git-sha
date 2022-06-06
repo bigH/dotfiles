@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# source `indent` function
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+git_sha() {
+  if [ "$#" -gt 1 ]; then
+    log_error '`git sha` supports 0 or 1 file argument'
+  elif [ "$#" -eq 1 ]; then
+    if [ -f "$1" ]; then
+      git rev-parse "HEAD:$1"
+    else
+      log_error "'$1' is not a file"
+    fi
+  else
+    git rev-parse HEAD
+  fi
+}
+
+git_sha "$@"

@@ -15,7 +15,7 @@ if command_exists exa; then
 fi
 
 fzf-directory-selector() {
-  eval "fd --type d --hidden --follow . | \
+  eval "fd --color=always --strip-cwd-prefix --type d --hidden --follow . | \
           fzf +m --ansi --no-height \
                  --history \"$FZF_HISTORY_FOR_DIRECTORIES\" \
                  $FZF_DEFAULT_OPTS \
@@ -25,7 +25,7 @@ fzf-directory-selector() {
 FILE_PREVIEW_COMMAND='bat {}'
 
 fzf-file-selector() {
-  eval "fd --type f --hidden --follow . | \
+  eval "fd --color=always --strip-cwd-prefix --type f --hidden --follow . | \
           fzf -m --ansi --no-height \
               --history \"$FZF_HISTORY_FOR_FILES\" \
               $FZF_DEFAULT_OPTS_MULTI \
