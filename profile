@@ -22,7 +22,7 @@ elif [ -x '/usr/local/bin/brew' ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# configs/path (almost everything below needs them to work)
+# configs/path (almost everything below needs this to happen first)
 auto_source "$DOT_FILES_DIR/configs/all.sh"
 
 if [ -n "$DOT_FILES_ENV" ]; then

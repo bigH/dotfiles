@@ -82,7 +82,8 @@ visual_bell:
   color: '0x2c3e50'
   duration: 20
 
-background_opacity: 1.0
+window:
+  opacity: 1.0
 
 key_bindings:
   - { key: W,        mods: Command,       action: None                         }
