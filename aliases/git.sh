@@ -151,7 +151,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # check out specific uses
   alias gcop='git checkout --patch'
-  alias gcomb='gcof $(gmbh)'
+  alias gcomb='gcof "$(gmbh)"'
 
   # commit - interactive
   alias gc='git commit'
@@ -218,8 +218,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gds='gf diff --staged'
   alias gdh='gf diff HEAD'
   alias gdo='gf diff "$(git merge-base-remote)/$(git branch-name)"'
-  alias gdmb='gf diff $(gmbh)'
-  alias glm='gl $(gmbh)..HEAD'
+  alias gdmb='gf diff "$(gmbh)"'
+  alias glm='gl "$(gmbh)"..HEAD'
 
   function gdhh() {
     if [ "$#" -eq 0 ]; then
@@ -237,8 +237,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias ggds='g diff --staged'
   alias ggdh='g diff HEAD'
   alias ggdo='g diff "$(git merge-base-remote)/$(git branch-name)"'
-  alias ggdmb='g diff $(gmbh)'
-  alias gglm='g log $(gmbh)..HEAD'
+  alias ggdmb='g diff "$(gmbh)"'
+  alias gglm='g log "$(gmbh)"..HEAD'
 
   # show
   gsh() {
@@ -257,25 +257,25 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # git fuzzy log
   alias gl='gf log'
   alias glr='indent --header git fetch "$(git merge-base-remote)" && git fuzzy log "$(git merge-base-remote)/$(git branch-name)"'
-  alias glm='gl $(gmbh)..HEAD'
+  alias glm='gl "$(gmbh)"..HEAD'
 
   # git log
   alias ggl='g log'
   alias gglr='indent --header git fetch "$(git merge-base-remote)" && git log "$(git merge-base-remote)/$(git branch-name)"'
-  alias gglm='ggl $(gmbh)..HEAD'
+  alias gglm='ggl "$(gmbh)"..HEAD'
 
   # log - no pager
   alias gnl='git --no-pager log'
 
   # merge
   alias gm='indent --header git merge'
-  alias gmm='indent --header git fetch $(git merge-base-remote) && indent --header git merge "$(git merge-base-remote)/$(git merge-base-branch)"'
+  alias gmm='indent --header git fetch "$(git merge-base-remote)" && indent --header git merge "$(git merge-base-remote)/$(git merge-base-branch)"'
 
   # pull
-  alias gpo='indent --header git pull $(git merge-base-remote)'
-  alias gpom='indent --header git pull $(git merge-base-remote) $(git merge-base-branch)'
-  alias gprom='indent --header git pull --rebase $(git merge-base-remote) $(git merge-base-branch)'
-  alias gprob='indent --header git pull --rebase $(git merge-base-remote) $(git branch-name)'
+  alias gpo='indent --header git pull "$(git merge-base-remote)" "$(git branch-name)"'
+  alias gpom='indent --header git pull "$(git merge-base-remote)" "$(git merge-base-branch)"'
+  alias gprom='indent --header git pull --rebase "$(git merge-base-remote)" "$(git merge-base-branch)"'
+  alias gprob='indent --header git pull --rebase "$(git merge-base-remote)" "$(git branch-name)"'
 
   # pull - misspellings of most used ones
   alias grpom='gprom'
@@ -298,7 +298,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # rebase
   alias gri='git rebase --interactive'
-  alias grimb='gri $(gmbh)'
+  alias grimb='gri "$(gmbh)"'
 
   grif() {
     COMMIT="$(git fuzzy log)"
