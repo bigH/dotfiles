@@ -188,7 +188,7 @@ if [ -d "$DOT_FILES_DIR/utils" ]; then
 fi
 
 if command_exists delta; then
-  export DIFF_PAGER="delta --theme=gruvbox --highlight-removed"
+  export DIFF_PAGER="delta --syntax-theme=gruvbox"
 elif command_exists diff-so-fancy; then
   export DIFF_PAGER="diff-so-fancy"
 else

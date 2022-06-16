@@ -6,17 +6,17 @@
 	email = "hhiranan@gmail.com"
 
 [pager]
-	blame = delta --theme='gruvbox' --highlight-removed
+	blame = delta --syntax-theme='gruvbox'
 
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
 [core]
 	preloadindex = true
 	excludesfile = ~/.gitignore_global
-	pager = delta --theme='gruvbox' --highlight-removed
+	pager = delta --syntax-theme='gruvbox'
 	precomposeUnicode = true
 
 [interactive]
-	diffFilter = delta --color-only --theme='gruvbox' --highlight-removed
+	diffFilter = delta --color-only --syntax-theme='gruvbox'
 
 [color]
 	ui = true
