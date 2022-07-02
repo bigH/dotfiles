@@ -151,6 +151,9 @@ PlugMemoize 'jparise/vim-graphql'
 PlugMemoize 'martinda/Jenkinsfile-vim-syntax'
 PlugMemoize 'vim-scripts/groovy.vim'
 
+" monkey-c support - garmin's language
+PlugMemoize 'klimeryk/vim-monkey-c'
+
 " -- EDITING --
 " close with `end` when typing `\n` after `if`, `unless`, `begin`, etc.
 " NB: this plugin remaps <CR> and causes weird issues when using <C-P>

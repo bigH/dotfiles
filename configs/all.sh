@@ -21,7 +21,6 @@ auto_source "$CONFIGS_DIR/journal.sh"
 
 # source these only if they're "visible" commands
 source_configs_for_expected_command bat
-source_configs_for_expected_command ctags
 source_configs_for_expected_command fd fdfind
 source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
