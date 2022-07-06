@@ -1,0 +1,2 @@
+#!/usr/env/bin bash
+# meant to be sourced; the above is simply to get most useful shellcheck linting
