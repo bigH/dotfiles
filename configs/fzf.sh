@@ -26,7 +26,6 @@ if [ -n "$COMPLETEABLE_SHELL_TYPE" ]; then
   --bind 'ctrl-s:toggle-sort' \
   --bind 'ctrl-e:preview-down' \
   --bind 'ctrl-y:preview-up' \
-  --bind 'change:top' \
   --no-height"
 
   export FZF_DEFAULT_OPTS_MULTI="\

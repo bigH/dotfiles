@@ -425,7 +425,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
     BRANCH_NAME="hiren/fix-flake-$(date +%F)"
     while [ "$#" -gt 0 ]; do
-      BRANCH_NAME="$BRANCH_NAME-$1"
+      BRANCH_NAME="$BRANCH_NAME-${1##*/}"
       shift
     done
 
