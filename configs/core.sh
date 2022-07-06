@@ -104,11 +104,15 @@ if [ -d '/usr/local/opt/openjdk@8' ]; then
   JAVA_HOME="/usr/local/opt/openjdk@8"
 fi
 
+if [ -d '/usr/local/opt/openjdk@8' ]; then
+  JAVA_HOME="/usr/local/opt/openjdk@8"
+fi
+
 if [ -n "$JAVA_HOME" ]; then
   export JAVA_HOME
 fi
 
-# add brew path
+# add java path
 if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
   export PATH="$JAVA_HOME/bin:$PATH"
 fi
