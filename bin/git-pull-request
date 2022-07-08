@@ -6,9 +6,17 @@ source "$DOT_FILES_DIR/sh_utils.sh"
 
 git_pr() {
   CURRENT_BRANCH="$(git branch-name)"
-  BRANCH_NAME="${1:-$CURRENT_BRANCH}"
+
+  if [ "$#" == 0 ]; then
+    COMPARISON="$CURRENT_BRANCH"
+  elif [ "$#" == 1 ]; then
+    COMPARISON="$1...$CURRENT_BRANCH"
+  else
+    COMPARISON="$1...$2"
+  fi
+
   HTTP_ROOT_URL="$(git web)"
-  indent --header open "$HTTP_ROOT_URL/pull/new/$BRANCH_NAME"
+  indent --header open "$HTTP_ROOT_URL/pull/new/$COMPARISON"
 }
 
 git_pr "$@"

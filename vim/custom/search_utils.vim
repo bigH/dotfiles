@@ -247,9 +247,13 @@ function! RewindCurrentSearchHistory()
   endif
 endfunction
 
-function! s:ClearHighlightsIfSearched(cancelled, cmdtype)
-  if (!a:cancelled && a:cmdtype == '/')
-    call s:KillHighlightAll()
+function! s:ClearHighlightsIfSearched(event_data)
+  if has_key(a:event_data, 'abort') && has_key(a:event_data, 'cmdtype')
+    let l:cancelled = a:event_data.abort
+    let l:cmdtype = a:event_data.cmdtype
+    if (!l:cancelled && l:cmdtype == '/')
+      call s:KillHighlightAll()
+    endif
   endif
 endfunction
 
@@ -323,7 +327,7 @@ augroup ReHighlightAutomation
 
   autocmd VimLeavePre * call s:SaveSearchOnExit()
 
-  autocmd CmdlineLeave * call s:ClearHighlightsIfSearched(v:event.abort, v:event.cmdtype)
+  autocmd CmdlineLeave * call s:ClearHighlightsIfSearched(v:event)
 
   " TODO this actually doesn't work because `winnr()` is not the same as the
   " new window being created.
