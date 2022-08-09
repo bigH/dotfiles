@@ -227,8 +227,9 @@ if IsPluginLoaded('junegunn/fzf', 'junegunn/fzf.vim')
   vmap <silent> <leader>f :<C-U>RgVisual<CR>
 
   " Map `\h` to FZF search open files
-  nmap <silent> <leader>H :<C-U>FileHistory!<CR>
-  nmap <silent> <leader>h :<C-U>FileHistory<CR>
+  nmap <silent> <leader>H :<C-U>FileHistoryDiff!<CR>
+  nmap <silent> <leader>h :<C-U>FileHistoryDiff<CR>
+
   " Use selected text to search diff
   vmap <silent> <leader>H :<C-U>VisualFileHistoryDiff!<CR>
   vmap <silent> <leader>h :<C-U>VisualFileHistoryDiff<CR>
@@ -282,6 +283,8 @@ if IsPluginLoaded('dense-analysis/ale')
 
   let g:ale_fixers = {
   \   'ruby': ['rubocop'],
+  \   'yaml': ['prettier'],
+  \   'json': ['prettier'],
   \   'javascript': ['prettier'],
   \   'javascriptreact': ['prettier'],
   \   'typescript': ['prettier'],

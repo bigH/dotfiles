@@ -51,7 +51,8 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   unwip() {
     if ! is-in-git-repo; then
       log_error 'could not `unwip`: must be a `git` repository'
-    elif [[ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:WIP'* ]]; then
+    elif [[ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:wip'* ]] && \
+         [[ "$(git log -1 --format='%an:%s')" != 'Hiren Hiranandani:WIP'* ]]; then
       log_error 'could not `unwip`: last commit is not `wip`'
     elif [ -n "$(git status -s)" ]; then
       log_error 'could not `unwip`: uncommited/unstaged changes'
@@ -115,7 +116,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # interactively select files in patch (against merge base) to apply
-  gabmb() {
+  gcofmb() {
     if [ "$#" -eq 1 ]; then
       MERGE_BASE="$(git merge-base "$1" "$(git merge-base-remote)/$(git merge-base-branch)")"
       IFS=$'\r\n' eval 'FILES=($(git fuzzy diff "$MERGE_BASE" "$1"))'
