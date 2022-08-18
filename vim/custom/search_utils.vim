@@ -170,7 +170,7 @@ function! s:PopHighlightInWindow()
   endif
 
   if len(w:current_star_matches) == 0
-    add(g:search_util_log, "ERROR: couldn't pop ".winnr()
+    add(g:search_util_log, "ERROR: couldn't pop ".winnr())
   else
     let match_info = w:current_star_matches[-1]
     call matchdelete(l:match_info)
