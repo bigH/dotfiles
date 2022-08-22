@@ -242,11 +242,11 @@ au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
 " Desired `highlight` in comments
-augroup Todos
-  au Syntax * syn match MyTodo
-        \ /\v<(FIXME|NOTES|NOTE|TODO|OPTIMIZE|MISSING|XXX|PR|NB):/
-        \ containedin=.*Comment,vimCommentTitle
-augroup END
+" augroup Todos
+  " au Syntax * syn match MyTodo
+        " \ /\v<(FIXME|NOTES|NOTE|TODO|OPTIMIZE|MISSING|XXX|PR|NB):/
+        " \ containedin=.*Comment,vimCommentTitle
+" augroup END
 
 highlight def link MyTodo Todo
 
@@ -535,12 +535,12 @@ nnoremap <silent> <F12> :call ColorSchemeLightDark()<CR>
 "{{{ Colors
 
 " Use correct vim colors
-if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
-  let g:gruvbox_italic=1
-  let g:airline_theme='gruvbox'
-  let g:gruvbox_termcolors=256
-  colorscheme gruvbox
-endif
+" if !empty(globpath(&rtp, 'colors/gruvbox.vim'))
+  " let g:gruvbox_italic=1
+  " let g:airline_theme='gruvbox'
+  " let g:gruvbox_termcolors=256
+  " colorscheme gruvbox
+" endif
 
 "}}}
 

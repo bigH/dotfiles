@@ -332,7 +332,6 @@ augroup ReHighlightAutomation
   " TODO this actually doesn't work because `winnr()` is not the same as the
   " new window being created.
   autocmd WinNew * call s:HighlightNewWindow()
-  autocmd ColorScheme * call s:ReHighlightAll()
 
   autocmd CursorMoved * call SearchUtilsHighlightCurrent()
   autocmd WinEnter * call SearchUtilsHighlightCurrent()
