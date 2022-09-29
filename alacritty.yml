@@ -10,15 +10,15 @@ scrolling:
 
 font:
   normal:
-    family: "Hasklig"
+    family: "Hasklug Nerd Font"
     style: Regular
 
   bold:
-    family: "Hasklig"
+    family: "Hasklug Nerd Font"
     style: Bold
 
   italic:
-    family: "Hasklig"
+    family: "Hasklug Nerd Font"
     style: Italic
 
   offset:
@@ -213,7 +213,7 @@ mouse_bindings:
 
 mouse:
   double_click: { threshold: 300 }
-  triple_click: { threshold: 300 }
+  triple_click: { threshold: 600 }
 
   hide_when_typing: false
 

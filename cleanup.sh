@@ -20,23 +20,16 @@ unlink "$HOME/.rgignore"
 unlink "$HOME/.tigrc"
 
 # big ones
-unlink "$HOME/.vimrc"
 unlink "$HOME/.bashrc"
+unlink "$HOME/.bash_profile"
 unlink "$HOME/.zshrc"
+unlink "$HOME/.zprofile"
 
 # unlink, but directory can remain
-unlink "$HOME/.vim/coc-settings.json"
 unlink "$HOME/.config/alacritty/alacritty.yml"
-unlink "$HOME/.config/nvim/coc-settings.json"
-unlink "$HOME/.config/nvim/init.vim"
+unlink "$HOME/.config/nvim"
 
 # unlink directories
-rm -f "$HOME/.vim/UltiSnips"
-rm -f "$HOME/.config/nvim/syntax"
-rm -f "$HOME/.config/nvim/ftdetect"
-rm -f "$HOME/.vim/syntax"
-rm -f "$HOME/.vim/ftdetect"
-rm -f "$HOME/.vim"
 rm -f "$HOME/nice-noise-loops"
 rm -f "$HOME/bin"
 

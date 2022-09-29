@@ -29,42 +29,9 @@ mkdir_if_not_exists "$DOT_FILES_DIR/made/doc"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/doc/man1"
 echo ""
 
-echo "${BLUE}${BOLD}Cleanup \`vim\` directories${NORMAL}"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/sessions"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/tmp"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/backup"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/bundle"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/undodir"
-mkdir_if_not_exists "$DOT_FILES_DIR/.vim/scratch"
-echo ""
-
-printf "${BLUE}${BOLD}Download \`vim-plug\`${NORMAL}"
-run_and_print_status_symbol "vim" "curl -fLo $DOT_FILES_DIR/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-run_and_print_status_symbol "nvim" "curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-echo ""
-echo ""
-
-echo "${BLUE}${BOLD}\`.vim[rc]\` and \`coc-settings.json\`${NORMAL}"
-link_if_possible "$DOT_FILES_DIR/vimrc" "$HOME/.vimrc"
-link_if_possible "$DOT_FILES_DIR/.vim" "$HOME/.vim"
-link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.vim/syntax"
-link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.vim/ftdetect"
-link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.vim/coc-settings.json"
-echo ""
-
-echo "${BLUE}${BOLD}vim -> neovim${NORMAL}"
-mk_expected_dir "$HOME/.config/nvim"
-link_if_possible "$DOT_FILES_DIR/nvim-init.vim" "$HOME/.config/nvim/init.vim"
-link_if_possible "$DOT_FILES_DIR/vim/syntax" "$HOME/.config/nvim/syntax"
-link_if_possible "$DOT_FILES_DIR/vim/ftdetect" "$HOME/.config/nvim/ftdetect"
-link_if_possible "$DOT_FILES_DIR/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
-echo ""
-
-echo "${BLUE}${BOLD}Linking UltiSnips${NORMAL}"
-link_if_possible "$DOT_FILES_DIR/UltiSnips" "$HOME/.vim/UltiSnips"
-echo ""
-
-echo "ViM Setup ${BLUE}${BOLD}Complete${NORMAL}!"
+echo "${BLUE}${BOLD}neovim${NORMAL}"
+mk_expected_dir "$HOME/.config/"
+link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
 echo ""
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
@@ -194,10 +161,12 @@ echo ""
 
 echo "${BLUE}${BOLD}Linking Bash Setup${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/bashrc" "$HOME/.bashrc"
+link_if_possible "$DOT_FILES_DIR/bash_profile" "$HOME/.bash_profile"
 echo ""
 
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/zshrc" "$HOME/.zshrc"
+link_if_possible "$DOT_FILES_DIR/zprofile" "$HOME/.zprofile"
 link_if_possible "$DOT_FILES_DIR/.oh-my-zsh" "$HOME/.oh-my-zsh"
 echo ""
 
@@ -241,17 +210,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo ""
 fi
 
-echo "${BLUE}${BOLD}Installing ViM plugins${NORMAL}"
-if command_exists nvim; then
-  zsh -c 'nvim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'
-else
-  zsh -c 'vim -u $DOT_FILES_DIR/vim/includes/plugins.vim +PlugUpdate +qall'
-fi
+printf "${BLUE}${BOLD}Installing neovim plugins ...${NORMAL}"
+run_and_print_status_symbol "install" "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
 echo ""
 
-# TODO call project setup.sh
-
-echo "  [${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}]:"
+echo ""
+echo "${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}:"
 echo ""
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"

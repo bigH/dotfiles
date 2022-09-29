@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# basics with no dependencies
+# NB: technically doesn't support auto_source
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+if [ -x '/opt/homebrew/bin/brew' ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x '/usr/local/bin/brew' ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# NB: may require `bin` and things from `configs`
+auto_source "$DOT_FILES_DIR/functions/all.sh"
+auto_source "$DOT_FILES_DIR/aliases/all.sh"
+
+if command_exists build_fzf_defaults; then
+  build_fzf_defaults
+fi
+
+if [[ "$SHELL" == *'zsh' ]]; then
+  auto_source "$DOT_FILES_DIR/zsh-bindings.sh"
+  auto_source "$DOT_FILES_DIR/zsh-prompt.sh"
+  auto_source "$DOT_FILES_DIR/zsh-shell.sh"
+elif [[ "$SHELL" == *'bash' ]]; then
+  auto_source "$DOT_FILES_DIR/bash-prompt.sh"
+  auto_source "$DOT_FILES_DIR/bash-shell.sh"
+fi
+
+auto_source_initialize

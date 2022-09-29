@@ -56,7 +56,9 @@ else
   alias v='nvim'
 
   # TODO get rid of these once new vim setup is done
-  alias nv='nvim -u "$DOT_FILES_DIR/nvim/init.lua"'
+  if [ -x '/Applications/Neovide.app/Contents/MacOS/neovide' ]; then
+    alias nv='/Applications/Neovide.app/Contents/MacOS/neovide'
+  fi
 fi
 
 # chrome memory

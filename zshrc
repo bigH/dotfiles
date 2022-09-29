@@ -111,13 +111,15 @@ export DOT_FILES_DIR="$HOME/.hiren"
 source "$ZSH/oh-my-zsh.sh"
 source "$DOT_FILES_DIR/auto_sourcer.sh"
 
-auto_source "$DOT_FILES_DIR/profile"
+auto_source "$DOT_FILES_DIR/shellrc"
 
 auto_source_initialize
 
 precmd() {
   auto_source_check_and_reload_sources
-  build_fzf_defaults
+  if command_exists build_fzf_defaults; then
+    build_fzf_defaults
+  fi
 }
 
 autoload -U +X bashcompinit && bashcompinit

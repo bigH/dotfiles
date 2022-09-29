@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+if [[ "$SHELL" == *'zsh' ]]; then
+  COMPLETEABLE_SHELL_TYPE='zsh'
+elif [[ "$SHELL" == *'bash' ]]; then
+  COMPLETEABLE_SHELL_TYPE='bash'
+else
+  COMPLETEABLE_SHELL_TYPE=''
+fi
+
+# only configure these things if you're in `bash` or `zsh`
+[[ $- == *i* ]] && \
+  [ -n "$COMPLETEABLE_SHELL_TYPE" ] && \
+  [ -e "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" ] && \
+  source "$HOME/.fzf.$COMPLETEABLE_SHELL_TYPE" 2> /dev/null
+
+source "$DOT_FILES_DIR/auto-sized-fzf/auto-sized-fzf.sh" 2> /dev/null
+
 export FZF_HISTORY_DIR="$HOME/.local/share/fzf-history"
 FZF_HISTORY_FOR_FILES="$FZF_HISTORY_DIR/sh_files"
 FZF_HISTORY_FOR_DIRECTORIES="$FZF_HISTORY_DIR/sh_directories"
@@ -13,6 +29,15 @@ DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
 if command_exists exa; then
   DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
 fi
+
+build_fzf_defaults() {
+  FZF_DEFAULT_OPTS="\
+    $FZF_DEFAULTS_BASIC \
+    --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
+    $(fzf_sizer_preview_window_settings)"
+  # shellcheck disable=2090
+  export FZF_DEFAULT_OPTS
+}
 
 fzf-directory-selector() {
   eval "fd --color=always --strip-cwd-prefix --type d --hidden --follow . | \
