@@ -7,9 +7,9 @@ local M = {}
 function M.setup()
   -- bring in nvim-cmp capabilities
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  -- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-  require("lua-dev").setup({})
+  require('neodev').setup({})
 
   local lspconfig = require('lspconfig')
 
@@ -110,6 +110,7 @@ function M.setup()
         local surround = string.match(line_text, '%S.*') or ''
         local surround_end = surround:sub(col)
 
+        
         replace[1] = surround:sub(0, col - 1)..replace[1]
         replace[#replace] = replace[#replace]..(#surround_end > 1 and ' ' or '')..surround_end
         if indent ~= '' then
@@ -149,9 +150,7 @@ function M.setup()
         select = false,
       }),
       ['<C-n>'] = cmp_down_mapping,
-      ['<Tab>'] = cmp_down_mapping,
       ['<C-p>'] = cmp_up_mapping,
-      ['<S-Tab>'] = cmp_up_mapping,
     }),
     sources = cmp.config.sources({
       { name = 'emoji' },

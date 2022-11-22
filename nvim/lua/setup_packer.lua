@@ -47,6 +47,9 @@ return require('packer').startup(function(use)
   -- `av`, `iv`
   use 'Julian/vim-textobj-variable-segment'
 
+  -- `[` and `]` to use cursor to end of or beginning of text object - e.g. `c[ip`, `c]i)`
+  use 'tommcdo/vim-ninja-feet'
+
   ------- text manipulation
 
   -- `cx` to exchange
@@ -106,7 +109,7 @@ return require('packer').startup(function(use)
   ------- completion/lsp
 
   use 'neovim/nvim-lspconfig'
-  use 'folke/lua-dev.nvim'
+  use 'folke/neodev.nvim'
 
   use 'hrsh7th/nvim-cmp'
 
@@ -146,26 +149,7 @@ return require('packer').startup(function(use)
 
   ------- copilot
 
-  -- use 'github/copilot.vim'
-
-  use {
-    'zbirenbaum/copilot.lua',
-    event = {'VimEnter'},
-    config = function()
-      vim.defer_fn(function()
-        require('copilot').setup()
-      end, 100)
-    end,
-  }
-
-
-  use {
-    'zbirenbaum/copilot-cmp',
-    after = { 'copilot.lua' },
-    config = function ()
-      require('copilot_cmp').setup()
-    end
-  }
+  use 'github/copilot.vim'
 
   ------- terminal
 
