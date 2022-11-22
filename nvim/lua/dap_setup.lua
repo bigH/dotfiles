@@ -11,11 +11,10 @@ function M.setup()
   local dap_go = require('dap-go')
   local dap_virtual_text = require("nvim-dap-virtual-text")
 
-
-  vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl=configs.colors.dark3, numhl=''})
-  vim.fn.sign_define('DapBreakpointCondition', {text='❓', texthl='', linehl=configs.colors.dark3, numhl=''})
-  vim.fn.sign_define('DapLogPoint', {text='📣', texthl='', linehl=configs.colors.dark3, numhl=''})
-  vim.fn.sign_define('DapBreakpointRejected', {text='❌', texthl='', linehl=configs.colors.dark3, numhl=''})
+  -- vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl=configs.colors.dark3, numhl=''})
+  -- vim.fn.sign_define('DapBreakpointCondition', {text='❓', texthl='', linehl=configs.colors.dark3, numhl=''})
+  -- vim.fn.sign_define('DapLogPoint', {text='📣', texthl='', linehl=configs.colors.dark3, numhl=''})
+  -- vim.fn.sign_define('DapBreakpointRejected', {text='❌', texthl='', linehl=configs.colors.dark3, numhl=''})
 
   local function dap_debug_test()
     dap_go.debug_test()

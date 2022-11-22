@@ -20,19 +20,19 @@ mk_expected_dir "$HOME/.backup"
 mk_expected_dir "$HOME/.screenlog"
 mk_expected_dir "$HOME/.local/share/fzf-history"
 mk_expected_dir "$DOT_FILES_DIR/logs"
-echo ""
+echo
 
 echo "${BLUE}${BOLD}\`made\` directory${NORMAL}"
 mkdir_if_not_exists "$DOT_FILES_DIR/made"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/bin"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/doc"
 mkdir_if_not_exists "$DOT_FILES_DIR/made/doc/man1"
-echo ""
+echo
 
 echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
-echo ""
+echo
 
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
 if command_exists fzf; then
@@ -48,7 +48,7 @@ else
   run_and_print_status_symbol "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
-echo ""
+echo
 
 if command_exists rg; then
   printf "  - ${BLUE}Found \`ripgrep\` ...${NORMAL}"
@@ -61,7 +61,7 @@ else
   run_and_print_status_symbol "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
-echo ""
+echo
 
 if command_exists bat; then
   printf "  - ${BLUE}Found \`bat\` ...${NORMAL}"
@@ -74,7 +74,7 @@ else
   run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
-echo ""
+echo
 
 if command_exists fd; then
   printf "  - ${BLUE}Found \`fd\` ...${NORMAL}"
@@ -87,7 +87,7 @@ else
   run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 fi
-echo ""
+echo
 
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
@@ -96,7 +96,7 @@ else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
 fi
-echo ""
+echo
 
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
@@ -105,7 +105,7 @@ else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
 fi
-echo ""
+echo
 
 if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
   printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
@@ -114,61 +114,61 @@ else
   printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
 fi
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
 run_and_print_status_symbol "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`zsh-autosuggestions\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`zsh-syntax-highlighting\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`zsh-completions\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
 run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
 run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh"
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/cht.sh"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
 run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
 run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
-echo ""
+echo
 
 printf "  - ${BLUE}Installing \`fzf-tab-completion\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
-echo ""
+echo
 
-echo ""
+echo
 
 echo "${BLUE}${BOLD}Linking Bash Setup${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/bashrc" "$HOME/.bashrc"
 link_if_possible "$DOT_FILES_DIR/bash_profile" "$HOME/.bash_profile"
-echo ""
+echo
 
 echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/zshrc" "$HOME/.zshrc"
 link_if_possible "$DOT_FILES_DIR/zprofile" "$HOME/.zprofile"
 link_if_possible "$DOT_FILES_DIR/.oh-my-zsh" "$HOME/.oh-my-zsh"
-echo ""
+echo
 
 echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"
 if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitignore_global" ]; then
@@ -181,7 +181,7 @@ if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitconfig" ]; then
 else
   link_if_possible "$DOT_FILES_DIR/gitconfig" "$HOME/.gitconfig"
 fi
-echo ""
+echo
 
 echo "${BLUE}${BOLD}Miscellany ...${NORMAL}"
 mk_expected_dir "$HOME/.config/alacritty"
@@ -197,29 +197,25 @@ link_if_possible "$DOT_FILES_DIR/pryrc" "$HOME/.pryrc"
 link_if_possible "$DOT_FILES_DIR/rgignore" "$HOME/.rgignore"
 link_if_possible "$DOT_FILES_DIR/tigrc" "$HOME/.tigrc"
 link_if_possible "$DOT_FILES_DIR/nice-noise-loops" "$HOME/nice-noise-loops"
-echo ""
+echo
 
 echo "${BLUE}${BOLD}\`bin\` directory${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/bin" "$HOME/bin"
-echo ""
+echo
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "${BLUE}${BOLD}Installing iTerm2 shell integration ...${NORMAL}"
   run_and_print_status_symbol "execute" "curl -L https://iterm2.com/misc/install_shell_integration.sh | bash"
-  echo ""
-  echo ""
+  echo
+  echo
 fi
 
-printf "${BLUE}${BOLD}Installing neovim plugins ...${NORMAL}"
-run_and_print_status_symbol "install" "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
-echo ""
-
-echo ""
+echo
 echo "${BLUE}${BOLD}RECOMMENDATIONS${NORMAL}:"
-echo ""
+echo
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
-  echo ""
+  echo
   echo "     ... installs dependencies"
   echo "     \`brew install ack autojump bat bpytop broot cabal cloc \\"
   echo "                   coreutils direnv entr exa fd fzf fx gh ghc  \\"
@@ -229,44 +225,47 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "                   wget universal-ctags\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
-  echo ""
+  echo
+  echo "     ... install neovim plugins"
+  echo "       \`nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'\`"
+  echo
   echo "     ... optional if doing \`ruby\`"
   echo "       \`[rbenv exec] gem install ripper-tags\`"
-  echo ""
+  echo
   echo "     ... optional if doing \`node\`"
   echo "       Install \`nvm\`"
-  echo ""
+  echo
   echo "     ... on macOS"
   echo "       Install \`alacritty\`"
-  echo ""
+  echo
   echo "     ... sets up OS X in a nice way"
   echo "       \`~/.hiren/osx.sh\`"
-  echo ""
+  echo
   echo "     Setup \`iTerm2\` to use the configs in \`$DOT_FILES_DIR/iterm\`"
-  echo ""
+  echo
 else
   echo "  [${BLUE}${BOLD}Other POSIX${NORMAL}]: (assumes Ubuntu family)"
-  echo ""
+  echo
   echo "     ... sets up Ubuntu in a nice way"
   echo "     \`sudo apt-get install -y bat cloc ctags dconf-cli fd-find fzf \\"
   echo "                              glances golang htop libsensors4-dev \\"
   echo "                              neovim ripgrep swaks uuid-runtime yarn\`"
-  echo ""
+  echo
   echo "     ... install \`rustup\`"
   echo "     \`curl https://sh.rustup.rs -sSf | sh\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`cargo install hegemon\`"
-  echo ""
+  echo
 fi
 echo "     ... ligatures and nice mono-space font"
 echo "     Install \`hasklig\` font"
-echo ""
+echo
 if [ -n "$DOT_FILES_ENV" ] && [ -e "setup.$DOT_FILES_ENV.sh" ]; then
   echo "  $DOT_FILES_ENV_DISPLAY:"
-  echo ""
+  echo
   echo "     For \`$DOT_FILES_ENV\` context specific install, try:"
   echo "       - \`~/.hiren/setup.$DOT_FILES_ENV.sh\`"
-  echo ""
+  echo
 fi
 echo "Done!"
-echo ""
+echo
