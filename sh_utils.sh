@@ -12,12 +12,24 @@ one_command_exists() {
   fi
 }
 
+is_tput_possible() {
+  if ! command_exists tput; then
+    return 1
+  fi
+
+  if [ -z "$TERM" ]; then
+    return 2
+  fi
+
+  return 0
+}
+
 if [ -z "$SH_UTILS_LOG_MODES" ]; then
   # export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:DEBUG:"
   export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:"
 fi
 # Defaults
-if command_exists tput; then
+if is_tput_possible; then
   ncolors=$(tput colors)
 fi
 

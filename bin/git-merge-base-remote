@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 git_merge_base_remote() {
-  if [ -f .hiren/merge-base-remote ]; then
-    cat .hiren/merge-base-remote
+  GIT_BASE="$(git rev-parse --show-toplevel)"
+
+  if [ -f "$GIT_BASE/.hiren/merge-base-remote" ]; then
+    cat "$GIT_BASE/.hiren/merge-base-remote"
   else
     echo 'origin'
   fi

@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 git_web() {
-  git merge-base-remote-url | sed -E 's#^.*@(.*):([^.]*)(\.git)?#https://\1/\2#'
+  GITHUB_WORK="${GITHUB_WORK:-github.com}"
+  GITHUB_PERSONAL="${GITHUB_PERSONAL:-github.com}"
+
+  git merge-base-remote-url | \
+    sed -E 's#^.*@(.*):([^.]*)(\.git)?#https://\1/\2#' | \
+    sed -E "s/github-work/${GITHUB_WORK}/" | \
+    sed -E "s/github-personal/${GITHUB_PERSONAL}/"
 }
 
 git_web "$@"

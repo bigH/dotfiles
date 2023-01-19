@@ -34,6 +34,10 @@ mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
 echo
 
+echo "${BLUE}${BOLD}IDEA-vim${NORMAL}"
+link_if_possible "$DOT_FILES_DIR/ideavimrc" "$HOME/.ideavimrc"
+echo
+
 echo "${BLUE}${BOLD}Various Installs${NORMAL}:"
 if command_exists fzf; then
   printf "  - ${BLUE}Found \`fzf\` ...${NORMAL}"

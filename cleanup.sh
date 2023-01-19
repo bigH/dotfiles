@@ -28,6 +28,7 @@ unlink "$HOME/.zprofile"
 # unlink, but directory can remain
 unlink "$HOME/.config/alacritty/alacritty.yml"
 unlink "$HOME/.config/nvim"
+unlink "$HOME/.ideavimrc"
 
 # unlink directories
 rm -f "$HOME/nice-noise-loops"

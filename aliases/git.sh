@@ -414,6 +414,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # remotes
   alias grv='git remote -v'
 
+  # submodules
+  alias gsu='indent --header git submodule status; indent --header git submodule update'
+
   # --- random higher-order ---
   # create a flake branch
   gflake() {
@@ -542,6 +545,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       wcob
     fi
     vd
+  }
+
+  fixlock() {
+    rm "$(git rev-parse --show-toplevel)/.git/index.lock"
   }
 
 fi

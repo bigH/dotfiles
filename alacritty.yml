@@ -197,16 +197,6 @@ key_bindings:
   - { key: Period,   mods: Alt,           chars: "\x1b."                       }
   - { key: RBracket, mods: Alt,           chars: "\x1b]"                       }
   - { key: LBracket, mods: Alt,           chars: "\x1b["                       }
-  - { key: Key1,     mods: Command,       chars: "\x1b1\x1b. "                 }
-  - { key: Key2,     mods: Command,       chars: "\x1b2\x1b. "                 }
-  - { key: Key3,     mods: Command,       chars: "\x1b3\x1b. "                 }
-  - { key: Key4,     mods: Command,       chars: "\x1b4\x1b. "                 }
-  - { key: Key5,     mods: Command,       chars: "\x1b5\x1b. "                 }
-  - { key: Key6,     mods: Command,       chars: "\x1b6\x1b. "                 }
-  - { key: Key7,     mods: Command,       chars: "\x1b7\x1b. "                 }
-  - { key: Key8,     mods: Command,       chars: "\x1b8\x1b. "                 }
-  - { key: Key9,     mods: Command,       chars: "\x1b9\x1b. "                 }
-    # TODO map Cmd-KeyX as above to the same character combinations in iTerm
 
 mouse_bindings:
   - { mouse: Middle, action: PasteSelection }

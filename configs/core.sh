@@ -88,33 +88,27 @@ if [ -d '/usr/local/opt/llvm/bin/' ]; then
 fi
 
 # Various `java`s
-if [ -x '/usr/libexec/java_home' ]; then
-  JAVA_HOME="$(/usr/libexec/java_home)"
-fi
+if [ -d "$HOME/.jenv" ]; then
+  export PATH="$HOME/.jenv/bin:$PATH"
+  eval "$(jenv init -)"
+else
+  if [ -z "$JAVA_HOME" ] && [ -x '/usr/libexec/java_home' ]; then
+    JAVA_HOME="$(/usr/libexec/java_home)"
+  fi
 
-if [ -d '/usr/local/opt/openjdk@11' ]; then
-  JAVA_HOME='/usr/local/opt/openjdk@11'
-fi
+  if [ -z "$JAVA_HOME" ] && [ -d '/usr/local/opt/openjdk@11' ]; then
+    JAVA_HOME='/usr/local/opt/openjdk@11'
+  fi
 
-if [ -d '/usr/local/opt/openjdk@8' ]; then
-  JAVA_HOME='/usr/local/opt/openjdk@8'
-fi
+  if [ -z "$JAVA_HOME" ] && [ -d '/usr/local/opt/openjdk@8' ]; then
+    JAVA_HOME='/usr/local/opt/openjdk@8'
+  fi
 
-if [ -d '/usr/local/opt/openjdk@8' ]; then
-  JAVA_HOME="/usr/local/opt/openjdk@8"
-fi
-
-if [ -d '/usr/local/opt/openjdk@8' ]; then
-  JAVA_HOME="/usr/local/opt/openjdk@8"
-fi
-
-if [ -n "$JAVA_HOME" ]; then
-  export JAVA_HOME
-fi
-
-# add java path
-if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
-  export PATH="$JAVA_HOME/bin:$PATH"
+  # add java path
+  if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
+    export JAVA_HOME
+    export PATH="$JAVA_HOME/bin:$PATH"
+  fi
 fi
 
 # Add iTerm2 things

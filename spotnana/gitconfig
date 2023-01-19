@@ -1,0 +1,106 @@
+# Please indent options with one tab when editing defaults in
+# That matches how "git config --global" edits the file.
+
+[user]
+	name = "Hiren Hiranandani"
+	email = "hhiranandani@spotnana.com"
+
+[pager]
+	blame = delta --syntax-theme='gruvbox'
+
+# http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
+[core]
+	preloadindex = true
+	excludesfile = ~/.gitignore_global
+	pager = delta --syntax-theme='gruvbox'
+	precomposeUnicode = true
+
+[interactive]
+	diffFilter = delta --color-only --syntax-theme='gruvbox'
+
+[color]
+	ui = true
+
+[push]
+	default = nothing
+
+[pull]
+	rebase = true
+
+[gc]
+	autoDetach = false
+
+[diff]
+# seems to break somethings
+	renameLimit = 100
+# use `patience` so diffs are more exact
+	algorithm = patience
+# use indentHeuristic so diffs are more pleasing
+	indentHeuristic = true
+
+# making GHC build happy...
+[url "git://github.com/ghc/packages-"]
+	insteadOf = git://github.com/ghc/packages/
+
+[alias]
+# aliases
+# `git git` == `git`
+	git = !git
+# common typo
+	pul = pull
+# common rename
+	blame = annotate
+# Show Status in Summary Form
+	st = status --short
+# Print Aliases
+	aliases = "!awk '/\\[alias\\]/ {seen = 1}; seen {print}' ~/.gitconfig"
+# list tags
+	tags = "!git tag --list | sort --version-sort --reverse"
+# shorthands
+	c = commit
+	co = checkout
+	b = branch
+
+# used for git-fuzzy
+[pretty]
+	gflog = "%C(magenta bold)%h%Creset %C(bold blue)%an%Creset %Cgreen(%cr)%C(yellow)%d%Creset %s"
+	gfreflog = "%C(magenta bold)%h%Creset %C(bold blue)%an%Creset %Cgreen(%cr)%C(yellow)%d%Creset %s"
+
+# `diff-so-fancy`-specific
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[advice]
+	detachedHead = false
+
+[delta]
+	features = decorations
+
+[delta "interactive"]
+	keep-plus-minus-markers = false
+
+[delta "decorations"]
+	commit-decoration-style = blue ol
+	commit-style = raw
+	file-style = omit
+	hunk-header-decoration-style = blue box
+	hunk-header-file-style = red
+	hunk-header-line-number-style = "#067a00"
+	hunk-header-style = file line-number syntax
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
