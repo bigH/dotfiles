@@ -90,8 +90,6 @@ key_bindings:
   - { key: Q,        mods: Command,       action: None                         }
   - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
   - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
-  - { key: H,        mods: Command,       chars: "H"                           }
-  - { key: L,        mods: Command,       chars: "L"                           }
   - { key: Return,   mods: Command|Shift, action: ToggleFullscreen             }
   - { key: Key0,     mods: Command,       action: ResetFontSize                }
   - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }

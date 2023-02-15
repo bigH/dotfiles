@@ -1,1 +1,4 @@
 set ideajoin
+
+nmap H <action>(PreviousTab)
+nmap L <action>(NextTab)

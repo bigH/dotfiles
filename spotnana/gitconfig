@@ -42,6 +42,9 @@
 [url "git://github.com/ghc/packages-"]
 	insteadOf = git://github.com/ghc/packages/
 
+[url "git@github-work:"]
+	insteadOf = https://github.com/
+
 [alias]
 # aliases
 # `git git` == `git`
