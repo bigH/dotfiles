@@ -24,9 +24,6 @@
 [push]
 	default = nothing
 
-[pull]
-	rebase = true
-
 [gc]
 	autoDetach = false
 

@@ -63,7 +63,7 @@ function M.setup()
   configure_lsp_with_defaults('tsserver')
   configure_lsp_with_defaults('gopls')
   configure_lsp_with_defaults('rust_analyzer')
-  configure_lsp_with_defaults('sumneko_lua', {
+  configure_lsp_with_defaults('lua_ls', {
     settings = {
       Lua = {
         completion = {
