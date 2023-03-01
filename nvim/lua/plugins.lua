@@ -13,12 +13,53 @@ require('tokyonight').setup(configs.colorconfig)
 --
 
 local fzf = require('fzf-lua')
-fzf.setup({})
-n('<LEADER>e', fzf.files)
-n('<LEADER>f', fzf.live_grep)
-n('<LEADER>j', fzf.lgrep_curbuf)
+
+local actions = fzf.actions
+fzf.setup({
+  'fzf-native',
+  actions = {
+    files = {
+      ['default'] = actions.file_edit
+    }
+  },
+  previewers = {
+    git_diff = {
+      pager = "delta --width=$FZF_PREVIEW_COLUMNS"
+    }
+  }
+})
+
+n('<LEADER>e', function()
+  fzf.files({ cmd = 'fd' })
+end)
+n('<LEADER>E', function()
+  fzf.files({ cmd = 'fd --no-ignore' })
+end)
+n('<LEADER>F', fzf.live_grep)
+n('<LEADER>f', fzf.live_grep_resume)
 v('<LEADER>f', fzf.grep_visual)
-n('<LEADER>o', fzf.oldfiles)
+n('<LEADER>j', fzf.lgrep_curbuf)
+n('<LEADER>o', fzf.git_status)
+n('<LEADER>d', function()
+  local base_sha = vim.fn.system('git merge-base HEAD $(git merge-base-absolute)')
+
+  local preview_setting = '60%:right'
+  local preview_executable = os.getenv("DOT_FILES_DIR") .. '/auto-sized-fzf/auto-sized-fzf.sh'
+  if vim.fn.executable(preview_executable) then
+    preview_setting = vim.fn.system(preview_executable)
+  end
+
+  local command = 'git diff --name-only ' .. base_sha
+  fzf.fzf_exec(command, {
+    actions = {
+      ['default'] = actions.file_edit,
+    },
+    fzf_opts = {
+      ['--preview'] = '"git diff ' .. base_sha .. ' -- \'{..}\' | delta --width=\\$FZF_PREVIEW_COLUMNS"',
+      ['--preview-window'] = preview_setting
+    }
+  })
+end)
 
 --
 

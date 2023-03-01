@@ -34,7 +34,7 @@ build_fzf_defaults() {
   FZF_DEFAULT_OPTS="\
     $FZF_DEFAULTS_BASIC \
     --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
-    $(fzf_sizer_preview_window_settings)"
+    --preview-window=$(fzf_sizer_preview_window_settings)"
   # shellcheck disable=2090
   export FZF_DEFAULT_OPTS
 }

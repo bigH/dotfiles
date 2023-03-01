@@ -20,6 +20,7 @@ auto_source "$FUNCTIONS_DIR/core.sh"
 source_functions_for_expected_command fzf
 source_functions_for_expected_command rg
 source_functions_for_expected_command kubectl
+source_functions_for_expected_command docker
 
 unset -f source_functions_for_expected_command
 unset ALIASES

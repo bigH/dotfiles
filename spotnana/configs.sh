@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export M2_HOME="/opt/homebrew/Cellar/maven/3.8.6"
+export M2_HOME="/opt/homebrew/Cellar/maven/3.9.0"
 export M2="$M2_HOME/bin"
 export PATH="$M2:$PATH" 
 
@@ -17,3 +17,5 @@ export LC_TIME="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 export SPOTNANA_BACKEND="$HOME/dev/spotnana/spotnana"
+
+export DEFAULT_DOCKER_COMPOSE_PROFILE="kafka-ui"

@@ -39,7 +39,7 @@
 [url "git://github.com/ghc/packages-"]
 	insteadOf = git://github.com/ghc/packages/
 
-[url "git@github-work:"]
+[url "git@github-personal:"]
 	insteadOf = https://github.com/
 
 [alias]

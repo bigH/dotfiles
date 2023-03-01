@@ -17,7 +17,7 @@ if command_exists autojump; then
         must -e -d | \
         sed "s:\(.*\):\1\t\1:" | \
         sed "s:\t$HOME:\t~:g ; s:\t$(pwd):\t.:g ; s:\t$TMPDIR:\t\$TMPDIR/:g" | \
-        fzf +m -d $'\t' --nth 2 --with-nth 2 --query="$*" --preview="$PREVIEW" $(fzf_sizer_preview_window_settings) | \
+        fzf +m -d $'\t' --nth 2 --with-nth 2 --query="$*" --preview="$PREVIEW" --preview-window=$(fzf_sizer_preview_window_settings) | \
         cut -d$'\t' -f1 \
       )"
 

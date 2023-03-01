@@ -8,7 +8,7 @@ jf() {
   cd "$HOME/dev/spotnana/spotnana-frontend/src/react"
 }
 
-spot-docker() {
+sd() {
   cd "$HOME/dev/spotnana/spotnana/src/devcluster"
 
   docker-compose down
@@ -24,10 +24,14 @@ spot-docker() {
   fi
 
   if [ "$#" -eq 0 ]; then
-    docker-compose --profile kafka-ui up
-  el  else
+    docker-compose --profile "$DEFAULT_DOCKER_COMPOSE_PROFILE" up
+  else
     docker-compose "$@" up
   fi
+}
+
+sd-dbclean() {
+  dclean volume db-data
 }
 
 m() {
@@ -39,6 +43,14 @@ m() {
   else
     log_error '`m` requires arguments'
   fi
+}
+
+mc() {
+  m install
+}
+
+mi() {
+  m install
 }
 
 mci() {

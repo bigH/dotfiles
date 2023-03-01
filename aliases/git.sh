@@ -172,6 +172,16 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
+  gcnm() {
+    if [ "$#" -gt 1 ]; then
+      indent --header git commit --no-verify -m "$*"
+    elif [ "$#" -eq 1 ]; then
+      indent --header git commit --no-verify -m "$1"
+    else
+      log_error "expect arguments for commit message"
+    fi
+  }
+
   gcam() {
     if [ "$#" -gt 1 ]; then
       indent --header git commit -a -m "$*"
