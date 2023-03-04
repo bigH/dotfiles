@@ -280,6 +280,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # merge
   alias gm='indent --header git merge'
+  alias gm-='indent --header git merge "@{-1}"'
   alias gmm='indent --header git fetch "$(git merge-base-remote)" && indent --header git merge "$(git merge-base-remote)/$(git merge-base-branch)"'
 
   # pull

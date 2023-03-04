@@ -29,6 +29,15 @@ fzf.setup({
   }
 })
 
+function get_preview_setting()
+  local preview_setting = '60%:right'
+  local preview_executable = os.getenv("DOT_FILES_DIR") .. '/auto-sized-fzf/auto-sized-fzf.sh'
+  if vim.fn.executable(preview_executable) then
+    preview_setting = vim.fn.system(preview_executable)
+  end
+  return preview_setting
+end
+
 n('<LEADER>e', function()
   fzf.files({ cmd = 'fd' })
 end)
@@ -41,15 +50,11 @@ v('<LEADER>f', fzf.grep_visual)
 n('<LEADER>j', fzf.lgrep_curbuf)
 n('<LEADER>o', fzf.git_status)
 n('<LEADER>d', function()
+  local preview_setting = get_preview_setting()
+
   local base_sha = vim.fn.system('git merge-base HEAD $(git merge-base-absolute)')
-
-  local preview_setting = '60%:right'
-  local preview_executable = os.getenv("DOT_FILES_DIR") .. '/auto-sized-fzf/auto-sized-fzf.sh'
-  if vim.fn.executable(preview_executable) then
-    preview_setting = vim.fn.system(preview_executable)
-  end
-
   local command = 'git diff --name-only ' .. base_sha
+
   fzf.fzf_exec(command, {
     actions = {
       ['default'] = actions.file_edit,
@@ -59,6 +64,11 @@ n('<LEADER>d', function()
       ['--preview-window'] = preview_setting
     }
   })
+end)
+n('<LEADER>h', function()
+  local preview_setting = get_preview_setting()
+  local cursor_position = vim.fn.getcurpos()
+
 end)
 
 --

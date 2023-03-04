@@ -28,6 +28,8 @@ sd() {
   else
     docker-compose "$@" up
   fi
+
+  docker-compose down
 }
 
 sd-dbclean() {
