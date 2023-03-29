@@ -27,7 +27,7 @@ return require('packer').startup(function(use)
   use {
     'akinsho/bufferline.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
-    tag = 'v2.*',
+    tag = 'v3.*',
   }
 
   ------- text objects
@@ -74,7 +74,7 @@ return require('packer').startup(function(use)
 
   use {
     'lewis6991/gitsigns.nvim',
-    tag = 'release'
+    tag = 'v0.6'
   }
 
   ------- visual/structural helpers
@@ -151,8 +151,8 @@ return require('packer').startup(function(use)
 
   use 'github/copilot.vim'
 
-  ------- terminal
+  ------- python
 
-  -- TODO
+  use 'Vimjas/vim-python-pep8-indent'
 
 end)

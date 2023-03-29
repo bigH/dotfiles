@@ -184,33 +184,35 @@ mkd() {
 }
 
 watch_and_print_on_change() {
-  if [ "$#" -ne 1 ]; then
-    log_error "expect exactly 1 argument - command to run" 1>&2
+  if [ "$#" -lt 1 ]; then
+    log_error "expect 1 or 2 args: optional interval followed by command" 1>&2
     return 1
   else
     local command_to_run
-    local last_output
-    local current_output
     local started_at
+    local started_at_formatted
     local date_now
 
-    command_to_run="$1"
-    shift
+    if [ "$#" -eq 1 ]; then
+      command_to_run="$1"
+      interval="10"
+    else
+      command_to_run="$2"
+      interval="${1#-}"
+    fi
 
-    last_output=""
     started_at="$(date +%s)"
+    started_at_formatted="$(date)"
     date_now="$started_at"
 
-    echo "${YELLOW}Started at: ${WHITE}${BOLD}$(date)${NORMAL}"
-    echo
-
     while true; do
-      current_output="$(eval "$command_to_run")"
-      if [ "$current_output" != "$last_output" ]; then
-        printf "%s+ %s%5ds%s | %s%s%s\n" "$BOLD" "$CYAN" "$((date_now - started_at))" "$NORMAL" "$MAGENTA" "$current_output" "$NORMAL"
-        last_output="$current_output"
-      fi
-      sleep 1
+      clear
+      echo "${YELLOW} Started at: ${WHITE}${BOLD}${started_at_formatted}${NORMAL}"
+      echo "${YELLOW}${BOLD}Current run: ${WHITE}${BOLD}$(date)${NORMAL} +$((date_now - started_at))s"
+      echo "${BOLD}${CYAN}$command_to_run${NORMAL} - every ${interval}s"
+      echo
+      eval "$command_to_run"
+      sleep "${interval}"
 
       # this is to make first print have a '+0s' prefix
       date_now="$(date +%s)"
@@ -218,14 +220,25 @@ watch_and_print_on_change() {
   fi
 }
 
-test_true() {
-    echo 'STDOUT: running 0'
-    echo 'STDERR: running 0' 1>&2
-    return 0
+text_me() {
+  message="$1"
+  my_phone_number="+1 (703) 595-9345"
+  osascript -e "tell application \"Messages\" to send \"$message\" to buddy \"$my_phone_number\""
 }
 
-test_false() {
-    echo 'STDOUT: running 1'
-    echo 'STDERR: running 1' 1>&2
-    return 1
+text_me_when() {
+  action_when text_me "$@"
 }
+
+say_when() {
+  action_when say "$@"
+}
+
+action_when() {
+  action="$1"
+  name="$2"
+  command="$3"
+
+  eval "$command" && "$action" "$name success" || "$action" "$name failure"
+}
+

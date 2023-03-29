@@ -58,3 +58,22 @@ mi() {
 mci() {
   m clean install
 }
+
+needs_recheck() {
+  local checks_output="$(gh pr checks --required | cat -)"
+  if ! [[ "$checks_output" == *"no required checks"* ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+rerun_checks() {
+  (gh pr edit --remove-label 'RunAllTests' || true) &&
+    gh pr edit --add-label 'RunAllTests'
+}
+
+recheck() {
+  command_exists gh && needs_recheck && rerun_checks && watch_checks
+}
+

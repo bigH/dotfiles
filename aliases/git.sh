@@ -6,17 +6,17 @@ heroku_remote() {
   git remote | grep heroku >/dev/null 2>&1
 }
 
-define_fzf_completion_for() {
-  if [ "$#" -lt 2 ]; then
-    log_error "expected at least 2 arguments for \`define_fzf_completion_for\`"
-    return 1
-  fi
-  while [ "$#" -gt 1 ]; do
-    # shellcheck disable=2082
-    eval "_fzf_complete_$1() { eval $(printf '%q' "${$((#))}") }"
-    shift
-  done
-}
+# define_fzf_completion_for() {
+#   if [ "$#" -lt 2 ]; then
+#     log_error "expected at least 2 arguments for \`define_fzf_completion_for\`"
+#     return 1
+#   fi
+#   while [ "$#" -gt 1 ]; do
+#     # shellcheck disable=2082
+#     eval "_fzf_complete_$1() { eval $(printf '%q' "${$((#))}") }"
+#     shift
+#   done
+# }
 
 if command_exists lazygit; then
   alias lg=lazygit

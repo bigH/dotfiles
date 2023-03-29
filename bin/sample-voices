@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+sample_voices() {
+  local arguments_escaped=""
+  if [ "$#" -gt 0 ]; then
+    arguments_escaped="$(printf '%q ' "$@")"
+  fi
+
+  cat ~/.hiren/voices.txt |
+    fzf --with-nth=1 \
+        --nth=1 \
+        --phony \
+        --delimiter=$'\t' \
+        --bind="enter:execute-silent(say $arguments_escaped -v {1} {q})" \
+        --preview-window=hidden
+}
+
+sample_voices "$@"

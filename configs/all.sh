@@ -13,6 +13,7 @@ source_configs_for_expected_command() {
 
 # expect this one to be there
 source "$CONFIGS_DIR/core.sh"
+source "$CONFIGS_DIR/github.sh"
 
 # journal command is provided from `JOURNAL_PATH` - set in this file, so can't command check
 source "$CONFIGS_DIR/journal.sh"

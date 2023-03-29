@@ -28,6 +28,7 @@ if [ -z "$SH_UTILS_LOG_MODES" ]; then
   # export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:DEBUG:"
   export SH_UTILS_LOG_MODES=":INFO:WARNING:ERROR:"
 fi
+
 # Defaults
 if is_tput_possible; then
   ncolors=$(tput colors)

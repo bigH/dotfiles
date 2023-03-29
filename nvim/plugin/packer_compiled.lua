@@ -254,6 +254,11 @@ _G.packer_plugins = {
     path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/vim-ninja-feet",
     url = "https://github.com/tommcdo/vim-ninja-feet"
   },
+  ["vim-python-pep8-indent"] = {
+    loaded = true,
+    path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/vim-python-pep8-indent",
+    url = "https://github.com/Vimjas/vim-python-pep8-indent"
+  },
   ["vim-textobj-entire"] = {
     loaded = true,
     path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/vim-textobj-entire",

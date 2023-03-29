@@ -18,6 +18,7 @@ require('plugins')
 -- plugin-dependent configurations of LSP things
 require('lsp_setup').setup()
 require('dap_setup').setup()
+require('lint_and_format').setup()
 
 -- load my own "plugins"
 

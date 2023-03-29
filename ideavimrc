@@ -1,4 +1,26 @@
 set ideajoin
+set idearefactormode=keep
+set visualbell
+set noerrorbells
 
 nmap H <action>(PreviousTab)
 nmap L <action>(NextTab)
+nmap Y y$
+
+let mapleader=" "
+
+nnoremap <CR> :
+
+nnoremap <leader>e :action GotoClass<CR>
+vnoremap <leader>e :action GotoClass<CR>
+nnoremap <leader>E :action GotoFile<CR>
+vnoremap <leader>E :action GotoFile<CR>
+
+nnoremap <leader>d :action GotoDeclaration<CR>
+vnoremap <leader>d :action GotoDeclaration<CR>
+
+nnoremap <leader>t :action GotoTypeDeclaration<CR>
+vnoremap <leader>t :action GotoTypeDeclaration<CR>
+
+nnoremap <leader>f :action Find<CR>
+vnoremap <leader>f :action Find<CR>
