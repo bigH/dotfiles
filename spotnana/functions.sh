@@ -74,6 +74,10 @@ rerun_checks() {
 }
 
 recheck() {
-  command_exists gh && needs_recheck && rerun_checks && watch_checks
+  command_exists gh && needs_recheck && rerun_checks && (
+    gh pr checks --watch &&
+      say "checks passed" ||
+      say "checks failed"
+  )
 }
 

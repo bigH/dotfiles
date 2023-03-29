@@ -1,0 +1,28 @@
+prSections:
+  - title: '.'
+    filters: author:@me
+    layout:
+      author:
+        hidden: true
+issuesSections:
+  - title: Created
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+defaults:
+  layout:
+    prs:
+      repo:
+        grow: true,
+        width: 10
+        hidden: false
+  prsLimit: 100
+  issuesLimit: 100
+  preview:
+    open: true
+    width: 80
+  refetchIntervalMinutes: 10
+keybindings:
+theme:
+pager:
+  diff: delta

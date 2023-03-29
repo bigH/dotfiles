@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# source `indent` function
-. "$DOT_FILES_DIR/sh_utils.sh"
-
-cd "${RETOOL_DEV:-$HOME/dev/retool_development}" || (echo 'ERROR: $RETOOL_DEV/retool not found'; exit)
-indent --header git reset -- backend/testing_infra
-indent --header git checkout "$(git merge-base "$(git merge-base-absolute)" HEAD)" -- backend/testing_infra

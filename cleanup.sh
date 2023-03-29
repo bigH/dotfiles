@@ -3,8 +3,6 @@
 export DOT_FILES_DIR=$HOME/.hiren
 source "$DOT_FILES_DIR/setup_utils.sh"
 
-# TODO call project cleanup.sh
-
 # unlinks
 unlink "$HOME/.ackrc"
 unlink "$HOME/.alacritty.yml"
@@ -28,6 +26,7 @@ unlink "$HOME/.zprofile"
 # unlink, but directory can remain
 unlink "$HOME/.config/alacritty/alacritty.yml"
 unlink "$HOME/.config/nvim"
+unlink "$HOME/.config/gh-dash"
 unlink "$HOME/.ideavimrc"
 
 # unlink directories

@@ -183,9 +183,12 @@ mkd() {
   fi
 }
 
-watch_and_print_on_change() {
+# watch that runs in the current shell
+# - yes, a watched command can kill your shell
+# - there are a lot commands that don't have good UX
+shmon() {
   if [ "$#" -lt 1 ]; then
-    log_error "expect 1 or 2 args: optional interval followed by command" 1>&2
+    log_error "'shmon' expects 1 or 2 args: optional interval followed by command" 1>&2
     return 1
   else
     local command_to_run
@@ -207,9 +210,9 @@ watch_and_print_on_change() {
 
     while true; do
       clear
-      echo "${YELLOW} Started at: ${WHITE}${BOLD}${started_at_formatted}${NORMAL}"
-      echo "${YELLOW}${BOLD}Current run: ${WHITE}${BOLD}$(date)${NORMAL} +$((date_now - started_at))s"
-      echo "${BOLD}${CYAN}$command_to_run${NORMAL} - every ${interval}s"
+      echo "${MAGENTA} Started at: ${YELLOW}${BOLD}${started_at_formatted}${NORMAL}"
+      echo "${MAGENTA}${BOLD}Current run: ${YELLOW}${BOLD}$(date)${GRAY} +$((date_now - started_at))s${NORMAL}"
+      echo "${BOLD}${WHITE}$command_to_run${GRAY} # every ${BOLD}${interval}s${NORMAL}"
       echo
       eval "$command_to_run"
       sleep "${interval}"

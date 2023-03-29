@@ -1,0 +1,56 @@
+prSections:
+  - title: '@me'
+    filters: user:Spotnana-Tech author:@me
+    layout:
+      author:
+        hidden: true
+  - title: '🏨 O'
+    filters: user:Spotnana-Tech is:open author:apoorva-spotnana author:arunj-spotnana author:Anudeep-spotnana author:guptaya author:navjeet-spotnana author:vikas-spotnana author:SpotHimesh author:smriti-spotnana author:Utkarsh-spotnana
+    layout:
+      state:
+        hidden: true
+  - title: '🏨 *'
+    filters: user:Spotnana-Tech author:apoorva-spotnana author:arunj-spotnana author:Anudeep-spotnana author:guptaya author:navjeet-spotnana author:vikas-spotnana author:SpotHimesh author:smriti-spotnana author:Utkarsh-spotnana
+  - title: '🛠 O'
+    filters: user:Spotnana-Tech is:open author:debraj-spotnana author:michael-spotnana
+    layout:
+      state:
+        hidden: true
+  - title: '🛠 *'
+    filters: user:Spotnana-Tech author:debraj-spotnana author:michael-spotnana
+  - title: 'Key O'
+    filters: user:Spotnana-Tech is:open author:GauravSpotnana author:kshitij-spotnana author:madhur-spotnana author:navaneeth-spotnana author:vedantx author:soniya-spotnana
+    layout:
+      state:
+        hidden: true
+  - title: 'Key *'
+    filters: user:Spotnana-Tech author:GauravSpotnana author:kshitij-spotnana author:madhur-spotnana author:navaneeth-spotnana author:vedantx author:soniya-spotnana
+  - title: '**/*'
+    filters: user:Spotnana-Tech is:open
+    layout:
+      state:
+        hidden: true
+issuesSections:
+  - title: Created
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+defaults:
+  layout:
+    prs:
+      repo:
+        grow: true,
+        width: 10
+        hidden: false
+  prsLimit: 50
+  issuesLimit: 50
+  preview:
+    open: false
+    width: 100
+  refetchIntervalMinutes: 10
+repoPaths:
+  Spotnana-Tech/*: ~/dev/spotnana/*
+keybindings:
+theme:
+pager:
+  diff: delta

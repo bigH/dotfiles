@@ -1,2 +1,2 @@
-export GITHUB_WATCHED_CHECKS="$DOT_FILES_DIR/watched-checks.urls"
-export GITHUB_WATCHED_CHECKS_CONFIG="$DOT_FILES_DIR/watched-checks-config.json"
+export GITHUB_WATCHED_PRS="$DOT_FILES_DIR/github-watched-prs"
+export GITHUB_WATCHED_PRS_URLS="$GITHUB_WATCHED_PRS/urls.list"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+source "$DOT_FILES_DIR/configs/github.sh"
+source "$DOT_FILES_DIR/functions/github.sh"
+
+pr_checks "$@"

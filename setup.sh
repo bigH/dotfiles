@@ -32,6 +32,12 @@ echo
 echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
+echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}gh-dash configurations${NORMAL}"
+if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/gh-dash" ]; then
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gh-dash" "$HOME/.config/gh-dash"
+else
+  link_if_possible "$DOT_FILES_DIR/gh-dash" "$HOME/.config/gh-dash"
+fi
 echo
 
 echo "${BLUE}${BOLD}IDEA-vim${NORMAL}"
@@ -172,6 +178,19 @@ echo "${BLUE}${BOLD}Linking ZSH Setup${NORMAL}"
 link_if_possible "$DOT_FILES_DIR/zshrc" "$HOME/.zshrc"
 link_if_possible "$DOT_FILES_DIR/zprofile" "$HOME/.zprofile"
 link_if_possible "$DOT_FILES_DIR/.oh-my-zsh" "$HOME/.oh-my-zsh"
+echo
+
+echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"
+if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitignore_global" ]; then
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gitignore_global" "$HOME/.gitignore_global"
+else
+  link_if_possible "$DOT_FILES_DIR/gitignore_global" "$HOME/.gitignore_global"
+fi
+if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/gitconfig" ]; then
+  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gitconfig" "$HOME/.gitconfig"
+else
+  link_if_possible "$DOT_FILES_DIR/gitconfig" "$HOME/.gitconfig"
+fi
 echo
 
 echo "${DOT_FILES_ENV_DISPLAY} ${BLUE}${BOLD}git configurations${NORMAL}"

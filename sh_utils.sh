@@ -102,25 +102,25 @@ first_param() {
 # logging
 log_error() {
   if [[ "$SH_UTILS_LOG_MODES" == *':ERROR:'* ]]; then
-    echo "[${RED}${BOLD}ERROR${NORMAL}] $1"
+    echo "[${RED}${BOLD}ERROR${NORMAL}] $*"
   fi
 }
 
 log_warning() {
   if [[ "$SH_UTILS_LOG_MODES" == *':WARNING:'* ]]; then
-    echo "[${YELLOW}${BOLD}WARNING${NORMAL}] $1"
+    echo "[${YELLOW}${BOLD}WARNING${NORMAL}] $*"
   fi
 }
 
 log_info() {
   if [[ "$SH_UTILS_LOG_MODES" == *':INFO:'* ]]; then
-    echo "[${GREEN}${BOLD}INFO${NORMAL}] $1"
+    echo "[${GREEN}${BOLD}INFO${NORMAL}] $*"
   fi
 }
 
 log_debug() {
   if [[ "$SH_UTILS_LOG_MODES" == *':DEBUG:'* ]]; then
-    echo "[${GRAY}${BOLD}DEBUG${NORMAL}] $1"
+    echo "[${GRAY}${BOLD}DEBUG${NORMAL}] $*"
   fi
 }
 
