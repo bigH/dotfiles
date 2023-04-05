@@ -26,12 +26,13 @@ prs_scan() {
 }
 
 __github_display_single_check_without_annotations() {
+  local check_url="$1"
   local check_repo="$(echo "$check_url" | sed -E 's:^.*//github\.com/(.*)/actions/runs/([0-9]+)/jobs/[0-9]+$:\1:')"
   local check_number="$(echo "$check_url" | sed -E 's:^.*//github\.com/(.*)/actions/runs/([0-9]+)/jobs/[0-9]+$:\2:')"
   local job_id="$(gh run view --repo "$check_repo" "$check_number" --json jobs --jq '.jobs[0].databaseId')"
   CLICOLOR_FORCE=1 PAGER=cat \
     gh run view --repo "$check_repo" --job "$job_id" |
-    awk '/.*ANNOTATIONS.*/ { exit 0 } { print $0 }'
+    awk_with_color_codes "$GITHUB_AWK_PROGRAM_FOR_SINGLE_CHECK_VIEW"
 }
 
 __github_status_to_colorized_symbol() {
@@ -113,5 +114,37 @@ pr_checks() {
   fi
 
   return $failed
+}
+
+pr_checks_view_logs() {
+  vim -u NONE $(pr_checks_logs)
+  # TODO maybe better
+  # vim -u NONE $(pr_checks_logs | tee >(cat 1>&2))
+}
+
+pr_checks_logs() {
+  local directory="$HOME/dev/random/check-logs/on-$(date +'%Y.%m.%d-%H.%M.%S')"
+  local current_dir="$HOME/dev/random/check-logs/latest"
+
+  mkdir -p "$directory"
+  unlink "$current_dir"
+  ln -s "$directory" "$current_dir"
+  echo "$directory" >&2
+
+  while read -r line; do
+    if [ -n "$line" ]; then
+      local check_status="$(echo "$line" | awk 'BEGIN { FS="\t" } { print $2 }')"
+      if [[ "$check_status" = "fail" ]]; then
+        local check_name="$(echo "$line" | awk 'BEGIN { FS="\t" } { print $1 }')"
+        local check_file_path="$directory/$(echo "$check_name" | awk '{ gsub(/ /, "-"); print }').log"
+        local check_url="$(echo "$line" | awk 'BEGIN { FS="\t" } { print $4 }')"
+        local check_repo="$(echo "$check_url" | sed -E 's:^.*//github\.com/(.*)/actions/runs/([0-9]+)/jobs/[0-9]+$:\1:')"
+        local check_number="$(echo "$check_url" | sed -E 's:^.*//github\.com/(.*)/actions/runs/([0-9]+)/jobs/[0-9]+$:\2:')"
+        local job_id="$(gh run view --repo "$check_repo" "$check_number" --json jobs --jq '.jobs[0].databaseId')"
+        echo "$check_file_path"
+        gh run view --repo "$check_repo" --job "$job_id" --log > "$check_file_path"
+      fi
+    fi
+  done < <(gh pr checks "$@" --required)
 }
 

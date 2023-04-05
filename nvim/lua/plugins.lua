@@ -49,27 +49,27 @@ n('<LEADER>f', fzf.live_grep_resume)
 v('<LEADER>f', fzf.grep_visual)
 n('<LEADER>j', fzf.lgrep_curbuf)
 n('<LEADER>o', fzf.git_status)
-n('<LEADER>d', function()
-  local preview_setting = get_preview_setting()
+-- n('<LEADER>d', function()
+--   local preview_setting = get_preview_setting()
 
-  local base_sha = vim.fn.system('git merge-base HEAD $(git merge-base-absolute)')
-  local command = 'git diff --name-only ' .. base_sha
+--   local base_sha = vim.fn.system('git merge-base HEAD $(git merge-base-absolute)')
+--   local command = 'git diff --name-only ' .. base_sha
 
-  fzf.fzf_exec(command, {
-    actions = {
-      ['default'] = actions.file_edit,
-    },
-    fzf_opts = {
-      ['--preview'] = '"git diff ' .. base_sha .. ' -- \'{..}\' | delta --width=\\$FZF_PREVIEW_COLUMNS"',
-      ['--preview-window'] = preview_setting
-    }
-  })
-end)
-n('<LEADER>h', function()
-  local preview_setting = get_preview_setting()
-  local cursor_position = vim.fn.getcurpos()
+--   fzf.fzf_exec(command, {
+--     actions = {
+--       ['default'] = actions.file_edit,
+--     },
+--     fzf_opts = {
+--       ['--preview'] = '"git diff ' .. base_sha .. ' -- \'{..}\' | delta --width=\\$FZF_PREVIEW_COLUMNS"',
+--       ['--preview-window'] = preview_setting
+--     }
+--   })
+-- end)
+-- n('<LEADER>h', function()
+--   local preview_setting = get_preview_setting()
+--   local cursor_position = vim.fn.getcurpos()
 
-end)
+-- end)
 
 --
 

@@ -154,5 +154,6 @@ return require('packer').startup(function(use)
   ------- python
 
   use 'Vimjas/vim-python-pep8-indent'
+  use 'averms/black-nvim'
 
 end)

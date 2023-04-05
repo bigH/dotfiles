@@ -84,6 +84,11 @@ _G.packer_plugins = {
     path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/ReplaceWithRegister",
     url = "https://github.com/vim-scripts/ReplaceWithRegister"
   },
+  ["black-nvim"] = {
+    loaded = true,
+    path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/black-nvim",
+    url = "https://github.com/averms/black-nvim"
+  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "/Users/hiren/.local/share/nvim/site/pack/packer/start/bufferline.nvim",

@@ -307,3 +307,25 @@ print_status_symbol() {
     log_error '`print_status_symbol` called incorrectly: no args'
   fi
 }
+
+awk_with_color_codes() {
+  awk \
+    -v DARK_GRAY="$DARK_GRAY" \
+    -v RED="$RED" \
+    -v GREEN="$GREEN" \
+    -v YELLOW="$YELLOW" \
+    -v BLUE="$BLUE" \
+    -v MAGENTA="$MAGENTA" \
+    -v CYAN="$CYAN" \
+    -v WHITE="$WHITE" \
+    -v GRAY="$GRAY" \
+    -v BOLD="$BOLD" \
+    -v UNDERLINE="$UNDERLINE" \
+    -v INVERT="$INVERT" \
+    -v NORMAL="$NORMAL" \
+    -v DARKGRAY="$DARKGRAY" \
+    -v DARK_GREY="$DARK_GREY" \
+    -v DARKGREY="$DARKGREY" \
+    -v GREY="$GREY" \
+    "$@"
+}

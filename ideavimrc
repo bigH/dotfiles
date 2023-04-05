@@ -3,16 +3,33 @@ set idearefactormode=keep
 set visualbell
 set noerrorbells
 
+" tab switching
 nmap H <action>(PreviousTab)
 nmap L <action>(NextTab)
+
+" sane Y
 nmap Y y$
+
+" paste and keep original register value
+vnoremap gp pgvy
+
+" use K to get type info for expression
+vnoremap K :action ExpressionTypeInfo<CR>
 
 let mapleader=" "
 
+nmap \\ <leader>
+vmap \\ <leader>
+
 nnoremap <CR> :
+vnoremap <CR> :
+
+nnoremap <C-o> :action Back<CR>
+nnoremap <C-i> :action Forward<CR>
 
 nnoremap <leader>e :action GotoClass<CR>
 vnoremap <leader>e :action GotoClass<CR>
+
 nnoremap <leader>E :action GotoFile<CR>
 vnoremap <leader>E :action GotoFile<CR>
 
@@ -22,5 +39,6 @@ vnoremap <leader>d :action GotoDeclaration<CR>
 nnoremap <leader>t :action GotoTypeDeclaration<CR>
 vnoremap <leader>t :action GotoTypeDeclaration<CR>
 
-nnoremap <leader>f :action Find<CR>
-vnoremap <leader>f :action Find<CR>
+nnoremap <leader>u :action FindUsages<CR>
+vnoremap <leader>u :action FindUsages<CR>
+
