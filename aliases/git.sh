@@ -466,6 +466,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     unwip
   }
 
+  # --- submodules
+  alias gsub='indent --header git submodule update --init --recursive'
+
   # --- github ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
   alias gpr='git pull-request'

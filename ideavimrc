@@ -42,3 +42,64 @@ vnoremap <leader>t :action GotoTypeDeclaration<CR>
 nnoremap <leader>u :action FindUsages<CR>
 vnoremap <leader>u :action FindUsages<CR>
 
+" -- PLUGINISH --
+
+" better %
+packadd matchit
+
+" helper for f/F/t/T
+set quickscope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+let g:qs_accepted_chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+" s<obj>, S<obj>
+Plug 'tpope/vim-surround'
+nmap s  <Plug>Ysurround
+nmap S  <Plug>YSurround
+nmap ss <Plug>Yssurround
+nmap Ss <Plug>YSsurround
+nmap SS <Plug>YSsurround
+
+" gc<obj>
+Plug 'tpope/vim-commentary'
+
+" gr<obj>
+Plug 'vim-scripts/ReplaceWithRegister'
+
+" cx<obj>, cxc to clear, X in visual
+Plug 'tommcdo/vim-exchange'
+
+" { and } treat all whitespace lines as empty too
+Plug 'dbakker/vim-paragraph-motion'
+
+" <op>ai, <op>ii, <op>aI, <op>iI
+Plug 'michaeljsmith/vim-indent-object'
+
+" <op>aa, <op>ia
+Plug 'vim-scripts/argtextobj.vim'
+
+" <op>ae, <op>ie
+Plug 'kana/vim-textobj-entire'
+
+" show yanked region visually
+Plug 'machakann/vim-highlightedyank'
+
+" -- CUSTOM THINGS --
+nmap <leader>gm <Plug>(open-git-web-main)
+nmap <leader>gb <Plug>(open-git-web-blame)
+nmap <leader>gs <Plug>(open-git-web-sha)
+
+vmap <leader>gm <Plug>(open-git-web-main)
+vmap <leader>gb <Plug>(open-git-web-blame)
+vmap <leader>gs <Plug>(open-git-web-sha)
+
+nnoremap <Plug>(open-git-web-main)  :GitWebMainOpenNormal
+nnoremap <Plug>(open-git-web-blame) :GitWebBlameOpenNormal
+nnoremap <Plug>(open-git-web-sha)   :GitWebSHAOpenNormal
+
+vnoremap <Plug>(open-git-web-main)  :GitWebMainOpenVisual
+vnoremap <Plug>(open-git-web-blame) :GitWebBlameOpenVisual
+vnoremap <Plug>(open-git-web-sha)   :GitWebSHAOpenVisual
+
+
+

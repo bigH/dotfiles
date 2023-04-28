@@ -81,6 +81,16 @@ i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
 n('<M-L>', '<CMD>vsplit<CR>')
 i('<M-L>', '<C-O><CMD>vsplit<CR>')
 
+n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
+n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
+
+n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
+n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
+
+---------------------------------- PASTING ------------------------------------
+
+v('gp', 'pgvy')
+
 ----------------------------- TEXT MANIPULATION -------------------------------
 
 -- swap g(j|k) and (j|k)
@@ -109,9 +119,6 @@ n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
 i('<M-BS>', '<C-W>')
 i('<M-C-H>', '<C-U>')
 
--- ????
-
-
 -------------------------- INTERESTING USEFUL ONES-----------------------------
 
 -- Map `&` to `:&&`, which preserves all flags and performs the substitute
@@ -121,3 +128,4 @@ n('&', '<CMD>&&<CR>')
 
 -- Repeat for visual selection
 v('.', ':normal .<CR>')
+

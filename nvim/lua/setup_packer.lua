@@ -150,6 +150,15 @@ return require('packer').startup(function(use)
   ------- copilot
 
   use 'github/copilot.vim'
+  use {
+    'jackMort/ChatGPT.nvim',
+    requires = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    }
+  }
+
 
   ------- python
 

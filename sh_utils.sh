@@ -106,6 +106,10 @@ log_error() {
   fi
 }
 
+log_error_to_stderr() {
+  log_error "$@" 1>&2
+}
+
 log_warning() {
   if [[ "$SH_UTILS_LOG_MODES" == *':WARNING:'* ]]; then
     echo "[${YELLOW}${BOLD}WARNING${NORMAL}] $*"

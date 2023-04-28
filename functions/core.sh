@@ -174,7 +174,7 @@ fi
 
 mkd() {
   if [ "$#" -ne 1 ]; then
-    log_error "expect exactly 1 argument - directory to create" 1>&2
+    log_error_to_stderr "expect exactly 1 argument - directory to create"
     return 1
   else
     mkdir -p "$1"
@@ -183,39 +183,127 @@ mkd() {
   fi
 }
 
+shmon_usage() {
+  echo "${BOLD}A watch program that supports bash functions by running via 'eval'.${NORMAL}"
+  echo
+  echo "  ${GREEN}shmon ${CYAN}[options...] ${YELLOW}'<command>'${NORMAL}"
+  echo
+  echo "    ${CYAN}--interval=...${NORMAL}"
+  echo "        Set an interval for rerunning the command - default is 2 seconds."
+  echo
+  echo "    ${CYAN}--stop-on-status OR --stop-on-status=<exit status>${NORMAL}"
+  echo "        When provided, use exit code to determine when to stop watching. When"
+  echo "        no status provided ('--stop-on-status' without '=...'), we assume a"
+  echo "          status of 0."
+  echo
+  echo "    ${CYAN}--help${NORMAL}"
+  echo "        Show help text."
+  echo
+  echo "${BOLD}Examples${NORMAL}:"
+  echo
+  echo "  ${GRAY}# run a command using eval every 2 sec with no exit criteria${NORMAL}"
+  echo "  ${GREEN}shmon ${YELLOW}'cat foo.txt | awk {}'${NORMAL}"
+  echo
+  echo "  ${GRAY}# run a command but stop the watch once it returns 0 - usually meaning success${NORMAL}"
+  echo "  ${GREEN}shmon ${CYAN}--stop-on-status ${YELLOW}'curl ...'${NORMAL}"
+  echo
+  echo "  ${GRAY}# run a command but stop the watch once it returns 127${NORMAL}"
+  echo "  ${GREEN}shmon ${CYAN}--stop-on-status=${MAGENTA}127 ${YELLOW}'...'${NORMAL}"
+  echo
+  echo "  ${GRAY}# run a command every 60 seconds${NORMAL}"
+  echo "  ${GREEN}shmon ${CYAN}--interval=${MAGENTA}60 ${YELLOW}'...'${NORMAL}"
+  echo
+  echo "  ${GRAY}# this help text${NORMAL}"
+  echo "  ${GREEN}shmon ${CYAN}--help${NORMAL}"
+}
+
 # watch that runs in the current shell
 # - yes, a watched command can kill your shell
 # - there are a lot commands that don't have good UX
 shmon() {
-  if [ "$#" -lt 1 ]; then
-    log_error "'shmon' expects 1 or 2 args: optional interval followed by command" 1>&2
+  local params=()
+  local options=()
+
+  local stop_on_status=
+  local interval=2
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --stop-on-status=*)
+        stop_on_status="$(echo "$1" | sed -E "s/.*=(.*)/\1/")"
+        shift
+        ;;
+      --stop-on-status)
+        stop_on_status=0
+        shift
+        ;;
+      --interval=*)
+        interval="$(echo "$1" | sed -E "s/.*=(.*)/\1/")"
+        shift
+        ;;
+      --interval)
+        log_error_to_stderr "'--interval' must use the form '--interval=<seconds>'"
+        return 1
+        ;;
+      --help)
+        shmon_usage
+        return 1
+        ;;
+      -*)
+        log_error_to_stderr "'shmon' doesn't support '$1'"
+        return 1
+        ;;
+      *)
+        params+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [ "${#params[@]}" -lt 1 ]; then
+    log_error_to_stderr "'shmon' expects a command; only switches were provided"
     return 1
   else
-    local command_to_run
+    local command_to_run="${params[1]}"
+    params=("${params[@]:1}")
+
+    if [ "${#params[@]}" -gt 0 ]; then
+      log_warning "'shmon' will ignore everything but the first parameter"
+      while [ "${#params[@]}" -gt 0 ]; do
+        log_debug "- ignoring: '${params[1]}'"
+        params=("${params[@]:1}")
+      done
+    fi
+
+    local last_status
     local started_at
     local started_at_formatted
     local date_now
-
-    if [ "$#" -eq 1 ]; then
-      command_to_run="$1"
-      interval="10"
-    else
-      command_to_run="$2"
-      interval="${1#-}"
-    fi
 
     started_at="$(date +%s)"
     started_at_formatted="$(date)"
     date_now="$started_at"
 
-    while true; do
+    local addendum=""
+    if [ -n "$stop_on_status" ]; then
+      addendum=" ${NORMAL}${GRAY}stopping on exit status ${BOLD}${stop_on_status}${NORMAL}"
+    fi
+
+    local is_first=yes
+    while [ -z "$stop_on_status" ] || [ -z "$last_status" ] || [ "$last_status" != "$stop_on_status" ]; do
+      if [ "$is_first" = "no" ]; then
+        sleep "${interval}"
+      else
+        is_first=no
+      fi
+
       clear
       echo "${MAGENTA} Started at: ${YELLOW}${BOLD}${started_at_formatted}${NORMAL}"
       echo "${MAGENTA}${BOLD}Current run: ${YELLOW}${BOLD}$(date)${GRAY} +$((date_now - started_at))s${NORMAL}"
-      echo "${BOLD}${WHITE}$command_to_run${GRAY} # every ${BOLD}${interval}s${NORMAL}"
+      echo "${BOLD}${WHITE}$command_to_run${GRAY} # every ${BOLD}${interval}s${NORMAL}$addendum"
       echo
       eval "$command_to_run"
-      sleep "${interval}"
+      last_status=$?
 
       # this is to make first print have a '+0s' prefix
       date_now="$(date +%s)"

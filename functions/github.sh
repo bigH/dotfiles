@@ -66,9 +66,15 @@ __github_display_all_pr_checks_details() {
 }
 
 pr_checks_watch() {
-  local pr_url
-  pr_url="$(gh pr view --json url --jq .url)"
-  shmon 60 "pr_checks --report-failure $pr_url"
+  local command_to_watch=
+  if [ "$#" -gt 0 ]; then
+    command_to_watch="pr_checks --report-failure $(printf ' %q' "$@")"
+  else
+    local pr_url
+    pr_url="$(gh pr view --json url --jq .url)"
+    command_to_watch="pr_checks --report-failure $pr_url"
+  fi
+  shmon --stop-on-status --interval=60 "$command_to_watch"
 }
 
 pr_checks() {

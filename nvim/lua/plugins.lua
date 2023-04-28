@@ -309,3 +309,10 @@ require("trouble").setup()
 
 n('<F2>', '<CMD>TroubleToggle workspace_diagnostics<CR>')
 i('<F2>', '<ESC><CMD>TroubleToggle workspace_diagnostics<CR>')
+
+--
+
+if vim.env.OPENAI_API_KEY ~= nil then
+  require("chatgpt").setup()
+end
+
