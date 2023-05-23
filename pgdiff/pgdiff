@@ -1,0 +1,71 @@
+#!/bin/bash
+
+id="$1"
+
+if [ "$1" = "-d" ]; then
+    rm -rf "/var/tmp/pgdiff"
+    exit 0
+fi
+
+pg_isready -d "$PGDIFF_CONNECTION_STRING" > /dev/null
+if [[ $? -ne 0 ]]; then
+    echo "PGDIFF_CONNECTION_STRING is not set, or unable to connect to database (eg. 'postgresql://user:password@host:port/db_name')";
+    exit 1
+fi
+
+db=${PGDIFF_CONNECTION_STRING##*/}
+
+tables=$(psql $PGDIFF_CONNECTION_STRING -t -c "select tablename from pg_tables where schemaname not in ('information_schema', 'pg_catalog')" $db | awk 'NF {print($1)}')
+
+for table in $tables
+do
+  firstpath="/var/tmp/pgdiff/$db/$id/a"
+  secondpath="/var/tmp/pgdiff/$db/$id/b"
+
+  if [[ -f "$firstpath/$table" ]]; then
+    # "a" exists so command must have been run with the given $id already
+
+    # create a directory for the second capture
+    mkdir -p "$secondpath"
+
+    cpy=$(psql $PGDIFF_CONNECTION_STRING -c "copy $table to STDOUT WITH CSV HEADER" $db)
+
+    # save the data to temp file
+    echo "$cpy" | sed 1,1d > "$secondpath/$table"
+
+    # extract the header row
+    headers=$(echo "$cpy" | head -n1)
+
+    compare=$(diff -u "$firstpath/$table" "$secondpath/$table")
+
+    if [[ $compare ]]; then
+      echo $table
+      printf '─%.0s' $(seq ${#table})
+      echo ""
+      script -q /dev/null \
+          git --no-pager diff -U0 \
+                   --color-words=. \
+                   --no-index -- "$firstpath/$table" "$secondpath/$table" \
+                   < /dev/null | \
+          tail -n +6 | \
+          awk -v headers=$headers 'NR==1{print headers} {print $0"\n"}' | \
+          sed 's/,,/, ,/g;s/,,/, ,/g' | \
+          awk -vOFS='\t' -vFS="," 'NF > 0 { $1 = $1 } 1'
+    fi
+  else
+    # a diff has not been captured for the given $id yet
+    isnew=true
+
+    # create a directory for the first capture
+    mkdir -p "$firstpath"
+
+    cpy=$(psql $PGDIFF_CONNECTION_STRING -c "copy $table to STDOUT WITH CSV HEADER" $db)
+
+    # save the data to temp file
+    echo "$cpy" | sed 1,1d > "$firstpath/$table"
+  fi
+done
+
+if [[ $isnew ]]; then
+  echo "Data capture started with key '$id'."
+fi

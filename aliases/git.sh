@@ -66,7 +66,22 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gf='git fuzzy'
 
   # clone
-  alias gcl='git clone'
+  gcl() {
+    if [ "$#" -eq 0 ]; then
+      log_error "git clone needs args"
+    fi
+
+    case "$1" in
+      git@* | http:* | https:*)
+        git clone "$@"
+        ;;
+      *)
+        repo_path="git@github.com:$1"
+        shift
+        git clone "$repo_path" "$@"
+        ;;
+    esac
+  }
 
   # status
   alias gs='gf status'

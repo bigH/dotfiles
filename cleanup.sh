@@ -45,6 +45,7 @@ rm -rf "$DOT_FILES_DIR/fd"
 rm -rf "$DOT_FILES_DIR/pure"
 rm -rf "$DOT_FILES_DIR/cheat.sh"
 rm -rf "$DOT_FILES_DIR/utils"
+rm -rf "$DOT_FILES_DIR/pgdiff"
 rm -rf "$HOME/.oh-my-zsh"
 
 echo "Done."

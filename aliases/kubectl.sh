@@ -259,14 +259,14 @@ kube-events-sorted() {
 
 # NB: make sure to escape double-quotes (!!!!!!!!!!!!!)
 build_watchable_command() {
-  FUNCTION_NAME="$1"
-  COMMAND_PREFIX="$2"
-  FILTER="$3"
+  local function_name="$1"
+  local command_prefix="$2"
+  local filter="$3"
 
-  COMMAND_STRING="$COMMAND_PREFIX \$([ \$# -eq 0 ] && printf '' || printf '%q' \"\$@\") | $FILTER"
+  local command_string="$command_prefix \$([ \$# -eq 0 ] && printf '' || printf '%q' \"\$@\") | $filter"
 
-  eval "$FUNCTION_NAME() { eval \"$COMMAND_STRING\" }"
-  eval "watch-$FUNCTION_NAME() { watch \"$COMMAND_STRING\" }"
+  eval "$function_name() { eval \"$command_string\" }"
+  eval "watch-$function_name() { watch \"$command_string\" }"
 }
 
 # build a table for all pods with status

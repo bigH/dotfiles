@@ -99,6 +99,17 @@ else
 fi
 echo
 
+if [ -d "$DOT_FILES_DIR/pgdiff" ]; then
+  printf "  - ${BLUE}Found \`pgdiff\` ...${NORMAL}"
+  run_and_print_status_symbol "found" "true"
+else
+  printf "  - ${BLUE}Installing \`pgdiff\` ...${NORMAL}"
+  run_and_print_status_symbol "mkdir" "mkdir $DOT_FILES_DIR/pgdiff"
+  run_and_print_status_symbol "wget" "wget -O $DOT_FILES_DIR/pgdiff/pgdiff https://raw.githubusercontent.com/denvaar/pgdiff/main/pgdiff"
+  run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/pgdiff/pgdiff"
+fi
+echo
+
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
@@ -245,7 +256,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "                   git-deltaglances go hot htop jq lnav multitail \\"
   echo "                   neovim prettyping python3 rbenv ripgrep \\"
   echo "                   rustup-init shellcheck swaks tldr tig watch \\"
-  echo "                   wget universal-ctags\`"
+  echo "                   wget universal-ctags yq\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
   echo

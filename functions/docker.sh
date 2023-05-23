@@ -1,38 +1,35 @@
 dclean() {
-  if [ "$#" -gt 0 ]; then
-    COMMAND="$1"
-    shift
-  else
+  local docker_command
+  local search_filter
+
+  if [ "$#" -eq 2 ]; then
+    docker_command="$1"
+    search_filter="$2"
+  elif [ "$#" -eq 1 ]; then
+    docker_command="$1"
+    search_filter=""
+  elif [ "$#" -eq 0 ]; then
     COMMAND_SELECTION_OUTPUT="$(
       echo "volume\ncontainer\nimage\nnetwork" \
         | fzf +m --print-query --phony --preview 'docker {1} ls | grep -F --color=always {q}'
     )"
-    FILTER="$(echo "${COMMAND_SELECTION_OUTPUT}" | head -1)"
-    COMMAND="$(echo "${COMMAND_SELECTION_OUTPUT}" | tail -n +2)"
+    search_filter="$(echo "${COMMAND_SELECTION_OUTPUT}" | head -1)"
+    docker_command="$(echo "${COMMAND_SELECTION_OUTPUT}" | tail -n +2)"
   fi
 
-  if [ -z "$FILTER" ]; then
-    FILTER=""
-
-    if [ "$#" -gt 0 ]; then
-      FILTER="$1"
-      shift
-    fi
-  fi
-
-  if [ -n "$COMMAND" ]; then
-    if [ "$COMMAND" = "volume" ]; then
+  if [ -n "$docker_command" ]; then
+    if [ "$docker_command" = "volume" ]; then
       ID_COLUMN="{2}"
-    elif [ "$COMMAND" = "image" ]; then
+    elif [ "$docker_command" = "image" ]; then
       ID_COLUMN="{3}"
     else
       # container and network
       ID_COLUMN="{1}"
     fi
 
-    docker "${COMMAND}" ls | tail -n +2 \
-      | fzf --exact -q "$FILTER" -m -n2 --preview "docker '$COMMAND' inspect {2} | bat --language=json" \
-      | awk '{print $2}' | xargs docker "$COMMAND" rm
+    docker "${docker_command}" ls | tail -n +2 \
+      | fzf --exact -q "$search_filter" -m -n2 --preview "docker '$docker_command' inspect {2} | bat --language=json" \
+      | awk '{print $2}' | xargs docker "$docker_command" rm
   else
     log_warning "no command selected"
   fi

@@ -333,3 +333,8 @@ action_when() {
   eval "$command" && "$action" "$name success" || "$action" "$name failure"
 }
 
+scratch() {
+  extension="$1"
+
+  vim "$HOME/dev/random/scratch.$1"
+}

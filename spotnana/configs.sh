@@ -16,3 +16,4 @@ export LC_ALL="en_US.UTF-8"
 export SPOTNANA_BACKEND="$HOME/dev/spotnana/spotnana"
 
 export DEFAULT_DOCKER_COMPOSE_PROFILE="kafka-ui"
+export SPOTNANA_DEVCLUSTER_DOCKER_COMPOSE_FILE="$SPOTNANA_BACKEND/src/devcluster/docker-compose.yml"
