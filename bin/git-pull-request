@@ -10,9 +10,12 @@ git_pr() {
   if [ "$#" == 0 ]; then
     COMPARISON="$CURRENT_BRANCH"
   elif [ "$#" == 1 ]; then
-    COMPARISON="$1...$CURRENT_BRANCH"
+    BASE="$(git rev-parse --symbolic-full-name "$1" | cut -d/ -f3-)"
+    COMPARISON="$BASE...$CURRENT_BRANCH"
   else
-    COMPARISON="$1...$2"
+    BASE="$(git rev-parse --symbolic-full-name "$1" | cut -d/ -f3-)"
+    HEAD="$(git rev-parse --symbolic-full-name "$2" | cut -d/ -f3-)"
+    COMPARISON="$BASE...$HEAD"
   fi
 
   HTTP_ROOT_URL="$(git web)"

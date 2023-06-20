@@ -184,6 +184,11 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Add `miniconda/bin` - used by (Haskell) `stack`
+if [ -d "$HOME/miniconda/bin" ]; then
+  export PATH="$HOME/miniconda/bin:$PATH"
+fi
+
 # Add `utils` - all externally sourced scripts
 if [ -d "$DOT_FILES_DIR/utils" ]; then
   export PATH="$DOT_FILES_DIR/utils:$PATH"

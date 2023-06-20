@@ -44,17 +44,20 @@ if command_exists yq; then
   spg() {
     local selection
     if [ -n "$1" ]; then
-      selection="$1"
+      selection="$(yq \
+        '.services | keys | .[] | select(. == "*-db")' \
+        "$SPOTNANA_DEVCLUSTER_DOCKER_COMPOSE_FILE" |
+        fzf +m -q "$1" -1 --preview-window=hidden)"
     else
       selection="$(yq \
         '.services | keys | .[] | select(. == "*-db")' \
         "$SPOTNANA_DEVCLUSTER_DOCKER_COMPOSE_FILE" |
         fzf +m --preview-window=hidden)"
+    fi
       
-      if [ -z "$selection" ]; then
-        log_warning "no selection made"
-        return 1
-      fi
+    if [ -z "$selection" ]; then
+      log_warning "no selection made"
+      return 1
     fi
 
     local user="$(yq ".services.$selection.environment.POSTGRES_USER" "$SPOTNANA_DEVCLUSTER_DOCKER_COMPOSE_FILE")"

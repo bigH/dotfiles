@@ -217,19 +217,21 @@ log_command() {
 
 # nicely indents both stderr and stdout
 indent() {
-  HEADER=""
+  local header=""
   if [ -n "$1" ] && [ "$1" = "--header" ]; then
     shift
-    HEADER="yes"
+    header="yes"
     log_command "$@"
   fi
 
-  # TODO figure out how to capture error code
-  { "$@" 2>&3 | sed >&2 's/^/    /'; } 3>&1 1>&2 | sed 's/^/    /';
+  "$@"
+  local exit_code="$?"
 
-  if [ -n "$HEADER" ]; then
+  if [ -n "$header" ]; then
     echo
   fi
+
+  return $exit_code
 }
 
 run_and_print_status_symbol() {
