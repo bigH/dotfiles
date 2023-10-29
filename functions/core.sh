@@ -376,3 +376,7 @@ axe_sum() {
   command cat - |
     awk 'BEGIN { i = 0 } { i += int($1) } END { print i }'
 }
+
+cdd() {
+  cd "$(pwd)"
+}

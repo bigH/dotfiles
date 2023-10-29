@@ -249,3 +249,7 @@ if [ -d "$HOME/.sdkman" ]; then
     source "$SDKMAN_DIR/bin/sdkman-init.sh"
   fi
 fi
+
+if [ -d "$HOME/Library/Application Support/Coursier/bin" ]; then
+  export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
+fi

@@ -82,6 +82,7 @@ function M.setup()
     lspconfig[name].setup(total_config)
   end
 
+  configure_lsp_with_defaults('metals')
   configure_lsp_with_defaults('pyright')
   configure_lsp_with_defaults('tsserver')
   configure_lsp_with_defaults('gopls')
