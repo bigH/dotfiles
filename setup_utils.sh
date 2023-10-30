@@ -12,10 +12,10 @@ fi
 
 export DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/env-context")"
 if [ -z "$DOT_FILES_ENV" ]; then
-  export DOT_FILES_ENV_DISPLAY="[${NORMAL}${BOLD}DEFAULT${NORMAL}]"
+  export DOT_FILES_ENV_DISPLAY="[${WHITE}context: ${BOLD}default${NORMAL}]"
 else
   DOT_FILES_ENV_CAPITALIZED="$(echo "$DOT_FILES_ENV" | tr '[:lower:]' '[:upper:]')"
-  export DOT_FILES_ENV_DISPLAY="[${BLUE}${BOLD}${DOT_FILES_ENV_CAPITALIZED}${NORMAL}]"
+  export DOT_FILES_ENV_DISPLAY="[${WHITE}context: ${MAGENTA}${BOLD}${DOT_FILES_ENV}${NORMAL}]"
 fi
 
 function mk_or_clean_dir {
