@@ -4,6 +4,8 @@ search_utils_save.vim
 
 # local things
 configs/local.sh
+aliases/local.sh
+functions/local.sh
 
 # ephemeral things
 logs/
