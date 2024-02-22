@@ -1,3 +1,6 @@
+autoload -U compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -71,9 +74,6 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-autoload -U compinit && compinit
-
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -121,7 +121,5 @@ precmd() {
     build_fzf_defaults
   fi
 }
-
-autoload -U +X bashcompinit && bashcompinit
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

@@ -3,7 +3,8 @@
 
 [user]
 	name = "Hiren Hiranandani"
-	email = "hhiranan@gmail.com"
+	email = "hiren.hiranandani@chime.com"
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Y1tRxb2qD5QZII1l2MzuBMgYggwAACTZvRJHynO/4
 
 [pager]
 	blame = delta --syntax-theme='gruvbox'
@@ -95,3 +96,12 @@
 	hunk-header-file-style = red
 	hunk-header-line-number-style = "#067a00"
 	hunk-header-style = file line-number syntax
+
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[commit]
+	gpgsign = true

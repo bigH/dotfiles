@@ -11,7 +11,11 @@ fi
 
 # expect this one to be there
 $SOURCE_COMMAND "$CONFIGS_DIR/core.sh"
-$SOURCE_COMMAND "$CONFIGS_DIR/github.sh"
+
+# source any local-specific/private things
+if [ -f "$CONFIGS_DIR/local.sh" ]; then
+  $SOURCE_COMMAND "$CONFIGS_DIR/local.sh"
+fi
 
 # journal command is provided from `JOURNAL_PATH` - set in this file, so can't command check
 $SOURCE_COMMAND "$CONFIGS_DIR/journal.sh"

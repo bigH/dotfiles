@@ -1,3 +1,6 @@
+autoload -U compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
 export SHELL="/bin/zsh"
 export SHELL_NAME="zsh"
 

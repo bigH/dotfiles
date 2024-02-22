@@ -3,6 +3,17 @@
 export DOT_FILES_DIR="$HOME/.hiren"
 source "$DOT_FILES_DIR/setup_utils.sh"
 
+if [ -f /opt/homebrew/bin/brew ]; then
+  echo "${BLUE}Found \`brew\` for Apple Silicon; sourcing...${NORMAL}"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  echo
+elif [ -f /usr/local/bin/brew ]; then
+  echo "${BLUE}Found \`brew\` for Intel; sourcing...${NORMAL}"
+  eval "$(/usr/local/bin/brew shellenv)"
+  echo
+fi
+
+
 if ! command -v zsh >/dev/null 2>&1; then
   echo "${RED}${BOLD}Zsh is not installed!${NORMAL} Please install zsh first!"
   exit
@@ -32,12 +43,13 @@ echo
 echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
+printf "${GREEN}Cloning${NORMAL}: packer.nvim"
+run_and_print_status_symbol "clone" "git clone --depth 1 'https://github.com/wbthomason/packer.nvim' '$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim'"
+echo
+echo
+
 echo "${BLUE}${BOLD}gh-dash configurations${NORMAL} ${DOT_FILES_ENV_DISPLAY}"
-if [ -d "$DOT_FILES_DIR/$DOT_FILES_ENV/gh-dash" ]; then
-  link_if_possible "$DOT_FILES_DIR/$DOT_FILES_ENV/gh-dash" "$HOME/.config/gh-dash"
-else
-  link_if_possible "$DOT_FILES_DIR/gh-dash" "$HOME/.config/gh-dash"
-fi
+link_if_possible "$DOT_FILES_DIR/gh-dash" "$HOME/.config/gh-dash"
 echo
 
 echo "${BLUE}${BOLD}IDEA-vim${NORMAL}"

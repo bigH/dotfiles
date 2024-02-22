@@ -6152,7 +6152,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontComplete-Regular 16</string>
+			<string>HasklugNF 18</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
@@ -6356,6 +6356,8 @@
 	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>disableMetalWhenUnplugged</key>
+	<true/>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewPreferredModeKey</key>

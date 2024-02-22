@@ -91,6 +91,9 @@ require('packer').startup(function(use)
     requires = 'kyazdani42/nvim-web-devicons',
   }
 
+  -- rainbow delimiters
+  use 'HiPhish/rainbow-delimiters.nvim'
+
   -- indent guides
   use 'lukas-reineke/indent-blankline.nvim'
 
