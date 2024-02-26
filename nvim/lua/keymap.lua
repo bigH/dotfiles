@@ -106,14 +106,21 @@ n('k', 'gk')
 -- v('<C-j>', ":m '>+1<CR>gv")
 -- v('<C-k>', ":m '<-2<CR>gv")
 
--- alt-enter to insert new line
+-- alt-enter to insert new line in normal mode
 n('<M-CR>', 'i<CR><ESC>')
 
 -- explicit system clipboard yank
 n('<LEADER>y', '"+y', { remap = true })
-n('<LEADER>yy', '"+yg_', { remap = true })
+n('<LEADER>yy', '"+y_')
+n('<LEADER>Y', '"+y$')
+
+-- yank relative path
 n('yp', "<CMD>let @\" = expand('%')<CR>")
 n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
+
+-- yank absolute path
+n('yP', "<CMD>let @\" = expand('%:p')<CR>")
+n('<LEADER>yP', "<CMD>let @+ = expand('%:p')<CR>")
 
 -- Alt BS/Shift-BS
 i('<M-BS>', '<C-W>')

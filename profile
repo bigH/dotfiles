@@ -7,6 +7,12 @@ source "$DOT_FILES_DIR/sh_utils.sh"
 DOT_FILES_ENV="$(cat "$DOT_FILES_DIR/env-context")"
 export DOT_FILES_ENV
 
+if [ -x '/opt/homebrew/bin/brew' ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x '/usr/local/bin/brew' ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 source "$DOT_FILES_DIR/configs/all.sh"
 
 if type nvim >/dev/null 2>&1; then
