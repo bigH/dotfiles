@@ -7,17 +7,17 @@
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Y1tRxb2qD5QZII1l2MzuBMgYggwAACTZvRJHynO/4
 
 [pager]
-	blame = delta --syntax-theme='gruvbox'
+	blame = delta --syntax-theme='gruvbox-dark'
 
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
 [core]
 	preloadindex = true
 	excludesfile = ~/.gitignore_global
-	pager = delta --syntax-theme='gruvbox'
+	pager = delta --syntax-theme='gruvbox-dark'
 	precomposeUnicode = true
 
 [interactive]
-	diffFilter = delta --color-only --syntax-theme='gruvbox'
+	diffFilter = delta --color-only --syntax-theme='gruvbox-dark'
 
 [color]
 	ui = true

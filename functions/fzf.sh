@@ -26,14 +26,14 @@ touch "$FZF_HISTORY_FOR_DIRECTORIES"
 touch "$FZF_HISTORY_FOR_DIRECTORIES"
 
 DIRECTORY_PREVIEW_COMMAND='ls -l --color=always {}'
-if command_exists exa; then
-  DIRECTORY_PREVIEW_COMMAND='exa -l --color=always --git {}'
+if command_exists eza; then
+  DIRECTORY_PREVIEW_COMMAND='eza -l --color=always --git {}'
 fi
 
 build_fzf_defaults() {
   FZF_DEFAULT_OPTS="\
     $FZF_DEFAULTS_BASIC \
-    --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || exa --color=always -l {}' \
+    --preview '[ -f {} ] && bat --style=numbers,changes --color=always {} || eza --color=always -l {}' \
     --preview-window=$(fzf_sizer_preview_window_settings)"
   # shellcheck disable=2090
   export FZF_DEFAULT_OPTS
@@ -96,6 +96,10 @@ fzf-ripgrep-selector() {
       echo "$FILE_NAMES"
     fi
   fi
+}
+
+fzf-command-runner() {
+  echo
 }
 
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then

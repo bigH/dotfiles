@@ -56,18 +56,15 @@ if [ -d '/Applications/Postgres.app/Contents/Versions/latest/bin/' ]; then
   export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
 fi
 
-# Since airtable uses a different cargo/rust installation...
-if ! [ "$DOT_FILES_ENV" = 'airtable' ]; then
-  # Add `rustup`
-  if [ -d "$HOME/.rustup" ]; then
-    export RUSTUP_HOME="$HOME/.rustup"
-  fi
+# Add `rustup`
+if [ -d "$HOME/.rustup" ]; then
+  export RUSTUP_HOME="$HOME/.rustup"
+fi
 
-  # Add `cargo`
-  if [ -f "$HOME/.cargo/env" ]; then
-    # shellcheck disable=1091
-    source "$HOME/.cargo/env"
-  fi
+# Add `cargo`
+if [ -f "$HOME/.cargo/env" ]; then
+  # shellcheck disable=1091
+  source "$HOME/.cargo/env"
 fi
 
 # Add `emacs`
@@ -195,7 +192,7 @@ if [ -d "$DOT_FILES_DIR/utils" ]; then
 fi
 
 if command_exists delta; then
-  export DIFF_PAGER="delta --syntax-theme=gruvbox"
+  export DIFF_PAGER="delta --syntax-theme=gruvbox-dark"
 elif command_exists diff-so-fancy; then
   export DIFF_PAGER="diff-so-fancy"
 else
@@ -228,7 +225,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   export GF_SNAPSHOT_DIRECTORY="$HOME/.git-fuzzy-snapshots"
 
   export GF_BAT_STYLE="changes"
-  export GF_BAT_THEME="gruvbox"
+  export GF_BAT_THEME="gruvbox-dark"
 
   export GF_GREP_COLOR='1;30;48;5;15'
   export GF_LOG_MENU_PARAMS='--pretty=gflog'

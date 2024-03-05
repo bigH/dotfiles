@@ -4,8 +4,8 @@
 if command_exists autojump; then
   if command_exists fzf; then
     jj() {
-      if command_exists exa; then
-        PREVIEW="exa --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1}"
+      if command_exists eza; then
+        PREVIEW="eza --sort=type --color=auto --group-directories-first --classify --time-style=long-iso --git --color-scale --long -a {1}"
       else
         PREVIEW="CLICOLOR_FORCE=yes ls -GFal {1}"
       fi
@@ -96,8 +96,8 @@ if command_exists bat; then
   WH_CAT_COMMAND='bat --color=always'
 fi
 
-if command_exists exa; then
-  WH_LS_COMMAND='exa --color=always'
+if command_exists eza; then
+  WH_LS_COMMAND='eza --color=always'
 fi
 
 # `which` with `ls -l $(which)`

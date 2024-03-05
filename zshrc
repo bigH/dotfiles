@@ -123,3 +123,5 @@ precmd() {
 }
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH=$PATH:/Users/hiren.hiranandani/dev/chime/better_dependabot/bin
+export PATH=$PATH:/Users/hiren.hiranandani/dev/chime/better_dependabot/bin

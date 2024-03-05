@@ -26,8 +26,8 @@ else
     export SUPER_CTRL_P_PREVIEW_DEFAULT_FOR_FILE=cat
 fi
 
-if __command_exists exa; then
-    export SUPER_CTRL_P_PREVIEW_DEFAULT_FOR_DIRECTORY=exa
+if __command_exists eza; then
+    export SUPER_CTRL_P_PREVIEW_DEFAULT_FOR_DIRECTORY=eza
 else
     export SUPER_CTRL_P_PREVIEW_DEFAULT_FOR_DIRECTORY=ls
 fi

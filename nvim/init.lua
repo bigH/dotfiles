@@ -12,6 +12,10 @@ require('setup_packer')
 require('settings')
 require('keymap')
 
+-- if vim.fn.isdirectory(os.getenv("HOME") .. '/.hiren') then
+--   require('dotfile_enhancements')
+-- end
+
 -- load premade plugins
 require('plugins')
 

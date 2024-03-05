@@ -40,8 +40,8 @@ if command_exists fd; then
   export FZF_CTRL_R_OPTS='--preview "echo {}" --height 50% --preview-window down:5:wrap --bind "?:toggle-preview"'
 fi
 
-if command_exists exa; then
-  export DIR_PREVIEW_COMMAND='exa --color=always -l --color-scale --classify --sort=type --git'
+if command_exists eza; then
+  export DIR_PREVIEW_COMMAND='eza --color=always -l --color-scale --classify --sort=type --git'
 else
   if command_exists gls; then
     # `gls` installed by `coreutils`

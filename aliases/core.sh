@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
 # ls override from oh-my-zsh
-if command_exists exa; then
+if command_exists eza; then
   # want all these options to expand in alias rather than when alias is triggered
-  export EXA_DEFAULT_OPTS='--sort=type --color=auto --group-directories-first'
-  export EXA_LONG_OPTS='--classify --time-style=long-iso --git --color-scale --long'
+  export EZA_DEFAULT_OPTS='--sort=type --color=auto --group-directories-first'
+  export EZA_LONG_OPTS='--classify --time-style=long-iso --git --color-scale --long'
 
   # shellcheck disable=2139
-  alias l="exa $EXA_DEFAULT_OPTS"
+  alias l="eza $EZA_DEFAULT_OPTS"
 
   # shellcheck disable=2139
-  alias ls="exa $EXA_DEFAULT_OPTS"
+  alias ls="eza $EZA_DEFAULT_OPTS"
 
   # shellcheck disable=2139
-  alias ll="exa $EXA_DEFAULT_OPTS $EXA_LONG_OPTS"
+  alias ll="eza $EZA_DEFAULT_OPTS $EZA_LONG_OPTS"
 
   # shellcheck disable=2139
-  alias la="exa $EXA_DEFAULT_OPTS $EXA_LONG_OPTS -a"
+  alias la="eza $EZA_DEFAULT_OPTS $EZA_LONG_OPTS -a"
 elif command_exists gls; then
   alias ls='gls -p --color=auto -G --group-directories-first'
 else

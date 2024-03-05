@@ -251,7 +251,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo
   echo "     ... installs dependencies"
   echo "     \`brew install ack autojump bat bpytop broot cabal cloc \\"
-  echo "                   coreutils direnv entr exa fd fzf fx gh ghc  \\"
+  echo "                   coreutils direnv entr eza fd fzf fx gh ghc  \\"
   echo "                   git-deltaglances go hot htop jq lnav multitail \\"
   echo "                   neovim prettyping python3 rbenv ripgrep \\"
   echo "                   rustup-init shellcheck swaks tldr tig watch \\"

@@ -17,3 +17,9 @@ rbg() {
   rg "$@" -g '*.rb'
 }
 
+# `rg` + `fzf`
+if command_exists 'fzf'; then
+  rgs() {
+    fzf-command-runner "???"
+  }
+fi
