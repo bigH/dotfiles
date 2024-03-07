@@ -29,16 +29,21 @@ unlink "$HOME/.config/nvim"
 unlink "$HOME/.config/gh-dash"
 unlink "$HOME/.ideavimrc"
 
-# unlink directories
-rm -f "$HOME/nice-noise-loops"
+# unlink bin and symlinked binaries
+unlink "$HOME/.hiren/bin/clipboard-listener"
 rm -f "$HOME/bin"
 
+# unlink misc
+rm -f "$HOME/nice-noise-loops"
+
 # cleanings
+rm -rf "$HOME/.local/share/nvim"
 rm -rf "$DOT_FILES_DIR/.oh-my-zsh"
 rm -rf "$DOT_FILES_DIR/.vim"
 rm -rf "$DOT_FILES_DIR/made"
 rm -rf "$DOT_FILES_DIR/fzf"
 rm -rf "$DOT_FILES_DIR/fzf-tab-completion"
+rm -rf "$DOT_FILES_DIR/clipboard-listener-macos"
 rm -rf "$DOT_FILES_DIR/ripgrep"
 rm -rf "$DOT_FILES_DIR/bat"
 rm -rf "$DOT_FILES_DIR/fd"

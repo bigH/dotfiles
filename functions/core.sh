@@ -339,44 +339,6 @@ scratch() {
   vim "$HOME/dev/random/scratch.$1"
 }
 
-axe_all_shas() {
-  command cat - |
-    awk '{
-      for(i=1; i<=NF; i++) {
-        if ($i ~ /^[0-9a-fA-F]{6,}$/) {
-          print $i;
-        }
-      }
-    }'
-}
-
-axe_all_nums() {
-  command cat - |
-    awk '{
-      for(i=1; i<=NF; i++) {
-        if ($i ~ /^[0-9]+(.[0-9]+)?$/) {
-          print $i;
-        }
-      }
-    }'
-}
-
-axe_first_num() {
-  command cat - |
-    awk '{
-      for(i=1; i<=NF; i++) {
-        if ($i ~ /^[0-9]+(.[0-9]+)?$/) {
-          print $i; break;
-        }
-      }
-    }'
-}
-
-axe_sum() {
-  command cat - |
-    awk 'BEGIN { i = 0 } { i += int($1) } END { print i }'
-}
-
 cdd() {
   cd "$(pwd)"
 }

@@ -98,10 +98,6 @@ fzf-ripgrep-selector() {
   fi
 }
 
-fzf-command-runner() {
-  echo
-}
-
 if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
   # c - browse chrome history
   c() {

@@ -30,6 +30,7 @@ echo "${BLUE}${BOLD}..random directories..${NORMAL}"
 mk_expected_dir "$HOME/.backup"
 mk_expected_dir "$HOME/.screenlog"
 mk_expected_dir "$HOME/.local/share/fzf-history"
+mk_expected_dir "$HOME/.local/share/nvim/site/pack/packer/start/"
 mk_expected_dir "$DOT_FILES_DIR/logs"
 echo
 
@@ -190,6 +191,13 @@ printf "  - ${BLUE}Installing \`fzf-tab-completion\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone https://github.com/lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
 echo
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos"
+  run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build)"
+  link_if_possible "$DOT_FILES_DIR/clipboard-listener-macos/.build/release/clipboard-listener-macos" "$HOME/clipboard-listener"
+fi
+
 echo
 
 echo "${BLUE}${BOLD}Linking Bash Setup${NORMAL}"
@@ -255,7 +263,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "                   git-deltaglances go hot htop jq lnav multitail \\"
   echo "                   neovim prettyping python3 rbenv ripgrep \\"
   echo "                   rustup-init shellcheck swaks tldr tig watch \\"
-  echo "                   wget universal-ctags yq\`"
+  echo "                   wget universal-ctags yq zsh-completions\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
   echo
