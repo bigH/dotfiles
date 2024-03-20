@@ -11,4 +11,6 @@ Pry.commands.alias_command 'f', 'finish'
 Pry.commands.alias_command 'b', 'break'
 Pry.commands.alias_command 'x', 'exit-program'
 
-require_relative File.join(ENV['DOT_FILES_DIR'], 'pry-utils/pry-utils')
+def hdb(msg)
+  puts "HIRENDEBUG: #{msg}"
+end

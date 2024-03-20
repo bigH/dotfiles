@@ -58,6 +58,7 @@ function M.toggle()
 end
 
 function M.sendVisual()
+
 end
 
 function M.sendOperator()

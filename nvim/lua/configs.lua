@@ -1,5 +1,7 @@
 local M = {}
 
+M.utils = require('utils')
+
 M.special_windows = {
   'qf',
   'vista_kind',
@@ -24,5 +26,12 @@ M.colorconfig = {
 }
 
 M.colors = require('tokyonight.colors').setup(M.colorconfig)
+
+function M.blendToBackground(color)
+  return M.utils.blendColors(M.colors.bg, color, 0.85)
+end
+
+M.dark_bg_indent  = M.utils.blendColors(M.colors.bg, M.colors.bg_highlight, 0.95)
+M.light_bg_indent = M.utils.blendColors(M.colors.bg, M.colors.bg_highlight, 0.65)
 
 return M

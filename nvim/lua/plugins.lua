@@ -1,6 +1,6 @@
 local configs = require('configs')
 local map = require('keymapper')
-local utils = require('utils')
+local utils = configs.utils
 
 local n = map.n
 local v = map.v
@@ -41,9 +41,11 @@ end
 n('<LEADER>e', function()
   fzf.files({ cmd = 'fd' })
 end)
+
 n('<LEADER>E', function()
   fzf.files({ cmd = 'fd --no-ignore' })
 end)
+
 n('<LEADER>F', fzf.live_grep)
 n('<LEADER>f', fzf.live_grep_resume)
 v('<LEADER>f', fzf.grep_visual)
@@ -197,12 +199,12 @@ require('Comment').setup({
 
 --
 
-vim.api.nvim_set_hl(0, "RainbowDelimiterRed", { fg = configs.colors.red, bg = dark_bg_indent })
-vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = configs.colors.yellow, bg = light_bg_indent })
-vim.api.nvim_set_hl(0, "RainbowDelimiterBlue", { fg = configs.colors.blue, bg = dark_bg_indent })
-vim.api.nvim_set_hl(0, "RainbowDelimiterOrange", { fg = configs.colors.orange, bg = light_bg_indent })
-vim.api.nvim_set_hl(0, "RainbowDelimiterGreen", { fg = configs.colors.green, bg = dark_bg_indent })
-vim.api.nvim_set_hl(0, "RainbowDelimiterViolet", { fg = configs.colors.violet, bg = light_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterRed"   , { fg = configs.colors.red   , bg = configs.dark_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = configs.colors.yellow, bg = configs.light_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterBlue"  , { fg = configs.colors.blue  , bg = configs.dark_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterOrange", { fg = configs.colors.orange, bg = configs.light_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterGreen" , { fg = configs.colors.green , bg = configs.dark_bg_indent })
+vim.api.nvim_set_hl(0, "RainbowDelimiterViolet", { fg = configs.colors.violet, bg = configs.light_bg_indent })
 
 local rainbow_delimiters = require('rainbow-delimiters')
 
@@ -231,13 +233,6 @@ vim.g.rainbow_delimiters = {
 
 --
 
-local function blendToBackground(color)
-  return utils.blendColors(configs.colors.bg, color, 0.85)
-end
-
-local dark_bg_indent = utils.blendColors(configs.colors.bg, configs.colors.bg_highlight, 0.95)
-local light_bg_indent = utils.blendColors(configs.colors.bg, configs.colors.bg_highlight, 0.65)
-
 local highlight = {
     "RainbowIndentRed",
     "RainbowIndentYellow",
@@ -250,48 +245,17 @@ local highlight = {
 local hooks = require("ibl.hooks")
 
 hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-    vim.api.nvim_set_hl(0, "RainbowIndentRed", { fg = blendToBackground(configs.colors.red), bg = dark_bg_indent })
-    vim.api.nvim_set_hl(0, "RainbowIndentYellow", { fg = blendToBackground(configs.colors.yellow), bg = light_bg_indent })
-    vim.api.nvim_set_hl(0, "RainbowIndentBlue", { fg = blendToBackground(configs.colors.blue), bg = dark_bg_indent })
-    vim.api.nvim_set_hl(0, "RainbowIndentOrange", { fg = blendToBackground(configs.colors.orange), bg = light_bg_indent })
-    vim.api.nvim_set_hl(0, "RainbowIndentGreen", { fg = blendToBackground(configs.colors.green), bg = dark_bg_indent })
-    vim.api.nvim_set_hl(0, "RainbowIndentViolet", { fg = blendToBackground(configs.colors.violet), bg = light_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentRed"   , { fg = configs.blendToBackground(configs.colors.red)   , bg = configs.dark_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentYellow", { fg = configs.blendToBackground(configs.colors.yellow), bg = configs.light_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentBlue"  , { fg = configs.blendToBackground(configs.colors.blue)  , bg = configs.dark_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentOrange", { fg = configs.blendToBackground(configs.colors.orange), bg = configs.light_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentGreen" , { fg = configs.blendToBackground(configs.colors.green) , bg = configs.dark_bg_indent })
+    vim.api.nvim_set_hl(0, "RainbowIndentViolet", { fg = configs.blendToBackground(configs.colors.violet), bg = configs.light_bg_indent })
 end)
 
 require("ibl").setup { scope = { highlight = highlight } }
 
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-
-
-
--- vim.cmd('highlight IndentBlanklineIndent1 guibg=' .. dark_bg_indent  .. ' guifg=' .. blendToBackground(configs.colors.red) .. ' gui=nocombine')
--- vim.cmd('highlight IndentBlanklineIndent2 guibg=' .. light_bg_indent .. ' guifg=' .. blendToBackground(configs.colors.orange) .. ' gui=nocombine')
--- vim.cmd('highlight IndentBlanklineIndent3 guibg=' .. dark_bg_indent  .. ' guifg=' .. blendToBackground(configs.colors.yellow) .. ' gui=nocombine')
--- vim.cmd('highlight IndentBlanklineIndent4 guibg=' .. light_bg_indent .. ' guifg=' .. blendToBackground(configs.colors.green) .. ' gui=nocombine')
--- vim.cmd('highlight IndentBlanklineIndent5 guibg=' .. dark_bg_indent  .. ' guifg=' .. blendToBackground(configs.colors.teal) .. ' gui=nocombine')
--- vim.cmd('highlight IndentBlanklineIndent6 guibg=' .. light_bg_indent .. ' guifg=' .. blendToBackground(configs.colors.blue) .. ' gui=nocombine')
-
--- require('indent_blankline').setup({
---   space_char_blankline = ' ',
---   show_current_context = true,
---   use_treesitter = true,
---   char_highlight_list = {
---     'IndentBlanklineIndent1',
---     'IndentBlanklineIndent2',
---     'IndentBlanklineIndent3',
---     'IndentBlanklineIndent4',
---     'IndentBlanklineIndent5',
---     'IndentBlanklineIndent6',
---   },
---   space_char_highlight_list = {
---     'IndentBlanklineIndent1',
---     'IndentBlanklineIndent2',
---     'IndentBlanklineIndent3',
---     'IndentBlanklineIndent4',
---     'IndentBlanklineIndent5',
---     'IndentBlanklineIndent6',
---   },
--- })
 
 --
 
@@ -348,6 +312,28 @@ require("trouble").setup()
 
 n('<F2>', '<CMD>TroubleToggle workspace_diagnostics<CR>')
 i('<F2>', '<ESC><CMD>TroubleToggle workspace_diagnostics<CR>')
+
+--
+
+local sj = require("treesj")
+
+sj.setup()
+
+n('<c-j>', function()
+  sj.split({ split = { recursive = true } })
+end)
+
+n('<c-k>', function()
+  sj.join()
+end)
+
+i('<c-j>', function()
+  sj.split({ split = { recursive = true } })
+end)
+
+i('<c-k>', function()
+  sj.join()
+end)
 
 --
 

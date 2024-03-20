@@ -135,6 +135,13 @@ local options = {
   updatetime = 300,
 }
 
+local vscodeOverrides = {
+}
+
 for k, v in pairs(options) do
-  vim.opt[k] = v
+  if vim.g.vscode and vscodeOverrides[k] ~= nil then
+    vim.opt[k] = vscodeOverrides[k]
+  else
+    vim.opt[k] = v
+  end
 end

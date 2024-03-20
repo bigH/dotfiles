@@ -2,7 +2,7 @@
 # `.hiren` is both the `gitignore`d directory and what I call the clone of `dotfiles`.
 search_utils_save.vim
 
-# local things
+# local things that may contain secrets
 configs/local.sh
 aliases/local.sh
 functions/local.sh

@@ -89,11 +89,6 @@ _G.packer_plugins = {
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/ReplaceWithRegister",
     url = "https://github.com/vim-scripts/ReplaceWithRegister"
   },
-  ["black-nvim"] = {
-    loaded = true,
-    path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/black-nvim",
-    url = "https://github.com/averms/black-nvim"
-  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
@@ -254,6 +249,11 @@ _G.packer_plugins = {
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
     url = "https://github.com/folke/tokyonight.nvim"
   },
+  treesj = {
+    loaded = true,
+    path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/treesj",
+    url = "https://github.com/Wansmer/treesj"
+  },
   ["trouble.nvim"] = {
     loaded = true,
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/trouble.nvim",
@@ -283,11 +283,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/vim-ninja-feet",
     url = "https://github.com/tommcdo/vim-ninja-feet"
-  },
-  ["vim-python-pep8-indent"] = {
-    loaded = true,
-    path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/vim-python-pep8-indent",
-    url = "https://github.com/Vimjas/vim-python-pep8-indent"
   },
   ["vim-textobj-entire"] = {
     loaded = true,

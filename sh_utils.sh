@@ -335,3 +335,13 @@ awk_with_color_codes() {
     -v GREY="$GREY" \
     "$@"
 }
+
+# TODO test this properly
+key_exists() {
+  if [ "$2" != in ]; then
+    echo "Incorrect usage."
+    echo "Correct usage: exists {key} in {array}"
+    return
+  fi   
+  eval '! [ ${'$3'[$1]+muahaha} ]'  
+}

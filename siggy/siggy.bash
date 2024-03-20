@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 siggy() {
   # NB: we cannot export this and wouldn't want to

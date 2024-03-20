@@ -99,8 +99,9 @@ n('gk', 'k')
 n('j', 'gj')
 n('k', 'gk')
 
--- TODO don't reallyuse these...
--- moving lines while editing
+-- NB: now conflicts with `treesj` config
+--
+-- moving lines while editing:
 -- i('<C-j>', '<ESC><CMD>m .+1<CR>i')
 -- i('<C-k>', '<ESC><CMD>m .-2<CR>i')
 -- v('<C-j>', ":m '>+1<CR>gv")
@@ -108,6 +109,9 @@ n('k', 'gk')
 
 -- alt-enter to insert new line in normal mode
 n('<M-CR>', 'i<CR><ESC>')
+
+-- support clipboard yank for visual selections
+v('<LEADER>y', '"+y')
 
 -- explicit system clipboard yank
 n('<LEADER>y', '"+y', { remap = true })

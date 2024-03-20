@@ -10,7 +10,7 @@ alias kcc='kubectl config current-context'
 
 kf() {
   # shellcheck disable=2016
-  HELP_TEXT='
+  HELP_TEXT="
 Usage:
   kf  <action> ...
 
@@ -21,39 +21,37 @@ Usage:
   kfc <action> ...
 
 Arguments:
-  `--` splits the arg list into 3 useful parts
-  `---` is equivalent to `-- --`
+  '--' splits the arg list into 3 useful parts
+  '---' is equivalent to '-- --'
 
-  `kf <command> [type] [...global args] -- [...get args] -- [...action args]`
-  `kf <command> [type] [...global args] --- [...action args]
+  kf <command> [type] [...global args] -- [...get args] -- [...action args]
+  kf <command> [type] [...global args] --- [...action args]
 
-  `kf exec --context=foo -n bar --- -it psql` results in:
+  # For example, this command
+  kf exec --context=foo -n bar --- -it psql
 
-    # loading the list of items
-    `kubectl get pod --context=foo -n bar`
+    # Delegates to this one for the list
+    kubectl get pod --context=foo -n bar
 
-    # applying the action chosen to the selection
-    `kubectl describe pod <selection> --context=foo -n bar -it psql`
+    # Delegates to this one for the preview
+    kubectl describe pod <selection> --context=foo -n bar -it psql
 
 Commands:
 
-  # `kubectl get -o yaml`
+  # interactively list and look at the YAML for some resource type (get + describe)
   kf get <type> [...args]
 
-  # `kubectl describe`
-  kf describe <type> [...args]
-
-  # `kubectl edit`
+  # interactively select an item of resource type to edit
   kf edit <type> [...args]
 
-  # `kubectl exec` (does not require a resource type)
+  # interactively select a pod to execute a command against
   kf exec [...args]
 
 Gotchas:
 
- - `--all-namespaces` will not work properly because forwarding namespace
-   to later commands will not work - for that use `kfn`
-'
+ - '--all-namespaces' will not work properly because forwarding namespace
+   to later commands will not work - for that use 'kfn'
+"
 
   if [ "$#" -eq 0 ]; then
     log_error "${BOLD}action${NORMAL} (exec, describe, etc.) is ${BOLD}required${NORMAL}"
@@ -82,7 +80,7 @@ Gotchas:
 
     # some actions take a type
     case "$ACTION" in
-      'get' | 'describe' | 'edit')
+      'get' | 'g' | 'describe' | 'd' | 'edit' | 'e')
         if [ "$#" -eq 0 ]; then
           log_warning "${BOLD}type${NORMAL} (pod, deploy, ing, svc, etc.) not provided; prompting..."
           TYPE="$(__kubectl_select_resource_type "${GET_ARGS[@]}")"
@@ -95,7 +93,7 @@ Gotchas:
           shift
         fi
         ;;
-      'exec')
+      'exec' | 'x')
         TYPE="pod"
         ;;
     esac
@@ -122,13 +120,13 @@ Gotchas:
 
     if [ -n "$SELECTION" ]; then
       case "$ACTION" in
-        get)
+        get | g)
           kubectl get -o yaml "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER" ;;
-        describe)
+        describe | d)
           kubectl describe "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" | eval "$KUBECTL_YAML_VIEWER" ;;
-        edit)
+        edit | e)
           kubectl edit "$TYPE" "$SELECTION" "${ACTION_ARGS[@]}" ;;
-        exec)
+        exec | x)
           kubectl exec "$SELECTION" "${ACTION_ARGS[@]}" ;;
         esac
     else
@@ -163,18 +161,6 @@ alias kfd='kf describe'
 alias kfe='kf edit'
 alias kfx='kf exec'
 
-alias kfnv='kfn get'
-alias kfng='kfn get'
-alias kfnd='kfn describe'
-alias kfne='kfn edit'
-alias kfnx='kfn exec'
-
-alias kfcv='kfc get'
-alias kfcg='kfc get'
-alias kfcd='kfc describe'
-alias kfce='kfc edit'
-alias kfcx='kfc exec'
-
 ksc() {
   KUBECTL_SELECTED_CONTEXT="$(__kubectl_select_context)"
   if [ -n "$KUBECTL_SELECTED_CONTEXT" ]; then
@@ -196,7 +182,7 @@ ksn() {
 
 alias kscn='ksc ; ksn'
 
-export KDIFF_RENDERER="cat -"
+export KDIFF_RENDERER="command cat -"
 
 kdiff() {
   LEFT="$1"

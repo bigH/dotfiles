@@ -98,32 +98,6 @@ fzf-ripgrep-selector() {
   fi
 }
 
-if [ -z "$NON_LOCAL_ENVIRONMENT" ]; then
-  # c - browse chrome history
-  c() {
-    local COLS SEP GOOGLE_HISTORY OPEN
-    COLS=$(( COLUMNS / 3 ))
-    SEP='{::}'
-
-    if [ "$(uname)" = "Darwin" ]; then
-      GOOGLE_HISTORY_DEFAULT="$HOME/Library/Application Support/Google/Chrome/Default/History"
-      GOOGLE_HISTORY="${GOOGLE_CHROME_HISTORY_LOCATION:-$GOOGLE_HISTORY_DEFAULT}"
-      OPEN=open
-    else
-      GOOGLE_HISTORY="$HOME/.config/google-chrome/Default/History"
-      OPEN=xdg-open
-    fi
-
-    command cp -f "$GOOGLE_HISTORY" /tmp/h
-
-    sqlite3 -separator $SEP /tmp/h \
-      "select substr(title, 1, $COLS), url
-          from urls order by last_visit_time desc" |
-            awk -F $SEP '{printf "%-'$COLS's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-            fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $OPEN > /dev/null 2> /dev/null
-  }
-fi
-
 if [ -z "$DISABLE_GIT_THINGS" ]; then
   # Create useful gitignore files
   gitignore() {
