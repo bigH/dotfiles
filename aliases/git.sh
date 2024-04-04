@@ -2,10 +2,12 @@
 
 # shellcheck disable=2016
 
+# shellcheck disable=2317
 heroku_remote() {
   git remote | grep heroku >/dev/null 2>&1
 }
 
+# TODO this fzf completion stuff
 # define_fzf_completion_for() {
 #   if [ "$#" -lt 2 ]; then
 #     log_error "expected at least 2 arguments for \`define_fzf_completion_for\`"

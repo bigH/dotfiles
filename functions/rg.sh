@@ -2,24 +2,8 @@
 
 ## `rg` helpers
 
-# `rg` + a pager
+# `rg` w/ clipboard term
 rgp() {
-  rg "$@" --heading --line-number --color=always | less -R
+  log_command rg "$(pbpaste)" "$@"
+  rg "$(pbpaste)" "$@"
 }
-
-# `rb` + `rg` + a pager
-rbgp() {
-  rgp "$@" -g '*.rb'
-}
-
-# `rb` + `rg`
-rbg() {
-  rg "$@" -g '*.rb'
-}
-
-# `rg` + `fzf`
-if command_exists 'fzf'; then
-  rgs() {
-    fzf-command-runner "???"
-  }
-fi

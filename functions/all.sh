@@ -16,6 +16,7 @@ source_functions_for_expected_command() {
 # basic functions
 auto_source "$FUNCTIONS_DIR/core.sh"
 auto_source "$FUNCTIONS_DIR/github.sh"
+auto_source "$FUNCTIONS_DIR/jira.sh"
 
 # source or at least warn
 source_functions_for_expected_command fzf

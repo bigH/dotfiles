@@ -89,6 +89,11 @@ _G.packer_plugins = {
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/ReplaceWithRegister",
     url = "https://github.com/vim-scripts/ReplaceWithRegister"
   },
+  ["baleia.nvim"] = {
+    loaded = true,
+    path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/baleia.nvim",
+    url = "https://github.com/m00qek/baleia.nvim"
+  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
@@ -203,6 +208,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-nio"] = {
+    loaded = true,
+    path = "/Users/hiren.hiranandani/.local/share/nvim/site/pack/packer/start/nvim-nio",
+    url = "https://github.com/nvim-neotest/nvim-nio"
   },
   ["nvim-surround"] = {
     loaded = true,

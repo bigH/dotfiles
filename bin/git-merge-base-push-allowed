@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 git_merge_base_push_allowed() {
-  GIT_BASE="$(git rev-parse --show-toplevel)"
+  local git_base="$(git rev-parse --show-toplevel)"
 
-  if [ -f "$GIT_BASE/.hiren/merge-base-push-allowed" ]; then
+  if [ -f "$git_base/.hiren/merge-base-push-allowed" ]; then
     true
   else
     false

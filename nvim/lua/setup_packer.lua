@@ -38,6 +38,15 @@ require('packer').startup(function(use)
     disable = isVSCode,
   }
 
+  -- colorize text containing terminal color
+  -- NB: this plugin is not initialized automatically, instead you must manually require/use it
+  use {
+    'm00qek/baleia.nvim',
+    tag = 'v1.4.0',
+    disable = isVSCode,
+  }
+
+
   ------- text objects
 
   -- user-defined text objects
@@ -200,7 +209,10 @@ require('packer').startup(function(use)
 
   use {
     'rcarriga/nvim-dap-ui',
-    requires = 'mfussenegger/nvim-dap',
+    requires = {
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
+    },
     disable = isVSCode,
   }
 

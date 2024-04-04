@@ -54,11 +54,6 @@ else
   alias vim='nvim'
   alias vi='nvim'
   alias v='nvim'
-
-  # TODO get rid of these once new vim setup is done
-  if [ -x '/Applications/Neovide.app/Contents/MacOS/neovide' ]; then
-    alias nv='/Applications/Neovide.app/Contents/MacOS/neovide'
-  fi
 fi
 
 # chrome memory

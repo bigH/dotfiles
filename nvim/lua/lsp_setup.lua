@@ -87,6 +87,7 @@ function M.setup()
   configure_lsp_with_defaults('tsserver')
   configure_lsp_with_defaults('gopls')
   configure_lsp_with_defaults('rust_analyzer')
+  configure_lsp_with_defaults('bashls')
   configure_lsp_with_defaults('lua_ls', {
     settings = {
       Lua = {
@@ -134,7 +135,6 @@ function M.setup()
         local surround = string.match(line_text, '%S.*') or ''
         local surround_end = surround:sub(col)
 
-        
         replace[1] = surround:sub(0, col - 1)..replace[1]
         replace[#replace] = replace[#replace]..(#surround_end > 1 and ' ' or '')..surround_end
         if indent ~= '' then
