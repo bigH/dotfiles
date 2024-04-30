@@ -39,11 +39,11 @@ function get_preview_setting()
 end
 
 n('<LEADER>e', function()
-  fzf.files({ cmd = 'fd' })
+  fzf.files({ cmd = 'fd --hidden' })
 end)
 
 n('<LEADER>E', function()
-  fzf.files({ cmd = 'fd --no-ignore' })
+  fzf.files({ cmd = 'fd --hidden --no-ignore' })
 end)
 
 n('<LEADER>F', fzf.live_grep)

@@ -129,6 +129,12 @@ if [ -d "$DOT_FILES_DIR/interactively" ]; then
 else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/interactively' && \
+    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"$(git status -s)\" && \
+    git pull \
+  )"
 fi
 echo
 
@@ -138,6 +144,27 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
 else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/git-fuzzy' && \
+    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"$(git status -s)\" && \
+    git pull \
+  )"
+fi
+echo
+
+if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
+  printf "  - ${BLUE}Found \`kube-fuzzy\` ...${NORMAL}"
+  run_and_print_status_symbol "found" "true"
+else
+  printf "  - ${BLUE}Installing \`kube-fuzzy\` ...${NORMAL}"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/kube-fuzzy.git $DOT_FILES_DIR/kube-fuzzy"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/kube-fuzzy' && \
+    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"$(git status -s)\" && \
+    git pull \
+  )"
 fi
 echo
 
@@ -147,6 +174,12 @@ if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
 else
   printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/auto-sized-fzf' && \
+    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"$(git status -s)\" && \
+    git pull \
+  )"
 fi
 echo
 
@@ -195,7 +228,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos"
   run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build)"
-  link_if_possible "$DOT_FILES_DIR/clipboard-listener-macos/.build/release/clipboard-listener-macos" "$HOME/clipboard-listener"
 fi
 
 echo

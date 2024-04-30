@@ -1,0 +1,3 @@
+#!/bin/bash
+
+"$DOT_FILES_DIR/clipboard-listener-macos/.build/release/clipboard-listener-macos" "$@"

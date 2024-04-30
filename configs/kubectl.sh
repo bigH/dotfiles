@@ -12,3 +12,7 @@ elif [[ "$SHELL" == *'bash' ]]; then
   fi
 fi
 
+if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
+  export PATH="$DOT_FILES_DIR/kube-fuzzy/bin:$PATH"
+fi
+

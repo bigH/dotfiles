@@ -132,7 +132,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
-  # interactively select files in patch (against merge base) to apply
+  # interactively select files in patch between $1 and merge-base to apply to working copy
   gcofmb() {
     if [ "$#" -eq 1 ]; then
       MERGE_BASE="$(git merge-base "$1" "$(git merge-base-remote)/$(git merge-base-branch)")"
@@ -168,7 +168,15 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # check out specific uses
-  alias gcop='git checkout --patch'
+  gcop() {
+    if [ "$#" -ge 1 ]; then
+      git checkout --patch "$@"
+    else
+      git checkout --patch HEAD
+    fi
+  }
+
+  # check out files as they are in merge-base (effectively undoing changes in this branch)
   alias gcomb='gcof "$(gmbh)"'
 
   # commit - interactive

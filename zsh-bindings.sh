@@ -77,7 +77,7 @@ bindkey '^O' fzf-open-git-widget
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 
-# Alt-B inserts branch
+# Alt-B inserts branch (OR if you use shortcuts, anything relating to branches)
 if command_exists git-fuzzy; then
   insert-git-branch-name() {
     LBUFFER+="$(git-fuzzy branch)"
@@ -85,6 +85,16 @@ if command_exists git-fuzzy; then
 
   zle -N insert-git-branch-name
   bindkey '^[b' insert-git-branch-name
+fi
+
+# Alt-B inserts branch (OR if you use shortcuts, anything relating to branches)
+if command_exists git-fuzzy; then
+  insert-git-sha-from-log() {
+    LBUFFER+="$(git-fuzzy log)"
+  }
+
+  zle -N insert-git-sha-from-log
+  bindkey '^[l' insert-git-sha-from-log
 fi
 
 # bindkey '^[f' emacs-forward-word

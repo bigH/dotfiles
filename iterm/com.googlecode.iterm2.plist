@@ -5492,6 +5492,10 @@
 	<integer>7</integer>
 	<key>LeftOption</key>
 	<integer>2</integer>
+	<key>NeverWarnAboutShortLivedSessions_A2C096B3-BDD5-4B80-944F-47DEFBA59797</key>
+	<true/>
+	<key>NeverWarnAboutShortLivedSessions_A2C096B3-BDD5-4B80-944F-47DEFBA59797_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>

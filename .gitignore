@@ -18,18 +18,19 @@ made/
 .vim/
 
 # external things
-github-watched-prs/
 auto-sized-fzf/
 bat/
 clipboard-listener-macos/
 dircolors-solarized/
 env-context
 fd/
-fzf/
 fzf-tab-completion/
+fzf/
 git-fuzzy/
+github-watched-prs/
 gpt-interview-support/
 interactively/
+kube-fuzzy/
 pure/
 ripgrep/
 solarized/

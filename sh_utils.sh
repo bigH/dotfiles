@@ -149,8 +149,6 @@ quote_single_param() {
 }
 
 # quotes a list of params using `"$@"`
-# MISSING: support for anything escapable (`\n`, `\t`, etc.?)
-# MISSING: support quotes in params (e.g. quoting `'a' "b'd"`)
 quote_params() {
   REST=""
   for arg in "$@"; do
@@ -334,14 +332,4 @@ awk_with_color_codes() {
     -v DARKGREY="$DARKGREY" \
     -v GREY="$GREY" \
     "$@"
-}
-
-# TODO test this properly
-key_exists() {
-  if [ "$2" != in ]; then
-    echo "Incorrect usage."
-    echo "Correct usage: exists {key} in {array}"
-    return
-  fi   
-  eval '! [ ${'$3'[$1]+muahaha} ]'  
 }

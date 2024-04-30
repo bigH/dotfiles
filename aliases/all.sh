@@ -26,7 +26,6 @@ fi
 source_aliases_for_expected_command git
 source_aliases_for_expected_command docker
 source_aliases_for_expected_command docker-compose
-source_aliases_for_expected_command kubectl
 source_aliases_for_expected_command yarn
 
 unset -f source_aliases_for_expected_command

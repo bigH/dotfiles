@@ -20,7 +20,6 @@ auto_source "$FUNCTIONS_DIR/github.sh"
 # source or at least warn
 source_functions_for_expected_command fzf
 source_functions_for_expected_command rg
-source_functions_for_expected_command kubectl
 source_functions_for_expected_command docker
 
 unset -f source_functions_for_expected_command

@@ -30,7 +30,6 @@ unlink "$HOME/.config/gh-dash"
 unlink "$HOME/.ideavimrc"
 
 # unlink bin and symlinked binaries
-unlink "$HOME/.hiren/bin/clipboard-listener"
 rm -f "$HOME/bin"
 
 # unlink misc

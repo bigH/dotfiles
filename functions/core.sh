@@ -330,15 +330,85 @@ action_when() {
   name="$2"
   command="$3"
 
-  eval "$command" && "$action" "$name success" || "$action" "$name failure"
+  if eval "$command"; then
+    "$action" "$name success"
+  else
+    "$action" "$name failure"
+  fi
 }
 
 scratch() {
-  extension="$1"
-
   vim "$HOME/dev/random/scratch.$1"
 }
 
 cdd() {
+  # shellcheck disable=2164
   cd "$(pwd)"
 }
+
+# shellcheck disable=2155
+try_until() {
+  if [ "$#" -lt 2 ]; then
+    log_error "expect at least 2 arguments - content and command"
+    return 1
+  fi
+
+  local content="$1"
+  shift
+
+  local log_of_command="$(log_command "$@")"
+
+  local command="$(printf "%q" "$1")"
+  shift
+
+  if [ "$#" -gt 0 ]; then
+    command="${command} $(printf " %q" "$@")"
+  fi
+
+  while true; do
+    echo "$log_of_command"
+    if eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
+      break
+    fi
+    echo
+    sleep 0.5
+  done
+
+  return 0
+}
+
+# shellcheck disable=2155
+try_while() {
+  if [ "$#" -lt 2 ]; then
+    log_error "expect at least 2 arguments - content and command"
+    return 1
+  fi
+
+  local content="$1"
+  shift
+
+  local log_of_command="$(log_command "$@")"
+
+  local command="$(printf "%q" "$1")"
+  shift
+
+  if [ "$#" -gt 0 ]; then
+    command="${command} $(printf " %q" "$@")"
+  fi
+
+  while true; do
+    echo "$log_of_command"
+    if ! eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
+      break
+    fi
+    echo
+    sleep 0.5
+  done
+
+  return 0
+}
+
+if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
+  source "$DOT_FILES_DIR/kube-fuzzy/extras.sh"
+fi
+
