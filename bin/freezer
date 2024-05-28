@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+mkdir -p "$FREEZER_DIR"
+
+prefix_each_line() {
+  local prefix="$1"
+  command cat - | sed "s/^/$prefix /"
+}
+
+f() {
+  (
+    command ls -1 "$FREEZER_DIR" | prefix_each_line "F" ;
+    command ls -1 "$PWD" | prefix_each_line "P"
+  ) | sort -f2 | fzf -m --preview-window=hidden \
+    --bind "left:"
+}

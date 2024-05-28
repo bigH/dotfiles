@@ -62,7 +62,7 @@ fzf-ripgrep-selector() {
   SEARCH_PREFIX="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH $(command -v rg) --line-number --no-heading --color=always "
 
   # shellcheck disable=2016
-  PREVIEW_COMMAND="$DOT_FILES_DIR/bin/fzf-helpers/preview-file \"\$FZF_PREVIEW_LINES\""
+  PREVIEW_COMMAND="$DOT_FILES_DIR/bin/helpers/preview-file \"\$FZF_PREVIEW_LINES\""
 
   RIPGREP_STORAGE="$(mktemp -t ripgrep-storage)"
 

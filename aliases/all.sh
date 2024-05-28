@@ -16,17 +16,17 @@ source_aliases_for_expected_command() {
 # expect this one to be there
 auto_source "$ALIASES_DIR/core.sh"
 
-# source any local-specific/private things
-if [ -f "$ALIASES_DIR/local.sh" ]; then
-  auto_source "$ALIASES_DIR/local.sh"
-fi
-
-
 # source these only if they're "visible" commands
 source_aliases_for_expected_command git
 source_aliases_for_expected_command docker
 source_aliases_for_expected_command docker-compose
 source_aliases_for_expected_command yarn
+source_aliases_for_expected_command kubectl
+
+# source any local-specific/private things
+if [ -f "$ALIASES_DIR/local.sh" ]; then
+  auto_source "$ALIASES_DIR/local.sh"
+fi
 
 unset -f source_aliases_for_expected_command
 unset ALIASES_DIR

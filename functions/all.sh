@@ -22,6 +22,11 @@ source_functions_for_expected_command fzf
 source_functions_for_expected_command rg
 source_functions_for_expected_command docker
 
+# source any local-specific/private things
+if [ -f "$FUNCTIONS_DIR/local.sh" ]; then
+  auto_source "$FUNCTIONS_DIR/local.sh"
+fi
+
 unset -f source_functions_for_expected_command
 unset ALIASES
 

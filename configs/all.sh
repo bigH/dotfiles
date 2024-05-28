@@ -12,11 +12,6 @@ fi
 # expect this one to be there
 $SOURCE_COMMAND "$CONFIGS_DIR/core.sh"
 
-# source any local-specific/private things
-if [ -f "$CONFIGS_DIR/local.sh" ]; then
-  $SOURCE_COMMAND "$CONFIGS_DIR/local.sh"
-fi
-
 # journal command is provided from `JOURNAL_PATH` - set in this file, so can't command check
 $SOURCE_COMMAND "$CONFIGS_DIR/journal.sh"
 
@@ -35,6 +30,11 @@ source_configs_for_expected_command fzf
 source_configs_for_expected_command kubectl
 source_configs_for_expected_command helm
 source_configs_for_expected_command rg
+
+# source any local-specific/private things
+if [ -f "$CONFIGS_DIR/local.sh" ]; then
+  $SOURCE_COMMAND "$CONFIGS_DIR/local.sh"
+fi
 
 if [ -n "$DOT_FILES_ENV" ]; then
   if [ -f "$DOT_FILES_DIR/$DOT_FILES_ENV/configs.sh" ]; then

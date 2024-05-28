@@ -3,4 +3,8 @@
 # shellcheck source=../sh_utils.sh
 source "$DOT_FILES_DIR/sh_utils.sh"
 
-cat - | join_lines
+if [ "$#" -eq 0 ]; then
+  command cat - | join_lines
+else
+  command cat - | join_lines "$@"
+fi
