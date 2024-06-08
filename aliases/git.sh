@@ -70,7 +70,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # clone
   gcl() {
     if [ "$#" -eq 0 ]; then
-      log_error "git clone needs args"
+      log_error "gcl needs args"
     fi
 
     case "$1" in
@@ -83,6 +83,14 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
         git clone "$repo_path" "$@"
         ;;
     esac
+  }
+
+  ccl() {
+    if [ "$#" -eq 0 ]; then
+      log_error "ccl needs 1debit repo-name only"
+    fi
+
+    (cd "$WORK_DIR_PATH" && gcl "1debit/$1")
   }
 
   # status
@@ -180,9 +188,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcomb='gcof "$(gmbh)"'
 
   # commit - interactive
-  alias gc='git commit'
-  alias gca='git commit -a'
-  alias gcamend='git commit --amend'
+  alias gc='git commit -v'
+  alias gca='git commit -a -v'
+  alias gcamend='git commit --amend -v'
 
   # commit - non-interactive
   alias gcane='indent --header git commit --amend --no-edit'

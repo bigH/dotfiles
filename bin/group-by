@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+import json
+from collections import defaultdict
+from pathlib import Path
+
+import re
+
+def print_err(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+formats = {
+
+  'table': """\
+    foo\tline with foo
+    foo\tanother line with foo
+    bar\tline with bar
+    bar\tanother line with bar
+    """,
+
+  'yaml': """\
+    foo:
+    \tline with foo
+    \tanother line with foo
+    bar:
+    \tline with bar
+    \tanother line with bar
+    """,
+
+  'json-pretty': """\
+    {
+      "foo": [
+        "line with foo",
+        "another line with foo"
+      ],
+      "bar": [
+        "line with bar",
+        "another line with bar"
+      ]
+    }
+    """,
+
+  'json': """\
+    // abbreviated for readability
+
+    { "foo": [...], "bar": [...] }
+    """,
+
+}
+
+parser = argparse.ArgumentParser(
+           prog='group-by',
+           description='functional-like group-by that keys each line using the regex provided and formats the output using the provided format')
+
+parser.add_argument('--key-regex', '-k', type=str, help='regular expression where first group is the key')
+parser.add_argument('--value-regex', '-v', type=str, help='regular expression where first group is the value-element')
+parser.add_argument('--list-formats', action='store_true', help='list available formats and show one example of each')
+parser.add_argument('--format', '-f', type=str, default='table', help='separator to join lines with')
+parser.add_argument('file', type=str, help='file to read lines from'), 
+
+args = parser.parse_args()
+
+if args.list_formats:
+    for fmt, example in formats.items():
+        print(f"# {fmt}:")
+        print()
+        print(example)
+        print()
+    sys.exit(0)
+
+file = args.file
+
+if len(file) == 0:
+    print_err("Error: no file provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+missing_file = not Path(file).exists()
+if missing_file:
+    print_err(f"Error: file '{file}' does not exist")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+format = args.format
+if not format in formats:
+    print_err(f"Error: format '{format}' not supported")
+    print_err(f"Acceptable values: {', '.join(formats.keys())}")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+key_regex = args.key_regex
+
+if key_regex is None:
+    print_err("Error: no key-regex provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+try:
+    key_regex = re.compile(key_regex)
+except re.error as e:
+    print_err(f"Error: invalid key-regex '{args.key_regex}': {e.msg}")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+value_regex = args.value_regex
+
+if not value_regex is None:
+    try:
+        value_regex = re.compile(value_regex)
+    except re.error as e:
+        print_err(f"Error: invalid value-regex '{args.value_regex}': {e.msg}")
+        print_err()
+        parser.print_help(file=sys.stderr)
+        sys.exit(1)
+
+keyed = defaultdict(list)
+
+def extract(line, regex):
+    regex = re.compile(regex)
+    match = regex.match(line)
+    if match is None:
+        return None
+    if len(match.groups()) == 0:
+        raise ArgumentError(f"Error: regex '{regex}' did not produce any match groups")
+    return match.groups()[0]
+
+try:
+    at_least_one_key_non_match = False
+    at_least_one_value_non_match = False
+    with open(file, 'r') as handle:
+        for line in handle:
+            line = line[:-1]
+            key = extract(line, args.key_regex)
+            if not at_least_one_key_non_match and key is None:
+                print_err(f"Warning: at least one line in file '{file}' did not match key-regex '{args.key_regex}'")
+                at_least_one_key_non_match = True
+            value = line
+            if not value_regex is None:
+                value = extract(line, args.value_regex)
+                if not at_least_one_value_non_match and value is None:
+                    print_err(f"Warning: at least one line in file '{file}' did not match value-regex '{args.value_regex}'")
+                    at_least_one_value_non_match = True
+            if not key is None and not value is None:
+                keyed[key].append(value)
+
+except ArgumentException as e:
+    print_err(e.msg)
+    print_err()
+    parser.print_usage()
+    sys.exit(1)
+except Exception as e:
+    print_err(e.msg)
+    print_err()
+    sys.exit(1)
+
+if format == 'table':
+    for key in sorted(keyed.keys()):
+        for line in keyed[key]:
+            print(f"{key}\t{line}")
+    print()
+
+if format == 'yaml':
+    for key in sorted(keyed.keys()):
+        print(f"{key}:")
+        for line in keyed[key]:
+            print(f"  {line}")
+    print()
+
+if format == 'json-pretty':
+    print(json.dumps(keyed, indent=2))
+    print()
+
+if format == 'json':
+    print(json.dumps(keyed))
+    print()

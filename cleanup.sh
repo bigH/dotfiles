@@ -17,6 +17,11 @@ unlink "$HOME/.pryrc"
 unlink "$HOME/.rgignore"
 unlink "$HOME/.tigrc"
 
+# vs code configs
+VS_CODE_HOME="$HOME/Library/Application Support/Code/User"
+unlink "$VS_CODE_HOME/settings.json"
+unlink "$VS_CODE_HOME/keybindings.json"
+
 # big ones
 unlink "$HOME/.bashrc"
 unlink "$HOME/.bash_profile"

@@ -13,3 +13,6 @@
 
 # mac os is annoying
 .DS_Store
+
+# ignore my vs code settings
+.vscode/

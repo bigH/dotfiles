@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+from pathlib import Path
+
+import re
+
+def print_err(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+parser = argparse.ArgumentParser(
+           prog='slice',
+           description='functional-like slice that reads a file printing only lines starting with the first non-match')
+
+parser.add_argument('--ranges', '-r', type=str, help="inclusive range or ranges separated by commas: '0:10,20:30'"),
+parser.add_argument('file', type=str, help='file to read lines from'), 
+
+args = parser.parse_args()
+
+ranges = args.ranges
+
+if ranges is None or len(ranges) == 0:
+    print_err("Error: no ranges provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+parsed_ranges = []
+for r in ranges.split(','):
+    start, end = r.split(':')
+    try:
+        start = int(start)
+        end = int(end) + 1
+        parsed_ranges.append(range(start, end))
+    except ValueError:
+        print_err(f"Error: invalid range '{r}'")
+        print_err()
+        parser.print_help(file=sys.stderr)
+        sys.exit(1)
+
+ranges = parsed_ranges
+
+file = args.file
+
+if len(file) == 0:
+    print_err("Error: no file provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+missing_file = not Path(file).exists()
+if missing_file:
+    print_err(f"Error: file '{file}' does not exist")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+with open(file, 'r') as handle:
+    for index, line in enumerate(handle):
+        if any(index in r for r in ranges):
+            print(line[:-1])

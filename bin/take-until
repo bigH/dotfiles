@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+from pathlib import Path
+
+import re
+
+def print_err(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+parser = argparse.ArgumentParser(
+           prog='take-until',
+           description='functional-like take-while that prints lines until reaching a line that matches the provided regex')
+
+parser.add_argument('--full-match', action='store_true', help='the regex must match the entire line'),
+parser.add_argument('regex', type=str, help='regular expression to match lines'), 
+parser.add_argument('file', type=str, help='file to read lines from'), 
+
+args = parser.parse_args()
+
+regex = args.regex
+
+if regex is None:
+    print_err("Error: no regex provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+try:
+    regex = re.compile(regex)
+except re.error as e:
+    print_err(f"Error: invalid regex '{args.regex}': {e.msg}")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+file = args.file
+
+if len(file) == 0:
+    print_err("Error: no file provided")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+missing_file = not Path(file).exists()
+if missing_file:
+    print_err(f"Error: file '{file}' does not exist")
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+with open(file, 'r') as handle:
+    for line in handle:
+        line = line[:-1]
+        if args.full_match:
+            is_match = re.fullmatch(regex, line)
+        else:
+            is_match = re.search(regex, line)
+        if is_match:
+            break
+        else:
+            print(line)

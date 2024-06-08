@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+from pathlib import Path
+
+def print_err(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+parser = argparse.ArgumentParser(
+           prog='zip-with',
+           description='functional-like zip that joins corresponding lines of files with a separator')
+
+parser.add_argument('--sep', '-s', type=str, default=',', help='separator to join lines with')
+parser.add_argument('files', type=str, nargs='+', help='files to zip'), 
+
+args = parser.parse_args()
+
+err = False
+for file in args.files:
+    if not Path(file).exists():
+        print_err(f"Error: file '{file}' does not exist")
+        err = True
+
+if err:
+    print_err()
+    parser.print_help(file=sys.stderr)
+    sys.exit(1)
+
+handles = [open(file, 'r') for file in args.files]
+
+for handle in handles:
+    handle.is_eof = False
+
+while any([not handle.is_eof for handle in handles]):
+    lines = []
+
+    for handle in handles:
+        line = handle.readline()
+        if line == '':
+            handle.is_eof = True
+        else:
+            line = line[:-1]
+        lines.append(line)
+
+    if all([handle.is_eof for handle in handles]):
+        break
+
+    print(args.sep.join(lines))

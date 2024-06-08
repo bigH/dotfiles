@@ -1,3 +1,5 @@
+local isVSCode = vim.g.vscode == 1
+
 local map = require('keymapper')
 
 -- local imports
@@ -5,7 +7,6 @@ local n = map.n
 local v = map.v
 local i = map.i
 local o = map.o
-
 
 ----------------------------- OFTEN MIS-TYPED ---------------------------------
 
@@ -39,57 +40,49 @@ n('<BS>', '<CMD>noh<CR>')
 -- write everything with LEADER-LEADER
 n('<LEADER><LEADER>', '<CMD>wa<CR>')
 
--- TODO useless since i'm not used to it
--- quit after writing with ZZ
-n('ZZ', '<CMD>qa<CR>')
-
--- TODO useless since i'm not used to it
--- save and quit
-n('ZX', '<CMD>wqa<CR>')
-
 ----------------------------- WINDOWS & BUFFERS -------------------------------
 
--- switching buffers
-n('H', '<CMD>bprev<CR>')
-n('<C-h>', '<CMD>bfirst<CR>')
-n('L', '<CMD>bnext<CR>')
-n('<C-l>', '<CMD>blast<CR>')
+if not isVSCode then
+  -- switching buffers
+  n('H', '<CMD>bprev<CR>')
+  n('L', '<CMD>bnext<CR>')
 
--- switching windows
-n('<M-h>', '<CMD>wincmd h<CR>')
-i('<M-h>', '<C-O><CMD>wincmd h<CR>')
+  -- switching buffers in terminal
+  n('<C-h>', '<CMD>bfirst<CR>')
+  n('<C-l>', '<CMD>blast<CR>')
 
-n('<M-j>', '<CMD>wincmd j<CR>')
-i('<M-j>', '<C-O><CMD>wincmd j<CR>')
+  -- switching windows
+  n('<M-h>', '<CMD>wincmd h<CR>')
+  i('<M-h>', '<C-O><CMD>wincmd h<CR>')
 
-n('<M-l>', '<CMD>wincmd l<CR>')
-i('<M-l>', '<C-O><CMD>wincmd l<CR>')
+  n('<M-j>', '<CMD>wincmd j<CR>')
+  i('<M-j>', '<C-O><CMD>wincmd j<CR>')
 
-n('<M-k>', '<CMD>wincmd k<CR>')
-i('<M-k>', '<C-O><CMD>wincmd k<CR>')
+  n('<M-l>', '<CMD>wincmd l<CR>')
+  i('<M-l>', '<C-O><CMD>wincmd l<CR>')
 
--- creating windows
-n('<M-H>', '<CMD>vsplit<CR><CMD>wincmd h<CR>')
-i('<M-H>', '<C-O><CMD>vsplit<CR><C-O><CMD>wincmd h<CR>')
+  n('<M-k>', '<CMD>wincmd k<CR>')
+  i('<M-k>', '<C-O><CMD>wincmd k<CR>')
 
-n('<M-J>', '<CMD>split<CR>')
-i('<M-J>', '<C-O><CMD>split<CR>')
+  -- creating windows
+  n('<M-H>', '<CMD>vsplit<CR><CMD>wincmd h<CR>')
+  i('<M-H>', '<C-O><CMD>vsplit<CR><C-O><CMD>wincmd h<CR>')
 
-n('<M-K>', '<CMD>split<CR><CMD>wincmd k<CR>')
-i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
+  n('<M-J>', '<CMD>split<CR>')
+  i('<M-J>', '<C-O><CMD>split<CR>')
 
-n('<M-L>', '<CMD>vsplit<CR>')
-i('<M-L>', '<C-O><CMD>vsplit<CR>')
+  n('<M-K>', '<CMD>split<CR><CMD>wincmd k<CR>')
+  i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
 
-n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
-n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
+  n('<M-L>', '<CMD>vsplit<CR>')
+  i('<M-L>', '<C-O><CMD>vsplit<CR>')
 
-n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
-n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
+  n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
+  n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
 
----------------------------------- PASTING ------------------------------------
-
-v('gp', 'pgvy')
+  n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
+  n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
+end
 
 ----------------------------- TEXT MANIPULATION -------------------------------
 
@@ -98,14 +91,6 @@ n('gj', 'j')
 n('gk', 'k')
 n('j', 'gj')
 n('k', 'gk')
-
--- NB: now conflicts with `treesj` config
---
--- moving lines while editing:
--- i('<C-j>', '<ESC><CMD>m .+1<CR>i')
--- i('<C-k>', '<ESC><CMD>m .-2<CR>i')
--- v('<C-j>', ":m '>+1<CR>gv")
--- v('<C-k>', ":m '<-2<CR>gv")
 
 -- alt-enter to insert new line in normal mode
 n('<M-CR>', 'i<CR><ESC>')
@@ -118,17 +103,19 @@ n('<LEADER>y', '"+y', { remap = true })
 n('<LEADER>yy', '"+y_')
 n('<LEADER>Y', '"+y$')
 
--- yank relative path
-n('yp', "<CMD>let @\" = expand('%')<CR>")
-n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
+if not isVSCode then
+  -- yank relative path
+  n('yp', "<CMD>let @\" = expand('%')<CR>")
+  n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
 
--- yank absolute path
-n('yP', "<CMD>let @\" = expand('%:p')<CR>")
-n('<LEADER>yP', "<CMD>let @+ = expand('%:p')<CR>")
+  -- yank absolute path
+  n('yP', "<CMD>let @\" = expand('%:p')<CR>")
+  n('<LEADER>yP', "<CMD>let @+ = expand('%:p')<CR>")
 
--- Alt BS/Shift-BS
-i('<M-BS>', '<C-W>')
-i('<M-C-H>', '<C-U>')
+  -- Alt BS/Shift-BS
+  i('<M-BS>', '<C-W>')
+  i('<M-C-H>', '<C-U>')
+end
 
 -------------------------- INTERESTING USEFUL ONES-----------------------------
 

@@ -346,12 +346,14 @@ cdd() {
   cd "$(pwd)"
 }
 
-# shellcheck disable=2155
-try_until() {
-  if [ "$#" -lt 2 ]; then
-    log_error "expect at least 2 arguments - content and command"
+try() {
+  if [ "$#" -lt 3 ]; then
+    log_error "expect at least 2 arguments: try [until|while] <e-regex> <command>"
     return 1
   fi
+
+  type="$1"
+  shift
 
   local content="$1"
   shift
@@ -367,8 +369,14 @@ try_until() {
 
   while true; do
     echo "$log_of_command"
-    if eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
-      break
+    if [ "$type" = "until" ]; then
+      if eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
+        break
+      fi
+    else
+      if ! eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
+        break
+      fi
     fi
     echo
     sleep 0.5
@@ -378,33 +386,22 @@ try_until() {
 }
 
 # shellcheck disable=2155
-try_while() {
+try_until() {
   if [ "$#" -lt 2 ]; then
-    log_error "expect at least 2 arguments - content and command"
+    log_error "expect at least 2 arguments: try_until <e-regex> <command>"
     return 1
   fi
 
-  local content="$1"
-  shift
+  try 'until' "$@"
+}
 
-  local log_of_command="$(log_command "$@")"
-
-  local command="$(printf "%q" "$1")"
-  shift
-
-  if [ "$#" -gt 0 ]; then
-    command="${command} $(printf " %q" "$@")"
+# shellcheck disable=2155
+try_while() {
+  if [ "$#" -lt 2 ]; then
+    log_error "expect at least 2 arguments: try_while <e-regex> <command>"
+    return 1
   fi
 
-  while true; do
-    echo "$log_of_command"
-    if ! eval "$command" 2>&1 | tee /dev/tty | grep -E "$content" >/dev/null; then
-      break
-    fi
-    echo
-    sleep 0.5
-  done
-
-  return 0
+  try 'while' "$@"
 }
 

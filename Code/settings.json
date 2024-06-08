@@ -1,0 +1,74 @@
+{
+    "workbench.colorTheme": "GitHub Dark Default",
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "editor.tabSize": 2,
+    "[ruby]": {},
+    "editor.fontFamily": "Hasklug",
+    "editor.fontSize": 13,
+    "github.copilot.chat.welcomeMessage": "always",
+    "github.copilot.chat.scopeSelection": true,
+    "terminal.integrated.macOptionIsMeta": true,
+    "editor.lineNumbers": "relative",
+    "terminal.integrated.copyOnSelection": true,
+    "editor.guides.bracketPairs": true,
+    "editor.autoClosingBrackets": "beforeWhitespace",
+    "editor.stickyScroll.maxLineCount": 10,
+    "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "javascript.inlayHints.parameterNames.enabled": "all",
+    "javascript.inlayHints.parameterTypes.enabled": true,
+    "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "javascript.inlayHints.variableTypes.enabled": true,
+    "typescript.inlayHints.enumMemberValues.enabled": true,
+    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.parameterTypes.enabled": true,
+    "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": true,
+    "Lua.hint.enable": true,
+    "editor.cursorBlinking": "solid",
+    "indentRainbow.ignoreErrorLanguages": [
+        "markdown"
+    ],
+    "protoc": {
+        "options": [
+            "--proto_path=<path of your proto files>"
+        ]
+    },
+    "editor.wrappingIndent": "indent",
+    "editor.minimap.renderCharacters": false,
+    "peacock.favoriteColors": [
+        {
+            "name": "P1-Primary",
+            "value": "#D00000"
+        },
+        {
+            "name": "P1-Secondary",
+            "value": "#E85D04"
+        },
+        {
+            "name": "P1-Ternary",
+            "value": "#FFBA08"
+        },
+        {
+            "name": "P2-Primary",
+            "value": "#2659BF"
+        },
+        {
+            "name": "P2-Secondary",
+            "value": "#12732A"
+        },
+         {
+            "name": "P2-Ternary",
+            "value": "#B2FF44"
+        },
+        {
+            "name": "Unrelated",
+            "value": "#8b8c89"
+        }
+    ],
+    "gitlens.views.branches.branches.layout": "list",
+    "window.zoomLevel": 1
+}

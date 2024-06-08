@@ -49,6 +49,13 @@ run_and_print_status_symbol "clone" "git clone --depth 1 'https://github.com/wbt
 echo
 echo
 
+echo "${BLUE}${BOLD}VS Code${NORMAL}"
+VS_CODE_HOME="$HOME/Library/Application Support/Code/User"
+mk_expected_dir "$VS_CODE_HOME"
+link_if_possible "$DOT_FILES_DIR/Code/settings.json" "$VS_CODE_HOME/settings.json"
+link_if_possible "$DOT_FILES_DIR/Code/keybindings.json" "$VS_CODE_HOME/keybindings.json"
+echo
+
 echo "${BLUE}${BOLD}gh-dash configurations${NORMAL} ${DOT_FILES_ENV_DISPLAY}"
 link_if_possible "$DOT_FILES_DIR/gh-dash" "$HOME/.config/gh-dash"
 echo
