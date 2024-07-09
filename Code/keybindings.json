@@ -356,21 +356,6 @@
     "when": "editorFocus"
   },
   {
-    "key": "\\ e",
-    "command": "workbench.action.quickOpen",
-    "when": "!editorTextFocus && !inputFocus && !textInputFocus && !terminalFocus || editorTextFocus && neovim.init && neovim.mode != 'insert'"
-  },
-  {
-    "key": "\\ f",
-    "command": "workbench.action.findInFiles",
-    "when": "!editorTextFocus && !inputFocus && !textInputFocus && !terminalFocus || editorTextFocus && neovim.init && neovim.mode != 'insert'"
-  },
-  {
-    "key": "\\ o",
-    "command": "gitlens.showQuickRepoStatus",
-    "when": "!editorTextFocus && !inputFocus && !textInputFocus && !terminalFocus || editorTextFocus && neovim.init && neovim.mode != 'insert'"
-  },
-  {
     "key": "cmd+f3",
     "command": "-editor.action.nextSelectionMatchFindAction",
     "when": "editorFocus"
@@ -434,10 +419,6 @@
     "key": "shift+cmd+o",
     "command": "-editor.action.accessibleViewGoToSymbol",
     "when": "accessibilityHelpIsShown && accessibleViewGoToSymbolSupported || accessibleViewGoToSymbolSupported && accessibleViewIsShown"
-  },
-  {
-    "key": "shift+cmd+o",
-    "command": "gitlens.openWorkingFileInDiffRight"
   },
   {
     "key": "cmd+g",
@@ -614,10 +595,6 @@
     "command": "-workbench.action.files.save"
   },
   {
-    "key": "cmd+s",
-    "command": "saveAll"
-  },
-  {
     "key": "alt+cmd+s",
     "command": "-saveAll"
   },
@@ -629,10 +606,6 @@
     "key": "shift+cmd+s",
     "command": "-workbench.action.files.saveLocalFile",
     "when": "remoteFileDialogVisible"
-  },
-  {
-    "key": "shift+cmd+s",
-    "command": "workbench.files.action.compareWithSaved"
   },
   {
     "key": "cmd+k d",
@@ -1148,5 +1121,102 @@
     "key": "cmd+x",
     "command": "-filesExplorer.cut",
     "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "key": "shift+cmd+o",
+    "command": "workbench.action.files.openFolderViaWorkspace"
+  },
+  {
+    "key": "shift+cmd+enter",
+    "command": "workbench.action.toggleFullScreen",
+    "when": "!isIOS"
+  },
+  {
+    "key": "ctrl+cmd+f",
+    "command": "-workbench.action.toggleFullScreen",
+    "when": "!isIOS"
+  },
+  {
+    "key": "shift+cmd+enter",
+    "command": "-search.action.replaceAllInFile",
+    "when": "fileMatchFocus && isEditableItem && replaceActive && searchViewletVisible"
+  },
+  {
+    "key": "shift+cmd+enter",
+    "command": "-search.action.replaceAllInFolder",
+    "when": "folderMatchFocus && isEditableItem && replaceActive && searchViewletVisible"
+  },
+  {
+    "key": "shift+cmd+enter",
+    "command": "-workbench.action.chat.sendToNewChat",
+    "when": "chatInputHasText && inChatInput && !chatSessionRequestInProgress"
+  },
+  {
+    "key": "cmd+s",
+    "command": "workbench.action.files.saveFiles"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.views.compareWithHead"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPrevious",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+cmd+g ,",
+    "command": "-gitlens.diffWithPrevious",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPreviousInDiffLeft",
+    "when": "editorTextFocus && isInDiffEditor && !isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+cmd+g ,",
+    "command": "-gitlens.diffWithPreviousInDiffLeft",
+    "when": "editorTextFocus && isInDiffEditor && !isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+cmd+g ,",
+    "command": "-gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'chorded' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPrevious",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+,",
+    "command": "-gitlens.diffWithPrevious",
+    "when": "editorTextFocus && !isInDiffEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPreviousInDiffLeft",
+    "when": "editorTextFocus && isInDiffEditor && !isInDiffRightEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+,",
+    "command": "-gitlens.diffWithPreviousInDiffLeft",
+    "when": "editorTextFocus && isInDiffEditor && !isInDiffRightEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "shift+cmd+s",
+    "command": "gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "alt+,",
+    "command": "-gitlens.diffWithPreviousInDiffRight",
+    "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
   }
 ]

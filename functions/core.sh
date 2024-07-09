@@ -405,3 +405,12 @@ try_while() {
   try 'while' "$@"
 }
 
+mkt() {
+  if [ "$#" -lt 1 ]; then
+    log_error "expect at least 1 argument: mkt <file>"
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$1")"
+  touch "$1"
+}

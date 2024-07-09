@@ -52,8 +52,8 @@ echo
 echo "${BLUE}${BOLD}VS Code${NORMAL}"
 VS_CODE_HOME="$HOME/Library/Application Support/Code/User"
 mk_expected_dir "$VS_CODE_HOME"
-link_if_possible "$DOT_FILES_DIR/Code/settings.json" "$VS_CODE_HOME/settings.json"
-link_if_possible "$DOT_FILES_DIR/Code/keybindings.json" "$VS_CODE_HOME/keybindings.json"
+link_if_possible "$DOT_FILES_DIR/code/settings.json" "$VS_CODE_HOME/settings.json"
+link_if_possible "$DOT_FILES_DIR/code/keybindings.json" "$VS_CODE_HOME/keybindings.json"
 echo
 
 echo "${BLUE}${BOLD}gh-dash configurations${NORMAL} ${DOT_FILES_ENV_DISPLAY}"

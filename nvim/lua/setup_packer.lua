@@ -52,16 +52,16 @@ require('packer').startup(function(use)
   -- user-defined text objects
   use 'kana/vim-textobj-user'
 
-  -- `ai`, `ii`
+  -- `ai`, `ii` for indentation
   use 'kana/vim-textobj-indent'
 
-  -- `ae`, `ie`
+  -- `ae`, `ie` for entire buffer
   use 'kana/vim-textobj-entire'
 
-  -- `a,` `i,`
+  -- `a,` `i,` for comma-separated lists
   use 'b4winckler/vim-angry'
 
-  -- `av`, `iv`
+  -- `av`, `iv` for variable segments
   use 'Julian/vim-textobj-variable-segment'
 
   -- `[` and `]` to use cursor to end of or beginning of text object - e.g. `c[ip`, `c]i)`

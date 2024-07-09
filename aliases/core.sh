@@ -90,3 +90,8 @@ fi
 if [ -f '/Applications/Blender.app/Contents/MacOS/Blender' ]; then
   alias blender='/Applications/Blender.app/Contents/MacOS/Blender'
 fi
+
+if [ -x /usr/local/bin/plandex ]; then
+  alias pdx='plandex'
+  alias plan='plandex'
+fi

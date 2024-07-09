@@ -160,15 +160,16 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     if [ "$#" -gt 1 ]; then
       log_error 'could not `gcob`: >1 arguments'
     elif [ "$#" -eq 1 ]; then
-      if [ "$1" = '-' ]; then
-        indent --header git checkout "$1"
+      if [[ "$1" =~ ^-+$ ]]; then
+        num_dashes="${#1}"
+        indent --header git checkout "@{-${num_dashes}}"
       elif git rev-parse --verify "$1" > /dev/null 2>&1 ; then
         indent --header git checkout "$1"
       else
         indent --header git checkout -b "$1"
       fi
     else
-      BRANCH_NAME="$(gb)"
+      BRANCH_NAME="$(git fuzzy branch)"
       if [ -n "$BRANCH_NAME" ]; then
         indent --header git checkout "$BRANCH_NAME"
       fi
@@ -504,8 +505,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
 
   # --- github ---
   # this one technically clobbers gnu `pr` installed with `brew` on `macOS`
-  alias gpr='git pull-request'
-  alias gpr-='git pull-request "@{-1}"'
+  gpr() {
+    if [ "$#" -eq 0 ]; then
+      indent --header git pull-request
+    elif [ "$#" -eq 1 ] && [[ "$1" =~ ^-+$ ]]; then
+      num_dashes="${#1}"
+      indent --header git pull-request "@{-${num_dashes}}"
+    else
+      indent --header git pull-request "$@"
+    fi
+  }
+
   alias gfpr='gf pr'
   alias gw='git web'
 
@@ -574,6 +584,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
+  # shellcheck disable=2120
   vd() {
     if ! is-in-git-repo; then
       log_error 'could not `vd`: must be a `git` repository'

@@ -16,3 +16,6 @@
 
 # ignore my vs code settings
 .vscode/
+
+# plandex directories
+.plandex/
