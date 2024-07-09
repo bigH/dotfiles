@@ -132,61 +132,71 @@ echo
 
 if [ -d "$DOT_FILES_DIR/interactively" ]; then
   printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
-  run_and_print_status_symbol "found" "true"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/interactively' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
+    git pull \
+  )"
 else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/interactively' && \
-    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"$(git status -s)\" && \
-    git pull \
-  )"
 fi
 echo
 
 if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "found" "true"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/git-fuzzy' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
+    git pull \
+  )"
 else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/git-fuzzy' && \
-    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"$(git status -s)\" && \
-    git pull \
-  )"
 fi
 echo
 
 if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
   printf "  - ${BLUE}Found \`kube-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "found" "true"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/kube-fuzzy' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
+    git pull \
+  )"
 else
   printf "  - ${BLUE}Installing \`kube-fuzzy\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/kube-fuzzy.git $DOT_FILES_DIR/kube-fuzzy"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/kube-fuzzy' && \
-    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"$(git status -s)\" && \
-    git pull \
-  )"
 fi
 echo
 
 if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
   printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "found" "true"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/auto-sized-fzf' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
+    git pull \
+  )"
 else
   printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
+fi
+echo
+
+if [ -d "$DOT_FILES_DIR/searchy" ]; then
+  printf "  - ${BLUE}Found \`searchy\` ...${NORMAL}"
   run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/auto-sized-fzf' && \
-    test \"$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"$(git status -s)\" && \
+    cd '$DOT_FILES_DIR/searchy' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
     git pull \
   )"
+else
+  printf "  - ${BLUE}Installing \`searchy\` ...${NORMAL}"
+  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/searchy.git $DOT_FILES_DIR/searchy"
 fi
 echo
 
