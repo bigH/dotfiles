@@ -176,7 +176,7 @@ if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
   printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
   run_and_print_status_symbol "pull" "(\
     cd '$DOT_FILES_DIR/auto-sized-fzf' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'master' && \
     test -z \"\$(git status -s)\" && \
     git pull \
   )"
