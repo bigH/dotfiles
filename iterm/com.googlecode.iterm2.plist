@@ -6,6 +6,8 @@
 	<false/>
 	<key>AlternateMouseScroll</key>
 	<true/>
+	<key>ClickToSelectCommand</key>
+	<false/>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>BirdsOfParadise</key>
@@ -5826,7 +5828,7 @@
 			<key>Draw Powerline Glyphs</key>
 			<true/>
 			<key>Enable Triggers in Interactive Apps</key>
-			<true/>
+			<false/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
@@ -6365,7 +6367,7 @@
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.16443300600872041</real>
+	<real>0.094867244479594173</real>
 	<key>StretchTabsToFillBar</key>
 	<false/>
 	<key>SwitchPaneModifier</key>

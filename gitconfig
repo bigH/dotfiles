@@ -30,7 +30,7 @@
 
 [diff]
 # seems to break somethings
-	renameLimit = 100
+	renameLimit = 1000
 # use `patience` so diffs are more exact
 	algorithm = patience
 # use indentHeuristic so diffs are more pleasing
@@ -105,3 +105,9 @@
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+[init]
+	defaultBranch = main

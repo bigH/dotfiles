@@ -87,18 +87,6 @@ if command_exists git-fuzzy; then
   bindkey '^[b' insert-git-branch-name
 fi
 
-# Alt-B inserts branch (OR if you use shortcuts, anything relating to branches)
-if command_exists git-fuzzy; then
-  insert-git-sha-from-log() {
-    LBUFFER+="$(git-fuzzy log)"
-  }
-
-  zle -N insert-git-sha-from-log
-  bindkey '^[l' insert-git-sha-from-log
-fi
-
-# bindkey '^[f' emacs-forward-word
-
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line
 
@@ -148,3 +136,30 @@ fi
 zle -N _sgpt_zsh
 bindkey ^l _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
+
+# Alt-S - insert SHA of the current commit
+insert-sha() {
+  LBUFFER+="$(git rev-parse HEAD)"
+}
+zle -N insert-sha
+bindkey '^[s' insert-sha
+
+# Alt-S - insert SHA of the current commit
+insert-sha() {
+  LBUFFER+="$(git rev-parse HEAD)"
+}
+zle -N insert-sha
+bindkey '^[s' insert-sha
+
+# Alt-E - make the command use `entr`
+add-entr() {
+  if [[ "$#BUFFER" -gt 0 ]]; then
+    BUFFER="fd | entr -c $BUFFER"
+    CURSOR="$((CURSOR + 13))"
+  else
+    BUFFER="fd | entr -c $history[$((HISTCMD-1))]"
+    CURSOR=2
+  fi
+}
+zle -N add-entr
+bindkey '^[e' add-entr

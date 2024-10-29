@@ -414,3 +414,23 @@ mkt() {
   mkdir -p "$(dirname "$1")"
   touch "$1"
 }
+
+swap() {
+  if [ "$#" -ne 2 ]; then
+    log_error "expect exactly 2 arguments: swap <file1> <file2>"
+    return 1
+  elif [ ! -w "$1" ]; then
+    log_error "expect first argument to be a file: swap <file1> <file2>"
+    return 1
+  elif [ ! -w "$2" ]; then
+    log_error "expect second argument to be a file: swap <file1> <file2>"
+    return 1
+  fi
+  
+  local temp_file="$(mktemp)"
+
+  mv "$1" "$temp_file"
+  mv "$2" "$1"
+  mv "$temp_file" "$2"
+  return 0
+}

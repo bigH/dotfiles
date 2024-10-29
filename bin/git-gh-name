@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git_gh_name() {
+  git merge-base-remote-url | \
+    sed -E '
+      s#^.*@(.*):(.*)/(.*)(\.git)#\2/\3#;
+      s#^.*://.*/(.*)/(.*)(\.git)#\1/\2#
+    '
+}
+
+git_gh_name "$@"

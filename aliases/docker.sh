@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-# `docker` -> `d`
 alias d=docker
+alias dc=docker compose

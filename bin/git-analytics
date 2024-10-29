@@ -1,0 +1,39 @@
+#!/bin/bash
+
+git_analytics_recent_authors() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: git-analytics recent-authors <git-log-parameters>"
+    return 1
+  fi
+  git log "$@" --format='%aN' | \
+    sort -u | \
+    xargs -I'{author}' bash -c "echo; echo '{author}'; git log $(printf '%q ' "$@") --author='{author}' --format='    %C(auto)%h %s%Creset'"
+}
+
+git_analytics_help() {
+  echo "Usage: git analytics <command> [<args>]"
+  echo ""
+  echo "recent-authors"
+  echo "  recent-authors --since=1.week --author='John\\|Lisa'"
+  echo ""
+  echo "help"
+  echo "  help                                 This help text"
+}
+
+if [ "$#" -eq 0 ]; then
+  git_analytics_help
+  return 1
+fi
+
+export command="$1"
+shift
+
+function_name="git_analytics_${command//-/_}"
+if ! [[ "$(type -t "${function_name}")" == function ]]; then
+  echo "Unknown command: $command"
+  echo ""
+  git_analytics_help
+  return 1
+fi
+
+"$function_name" "$@"

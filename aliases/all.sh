@@ -19,7 +19,6 @@ auto_source "$ALIASES_DIR/core.sh"
 # source these only if they're "visible" commands
 source_aliases_for_expected_command git
 source_aliases_for_expected_command docker
-source_aliases_for_expected_command docker-compose
 source_aliases_for_expected_command yarn
 source_aliases_for_expected_command kubectl
 

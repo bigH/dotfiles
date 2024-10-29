@@ -29,5 +29,14 @@ setopt hist_ignore_space
 # load zmv - the pattern renamer/mover/copier in zsh
 autoload -Uz zmv
 
+# no help in zsh
+function help() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: help <command>"
+    return 1
+  fi
+  bash -c "help $(printf ' %q' "$@")"
+}
+
 # highlight usefully
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)

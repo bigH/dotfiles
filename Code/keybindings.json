@@ -270,11 +270,6 @@
     "when": "terminalTextSelectedInFocused || terminalFocus && terminalHasBeenCreated && terminalTextSelected || terminalFocus && terminalProcessSupported && terminalTextSelected || terminalFocus && terminalTextSelected && terminalTextSelectedInFocused || terminalHasBeenCreated && terminalTextSelected && terminalTextSelectedInFocused || terminalProcessSupported && terminalTextSelected && terminalTextSelectedInFocused"
   },
   {
-    "key": "cmd+j",
-    "command": "workbench.action.terminal.toggleTerminal",
-    "when": "terminal.active"
-  },
-  {
     "key": "ctrl+`",
     "command": "-workbench.action.terminal.toggleTerminal",
     "when": "terminal.active"
@@ -313,7 +308,7 @@
   {
     "key": "shift+l",
     "command": "workbench.action.nextEditorInGroup",
-    "when": "editorFocus && !inputFocus && !textInputFocus || editorTextFocus && neovim.init && neovim.mode != 'insert'"
+    "when": "editorFocus && !inputFocus && !textInputFocus || editorTextFocus && neovim.init && neovim.mode == 'normal'"
   },
   {
     "key": "alt+cmd+c",
@@ -1021,16 +1016,6 @@
   },
   {
     "key": "cmd+enter",
-    "command": "workbench.action.terminal.chat.insertCommand",
-    "when": "terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalHasBeenCreated && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks || terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalProcessSupported && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks"
-  },
-  {
-    "key": "alt+enter",
-    "command": "-workbench.action.terminal.chat.insertCommand",
-    "when": "terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalHasBeenCreated && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks || terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalProcessSupported && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks"
-  },
-  {
-    "key": "cmd+enter",
     "command": "-workbench.action.terminal.chat.runCommand",
     "when": "terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalHasBeenCreated && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks || terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalProcessSupported && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks"
   },
@@ -1038,11 +1023,6 @@
     "key": "cmd+enter",
     "command": "-workbench.action.terminal.chat.runFirstCommand",
     "when": "terminalChatAgentRegistered && terminalChatResponseContainsMultipleCodeBlocks && terminalHasBeenCreated && !terminalChatActiveRequest || terminalChatAgentRegistered && terminalChatResponseContainsMultipleCodeBlocks && terminalProcessSupported && !terminalChatActiveRequest"
-  },
-  {
-    "key": "alt+cmd+enter",
-    "command": "-workbench.action.terminal.chat.insertCommand",
-    "when": "terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalHasBeenCreated && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks || terminalChatAgentRegistered && terminalChatResponseContainsCodeBlock && terminalProcessSupported && !terminalChatActiveRequest && !terminalChatResponseContainsMultipleCodeBlocks"
   },
   {
     "key": "cmd+enter",
@@ -1152,10 +1132,6 @@
     "when": "chatInputHasText && inChatInput && !chatSessionRequestInProgress"
   },
   {
-    "key": "cmd+s",
-    "command": "workbench.action.files.saveFiles"
-  },
-  {
     "key": "shift+cmd+s",
     "command": "gitlens.views.compareWithHead"
   },
@@ -1218,5 +1194,48 @@
     "key": "alt+,",
     "command": "-gitlens.diffWithPreviousInDiffRight",
     "when": "editorTextFocus && isInDiffRightEditor && config.gitlens.keymap == 'alternate' && gitlens:activeFileStatus =~ /tracked/"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.togglePanel",
+    "when": "!panelVisible || terminalFocus"
+  },
+  {
+    "key": "cmd+j",
+    "command": "-workbench.action.togglePanel"
+  },
+  {
+    "key": "cmd+]",
+    "command": "workbench.action.terminal.focusNext",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "-workbench.action.terminal.focusNext",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+  },
+  {
+    "key": "cmd+[",
+    "command": "workbench.action.terminal.focusPrevious",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+  },
+  {
+    "key": "shift+cmd+[",
+    "command": "-workbench.action.terminal.focusPrevious",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.terminal.focus",
+    "when": "panelVisible && !terminalFocus"
+  },
+  {
+    "key": "cmd+down",
+    "command": "-workbench.action.terminal.focus",
+    "when": "accessibilityModeEnabled && accessibleViewOnLastLine && terminalHasBeenCreated && accessibleViewCurrentProviderId == 'terminal' || accessibilityModeEnabled && accessibleViewOnLastLine && terminalProcessSupported && accessibleViewCurrentProviderId == 'terminal'"
+  },
+  {
+    "key": "cmd+s",
+    "command": "workbench.action.files.saveAll"
   }
 ]

@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# source `indent` function
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+get_git_merge_base_branch() {
+  if [ $# -ne 1 ]; then
+    echo "ERROR: Missing or empty argument for 'get_git_merge_base_branch'." >&2
+    echo "main"
+    return 1
+  fi
+  if [ -x "$(command -v git-merge-base-branch)" ]; then
+    echo "WARNING: Missing or empty argument for '$1'." >&2
+    echo "         Using '$(git merge-base-branch)' instead." >&2
+    git merge-base-branch
+  else
+    echo "main"
+  fi
+}
+
+git_code_owners_diff_with_ref() {
+  if [ -n "$1" ]; then
+    ref="$1"
+  else
+    ref="$(get_git_merge_base_branch --diff-with-ref)"
+  fi
+  join <(codeowners) <(git diff --name-only "$ref")
+}
+
+git_code_owners_diff_with_merge_base() {
+  if [ -n "$1" ]; then
+    ref="$1"
+  else
+    ref="$(get_git_merge_base_branch --diff-with-merge-base)"
+  fi
+  join <(codeowners) <(git diff --name-only "$(git merge-base "$ref" HEAD)")
+}
+
+git_code_owners_help() {
+  # shellcheck disable=2016
+  echo '
+Usage: git code-owners [opts]
+
+  --diff-with-merge-base <ref>
+      Show code-owners for all files when diffing against the merge base of the current branch and
+      <ref>. If <ref> is not provided, it uses the value returned by `git merge-base-branch`.
+  --diff-with-merge-base <ref>
+      Show code-owners for all files when diffing against the <ref>. If <ref> is not provided, it
+      uses the value returned by `git merge-base-branch`.'
+}
+
+if ! command_exists join; then
+  echo "ERROR: 'join' command not found. Please install it." >&2
+  exit 1
+fi
+
+if ! command_exists codeowners; then
+  echo "ERROR: 'codeowners' command not found. Please install it:" >&2
+  echo "       https://github.com/hmarr/codeowners" >&2
+  exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+  echo "ERROR: No arguments provided." >&2
+  git_code_owners_help
+  exit 1
+fi
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --diff-with-ref)
+      shift
+      git_code_owners_diff_with_ref "$@"
+      exit $?
+      ;;
+    --diff-with-merge-base)
+      shift
+      git_code_owners_diff_with_merge_base "$@"
+      exit $?
+      ;;
+    *)
+      echo "ERROR: Unknown option '$1'"
+      git_code_owners_help
+      exit 1
+      ;;
+  esac
+done

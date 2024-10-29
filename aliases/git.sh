@@ -96,10 +96,25 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # status
   alias gs='gf status'
   alias gss='g status --short'
+  alias gcon='g status --short | grep "^UU"'
 
   # branch
+  alias gcb='g branch-name'
+  gbd() {
+    if [ "$#" -gt 0 ]; then
+      git branch -D "$@"
+    else
+      local branch="$(git fuzzy branch)"
+      if [ -n "$branch" ]; then
+        git branch -D "$branch"
+      else
+        log_error "no branch selected"
+      fi
+    fi
+  }
+  
+  # shellcheck disable=2262
   alias gb='gf branch'
-  alias gbd='g branch -D'
 
   # merge-base
   gmb() {
@@ -263,11 +278,29 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gd='gf diff'
   alias gds='gf diff --staged'
   alias gdh='gf diff HEAD'
-  alias gdo='gf diff "$(git merge-base-remote)/$(git branch-name)"'
+  alias gdo='g fetch ; gf diff "$(git merge-base-remote)/$(git branch-name)"'
   alias gdmb='gf diff "$(gmbh)"'
   alias glm='gl "$(gmbh)"..HEAD'
 
-  function gdhh() {
+  gbdmb() {
+    if [ "$#" -eq 0 ]; then
+      branch="$(git fuzzy branch)"
+    elif [ "$#" -eq 1 ]; then
+      branch="$1"
+    else
+      log_error 'too many arguments provided; `gbdmb` or `gbdmb <branch>`'
+    fi
+
+    if [ -z "$branch" ]; then
+      log_error 'no branch selected'
+    elif git rev-parse --verify "$branch" > /dev/null 2>&1; then
+      git fuzzy diff "$(git merge-base "$(git merge-base-remote)/$(git merge-base-branch)" "$branch")" "$branch"
+    else
+      log_error "branch '$branch' not found"
+    fi
+  }
+
+  gdhh() {
     if [ "$#" -eq 0 ]; then
       gdhh 1
     elif [ "$#" -eq 1 ]; then
@@ -285,6 +318,17 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias ggdo='g diff "$(git merge-base-remote)/$(git branch-name)"'
   alias ggdmb='g diff "$(gmbh)"'
   alias gglm='g log "$(gmbh)"..HEAD'
+
+  ggdhh() {
+    if [ "$#" -eq 0 ]; then
+      ggdhh 1
+    elif [ "$#" -eq 1 ]; then
+      # shellcheck disable=2046
+      git diff HEAD"$(printf -- '^%.0s' $(eval "echo {1..$1}"))"
+    else
+      log_error 'too many arguments provided; `ggdhh` or `ggdhh <N>`'
+    fi
+  }
 
   # show
   gsh() {
@@ -334,6 +378,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias grH='gr --hard'
   alias grs='gr --soft'
   alias grsh='gr --soft HEAD^'
+  alias grHo='gr --hard origin/$(git branch-name)'
 
   grh() {
     if [ "$#" -eq 0 ]; then
@@ -344,7 +389,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   # rebase
-  alias gri='git rebase --interactive'
+  alias gri='git rebase --interactive --autostash'
   alias grimb='gri "$(gmbh)"'
 
   grif() {
@@ -403,6 +448,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # rebase
   alias greb='git rebase'
   alias grc='git rebase --continue'
+  alias grcn='git -c core.editor=true rebase --continue'
   alias gra='git rebase --abort'
   # some others in `functions/git.sh`
 

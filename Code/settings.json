@@ -5,6 +5,7 @@
         "asvetliakov.vscode-neovim": 1
     },
     "editor.tabSize": 2,
+    "editor.detectIndentation": false,
     "[ruby]": {
         "editor.defaultFormatter": "Shopify.ruby-lsp",
         "editor.formatOnSave": true,
@@ -17,7 +18,20 @@
             120
         ],
         "editor.semanticHighlighting.enabled": true,
-        "editor.tabSize": 2
+        "editor.indentSize": 2,
+        "editor.tabSize": 4,
+    },
+    "[python]": {
+        "editor.indentSize": 4,
+        "editor.tabSize": 4,
+        "editor.semanticHighlighting.enabled": true,
+        "editor.insertSpaces": true,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "editor.rulers": [
+            88
+        ],
     },
     "editor.fontFamily": "Hasklug",
     "editor.fontSize": 13,
@@ -98,5 +112,26 @@
     "editor.accessibilitySupport": "off",
     "rubyLsp.linters": null,
     "ruby.rubocop.onSave": false,
-    "editor.defaultFormatter": null
+    "editor.defaultFormatter": null,
+    "go.toolsManagement.autoUpdate": true,
+    "copyOnSelect.trimStart": true,
+    "terminal.external.osxExec": "iTerm2.app",
+    "terminal.integrated.fontSize": 14,
+    "git.openRepositoryInParentFolders": "always",
+    "makefile.configureOnOpen": true,
+    "circleci.apiToken": "${env:CIRCLECI_API_TOKEN}",
+    "circleci.ssh.privateKey.github": "~/.ssh/id_ed25519",
+    "circleci.hostUrl": "",
+    "circleci.notifications.mute": true,
+    "git.decorations.enabled": false,
+    "git.countBadge": "off",
+    "git.detectSubmodules": false,
+    "git.enabled": false,
+    "git.enableStatusBarSync": false,
+    "git.optimisticUpdate": false,
+    "git.requireGitUserConfig": false,
+    "git.showInlineOpenFileAction": false,
+    "git.showProgress": false,
+    "github.branchProtection": false,
+    "github.gitProtocol": "ssh"
 }
