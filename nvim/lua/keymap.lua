@@ -1,5 +1,3 @@
-local isVSCode = vim.g.vscode == 1
-
 local map = require('keymapper')
 
 -- local imports
@@ -42,47 +40,45 @@ n('<LEADER><LEADER>', '<CMD>wa<CR>')
 
 ----------------------------- WINDOWS & BUFFERS -------------------------------
 
-if not isVSCode then
-  -- switching buffers
-  n('H', '<CMD>bprev<CR>')
-  n('L', '<CMD>bnext<CR>')
+-- switching buffers
+n('H', '<CMD>bprev<CR>')
+n('L', '<CMD>bnext<CR>')
 
-  -- switching buffers in terminal
-  n('<C-h>', '<CMD>bfirst<CR>')
-  n('<C-l>', '<CMD>blast<CR>')
+-- switching buffers in terminal
+n('<C-h>', '<CMD>bfirst<CR>')
+n('<C-l>', '<CMD>blast<CR>')
 
-  -- switching windows
-  n('<M-h>', '<CMD>wincmd h<CR>')
-  i('<M-h>', '<C-O><CMD>wincmd h<CR>')
+-- switching windows
+n('<M-h>', '<CMD>wincmd h<CR>')
+i('<M-h>', '<C-O><CMD>wincmd h<CR>')
 
-  n('<M-j>', '<CMD>wincmd j<CR>')
-  i('<M-j>', '<C-O><CMD>wincmd j<CR>')
+n('<M-j>', '<CMD>wincmd j<CR>')
+i('<M-j>', '<C-O><CMD>wincmd j<CR>')
 
-  n('<M-l>', '<CMD>wincmd l<CR>')
-  i('<M-l>', '<C-O><CMD>wincmd l<CR>')
+n('<M-l>', '<CMD>wincmd l<CR>')
+i('<M-l>', '<C-O><CMD>wincmd l<CR>')
 
-  n('<M-k>', '<CMD>wincmd k<CR>')
-  i('<M-k>', '<C-O><CMD>wincmd k<CR>')
+n('<M-k>', '<CMD>wincmd k<CR>')
+i('<M-k>', '<C-O><CMD>wincmd k<CR>')
 
-  -- creating windows
-  n('<M-H>', '<CMD>vsplit<CR><CMD>wincmd h<CR>')
-  i('<M-H>', '<C-O><CMD>vsplit<CR><C-O><CMD>wincmd h<CR>')
+-- creating windows
+n('<M-H>', '<CMD>vsplit<CR><CMD>wincmd h<CR>')
+i('<M-H>', '<C-O><CMD>vsplit<CR><C-O><CMD>wincmd h<CR>')
 
-  n('<M-J>', '<CMD>split<CR>')
-  i('<M-J>', '<C-O><CMD>split<CR>')
+n('<M-J>', '<CMD>split<CR>')
+i('<M-J>', '<C-O><CMD>split<CR>')
 
-  n('<M-K>', '<CMD>split<CR><CMD>wincmd k<CR>')
-  i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
+n('<M-K>', '<CMD>split<CR><CMD>wincmd k<CR>')
+i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
 
-  n('<M-L>', '<CMD>vsplit<CR>')
-  i('<M-L>', '<C-O><CMD>vsplit<CR>')
+n('<M-L>', '<CMD>vsplit<CR>')
+i('<M-L>', '<C-O><CMD>vsplit<CR>')
 
-  n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
-  n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
+n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
+n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
 
-  n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
-  n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
-end
+n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
+n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
 
 ----------------------------- TEXT MANIPULATION -------------------------------
 
@@ -103,19 +99,17 @@ n('<LEADER>y', '"+y', { remap = true })
 n('<LEADER>yy', '"+y_')
 n('<LEADER>Y', '"+y$')
 
-if not isVSCode then
-  -- yank relative path
-  n('yp', "<CMD>let @\" = expand('%')<CR>")
-  n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
+-- yank relative path
+n('yp', "<CMD>let @\" = expand('%')<CR>")
+n('<LEADER>yp', "<CMD>let @+ = expand('%')<CR>")
 
-  -- yank absolute path
-  n('yP', "<CMD>let @\" = expand('%:p')<CR>")
-  n('<LEADER>yP', "<CMD>let @+ = expand('%:p')<CR>")
+-- yank absolute path
+n('yP', "<CMD>let @\" = expand('%:p')<CR>")
+n('<LEADER>yP', "<CMD>let @+ = expand('%:p')<CR>")
 
-  -- Alt BS/Shift-BS
-  i('<M-BS>', '<C-W>')
-  i('<M-C-H>', '<C-U>')
-end
+-- Alt BS/Shift-BS
+i('<M-BS>', '<C-W>')
+i('<M-C-H>', '<C-U>')
 
 -------------------------- INTERESTING USEFUL ONES-----------------------------
 
@@ -126,4 +120,3 @@ n('&', '<CMD>&&<CR>')
 
 -- Repeat for visual selection
 v('.', ':normal .<CR>')
-

@@ -32,13 +32,14 @@ mk_expected_dir "$HOME/.screenlog"
 mk_expected_dir "$HOME/.local/share/fzf-history"
 mk_expected_dir "$HOME/.local/share/nvim/site/pack/packer/start/"
 mk_expected_dir "$DOT_FILES_DIR/logs"
+mk_expected_dir "$DOT_FILES_DIR/pyenvs"
 echo
 
 echo "${BLUE}${BOLD}\`made\` directory${NORMAL}"
-mkdir_if_not_exists "$DOT_FILES_DIR/made"
-mkdir_if_not_exists "$DOT_FILES_DIR/made/bin"
-mkdir_if_not_exists "$DOT_FILES_DIR/made/doc"
-mkdir_if_not_exists "$DOT_FILES_DIR/made/doc/man1"
+mk_expected_dir "$DOT_FILES_DIR/made"
+mk_expected_dir "$DOT_FILES_DIR/made/bin"
+mk_expected_dir "$DOT_FILES_DIR/made/doc"
+mk_expected_dir "$DOT_FILES_DIR/made/doc/man1"
 echo
 
 echo "${BLUE}${BOLD}neovim${NORMAL}"

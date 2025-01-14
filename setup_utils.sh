@@ -47,21 +47,6 @@ function mk_expected_dir {
   fi
 }
 
-function mkdir_if_not_exists {
-  if [ $# -eq 1 ]; then
-    if [ ! -d "$1" ]; then
-      echo "${GREEN}Creating${NORMAL}: $1 ..."
-      mkdir -p $1
-    else
-      echo "${GREEN}Directory already present${NORMAL}: $1 ..."
-      echo "${BOLD}${YELLOW}WARN${NORMAL}: Skipping directory creation $1 ..."
-    fi
-  else
-    echo "${RED}${BOLD}ERROR${NORMAL}: \`mkdir_if_not_exists\` requires 1 arguments"
-    exit 1
-  fi
-}
-
 function link_if_possible {
   if [ $# -eq 2 ]; then
     if [ -L "$2" ]; then

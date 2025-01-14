@@ -418,6 +418,18 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gcanepf='gcane; gpf'
   alias gacanepf='gaa; gcane ; gpf'
 
+  # prepare cherry-pick
+  pcp() {
+    local branch
+    if [ -z "$1" ]; then
+      branch="$(git branch-name)"
+    else
+      branch="$(git fuzzy branch)"
+    fi
+
+    git log --oneline "$(git merge-base "$(git merge-base-absolute)" "$branch")".."$branch" --oneline
+  }
+
   # cherry-pick
   gcp() {
     if [ "$#" -gt 0 ]; then
@@ -510,28 +522,6 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   alias gsu='indent --header git submodule status; indent --header git submodule update'
 
   # --- random higher-order ---
-  # create a flake branch
-  gflake() {
-    if [ -n "$(git status --short)" ]; then
-      wip 'for flake'
-    fi
-
-    indent --header git checkout "$(git merge-base-branch)"
-    indent --header git pull "$(git merge-base-remote)" "$(git merge-base-branch)"
-
-    BRANCH_NAME="hiren/fix-flake-$(date +%F)"
-    while [ "$#" -gt 0 ]; do
-      BRANCH_NAME="$BRANCH_NAME-${1##*/}"
-      shift
-    done
-
-    if git rev-parse --verify "$BRANCH_NAME" > /dev/null 2>&1; then
-      log_error "branch '$BRANCH_NAME' already exists"
-    else
-      gcob "$BRANCH_NAME"
-    fi
-  }
-
   # toss the branch and make a new one
   alias gtoss='git toss-branch'
 

@@ -19,7 +19,7 @@ git_pr() {
   fi
 
   HTTP_ROOT_URL="$(git web)"
-  indent --header open "$HTTP_ROOT_URL/pull/new/$COMPARISON"
+  indent --header open "$HTTP_ROOT_URL/compare/$COMPARISON"
 }
 
 git_pr "$@"

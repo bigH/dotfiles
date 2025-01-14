@@ -64,12 +64,12 @@ last_line() {
   tail -n 1
 }
 
-# lines [from] [to] - for piping only
+# line [number] - for piping only
 line() {
   lines "$1" "$1"
 }
 
-# line [number] - for piping only
+# lines [from] [to] - for piping only
 lines() {
   head -n "$2" | tail -n "+$1"
 }
@@ -433,4 +433,14 @@ swap() {
   mv "$2" "$1"
   mv "$temp_file" "$2"
   return 0
+}
+
+echo_lines() {
+  if [ "$#" -eq 0 ]; then
+    echo "ERROR: expect at least 1 argument"
+    return 1
+  fi
+  for line in "$@"; do
+    echo "$line"
+  done
 }
