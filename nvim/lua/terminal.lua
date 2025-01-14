@@ -3,7 +3,6 @@
 -- gtt - send line to terminal
 -- gt<text-obj> - send to terminal
 -- <visual>gt - send to terminal
-
 local map = require('keymapper')
 
 local n = map.n
@@ -14,10 +13,10 @@ local M = {}
 
 -- need to do <Plug> for these keybindings
 function M.setup()
-  vim.g.personal_all_terminals = {}
-  vim.g.personal_current_active_terminal = false
+    vim.g.personal_all_terminals = {}
+    vim.g.personal_current_active_terminal = false
 
-  vim.cmd [[
+    vim.cmd [[
     augroup TerminalSettings
 
       au! TermOpen * if &buftype == 'terminal' |
@@ -41,27 +40,25 @@ function M.setup()
     augroup END
   ]]
 
-  n('<Plug>TerminalToggle', '<CMD>lua require("terminal").toggle()<CR>')
+    n('<Plug>TerminalToggle', '<CMD>lua require("terminal").toggle()<CR>')
 
-  v('<Plug>TerminalSendVisualSelection', '<CMD>lua require("terminal").sendVisual()<CR>')
-  v('<Plug>TerminalSendOperator', '<CMD>lua require("terminal").sendOperator()<CR>')
+    v('<Plug>TerminalSendVisualSelection',
+      '<CMD>lua require("terminal").sendVisual()<CR>')
+    v('<Plug>TerminalSendOperator',
+      '<CMD>lua require("terminal").sendOperator()<CR>')
 
-  n('<C-t>', '<Plug>TerminalToggle')
-  i('<C-t>', '<C-O><Plug>TerminalToggle')
+    n('<C-t>', '<Plug>TerminalToggle')
+    i('<C-t>', '<C-O><Plug>TerminalToggle')
 
-  v('gt', '<Plug>TerminalSendVisualSelection')
-  n('gt', '<Plug>TerminalSendOperator')
-  n('gtt', 'gt_', { remap = true })
+    v('gt', '<Plug>TerminalSendVisualSelection')
+    n('gt', '<Plug>TerminalSendOperator')
+    n('gtt', 'gt_', {remap = true})
 end
 
-function M.toggle()
-end
+function M.toggle() end
 
-function M.sendVisual()
+function M.sendVisual() end
 
-end
-
-function M.sendOperator()
-end
+function M.sendOperator() end
 
 return M

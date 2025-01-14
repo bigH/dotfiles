@@ -128,13 +128,11 @@ local options = {
     -- clipboard = 'unnamedplus',
 
     -- TODO?
-    completeopt = { 'menuone', 'noselect' },
+    completeopt = {'menuone', 'noselect'},
 
     -- make vim think fast - plugin ramifications are unknown
     timeoutlen = 700,
-    updatetime = 300,
+    updatetime = 300
 }
 
-for k, v in pairs(options) do
-    vim.opt[k] = v
-end
+for k, v in pairs(options) do vim.opt[k] = v end

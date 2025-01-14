@@ -21,10 +21,10 @@ n('S', '<NOP>')
 ----------------------------- PERSONAL DEFAULTS -------------------------------
 
 -- <CR> == : (silent results in weird UX)
-n('<CR>', ':', { silent = false })
+n('<CR>', ':', {silent = false})
 
 -- <SPACE> is also <LEADER>, but `\` is the real <LEADER> for more ubiquitous use
-n('<SPACE>', '<LEADER>', { remap = true })
+n('<SPACE>', '<LEADER>', {remap = true})
 
 -- <CR> == _
 o('<CR>', '_')
@@ -74,11 +74,15 @@ i('<M-K>', '<C-O><CMD>split<CR><C-O><CMD>wincmd k<CR>')
 n('<M-L>', '<CMD>vsplit<CR>')
 i('<M-L>', '<C-O><CMD>vsplit<CR>')
 
-n('<leader>=', ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
-n('<leader>-', ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
+n('<leader>=',
+  ':exe "vertical resize " . (max([winwidth(0) + 1, winwidth(0) * 5/4]))<CR>')
+n('<leader>-',
+  ':exe "vertical resize " . (min([winwidth(0) - 1, winwidth(0) * 4/5]))<CR>')
 
-n('<leader>+', ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
-n('<leader>_', ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
+n('<leader>+',
+  ':exe "resize " . max([winheight(0) + 1, winheight(0) * 5/4])<CR>')
+n('<leader>_',
+  ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
 
 ----------------------------- TEXT MANIPULATION -------------------------------
 
@@ -95,7 +99,7 @@ n('<M-CR>', 'i<CR><ESC>')
 v('<LEADER>y', '"+y')
 
 -- explicit system clipboard yank
-n('<LEADER>y', '"+y', { remap = true })
+n('<LEADER>y', '"+y', {remap = true})
 n('<LEADER>yy', '"+y_')
 n('<LEADER>Y', '"+y$')
 
