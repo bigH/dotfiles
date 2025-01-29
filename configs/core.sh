@@ -1,4 +1,4 @@
-#!/usr/bin/env basH
+#!/usr/bin/env bash
 
 # turn off certain `shellcheck` errors
 export SHELLCHECK_OPTS="-e SC1090"

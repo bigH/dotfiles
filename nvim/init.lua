@@ -3,6 +3,8 @@ vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
 if vim.g.vscode then
+    require('setup_packer')
+
     require('settings')
     require('keymap')
 else

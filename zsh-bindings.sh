@@ -16,13 +16,13 @@ fzf-ripgrep-select-and-insert() {
 zle -N fzf-ripgrep-select-and-insert
 bindkey '^[p' fzf-ripgrep-select-and-insert
 
-# Ctrl-N - select directory to paste
-fzf-directory-select-and-insert() {
-  LBUFFER+="$(fzf-directory-selector)"
+# Ctrl-N - insert current directory's name
+insert-current-directory-basename() {
+  LBUFFER+="$(basename $(pwd))"
   zle redisplay
 }
-zle -N fzf-directory-select-and-insert
-bindkey '^n' fzf-directory-select-and-insert
+zle -N insert-current-directory-basename
+bindkey '^n' insert-current-directory-basename
 
 # Ctrl-H - find commit SHA(s)
 fzf-gh-widget() {
