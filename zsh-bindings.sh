@@ -174,27 +174,38 @@ fzf-history-widget-append() {
   if zmodload -F zsh/parameter p:{commands,history} 2>/dev/null && (( ${+commands[perl]} )); then
     selected="$(printf '%s\t%s\000' "${(kv)history[@]}" |
       perl -0 -ne 'if (!$seen{(/^\s*[0-9]+\**\t(.*)/s, $1)}++) { s/\n/\n\t/g; print; }' |
-      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m --read0") \
+      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --expect='enter,alt-enter' --bind=ctrl-r:toggle-sort --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m --read0") \
       FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd))"
   else
     selected="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
-      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --bind=ctrl-r:toggle-sort --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m") \
+      FZF_DEFAULT_OPTS=$(__fzf_defaults "" "-n2..,.. --scheme=history --expect='enter,alt-enter' --bind=ctrl-r:toggle-sort --wrap-sign '\t↳ ' --highlight-line ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m") \
       FZF_DEFAULT_OPTS_FILE='' $(__fzfcmd))"
   fi
   local ret=$?
-  if [ -n "$selected" ]; then
-    if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
-      NEW_CONTENT=$'\n'"$(history $MATCH | head -n1 | sed -E 's/^[[:space:]]*[0-9]+[[:space:]]*//')"
+
+  selected_content="$(echo "$selected" | tail -n +2)"
+  key_pressed="$(echo "$selected" | head -n 1)"
+
+  if [ -n "$selected_content" ]; then
+    if [[ $(awk '{print $1; exit}' <<< "$selected_content") =~ ^[1-9][0-9]* ]]; then
+      NEW_CONTENT="$(history $MATCH | head -n1 | sed -E 's/^[[:space:]]*[0-9]+[[:space:]]*//')"
     else # selected is a custom query, not from history
-      NEW_CONTENT=$'\n'"$selected"
+      NEW_CONTENT="$selected_content"
     fi
 
-    if [[ "$LBUFFER" =~ ^[[:space:]]*$ ]]; then
-      LBUFFER=$'\n'"$LBUFFER"
-    fi
+    if [ "$key_pressed" = 'alt-enter' ]; then
+      if ! [[ "$LBUFFER" =~ ^[[:space:]]*$ ]]; then
+        NEW_CONTENT=$'\n'"$NEW_CONTENT"
+      fi
 
-    if [[ "$RBUFFER" =~ ^[[:space:]]*$ ]]; then
-      RBUFFER=$'\n'"$RBUFFER"
+      if ! [[ "$RBUFFER" =~ ^[[:space:]]*$ ]]; then
+        NEW_CONTENT="$NEW_CONTENT"$'\n'
+      fi
+
+      LBUFFER+="$NEW_CONTENT"
+    else
+      LBUFFER="$NEW_CONTENT"
+      RBUFFER=""
     fi
   fi
   zle reset-prompt
