@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+log_if_conflicting_alias_or_function git
+
+git_open_usage() {
+  echo 'Usage: git open [optional relative path]'
+}
+
+git_open() {
+  local path
+  local repo_root
+  local relative_path
+
+  if [ "$#" -gt 1 ]; then
+    log_error 'too many arguments'
+    git_open_usage
+    return 1
+  fi
+
+  if [ "$#" -eq 1 ] && ! [ -e "$1" ]; then
+    log_error 'path does not exist'
+    git_open_usage
+    return 1
+  fi
+
+  if [ "$#" -eq 1 ] && [ -d "$1" ]; then
+    dir_to_search_for_repo_root="$1"
+  elif [ "$#" -eq 1 ] && [ -f "$1" ]; then
+    dir_to_search_for_repo_root="$(dirname "$1")"
+  elif [ "$#" -eq 0 ]; then
+    dir_to_search_for_repo_root="$(pwd)"
+  fi
+
+  if [ -z "$dir_to_search_for_repo_root" ]; then
+    if [ "$#" -eq 0 ]; then
+      log_error 'current directory is not in a git repo'
+    else
+      log_error 'path is not in a git repo'
+    fi
+    git_open_usage
+    return 1
+  fi
+
+  repo_root="$(cd "$dir_to_search_for_repo_root" && git rev-parse --show-toplevel 2>/dev/null)"
+
+  if [ "$#" -eq 1 ] && [ -z "$repo_root" ]; then
+    log_error "could not find git repository from path: $dir_to_search_for_repo_root"
+    git_open_usage
+    return 1
+  fi
+
+  base_url="$(cd "$repo_root" && git web)"
+
+  if [ -z "$base_url" ]; then
+    log_error 'could not calculate base URL'
+    return 1
+  fi
+
+  branch="$(cd "$repo_root" && git branch-name)"
+
+  if [ -z "$branch" ]; then
+    log_error "could not find branch name at repo root: $repo_root"
+    return 1
+  fi
+
+  if [ "$#" -eq 1 ]; then
+    desired_path="$1"
+  else
+    desired_path="$(cd "$repo_root" && fd | fzf \
+      -- \
+      --preview="$FZF_PREVIEW_CMD"
+    )"
+  fi
+
+  if [ -z "$desired_path" ]; then
+    log_error 'could not find chosen path'
+    return 1
+  fi
+
+  open "$base_url/tree/$branch/$desired_path"
+}
+
+git_open "$@"
+

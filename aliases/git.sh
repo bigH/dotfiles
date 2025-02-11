@@ -112,7 +112,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
       fi
     fi
   }
-  
+
   # shellcheck disable=2262
   alias gb='gf branch'
 
@@ -536,6 +536,10 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     unwip
   }
 
+  gopen() {
+    git open "$@"
+  }
+
   # --- submodules
   alias gsub='indent --header git submodule update --init --recursive'
 
@@ -647,6 +651,9 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     rm "$(git rev-parse --show-toplevel)/.git/index.lock"
   }
 
+  bump() {
+    touch $(ggdmb --name-only | file-must-exist)
+  }
 fi
 
 unset -f heroku_remote

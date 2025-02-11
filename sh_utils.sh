@@ -193,7 +193,7 @@ log_if_conflicting_alias_or_function() {
     log_error '`'"$1".'` function found.'
   fi
 
-  if alias git > /dev/null 2>&1; then
+  if alias "$1" > /dev/null 2>&1; then
     # shellcheck disable=2016
     log_error '`'"$1".'` alias found.'
   fi
