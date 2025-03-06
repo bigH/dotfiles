@@ -637,6 +637,18 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
     fi
   }
 
+  # wip/gpu
+  wippu() {
+    wip
+    gp u
+  }
+
+  # wip/gpf
+  wippf() {
+    wip
+    gp fu
+  }
+
   # wip/switch/unwip/vd
   vcob() {
     if [ $# -gt 0 ]; then

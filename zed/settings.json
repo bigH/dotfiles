@@ -7,12 +7,46 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
   "assistant": {
     "default_model": {
-      "provider": "anthropic",
-      "model": "claude-3-5-sonnet-latest"
+      "provider": "copilot_chat",
+      "model": "o1"
     },
+    "inline_alternatives": [
+      {
+        "provider": "openai",
+        "model": "__ gpt-4o"
+      }
+    ],
     "version": "2"
+  },
+  "language_models": {
+    "openai": {
+      "available_models": [
+        {
+          "name": "chatgpt-4o-latest",
+          "display_name": "__ gpt-4o",
+          "max_tokens": 128000,
+          "max_completion_tokens": 16384
+        },
+        {
+          "name": "o1",
+          "display_name": "__ o1",
+          "max_tokens": 200000,
+          "max_completion_tokens": 100000
+        },
+        {
+          "name": "o3-mini",
+          "display_name": "__ o3-mini",
+          "max_tokens": 200000,
+          "max_completion_tokens": 100000
+        }
+      ],
+      "version": "1"
+    }
   },
   "vim_mode": true,
   "ui_font_size": 16,

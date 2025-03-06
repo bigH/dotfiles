@@ -328,9 +328,9 @@ say_when() {
 action_when() {
   action="$1"
   name="$2"
-  command="$3"
+  command_as_string="$3"
 
-  if eval "$command"; then
+  if eval "$command_as_string"; then
     "$action" "$name success"
   else
     "$action" "$name failure"
@@ -443,4 +443,8 @@ echo_lines() {
   for line in "$@"; do
     echo "$line"
   done
+}
+
+timestamp() {
+  date +%Y%m%d%H%M%S
 }

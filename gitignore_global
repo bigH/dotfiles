@@ -16,3 +16,7 @@
 
 # plandex directories
 .plandex/
+
+# cursor
+.cursor/
+.cursorrules/
