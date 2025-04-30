@@ -1,5 +1,29 @@
 #!/usr/bin/env bash
 
+DOTFILES_LS_COMMAND='ls --color=always'
+DOTFILES_LS_SORTED_BY_TIMESTAMP_COMMAND='ls --color=always -t'
+DOTFILES_CAT_COMMAND='cat'
+DOTFILES_GREP_COMMAND='grep'
+
+if command_exists bat; then
+  DOTFILES_CAT_COMMAND='bat --color=always'
+fi
+
+if command_exists eza; then
+  DOTFILES_LS_COMMAND='eza --color=always'
+  DOTFILES_LS_SORTED_BY_TIMESTAMP_COMMAND='eza --color=always --sort=created'
+fi
+
+if command_exists rg; then
+  DOTFILES_GREP_COMMAND='rg'
+fi
+
+export DOTFILES_LS_COMMAND
+export DOTFILES_LS_SORTED_BY_TIMESTAMP_COMMAND
+export DOTFILES_CAT_COMMAND
+export DOTFILES_GREP_COMMAND
+
+
 # jj - list autojump directories
 if command_exists autojump; then
   if command_exists fzf; then
@@ -89,17 +113,6 @@ hr() {
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 }
 
-WH_LS_COMMAND='ls --color=always'
-WH_CAT_COMMAND='cat'
-
-if command_exists bat; then
-  WH_CAT_COMMAND='bat --color=always'
-fi
-
-if command_exists eza; then
-  WH_LS_COMMAND='eza --color=always'
-fi
-
 # `which` with `ls -l $(which)`
 wh() {
   if [ -z "$1" ]; then
@@ -119,13 +132,13 @@ wh() {
     elif [ -f "$1" ]; then
       echo "${CYAN} -- found a file -- ${NORMAL}"
       # shellcheck disable=2086
-      eval "indent --header $WH_LS_COMMAND -ld \"$1\""
+      eval "indent --header $DOTFILES_LS_COMMAND -ld \"$1\""
     elif [ -d "$1" ]; then
       echo "${CYAN} -- found a directory -- ${NORMAL}"
       # shellcheck disable=2086
-      eval "indent --header $WH_LS_COMMAND -ld \"$1\""
+      eval "indent --header $DOTFILES_LS_COMMAND -ld \"$1\""
       # shellcheck disable=2086
-      eval "indent --header $WH_CAT_COMMAND -l \"$1\""
+      eval "indent --header $DOTFILES_CAT_COMMAND -l \"$1\""
     else
       indent --header which "$1"
       PATH_TO_COMMAND="$(which "$1")"
@@ -446,5 +459,35 @@ echo_lines() {
 }
 
 timestamp() {
-  date +%Y%m%d%H%M%S
+  if [ "$1" = "-p" ] || [ "$1" = '--punctuation' ]; then
+    date +%Y-%m-%dT%H:%M:%S
+  else
+    date +%Y%m%d%H%M%S
+  fi
+}
+
+viewtf() {
+  if [ "$(command ls -1 ~/Downloads/run-*)" -eq 0 ]; then
+    echo "no files found matching '~/Downloads/run-*'"
+  elif [ "$(command ls -1 ~/Downloads/run-*)" -eq 1 ]; then
+    less -REX ~/Downloads/run-*
+  else
+    selections="$(eval "$DOTFILES_LS_SORTED_BY_TIMESTAMP_COMMAND -1 ~/Downloads/run-*" | \
+      fzf +m \
+          --ansi \
+          --preview-window=wrap \
+          --preview=" \
+            [ -n \"{q}\" ] && ( \
+              echo \"$DOTFILES_CAT_COMMAND {..} \| $DOTFILES_GREP_COMMAND {q}\" ; \
+              $DOTFILES_CAT_COMMAND {..} | $DOTFILES_GREP_COMMAND {q} ; \
+              true ; \
+            ) || ( \
+              echo \"$DOTFILES_CAT_COMMAND {..}\" ; \
+              $DOTFILES_CAT_COMMAND {..} ; \
+              true ; \
+            )" \
+          --phony \
+    )"
+    less -REX $selections
+  fi
 }

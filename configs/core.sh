@@ -91,7 +91,7 @@ if [ -d "$HOME/.jenv" ]; then
 fi
 
 if [ -z "$JAVA_HOME" ] && [ -x '/usr/libexec/java_home' ]; then
-  JAVA_HOME="$(/usr/libexec/java_home)"
+  JAVA_HOME="$(/usr/libexec/java_home 2> /dev/null)"
 fi
 
 if [ -z "$JAVA_HOME" ] && [ -d '/usr/local/opt/openjdk@11' ]; then
@@ -250,3 +250,8 @@ fi
 if [ -d "$HOME/Library/Application Support/Coursier/bin" ]; then
   export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
 fi
+
+if [ -d "/opt/homebrew/opt/postgresql@17/bin" ]; then
+  export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+fi
+

@@ -211,5 +211,25 @@ fzf-history-widget-append() {
   zle reset-prompt
   return $ret
 }
+
 zle -N fzf-history-widget-append
 bindkey '^r' fzf-history-widget-append
+
+insert-git-branch-name() {
+  LBUFFER+=" $history[$((HISTCMD-1))]"
+}
+
+zle -N insert-git-branch-name
+bindkey '[A' insert-git-branch-name
+
+get_ith_param_from_history() {
+  i=$1
+  command_line="$history[$((HISTCMD-1))]"
+}
+
+for i in {0..9}; do
+  insert-${i}th-arg() {
+    LBUFFER+=" $(get_ith_param $i)"
+  }
+done
+

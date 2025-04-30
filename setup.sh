@@ -57,6 +57,13 @@ link_if_possible "$DOT_FILES_DIR/code/settings.json" "$VS_CODE_HOME/settings.jso
 link_if_possible "$DOT_FILES_DIR/code/keybindings.json" "$VS_CODE_HOME/keybindings.json"
 echo
 
+echo "${BLUE}${BOLD}Cursor AI IDE${NORMAL}"
+CURSOR_HOME="$HOME/Library/Application Support/Cursor/User"
+mk_expected_dir "$CURSOR_HOME"
+# link_if_possible "$DOT_FILES_DIR/cursor/settings.json" "$CURSOR_HOME/settings.json"
+link_if_possible "$DOT_FILES_DIR/cursor/keybindings.json" "$CURSOR_HOME/keybindings.json"
+echo
+
 echo "${BLUE}${BOLD}gh-dash configurations${NORMAL} ${DOT_FILES_ENV_DISPLAY}"
 link_if_possible "$DOT_FILES_DIR/gh-dash" "$HOME/.config/gh-dash"
 echo

@@ -1,5 +1,5 @@
 # where i put local config-y things
-.hiren/
+/.hiren/
 
 # git-fuzzy uses these
 .git-fuzzy-config
@@ -17,6 +17,6 @@
 # plandex directories
 .plandex/
 
-# cursor
-.cursor/
-.cursorrules/
+.personal_gitignore
+
+CLAUDE.md

@@ -5367,6 +5367,19 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0xd-0x20000-0x24</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string> \\\n</string>
+			<key>Version</key>
+			<integer>2</integer>
+		</dict>
 		<key>0xf700-0x300000</key>
 		<dict>
 			<key>Action</key>
@@ -6208,7 +6221,7 @@
 				<key>editor</key>
 				<string>com.github.atom</string>
 				<key>text</key>
-				<string>( pbpaste; echo '\1' | sed 's:\5/::g' | sed 's:/retool_backend:retool:g' ) | paste -sd ' ' - | pbcopy</string>
+				<string>$HOME/bin/process_click_on_path_and_line '\1' '\2' '\5'</string>
 			</dict>
 			<key>Send Code When Idle</key>
 			<false/>
@@ -6309,6 +6322,14 @@
 					<string>{#f000ff,p3#282828282828}</string>
 					<key>regex</key>
 					<string>/usr/.*gems/(activesupport|actionpack|actionview|activemodel|activerecord|actionmailer|activejob|actioncable|activestorage|actionmailbox|actiontext|railties)</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>iTermHyperlinkTrigger</string>
+					<key>parameter</key>
+					<string>https://compass.chime.com/entities/\0</string>
+					<key>regex</key>
+					<string>\b[0-9a-fA-F-]{36}\b</string>
 				</dict>
 			</array>
 			<key>Unicode Version</key>
