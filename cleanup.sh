@@ -24,7 +24,7 @@ unlink "$VS_CODE_HOME/keybindings.json"
 
 # vs code configs
 VS_CODE_HOME="$HOME/Library/Application Support/Cursor/User"
-# unlink "$VS_CODE_HOME/settings.json"
+unlink "$VS_CODE_HOME/settings.json"
 unlink "$VS_CODE_HOME/keybindings.json"
 
 # big ones

@@ -1,0 +1,30 @@
+{
+    "window.commandCenter": true,
+    "cursor.cpp.disabledLanguages": [
+        "scminput"
+    ],
+    "workbench.colorTheme": "Spinel",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "cursor.aipreview.enabled": true,
+    "cursor.composer.renderPillsInsteadOfBlocks": true,
+    "cursor.general.enableShadowWorkspace": true,
+    "terminal.integrated.macOptionIsMeta": true,
+    "files.trimTrailingWhitespace": true,
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.tabStopWidth": 4,
+    "terminal.integrated.persistentSessionScrollback": 10000,
+    "terminal.integrated.scrollback": 100000,
+    "cursor.composer.cmdPFilePicker2": true,
+    "search.followSymlinks": false,
+    "indentRainbow.errorColor": "rgba(128,32,32,0)",
+    "go.toolsManagement.autoUpdate": true,
+    "git.openRepositoryInParentFolders": "never",
+    "black-formatter.showNotifications": "always",
+    "files.exclude": {
+        "**/__pycache__": true
+    },
+    "security.promptForLocalFileProtocolHandling": false,
+    "editor.tabSize": 2,
+}

@@ -6217,9 +6217,9 @@
 			<key>Semantic History</key>
 			<dict>
 				<key>action</key>
-				<string>command</string>
+				<string>editor</string>
 				<key>editor</key>
-				<string>com.github.atom</string>
+				<string>com.todesktop.230313mzl4w4u92</string>
 				<key>text</key>
 				<string>$HOME/bin/process_click_on_path_and_line '\1' '\2' '\5'</string>
 			</dict>
@@ -6330,6 +6330,24 @@
 					<string>https://compass.chime.com/entities/\0</string>
 					<key>regex</key>
 					<string>\b[0-9a-fA-F-]{36}\b</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>iTermHighlightLineTrigger</string>
+					<key>parameter</key>
+					<string>{p3#676765656666,p3#272728282828}</string>
+					<key>regex</key>
+					<string>lib/python3\.[^/]*/site-packages</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>iTermHighlightLineTrigger</string>
+					<key>parameter</key>
+					<string>{p3#800080008000,p3#272728282727}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>Cellar/python.*/lib/python.*/</string>
 				</dict>
 			</array>
 			<key>Unicode Version</key>

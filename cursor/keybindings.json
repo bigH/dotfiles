@@ -44,6 +44,42 @@
         "command": "composerMode.agent"
     },
     {
+        "key": "cmd+1",
+        "command": "workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "cmd+2",
+        "command": "workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "cmd+3",
+        "command": "workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "cmd+4",
+        "command": "workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "cmd+5",
+        "command": "workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "cmd+6",
+        "command": "workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "cmd+7",
+        "command": "workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "cmd+8",
+        "command": "workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "cmd+9",
+        "command": "workbench.action.lastEditorInGroup"
+    },
+    {
         "key": "alt+1",
         "command": "workbench.action.openEditorAtIndex1"
     },
@@ -110,5 +146,29 @@
     {
         "key": "alt+shift+l",
         "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "cmd+z",
+        "when": "editorTextFocus && neovim.mode != normal",
+        "command": "vscode-neovim.send",
+        "args": "<Esc>u"
+    },
+    {
+        "key": "cmd+z",
+        "when": "editorTextFocus && neovim.mode == normal",
+        "command": "vscode-neovim.send",
+        "args": "u"
+    },
+    {
+        "key": "cmd+shift+z",
+        "when": "editorTextFocus && neovim.mode != normal",
+        "command": "vscode-neovim.send",
+        "args": "<Esc><C-r>"
+    },
+    {
+        "key": "cmd+shift+z",
+        "when": "editorTextFocus && neovim.mode == normal",
+        "command": "vscode-neovim.send",
+        "args": "<C-r>"
     }
 ]

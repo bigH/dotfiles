@@ -215,21 +215,30 @@ fzf-history-widget-append() {
 zle -N fzf-history-widget-append
 bindkey '^r' fzf-history-widget-append
 
-insert-git-branch-name() {
+# Alt-A - append last command
+insert-last-command() {
   LBUFFER+=" $history[$((HISTCMD-1))]"
 }
 
-zle -N insert-git-branch-name
-bindkey '[A' insert-git-branch-name
+zle -N insert-last-command
+bindkey '^[a' insert-last-command
 
-get_ith_param_from_history() {
-  i=$1
-  command_line="$history[$((HISTCMD-1))]"
+# Alt-Shift-A - append last command output
+insert-last-command-output() {
+  LBUFFER+=" $(eval "$history[$((HISTCMD-1))]")"
 }
 
-for i in {0..9}; do
-  insert-${i}th-arg() {
-    LBUFFER+=" $(get_ith_param $i)"
-  }
-done
+zle -N insert-last-command-output
+bindkey '^[A' insert-last-command-output
 
+# get_ith_param_from_history() {
+#   i=$1
+#   command_line="$history[$((HISTCMD-1))]"
+# }
+#
+# for i in {0..9}; do
+#   insert-${i}th-arg() {
+#     LBUFFER+=" $(get_ith_param $i)"
+#   }
+# done
+#

@@ -105,4 +105,21 @@ return {
       require("nvim-surround").setup(opts)
     end,
   },
+
+  -- split-join
+  {
+    "echasnovski/mini.splitjoin",
+    version = "*",
+    opts = {
+      mappings = {
+        toggle = 'gS',
+        split = 'SJ',
+        join = 'SK',
+      },
+    },
+    config = function(_, opts)
+      require('mini.splitjoin').setup(opts)
+    end
+  },
+
 }

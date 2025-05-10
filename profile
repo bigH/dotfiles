@@ -15,7 +15,7 @@ fi
 
 source "$DOT_FILES_DIR/configs/all.sh"
 
-if type nvim >/dev/null 2>&1; then
+if command_exists nvim; then
   EDITOR="$(which nvim)"
 elif [ -x '/usr/local/bin/nvim' ]; then
   EDITOR='/usr/local/bin/nvim'

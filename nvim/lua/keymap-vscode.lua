@@ -27,9 +27,11 @@ end
 
 ----------------------------- BASICS -------------------------------
 
--- undo/redo
-na('u', 'undo')
-na('<C-r>', 'redo')
+-- I want vim's undo/redo and have set `keybindings.json` to send Cmd-Z and
+-- Cmd-Shift-Z to vim as native undo/redo
+--
+-- na('u', 'undo')
+-- na('<C-r>', 'redo')
 
 -- vs code back/forward
 na('<C-o>', 'workbench.action.navigateBack')

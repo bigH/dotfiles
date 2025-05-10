@@ -60,7 +60,7 @@ echo
 echo "${BLUE}${BOLD}Cursor AI IDE${NORMAL}"
 CURSOR_HOME="$HOME/Library/Application Support/Cursor/User"
 mk_expected_dir "$CURSOR_HOME"
-# link_if_possible "$DOT_FILES_DIR/cursor/settings.json" "$CURSOR_HOME/settings.json"
+link_if_possible "$DOT_FILES_DIR/cursor/settings.json" "$CURSOR_HOME/settings.json"
 link_if_possible "$DOT_FILES_DIR/cursor/keybindings.json" "$CURSOR_HOME/keybindings.json"
 echo
 
