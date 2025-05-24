@@ -27,4 +27,7 @@
     },
     "security.promptForLocalFileProtocolHandling": false,
     "editor.tabSize": 2,
+    "files.autoSave": "onFocusChange",
+    "editor.wrappingIndent": "indent",
+    "python.terminal.activateEnvironment": false,
 }

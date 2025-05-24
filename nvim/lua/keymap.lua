@@ -41,10 +41,10 @@ n('<LEADER><LEADER>', '<CMD>wa<CR>')
 ----------------------------- TEXT MANIPULATION -------------------------------
 
 -- swap g(j|k) and (j|k)
-n('gj', 'j')
-n('gk', 'k')
-n('j', 'gj')
-n('k', 'gk')
+-- n('gj', 'j')
+-- n('gk', 'k')
+-- n('j', 'gj')
+-- n('k', 'gk')
 
 -- alt-enter to insert new line in normal mode
 n('<M-CR>', 'i<CR><ESC>')
