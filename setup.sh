@@ -46,7 +46,7 @@ echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
 printf "${GREEN}Cloning${NORMAL}: packer.nvim"
-run_and_print_status_symbol "clone" "git clone --depth 1 'https://github.com/wbthomason/packer.nvim' '$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim'"
+run_and_print_status_symbol "clone" "git clone --depth 1 'git@github.com:wbthomason/packer.nvim' '$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim'"
 echo
 echo
 
@@ -83,7 +83,7 @@ if command_exists fzf; then
   fi
 else
   printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/junegunn/fzf.git $DOT_FILES_DIR/fzf"
+  run_and_print_status_symbol "clone" "git clone git@github.com:junegunn/fzf.git $DOT_FILES_DIR/fzf"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
 echo
@@ -96,7 +96,7 @@ elif command_exists rgrep; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
+  run_and_print_status_symbol "clone" "git clone git@github.com:BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
 echo
@@ -109,7 +109,7 @@ elif command_exists batcat; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/bat.git $DOT_FILES_DIR/bat"
+  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/bat.git $DOT_FILES_DIR/bat"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
 echo
@@ -122,7 +122,7 @@ elif command_exists fdfind; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/sharkdp/fd.git $DOT_FILES_DIR/fd"
+  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/fd.git $DOT_FILES_DIR/fd"
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 fi
 echo
@@ -148,7 +148,7 @@ if [ -d "$DOT_FILES_DIR/interactively" ]; then
   )"
 else
   printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/interactively.git $DOT_FILES_DIR/interactively"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/interactively.git $DOT_FILES_DIR/interactively"
 fi
 echo
 
@@ -162,7 +162,7 @@ if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
   )"
 else
   printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
 fi
 echo
 
@@ -176,7 +176,7 @@ if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
   )"
 else
   printf "  - ${BLUE}Installing \`kube-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/kube-fuzzy.git $DOT_FILES_DIR/kube-fuzzy"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/kube-fuzzy.git $DOT_FILES_DIR/kube-fuzzy"
 fi
 echo
 
@@ -190,26 +190,12 @@ if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
   )"
 else
   printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
-fi
-echo
-
-if [ -d "$DOT_FILES_DIR/searchy" ]; then
-  printf "  - ${BLUE}Found \`searchy\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/searchy' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`searchy\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/searchy.git $DOT_FILES_DIR/searchy"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
 fi
 echo
 
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
+run_and_print_status_symbol "clone" "git clone git@github.com:robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo
 
 printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
@@ -218,19 +204,19 @@ run_and_print_status_symbol "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/
 echo
 
 printf "  - ${BLUE}Installing \`zsh-autosuggestions\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 echo
 
 printf "  - ${BLUE}Installing \`zsh-syntax-highlighting\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 echo
 
 printf "  - ${BLUE}Installing \`zsh-completions\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
+run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
 echo
 
 printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/sindresorhus/pure.git $DOT_FILES_DIR/pure"
+run_and_print_status_symbol "clone" "git clone git@github.com:sindresorhus/pure.git $DOT_FILES_DIR/pure"
 echo
 
 printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
@@ -246,12 +232,12 @@ run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctag
 echo
 
 printf "  - ${BLUE}Installing \`fzf-tab-completion\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone https://github.com/lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
+run_and_print_status_symbol "clone" "git clone git@github.com:lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
 echo
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone https://github.com/bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos"
   run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build)"
 fi
 
