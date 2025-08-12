@@ -95,3 +95,7 @@ if [ -x /usr/local/bin/plandex ]; then
   alias pdx='plandex'
   alias plan='plandex'
 fi
+
+if [ -x "$HOME/.claude/local/claude" ]; then
+  alias claude="$HOME/.claude/local/claude"
+fi

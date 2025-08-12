@@ -30,4 +30,8 @@
     "files.autoSave": "onFocusChange",
     "editor.wrappingIndent": "indent",
     "python.terminal.activateEnvironment": false,
+    "cursor.composer.shouldChimeAfterChatFinishes": true,
+    "cursor.terminal.usePreviewBox": true,
+    "editor.wordWrapColumn": 100,
+    "editor.fontSize": 14,
 }

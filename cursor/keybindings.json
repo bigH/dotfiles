@@ -195,5 +195,9 @@
         "key": "cmd+k",
         "command": "-editor.action.inlineDiffs.focusEditor",
         "when": "editorHasPromptBar && editorPromptBarFocused"
+    },
+    {
+        "key": "cmd+e",
+        "command": "composerMode.background"
     }
 ]

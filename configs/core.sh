@@ -255,3 +255,8 @@ if [ -d "/opt/homebrew/opt/postgresql@17/bin" ]; then
   export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 fi
 
+if [ -d "$HOME/.bun" ]; then
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+fi
+
