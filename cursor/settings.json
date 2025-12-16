@@ -4,9 +4,6 @@
         "scminput"
     ],
     "workbench.colorTheme": "Spinel",
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
-    },
     "cursor.aipreview.enabled": true,
     "cursor.composer.renderPillsInsteadOfBlocks": true,
     "cursor.general.enableShadowWorkspace": true,
@@ -33,5 +30,11 @@
     "cursor.composer.shouldChimeAfterChatFinishes": true,
     "cursor.terminal.usePreviewBox": true,
     "editor.wordWrapColumn": 100,
-    "editor.fontSize": 14,
+    "cursor.composer.shouldAllowCustomModes": true,
+    "python.terminal.shellIntegration.enabled": true,
+    "debugpy.debugJustMyCode": false,
+    "debugpy.showPythonInlineValues": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
 }

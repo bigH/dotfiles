@@ -1,0 +1,64 @@
+#!/bin/bash
+
+ES_ASK_REPO_LOCATION="$HOME/dev/chime/eng-services-ask-bot"
+ES_ASK_SLACK_APP_DOMAIN_AND_PROTOCOL="$(cd "$ES_ASK_REPO_LOCATION" && bin/app tunnel-url | grep '^https')"
+
+cat <<EOF | pbcopy
+{
+    "display_information": {
+        "name": "Inky Bebe",
+        "description": "Hiren ES Ask Local Build",
+        "background_color": "#1d7c00"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "Inky bebe",
+            "always_online": false
+        }
+    },
+    "oauth_config": {
+        "redirect_urls": [
+            "${ES_ASK_SLACK_APP_DOMAIN_AND_PROTOCOL}/api/v1/slack/oauth_redirect"
+        ],
+        "scopes": {
+            "bot": [
+                "app_mentions:read",
+                "bookmarks:read",
+                "channels:history",
+                "channels:join",
+                "chat:write",
+                "chat:write.customize",
+                "emoji:read",
+                "groups:history",
+                "im:history",
+                "im:read",
+                "im:write",
+                "incoming-webhook",
+                "pins:read",
+                "reactions:read",
+                "users.profile:read",
+                "links:read",
+                "reactions:write"
+            ]
+        }
+    },
+    "settings": {
+        "event_subscriptions": {
+            "request_url": "${ES_ASK_SLACK_APP_DOMAIN_AND_PROTOCOL}/api/v1/slack",
+            "bot_events": [
+                "app_mention",
+                "message.channels",
+                "reaction_added",
+                "reaction_removed"
+            ]
+        },
+        "interactivity": {
+            "is_enabled": true,
+            "request_url": "${ES_ASK_SLACK_APP_DOMAIN_AND_PROTOCOL}/api/v1/slack/interactive"
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": false,
+        "token_rotation_enabled": false
+    }
+}
+EOF

@@ -71,8 +71,14 @@ fi
 # `tldr` is like `man`
 if command_exists bat; then
   if command_exists prefer-bat; then
+    # most cattyness
+    alias cccat='command cat'
+
+    # mid cattyness
+    alias ccat='BAT_STYLE=plain bat --no-pager'
+
+    # no cattyness
     alias cat='prefer-bat'
-    alias ccat='command cat'
   fi
 fi
 

@@ -244,6 +244,7 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   # add
   alias ga='indent --header git add'
   alias gaa='ga --all'
+  alias gaai='gaa --intent-to-add'
   alias gaas='gaa; gs'
   alias gap='git add --patch'
 
