@@ -37,8 +37,10 @@ cat <<EOF | pbcopy
                 "pins:read",
                 "reactions:read",
                 "users.profile:read",
-                "links:read",
-                "reactions:write"
+                "users:read",
+                "users:read.email",
+                "reactions:write",
+                "files:read"
             ]
         }
     },
