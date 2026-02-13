@@ -1,0 +1,3 @@
+#!/bin/bash
+
+open "https://argocd.stable.chmfin.com/applications/${1:-dev1}-$(basename "$(pwd)")-b003"

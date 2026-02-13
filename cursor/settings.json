@@ -34,7 +34,5 @@
     "python.terminal.shellIntegration.enabled": true,
     "debugpy.debugJustMyCode": false,
     "debugpy.showPythonInlineValues": true,
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
-    },
+    "cursor.cpp.enablePartialAccepts": true,
 }

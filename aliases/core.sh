@@ -102,6 +102,8 @@ if [ -x /usr/local/bin/plandex ]; then
   alias plan='plandex'
 fi
 
-if [ -x "$HOME/.claude/local/claude" ]; then
-  alias claude="$HOME/.claude/local/claude"
+CLAUDE_LOCAL_EXPECTED_LOCATION="$HOME/.local/bin/claude"
+if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
+  alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION"
+  alias chlaude="aws sso login --profile=daily-login && $CLAUDE_LOCAL_EXPECTED_LOCATION"
 fi

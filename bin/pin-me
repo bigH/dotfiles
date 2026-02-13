@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+FORCE=false
+
+if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
+  shift
+  FORCE=true
+fi
+
+ENV_NAME="${1:-dev1}"
+shift
+
+if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
+  shift
+  FORCE=true
+fi
+
+BRANCH_NAME="${1:-$(git branch-name)}"
+shift
+
+if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
+  shift
+  FORCE=true
+fi
+
+REPO_NAME="${1:-$(basename "$(pwd)")}"
+shift
+
+if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
+  shift
+  FORCE=true
+fi
+
+if ! is-in-git-repo; then
+  log_error "Not in a \`git\` repo!"
+  exit 1
+fi
+
+if [ "$BRANCH_NAME" = "main" ]; then
+  log_error "Branch \`main\` cannot be pinned!"
+  exit 1
+fi
+
+if ! [[ "$(git remote -v)" == *"1debit/"* ]]; then
+  log_error "Not a \`1debit\` repo!"
+  exit 1
+fi
+
+if [ "$FORCE" = 'true' ]; then
+  indent --header \
+    compass branchpin delete \
+      --env "$ENV_NAME" \
+      "$REPO_NAME"
+fi
+
+indent --header \
+  compass branchpin set \
+    --env "$ENV_NAME" \
+    --duration 12 \
+    --ref "$BRANCH_NAME" \
+    "$REPO_NAME"

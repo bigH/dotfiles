@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+ENV_NAME="${1:-dev1}"
+shift
+
+BRANCH_NAME="${1:-$(git branch-name)}"
+shift
+
+REPO_NAME="${1:-$(basename "$(pwd)")}"
+shift
+
+if ! is-in-git-repo; then
+  log_error "Not in a \`git\` repo!"
+  exit 1
+fi
+
+if [ "$BRANCH_NAME" = "main" ]; then
+  log_error "Branch \`main\` cannot be pinned!"
+  exit 1
+fi
+
+if ! [[ "$(git remote -v)" == *"1debit/"* ]]; then
+  log_error "Not a \`1debit\` repo!"
+  exit 1
+fi
+
+indent --header \
+  compass deploy create \
+    --env "$ENV_NAME" \
+    --ref "$BRANCH_NAME" \
+    "$REPO_NAME"
