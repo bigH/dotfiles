@@ -49,7 +49,15 @@ if ! [[ "$(git remote -v)" == *"1debit/"* ]]; then
   exit 1
 fi
 
+display_branchpin() { \
+  indent --header \
+    compass branchpin list \
+      --env "$ENV_NAME" \
+      "$REPO_NAME"
+}
+
 if [ "$FORCE" = 'true' ]; then
+  display_branchpin
   indent --header \
     compass branchpin delete \
       --env "$ENV_NAME" \
@@ -61,4 +69,4 @@ indent --header \
     --env "$ENV_NAME" \
     --duration 12 \
     --ref "$BRANCH_NAME" \
-    "$REPO_NAME"
+    "$REPO_NAME" || display_branchpin

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# shellcheck source=../sh_utils.sh
+source "$DOT_FILES_DIR/sh_utils.sh"
+
+ACTIVE_DIR="$WORK_DIR_PATH"
+FREEZER_DIR="${WORK_DIR_PATH}-freezer"
+MAX_DIR_NAME_LENGTH=32
+
+mkdir -p "$FREEZER_DIR"
+
+if [ ! -d "$ACTIVE_DIR" ]; then
+  log_error "\$WORK_DIR_PATH is not a directory: $ACTIVE_DIR"
+  exit 1
+fi
+
+active_dirs() {
+  (cd "$ACTIVE_DIR" && ls -d -1 */ 2>/dev/null | grep -v halo | sed 's|/$||')
+}
+
+frozen_dirs() {
+  (cd "$FREEZER_DIR" && ls -d -1 */ 2>/dev/null | grep -v halo | sed 's|/$||')
+}
+
+ACTIVE_LIST="$(active_dirs)"
+FROZEN_LIST="$(frozen_dirs)"
+
+if [ -z "$ACTIVE_LIST" ] && [ -z "$FROZEN_LIST" ]; then
+  log_info "No directories found."
+  exit 0
+fi
+
+# active dirs in bold, frozen dirs with blue [frozen] marker
+FZF_INPUT="$(
+  echo "$ACTIVE_LIST" | awk_with_color_codes 'NF { print BOLD $0 NORMAL }'
+  echo "$FROZEN_LIST" | awk_with_color_codes -v w="$MAX_DIR_NAME_LENGTH" 'NF { printf "%-*s %s%s%s\n", w, $0, BLUE, "[frozen]", NORMAL }'
+)"
+
+# pre-select active dirs via query + select-all trick
+PRESELECT_QUERY="$(echo "$ACTIVE_LIST" | join_lines ' | ')"
+
+FZF_OUTPUT="$(
+  echo "$FZF_INPUT" | \
+    fzf --ansi --no-height --multi \
+        --nth 1 \
+        --header "  ${CYAN}${BOLD}cman${NORMAL} - select repos to keep active" \
+        --query "$PRESELECT_QUERY" \
+        --bind 'load:select-all+clear-query' \
+        --preview "eza -l --color=always $ACTIVE_DIR/{1} 2>/dev/null || eza -l --color=always $FREEZER_DIR/{1} 2>/dev/null"
+)"
+
+if [ $? -ne 0 ]; then
+  exit 0
+fi
+
+# strip ANSI codes and extract directory name (first field)
+SELECTED="$(echo "$FZF_OUTPUT" | sed $'s/\x1b\\[[0-9;]*m//g' | awk '{ print $1 }')"
+
+# activate: selected items currently in freezer
+echo "$FROZEN_LIST" | while read -r name; do
+  [ -z "$name" ] && continue
+  if echo "$SELECTED" | grep -qxF "$name"; then
+    log_info "Activating ${GREEN}${BOLD}$name${NORMAL}"
+    mv "$FREEZER_DIR/$name" "$ACTIVE_DIR/$name"
+  fi
+done
+
+# freeze: deselected items currently active
+echo "$ACTIVE_LIST" | while read -r name; do
+  [ -z "$name" ] && continue
+  if ! echo "$SELECTED" | grep -qxF "$name"; then
+    log_info "Freezing ${YELLOW}${BOLD}$name${NORMAL}"
+    mv "$ACTIVE_DIR/$name" "$FREEZER_DIR/$name"
+  fi
+done
