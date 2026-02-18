@@ -1,6 +1,8 @@
 # where i put local config-y things
 /.hiren/
 
+.claude/settings.local.json
+
 # git-fuzzy uses these
 .git-fuzzy-config
 .git-fuzzy-snapshots/
