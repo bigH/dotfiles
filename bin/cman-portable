@@ -1,7 +1,52 @@
 #!/bin/bash
 
-# shellcheck source=../sh_utils.sh
-source "$DOT_FILES_DIR/sh_utils.sh"
+# -- portable sh_utils --
+
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+CYAN="$(tput setaf 6)"
+GRAY="$(tput setaf 8)"
+BOLD="$(tput bold)"
+NORMAL="$(tput sgr0)"
+
+log_error() {
+  echo "[${RED}${BOLD}ERROR${NORMAL}] $*"
+}
+
+log_info() {
+  echo "[${GREEN}${BOLD}INFO${NORMAL}] $*"
+}
+
+join_lines() {
+  DEFAULT_SEP=' '
+  SEP="${1:-$DEFAULT_SEP}"
+  LENGTH_OF_SEP="${#SEP}"
+
+  if [ "$LENGTH_OF_SEP" -eq 0 ]; then
+    paste -s -d' ' -
+  elif [ "$LENGTH_OF_SEP" -eq 1 ]; then
+    paste -s -d"$SEP" -
+  else
+    paste -s -d"%" - | sed "s/%/$SEP/g"
+  fi
+}
+
+awk_with_color_codes() {
+  awk \
+    -v RED="$RED" \
+    -v GREEN="$GREEN" \
+    -v YELLOW="$YELLOW" \
+    -v BLUE="$BLUE" \
+    -v CYAN="$CYAN" \
+    -v GRAY="$GRAY" \
+    -v BOLD="$BOLD" \
+    -v NORMAL="$NORMAL" \
+    "$@"
+}
+
+# -- cman --
 
 ACTIVE_DIR="$WORK_DIR_PATH"
 FREEZER_DIR="${WORK_DIR_PATH}-freezer"
