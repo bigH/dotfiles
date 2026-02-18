@@ -30,24 +30,35 @@ if [ -z "$ACTIVE_LIST" ] && [ -z "$FROZEN_LIST" ]; then
   exit 0
 fi
 
-# active dirs in bold, frozen dirs with blue [frozen] marker, sorted together
-FZF_INPUT="$(
-  comm <(echo "$ACTIVE_LIST" | sort) <(echo "$FROZEN_LIST" | sort) | \
-    awk_with_color_codes -v w="$MAX_DIR_NAME_LENGTH" '
-      /^\t/ { name = substr($0, 2); printf "%-*s %s%s%s\n", w, name, BLUE, "[frozen]", NORMAL; next }
-      NF    { print BOLD $0 NORMAL }
-    '
-)"
+# sorted view: all dirs interleaved alphabetically
+SORTED_FILE="$(mktemp)"
+comm <(echo "$ACTIVE_LIST" | sort) <(echo "$FROZEN_LIST" | sort) | \
+  awk_with_color_codes -v w="$MAX_DIR_NAME_LENGTH" '
+    /^\t/ { name = substr($0, 2); printf "%-*s %s%s%s\n", w, name, BLUE, "[frozen]", NORMAL; next }
+    NF    { print BOLD $0 NORMAL }
+  ' > "$SORTED_FILE"
+
+# grouped view: active first, then frozen
+GROUPED_FILE="$(mktemp)"
+{
+  echo "$ACTIVE_LIST" | awk_with_color_codes 'NF { print BOLD $0 NORMAL }'
+  echo "$FROZEN_LIST" | awk_with_color_codes -v w="$MAX_DIR_NAME_LENGTH" 'NF { printf "%-*s %s%s%s\n", w, $0, BLUE, "[frozen]", NORMAL }'
+} > "$GROUPED_FILE"
+
+TOGGLE_STATE="$(mktemp)"
+trap 'rm -f "$SORTED_FILE" "$GROUPED_FILE" "$TOGGLE_STATE"' EXIT
 
 # pre-select active dirs via query + select-all trick
 PRESELECT_QUERY="$(echo "$ACTIVE_LIST" | join_lines ' | ')"
 
 FZF_OUTPUT="$(
-  echo "$FZF_INPUT" | \
+  cat "$SORTED_FILE" | \
     fzf --ansi --no-height --multi \
         --nth 1 \
+        --header "  ${CYAN}${BOLD}cman${NORMAL} - select repos to keep active  ${GRAY}(Ctrl+S toggle sort)${NORMAL}" \
         --query "$PRESELECT_QUERY" \
         --bind 'load:select-all+clear-query' \
+        --bind "ctrl-s:reload(if [ -f $TOGGLE_STATE ]; then rm $TOGGLE_STATE; cat $GROUPED_FILE; else touch $TOGGLE_STATE; cat $SORTED_FILE; fi)+change-query($PRESELECT_QUERY)+select-all+clear-query" \
         --preview "eza -l --color=always $ACTIVE_DIR/{1} 2>/dev/null || eza -l --color=always $FREEZER_DIR/{1} 2>/dev/null"
 )"
 
