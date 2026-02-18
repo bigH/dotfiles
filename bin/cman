@@ -51,11 +51,15 @@ trap 'rm -f "$SORTED_FILE" "$GROUPED_FILE" "$TOGGLE_STATE"' EXIT
 # pre-select active dirs via query + select-all trick
 PRESELECT_QUERY="$(echo "$ACTIVE_LIST" | join_lines ' | ')"
 
+HEADER='
+'"${GRAY}(Ctrl+S toggle sort)${NORMAL}"'
+ '
+
 FZF_OUTPUT="$(
   cat "$SORTED_FILE" | \
     fzf --ansi --no-height --multi \
         --nth 1 \
-        --header "  ${CYAN}${BOLD}cman${NORMAL} - select repos to keep active  ${GRAY}(Ctrl+S toggle sort)${NORMAL}" \
+        --header "$HEADER" \
         --query "$PRESELECT_QUERY" \
         --bind 'load:select-all+clear-query' \
         --bind "ctrl-s:reload(if [ -f $TOGGLE_STATE ]; then rm $TOGGLE_STATE; cat $GROUPED_FILE; else touch $TOGGLE_STATE; cat $SORTED_FILE; fi)+change-query($PRESELECT_QUERY)+select-all+clear-query" \
