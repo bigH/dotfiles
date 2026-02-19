@@ -260,3 +260,5 @@ if [ -d "$HOME/.bun" ]; then
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
+CLAUDE_LOCAL_EXPECTED_LOCATION="$HOME/.local/bin/claude"
+

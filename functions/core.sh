@@ -491,3 +491,74 @@ viewtf() {
     less -REX $selections
   fi
 }
+
+if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
+  export CLAUDE_PLUGINS_DIR="$HOME/dev/claude-plugins"
+
+  claude_plugin_install() {
+    if [ "$#" -ne 1 ]; then
+      log_error "usage: claude_plugin_install <owner>/<repo>"
+      return 1
+    fi
+
+    local repo_slug="$1"
+    local repo_name="${repo_slug##*/}"
+
+    if [ -z "$repo_name" ]; then
+      log_error "could not parse repo name from '$repo_slug'"
+      return 1
+    fi
+
+    local dest="$CLAUDE_PLUGINS_DIR/$repo_name"
+
+    if [ -d "$dest" ]; then
+      log_error "already exists: $dest"
+      return 1
+    fi
+
+    mkdir -p "$CLAUDE_PLUGINS_DIR"
+    git clone "git@github.com:${repo_slug}.git" "$dest"
+  }
+
+  claude_with_plugin() {
+    if ! command_exists fzf; then
+      log_error "fzf is required"
+      return 1
+    fi
+
+    if [ ! -d "$CLAUDE_PLUGINS_DIR" ]; then
+      log_error "no plugins directory found at $CLAUDE_PLUGINS_DIR"
+      return 1
+    fi
+
+    local selected
+    selected="$( \
+      command ls -1d "$CLAUDE_PLUGINS_DIR"/*/ 2>/dev/null | \
+      while IFS= read -r dir; do
+        local name
+        name="$(basename "$dir")"
+        printf '%s\t%s\n' "$dir" "$name"
+      done | \
+      fzf -m -d $'\t' --with-nth 2 \
+          --preview="$DOTFILES_LS_COMMAND -la {1}" \
+          --preview-window=wrap | \
+      cut -d$'\t' -f1 \
+    )"
+
+    if [ -z "$selected" ]; then
+      echo "no plugins selected"
+      return 1
+    fi
+
+    local plugin_args=()
+    while IFS= read -r dir; do
+      # strip trailing slash
+      dir="${dir%/}"
+      plugin_args+=(--plugin-dir "$dir")
+    done <<< "$selected"
+
+    echo "claude ${plugin_args[*]} --dangerously-skip-permissions $*"
+    claude "${plugin_args[@]}" --dangerously-skip-permissions "$@"
+  }
+fi # claude exists
+

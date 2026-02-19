@@ -102,8 +102,16 @@ if [ -x /usr/local/bin/plandex ]; then
   alias plan='plandex'
 fi
 
-CLAUDE_LOCAL_EXPECTED_LOCATION="$HOME/.local/bin/claude"
+alias hidefile='f(){ 
+  sandbox-exec -p "
+  (version 1)
+  (allow default)
+  (deny file-read* (literal \"$1\"))
+  (deny file-read-metadata (literal \"$1\"))
+  " "${@:2}"
+}; f'
+
 if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
-  alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION"
+  alias claude="hidefile '/Library/Application Support/ClaudeCode/managed-settings.json' $CLAUDE_LOCAL_EXPECTED_LOCATION"
   alias chlaude="aws sso login --profile=daily-login && $CLAUDE_LOCAL_EXPECTED_LOCATION"
 fi
