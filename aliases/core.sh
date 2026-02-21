@@ -112,6 +112,6 @@ alias hidefile='f(){
 }; f'
 
 if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
-  alias claude="hidefile '/Library/Application Support/ClaudeCode/managed-settings.json' $CLAUDE_LOCAL_EXPECTED_LOCATION"
+  alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION"
   alias chlaude="aws sso login --profile=daily-login && $CLAUDE_LOCAL_EXPECTED_LOCATION"
 fi

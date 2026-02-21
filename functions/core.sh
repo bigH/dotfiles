@@ -533,11 +533,19 @@ if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
 
     local selected
     selected="$( \
-      command ls -1d "$CLAUDE_PLUGINS_DIR"/*/ 2>/dev/null | \
-      while IFS= read -r dir; do
-        local name
-        name="$(basename "$dir")"
-        printf '%s\t%s\n' "$dir" "$name"
+      for repo_dir in "$CLAUDE_PLUGINS_DIR"/*/; do
+        local repo_name
+        repo_name="$(basename "$repo_dir")"
+        if [ -d "$repo_dir/plugins" ]; then
+          for plugin_dir in "$repo_dir"/plugins/*/; do
+            [ -d "$plugin_dir" ] || continue
+            local plugin_name
+            plugin_name="$(basename "$plugin_dir")"
+            printf '%s\t%s // %s\n' "$plugin_dir" "$repo_name" "$plugin_name"
+          done
+        elif [ -d "$repo_dir/.claude-plugin" ]; then
+          printf '%s\t%s\n' "$repo_dir" "$repo_name"
+        fi
       done | \
       fzf -m -d $'\t' --with-nth 2 \
           --preview="$DOTFILES_LS_COMMAND -la {1}" \
