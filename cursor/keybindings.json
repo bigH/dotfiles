@@ -195,5 +195,10 @@
         "key": "cmd+k",
         "command": "-editor.action.inlineDiffs.focusEditor",
         "when": "editorHasPromptBar && editorPromptBarFocused"
+    },
+    {
+        "key": "alt+cmd+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
     }
 ]
