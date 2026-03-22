@@ -194,6 +194,21 @@ else
 fi
 echo
 
+if [ -d "$DOT_FILES_DIR/agents-md" ]; then
+  printf "  - ${BLUE}Found \`agents-md\` ...${NORMAL}"
+  run_and_print_status_symbol "pull" "(\
+    cd '$DOT_FILES_DIR/agents-md' && \
+    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
+    test -z \"\$(git status -s)\" && \
+    git pull \
+  )"
+else
+  printf "  - ${BLUE}Installing \`agents-md\` ...${NORMAL}"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/agents-md.git $DOT_FILES_DIR/agents-md"
+  run_and_print_status_symbol "generate" "\"$DOT_FILES_DIR/agents-md/generate-agent-instructions\""
+fi
+echo
+
 printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
 run_and_print_status_symbol "clone" "git clone git@github.com:robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
 echo
@@ -301,12 +316,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "  [${BLUE}${BOLD}macOS${NORMAL}]:"
   echo
   echo "     ... installs dependencies"
-  echo "     \`brew install ack autojump bat bpytop broot cabal cloc \\"
-  echo "                   coreutils direnv entr eza fd fzf fx gh ghc  \\"
-  echo "                   git-deltaglances go hot htop jq lnav multitail \\"
-  echo "                   neovim prettyping python3 rbenv ripgrep \\"
-  echo "                   rustup-init shellcheck swaks tldr tig watch \\"
-  echo "                   wget universal-ctags yq zsh-completions\`"
+  echo "     \`brew install ack autojump bat bpytop broot cabal calc \\"
+  echo "                   cloc coreutils direnv entr eza fd fzf fx gh \\"
+  echo "                   ghc git-deltaglances go hot htop jq lnav \\"
+  echo "                   multitail neovim numbat prettyping python3 \\"
+  echo "                   rbenv ripgrep rustup-init shellcheck swaks \\"
+  echo "                   tldr tig watch wget universal-ctags yq \\"
+  echo "                   zsh-completions\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
   echo

@@ -113,5 +113,5 @@ alias hidefile='f(){
 
 if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
   alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION"
-  alias chlaude="aws sso login --profile=daily-login && $CLAUDE_LOCAL_EXPECTED_LOCATION"
+  alias claudia="$CLAUDE_LOCAL_EXPECTED_LOCATION --effort max"
 fi

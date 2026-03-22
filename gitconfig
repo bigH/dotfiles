@@ -4,7 +4,7 @@
 [user]
 	name = "Hiren Hiranandani"
 	email = "hiren.hiranandani@chime.com"
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Y1tRxb2qD5QZII1l2MzuBMgYggwAACTZvRJHynO/4
+	signingkey = /Users/hiren.hiranandani/.ssh/id_ed25519_signing.pub
 
 [pager]
 	blame = delta --syntax-theme='gruvbox-dark'
@@ -101,8 +101,6 @@
 	insteadOf = https://github.com/
 [gpg]
 	format = ssh
-[gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
 [pull]
@@ -111,3 +109,7 @@
 	autoStash = true
 [init]
 	defaultBranch = main
+[tag]
+	gpgSign = true
+[gpg "ssh"]
+	allowedSignersFile = /Users/hiren.hiranandani/.config/git/allowed_signers

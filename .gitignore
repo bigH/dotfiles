@@ -21,6 +21,7 @@ made/
 .vim/
 
 # external things
+agents-md/
 auto-sized-fzf/
 bat/
 clipboard-listener-macos/
