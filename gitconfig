@@ -4,7 +4,7 @@
 [user]
 	name = "Hiren Hiranandani"
 	email = "hiren.hiranandani@chime.com"
-	signingkey = /Users/hiren.hiranandani/.ssh/id_ed25519_signing.pub
+	signingkey = ~/.ssh/id_ed25519_signing.pub
 
 [pager]
 	blame = delta --syntax-theme='gruvbox-dark'

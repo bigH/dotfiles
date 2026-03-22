@@ -64,3 +64,9 @@ n('<leader>+',
 n('<leader>_',
   ':exe "resize " . min([winheight(0) - 1, winheight(0) * 4/5])<CR>')
 
+-- swap line and wrap based navigation
+n('j', 'gj')
+n('k', 'gk')
+
+n('gj', 'j')
+n('gk', 'k')

@@ -135,5 +135,18 @@ local options = {
     updatetime = 300
 }
 
+local cli_options = {
+    wrap = true
+}
+
+local vscode_options = {}
+
 for k, v in pairs(options) do vim.opt[k] = v end
+
+
+if vim.g.vscode then
+  for k, v in pairs(vscode_options) do vim.opt[k] = v end
+else
+  for k, v in pairs(cli_options) do vim.opt[k] = v end
+end
 
