@@ -30,6 +30,10 @@ alias kls=ls
 # $ alias fd=fdfind
 # $ alias bat=batcat
 
+if command_exists fd; then
+  alias f='fd .'
+fi
+
 alias zsh="SHELL=\"/bin/zsh\" zsh"
 alias bash="SHELL=\"/bin/bash\" bash"
 

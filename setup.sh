@@ -83,7 +83,7 @@ if command_exists fzf; then
   fi
 else
   printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:junegunn/fzf.git $DOT_FILES_DIR/fzf"
+  run_and_print_status_symbol "clone" "git clone git@github.com:junegunn/fzf.git $DOT_FILES_DIR/fzf" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
 echo
@@ -96,7 +96,7 @@ elif command_exists rgrep; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep"
+  run_and_print_status_symbol "clone" "git clone git@github.com:BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
 echo
@@ -109,7 +109,7 @@ elif command_exists batcat; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/bat.git $DOT_FILES_DIR/bat"
+  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/bat.git $DOT_FILES_DIR/bat" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
 echo
@@ -122,7 +122,7 @@ elif command_exists fdfind; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/fd.git $DOT_FILES_DIR/fd"
+  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/fd.git $DOT_FILES_DIR/fd" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 fi
 echo
@@ -132,8 +132,8 @@ if [ -d "$DOT_FILES_DIR/pgdiff" ]; then
   run_and_print_status_symbol "found" "true"
 else
   printf "  - ${BLUE}Installing \`pgdiff\` ...${NORMAL}"
-  run_and_print_status_symbol "mkdir" "mkdir $DOT_FILES_DIR/pgdiff"
-  run_and_print_status_symbol "wget" "wget -O $DOT_FILES_DIR/pgdiff/pgdiff https://raw.githubusercontent.com/denvaar/pgdiff/main/pgdiff"
+  run_and_print_status_symbol "mkdir" "mkdir $DOT_FILES_DIR/pgdiff" && \
+  run_and_print_status_symbol "wget" "wget -O $DOT_FILES_DIR/pgdiff/pgdiff https://raw.githubusercontent.com/denvaar/pgdiff/main/pgdiff" && \
   run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/pgdiff/pgdiff"
 fi
 echo
@@ -204,7 +204,7 @@ if [ -d "$DOT_FILES_DIR/agents-md" ]; then
   )"
 else
   printf "  - ${BLUE}Installing \`agents-md\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/agents-md.git $DOT_FILES_DIR/agents-md"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/agents-md.git $DOT_FILES_DIR/agents-md" && \
   run_and_print_status_symbol "generate" "\"$DOT_FILES_DIR/agents-md/generate-agent-instructions\""
 fi
 echo
@@ -214,7 +214,7 @@ run_and_print_status_symbol "clone" "git clone git@github.com:robbyrussell/oh-my
 echo
 
 printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
+run_and_print_status_symbol "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h" && \
 run_and_print_status_symbol "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
 echo
 
@@ -235,14 +235,14 @@ run_and_print_status_symbol "clone" "git clone git@github.com:sindresorhus/pure.
 echo
 
 printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
-run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
-run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh"
+run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils" && \
+run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/cht.sh https://cht.sh/:cht.sh" && \
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/cht.sh"
 echo
 
 printf "  - ${BLUE}Installing \`markdown2ctags\` ...${NORMAL}"
-run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils"
-run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py"
+run_and_print_status_symbol "mkdir" "mkdir -p $DOT_FILES_DIR/utils" && \
+run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.py https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py" && \
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
 echo
 
@@ -252,7 +252,7 @@ echo
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos"
+  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos" && \
   run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build)"
 fi
 
@@ -304,7 +304,7 @@ echo
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "${BLUE}${BOLD}Installing iTerm2 shell integration ...${NORMAL}"
-  run_and_print_status_symbol "execute" "curl -L https://iterm2.com/misc/install_shell_integration.sh | bash"
+  run_and_print_status_symbol "download" "curl -SsL https://iterm2.com/misc/zsh_startup.in > ~/.iterm2_shell_integration.zsh && chmod +x ~/.iterm2_shell_integration.zsh"
   echo
   echo
 fi

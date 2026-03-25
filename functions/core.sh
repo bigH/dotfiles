@@ -201,6 +201,9 @@ shmon_usage() {
   echo
   echo "  ${GREEN}shmon ${CYAN}[options...] ${YELLOW}'<command>'${NORMAL}"
   echo
+  echo "    ${CYAN}--diff${NORMAL}"
+  echo "        Show a colorized diff between runs rendered by delta."
+  echo
   echo "    ${CYAN}--interval=...${NORMAL}"
   echo "        Set an interval for rerunning the command - default is 2 seconds."
   echo
@@ -226,8 +229,40 @@ shmon_usage() {
   echo "  ${GRAY}# run a command every 60 seconds${NORMAL}"
   echo "  ${GREEN}shmon ${CYAN}--interval=${MAGENTA}60 ${YELLOW}'...'${NORMAL}"
   echo
+  echo "  ${GRAY}# highlight changed sections between runs${NORMAL}"
+  echo "  ${GREEN}shmon ${CYAN}--diff ${YELLOW}'git status --short'${NORMAL}"
+  echo
   echo "  ${GRAY}# this help text${NORMAL}"
   echo "  ${GREEN}shmon ${CYAN}--help${NORMAL}"
+}
+
+shmon_render_diff_output() {
+  local previous_output_file="$1"
+  local current_output_file="$2"
+  local delta_line_buffer_size
+
+  if command cmp -s "$previous_output_file" "$current_output_file"; then
+    echo "${GRAY}(no changes)${NORMAL}"
+    return 0
+  fi
+
+  delta_line_buffer_size=128
+
+  command diff -U 20 "$previous_output_file" "$current_output_file" 2>/dev/null | \
+    delta \
+      --paging=never \
+      --width="${COLUMNS:-120}" \
+      --file-style=omit \
+      --hunk-header-style=omit \
+      --keep-plus-minus-markers \
+      --line-buffer-size="$delta_line_buffer_size" \
+      --word-diff-regex=. | \
+    command perl -ne '
+      my $raw = $_;
+      (my $probe = $raw) =~ s/^(?:\e\[[0-?]*[ -\/]*[@-~])*//;
+      next if $. == 1 && $probe =~ /^\s*$/;
+      print $raw;
+    '
 }
 
 # watch that runs in the current shell
@@ -235,13 +270,20 @@ shmon_usage() {
 # - there are a lot commands that don't have good UX
 shmon() {
   local params=()
-  local options=()
 
   local stop_on_status=
   local interval=2
+  local use_diff=no
+  local shmon_tmp_dir=
+  local previous_output_file=
+  local current_output_file=
 
   while [ "$#" -gt 0 ]; do
     case "$1" in
+      --diff)
+        use_diff=yes
+        shift
+        ;;
       --stop-on-status=*)
         stop_on_status="$(echo "$1" | sed -E "s/.*=(.*)/\1/")"
         shift
@@ -293,13 +335,37 @@ shmon() {
     local started_at_formatted
     local date_now
 
+    if [ "$use_diff" = "yes" ]; then
+      if ! command_exists delta; then
+        log_error_to_stderr "'shmon --diff' requires 'delta' to be installed"
+        return 1
+      fi
+
+      shmon_tmp_dir="$(mktemp -d "${TMPDIR:-/tmp}/shmon.XXXXXX" 2>/dev/null)"
+      if [ -z "$shmon_tmp_dir" ] || [ ! -d "$shmon_tmp_dir" ]; then
+        shmon_tmp_dir="$(mktemp -d -t shmon 2>/dev/null)"
+      fi
+
+      if [ -z "$shmon_tmp_dir" ] || [ ! -d "$shmon_tmp_dir" ]; then
+        log_error_to_stderr "'shmon --diff' could not create a temp directory"
+        return 1
+      fi
+
+      previous_output_file="$shmon_tmp_dir/previous"
+      current_output_file="$shmon_tmp_dir/current"
+      : > "$previous_output_file"
+    fi
+
     started_at="$(date +%s)"
     started_at_formatted="$(date)"
     date_now="$started_at"
 
     local addendum=""
+    if [ "$use_diff" = "yes" ]; then
+      addendum=" ${NORMAL}${GRAY}diff ${BOLD}on${NORMAL}"
+    fi
     if [ -n "$stop_on_status" ]; then
-      addendum=" ${NORMAL}${GRAY}stopping on exit status ${BOLD}${stop_on_status}${NORMAL}"
+      addendum="${addendum} ${NORMAL}${GRAY}stopping on exit status ${BOLD}${stop_on_status}${NORMAL}"
     fi
 
     local is_first=yes
@@ -315,12 +381,26 @@ shmon() {
       echo "${MAGENTA}${BOLD}Current run: ${YELLOW}${BOLD}$(date)${GRAY} +$((date_now - started_at))s${NORMAL}"
       echo "${BOLD}${WHITE}$command_to_run${GRAY} # every ${BOLD}${interval}s${NORMAL}$addendum"
       echo
-      eval "$command_to_run"
-      last_status=$?
+
+      if [ "$use_diff" = "yes" ]; then
+        eval "$command_to_run" > "$current_output_file" 2>&1
+        last_status=$?
+        shmon_render_diff_output "$previous_output_file" "$current_output_file"
+
+        command cp "$current_output_file" "$previous_output_file"
+      else
+        eval "$command_to_run"
+        last_status=$?
+      fi
 
       # this is to make first print have a '+0s' prefix
       date_now="$(date +%s)"
     done
+
+    if [ -n "$shmon_tmp_dir" ]; then
+      command rm -f "$previous_output_file" "$current_output_file"
+      command rmdir "$shmon_tmp_dir" 2>/dev/null
+    fi
   fi
 }
 
@@ -569,4 +649,3 @@ if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
     claude "${plugin_args[@]}" --dangerously-skip-permissions "$@"
   }
 fi # claude exists
-

@@ -233,7 +233,7 @@ indent() {
 }
 
 run_and_print_status_symbol() {
-  PRINT_PREFIX=""
+  local print_prefix=""
   if [ $# -eq 0 ]; then
     echo ""
     echo "${RED}${BOLD}ERROR${NORMAL}: \`run_and_print_status_symbol\` requires 1 or 2 parameters, 0 provided"
@@ -241,18 +241,43 @@ run_and_print_status_symbol() {
     echo ""
     echo "${RED}${BOLD}ERROR${NORMAL}: \`run_and_print_status_symbol\` requires 1 or 2 parameters, $# provided"
   else
+    local command_to_execute
     if [ $# -eq 1 ]; then
-      COMMAND_TO_EXECUTE="$1"
+      command_to_execute="$1"
     elif [ $# -eq 2 ]; then
-      PRINT_PREFIX="$1"
-      COMMAND_TO_EXECUTE="$2"
+      print_prefix="$1"
+      command_to_execute="$2"
     fi
 
-    bash -c "$COMMAND_TO_EXECUTE" > /dev/null 2>&1
+    local log_dir="/tmp/dot-files-install"
+    mkdir -p "$log_dir"
+    local stdout_raw stderr_raw stdout_log stderr_log
+    stdout_raw="$(mktemp "$log_dir/stdout-raw.XXXXXX")"
+    stderr_raw="$(mktemp "$log_dir/stderr-raw.XXXXXX")"
+    stdout_log="$(mktemp "$log_dir/stdout.XXXXXX")"
+    stderr_log="$(mktemp "$log_dir/stderr.XXXXXX")"
 
-    STATUS=$?
-    print_status_symbol "$STATUS" "$PRINT_PREFIX"
-    return "$STATUS"
+    bash -c "$command_to_execute" > "$stdout_raw" 2> "$stderr_raw"
+
+    local exit_code=$?
+    ts '%Y-%m-%d %H:%M:%S' < "$stdout_raw" > "$stdout_log"
+    ts '%Y-%m-%d %H:%M:%S' < "$stderr_raw" > "$stderr_log"
+    rm -f "$stdout_raw" "$stderr_raw"
+    print_status_symbol "$exit_code" "$print_prefix"
+
+    if [ "$exit_code" -ne 0 ]; then
+      local last_line
+      last_line="$(sed 's/^[0-9-]* [0-9:]* //' "$stderr_log" | grep -v '^$' | tail -1)"
+      if [ -n "$last_line" ]; then
+        printf "\n      ${GRAY}%s${NORMAL}" "$last_line"
+      fi
+      printf "\n      ${GRAY}stdout: %s${NORMAL}" "$stdout_log"
+      printf "\n      ${GRAY}stderr: %s${NORMAL}" "$stderr_log"
+    else
+      rm -f "$stdout_log" "$stderr_log"
+    fi
+
+    return "$exit_code"
   fi
 }
 
