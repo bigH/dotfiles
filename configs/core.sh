@@ -113,7 +113,8 @@ if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
 fi
 
 # Add iTerm2 things
-if [[ "$SHELL" == *'zsh' ]]; then
+
+if [ "$TERM_PROGRAM" = 'iTerm.app' ] && [[ "$SHELL" == *'zsh' ]]; then
   if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
     source "${HOME}/.iterm2_shell_integration.zsh"
   fi
