@@ -558,7 +558,12 @@ if [ -z "$DISABLE_GIT_THINGS" ]; then
   }
 
   alias gfpr='gf pr'
+
   alias gw='git web'
+  alias ogw='open "$(git web)"'
+
+  alias gwb='echo "$(git web)/tree/$(git branch-name)"'
+  alias ogwb='open "$(git web)/tree/$(git branch-name)"'
 
   # --- watch ---
   # watch status
