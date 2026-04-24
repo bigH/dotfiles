@@ -1,0 +1,10 @@
+#!/bin/bash
+
+say -v Zarvox boop
+printf '\e[?5h' >> /dev/tty
+sleep 0.1
+printf '\e[?5l' >> /dev/tty
+sleep 1
+printf '\e[?5h' >> /dev/tty
+sleep 0.1
+printf '\e[?5l' >> /dev/tty

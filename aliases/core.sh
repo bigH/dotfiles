@@ -116,6 +116,13 @@ alias hidefile='f(){
 }; f'
 
 if [ -x "$CLAUDE_LOCAL_EXPECTED_LOCATION" ]; then
-  alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION"
-  alias claudia="$CLAUDE_LOCAL_EXPECTED_LOCATION --effort max"
+  alias claude="$CLAUDE_LOCAL_EXPECTED_LOCATION --dangerously-skip-permissions"
+  alias claudia="$CLAUDE_LOCAL_EXPECTED_LOCATION --dangerously-skip-permissions --effort max"
+elif command_exists claude; then
+  alias claude="command claude --dangerously-skip-permissions"
+  alias claudia="command claude --dangerously-skip-permissions --effort max"
+fi
+
+if command_exists codex; then
+  alias codex="command codex --yolo"
 fi
