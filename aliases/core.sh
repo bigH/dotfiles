@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# make `rm` banned; use `trash` instead
+alias rm="echo \"Use 'trash', '/bin/rm' or 'command rm'\""
+
 # ls override from oh-my-zsh
 if command_exists eza; then
   # want all these options to expand in alias rather than when alias is triggered
@@ -126,3 +129,4 @@ fi
 if command_exists codex; then
   alias codex="command codex --yolo"
 fi
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -f "$DOT_FILES_DIR/.silent-agent-mode"

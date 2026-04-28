@@ -41,3 +41,5 @@ solarized/
 utils/
 
 .bin-pyenv/
+
+.silent-agent-mode

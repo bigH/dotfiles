@@ -253,7 +253,7 @@ echo
 if [[ "$OSTYPE" == "darwin"* ]]; then
   printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
   run_and_print_status_symbol "clone" "git clone git@github.com:bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos" && \
-  run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build)"
+  run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build -c release)"
 fi
 
 echo
