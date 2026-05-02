@@ -26,6 +26,25 @@ if [ "$TEST_CURRENT_SHELL" != "zsh" ]; then
   exit 1
 fi
 
+function restore_setup_managed_hhighlighter_rename {
+  if [ $# -eq 1 ]; then
+    local repo_dir="$1"
+    local legacy_status repo_status
+
+    [ -d "$repo_dir/.git" ] || return 0
+
+    legacy_status="$(printf ' D h.sh\n?? h.plugin.zsh')"
+    repo_status="$(git -C "$repo_dir" status --short 2>/dev/null)" || return 0
+
+    if [ "$repo_status" = "$legacy_status" ] && git -C "$repo_dir" show HEAD:h.sh | cmp -s - "$repo_dir/h.plugin.zsh"; then
+      mv "$repo_dir/h.plugin.zsh" "$repo_dir/h.sh"
+    fi
+  else
+    echo "${RED}${BOLD}ERROR${NORMAL}: \`restore_setup_managed_hhighlighter_rename\` requires 1 argument"
+    return 1
+  fi
+}
+
 echo "${BLUE}${BOLD}..random directories..${NORMAL}"
 mk_expected_dir "$HOME/.backup"
 mk_expected_dir "$HOME/.screenlog"
@@ -45,8 +64,7 @@ echo
 echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
-printf "${GREEN}Cloning${NORMAL}: packer.nvim"
-run_and_print_status_symbol "clone" "git clone --depth 1 'git@github.com:wbthomason/packer.nvim' '$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim'"
+install_or_update_git_repo "packer.nvim" "git@github.com:wbthomason/packer.nvim" "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" "master" "--depth 1"
 echo
 echo
 
@@ -82,8 +100,7 @@ if command_exists fzf; then
     run_and_print_status_symbol "completions" "/usr/local/opt/fzf/install --key-bindings --completion --no-update-rc"
   fi
 else
-  printf "  - ${BLUE}Installing \`fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:junegunn/fzf.git $DOT_FILES_DIR/fzf" && \
+  install_or_update_git_repo "fzf" "git@github.com:junegunn/fzf.git" "$DOT_FILES_DIR/fzf" "master" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fzf-install.sh > $DOT_FILES_DIR/logs/fzf-install-log 2> $DOT_FILES_DIR/logs/fzf-install-log"
 fi
 echo
@@ -95,8 +112,7 @@ elif command_exists rgrep; then
   printf "  - ${BLUE}Found \`rgrep\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
-  printf "  - ${BLUE}Installing \`ripgrep\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:BurntSushi/ripgrep.git $DOT_FILES_DIR/ripgrep" && \
+  install_or_update_git_repo "ripgrep" "git@github.com:BurntSushi/ripgrep.git" "$DOT_FILES_DIR/ripgrep" "master" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/ripgrep-install.sh > $DOT_FILES_DIR/logs/ripgrep-install-log 2> $DOT_FILES_DIR/logs/ripgrep-install-log"
 fi
 echo
@@ -108,8 +124,7 @@ elif command_exists batcat; then
   printf "  - ${BLUE}Found \`batcat\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
-  printf "  - ${BLUE}Installing \`bat\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/bat.git $DOT_FILES_DIR/bat" && \
+  install_or_update_git_repo "bat" "git@github.com:sharkdp/bat.git" "$DOT_FILES_DIR/bat" "master" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/bat-install.sh > $DOT_FILES_DIR/logs/bat-install-log 2> $DOT_FILES_DIR/logs/bat-install-log"
 fi
 echo
@@ -121,8 +136,7 @@ elif command_exists fdfind; then
   printf "  - ${BLUE}Found \`fdfind\` ...${NORMAL}"
   run_and_print_status_symbol "found" "true"
 else
-  printf "  - ${BLUE}Installing \`fd\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:sharkdp/fd.git $DOT_FILES_DIR/fd" && \
+  install_or_update_git_repo "fd" "git@github.com:sharkdp/fd.git" "$DOT_FILES_DIR/fd" "master" && \
   run_and_print_status_symbol "build" "$DOT_FILES_DIR/fd-install.sh > $DOT_FILES_DIR/logs/fd-install-log 2> $DOT_FILES_DIR/logs/fd-install-log"
 fi
 echo
@@ -138,100 +152,41 @@ else
 fi
 echo
 
-if [ -d "$DOT_FILES_DIR/interactively" ]; then
-  printf "  - ${BLUE}Found \`interactively\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/interactively' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`interactively\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/interactively.git $DOT_FILES_DIR/interactively"
-fi
+install_or_update_git_repo "interactively" "git@github.com:bigH/interactively.git" "$DOT_FILES_DIR/interactively" "main"
 echo
 
-if [ -d "$DOT_FILES_DIR/git-fuzzy" ]; then
-  printf "  - ${BLUE}Found \`git-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/git-fuzzy' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`git-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/git-fuzzy.git $DOT_FILES_DIR/git-fuzzy"
-fi
+install_or_update_git_repo "git-fuzzy" "git@github.com:bigH/git-fuzzy.git" "$DOT_FILES_DIR/git-fuzzy" "main"
 echo
 
-if [ -d "$DOT_FILES_DIR/kube-fuzzy" ]; then
-  printf "  - ${BLUE}Found \`kube-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/kube-fuzzy' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`kube-fuzzy\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/kube-fuzzy.git $DOT_FILES_DIR/kube-fuzzy"
-fi
+install_or_update_git_repo "kube-fuzzy" "git@github.com:bigH/kube-fuzzy.git" "$DOT_FILES_DIR/kube-fuzzy" "main"
 echo
 
-if [ -d "$DOT_FILES_DIR/auto-sized-fzf" ]; then
-  printf "  - ${BLUE}Found \`auto-sized-fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/auto-sized-fzf' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'master' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`auto-sized-fzf\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/auto-sized-fzf.git $DOT_FILES_DIR/auto-sized-fzf"
-fi
+install_or_update_git_repo "auto-sized-fzf" "git@github.com:bigH/auto-sized-fzf.git" "$DOT_FILES_DIR/auto-sized-fzf" "master"
 echo
 
-if [ -d "$DOT_FILES_DIR/agents-md" ]; then
-  printf "  - ${BLUE}Found \`agents-md\` ...${NORMAL}"
-  run_and_print_status_symbol "pull" "(\
-    cd '$DOT_FILES_DIR/agents-md' && \
-    test \"\$(git rev-parse --abbrev-ref HEAD)\" = 'main' && \
-    test -z \"\$(git status -s)\" && \
-    git pull \
-  )"
-else
-  printf "  - ${BLUE}Installing \`agents-md\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/agents-md.git $DOT_FILES_DIR/agents-md" && \
-  run_and_print_status_symbol "generate" "\"$DOT_FILES_DIR/agents-md/generate-agent-instructions\""
-fi
+install_or_update_git_repo "agents-md" "git@github.com:bigH/agents-md.git" "$DOT_FILES_DIR/agents-md" "main" && \
+run_and_print_status_symbol "generate" "\"$DOT_FILES_DIR/agents-md/generate-agent-instructions\""
 echo
 
-printf "  - ${BLUE}Installing \`oh-my-zsh\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:robbyrussell/oh-my-zsh.git $DOT_FILES_DIR/.oh-my-zsh"
+install_or_update_git_repo "oh-my-zsh" "git@github.com:ohmyzsh/ohmyzsh.git" "$DOT_FILES_DIR/.oh-my-zsh" "master"
 echo
 
-printf "  - ${BLUE}Installing \`zsh-hhighlighter\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:paoloantinori/hhighlighter.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h" && \
-run_and_print_status_symbol "mv" "mv \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.sh\" \"$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h/h.plugin.zsh\""
+HHIGHLIGHTER_DIR="$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/h"
+restore_setup_managed_hhighlighter_rename "$HHIGHLIGHTER_DIR"
+install_or_update_git_repo "zsh-hhighlighter" "git@github.com:paoloantinori/hhighlighter.git" "$HHIGHLIGHTER_DIR" "master" && \
+run_and_print_status_symbol "plugin" "$(hhighlighter_plugin_setup_command "$HHIGHLIGHTER_DIR")" || exit 1
 echo
 
-printf "  - ${BLUE}Installing \`zsh-autosuggestions\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-autosuggestions $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+install_or_update_git_repo "zsh-autosuggestions" "git@github.com:zsh-users/zsh-autosuggestions" "$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-autosuggestions" "master"
 echo
 
-printf "  - ${BLUE}Installing \`zsh-syntax-highlighting\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-syntax-highlighting.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+install_or_update_git_repo "zsh-syntax-highlighting" "git@github.com:zsh-users/zsh-syntax-highlighting.git" "$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" "master"
 echo
 
-printf "  - ${BLUE}Installing \`zsh-completions\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:zsh-users/zsh-completions.git $DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions"
+install_or_update_git_repo "zsh-completions" "git@github.com:zsh-users/zsh-completions.git" "$DOT_FILES_DIR/.oh-my-zsh/custom/plugins/zsh-completions" "master"
 echo
 
-printf "  - ${BLUE}Installing \`pure\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:sindresorhus/pure.git $DOT_FILES_DIR/pure"
+install_or_update_git_repo "pure" "git@github.com:sindresorhus/pure.git" "$DOT_FILES_DIR/pure" "main"
 echo
 
 printf "  - ${BLUE}Installing \`cheat.sh\` ...${NORMAL}"
@@ -246,14 +201,12 @@ run_and_print_status_symbol "curl" "curl -o $DOT_FILES_DIR/utils/markdown-ctags.
 run_and_print_status_symbol "chmod" "chmod +x $DOT_FILES_DIR/utils/markdown-ctags.py"
 echo
 
-printf "  - ${BLUE}Installing \`fzf-tab-completion\` ...${NORMAL}"
-run_and_print_status_symbol "clone" "git clone git@github.com:lincheney/fzf-tab-completion.git $DOT_FILES_DIR/fzf-tab-completion"
+install_or_update_git_repo "fzf-tab-completion" "git@github.com:lincheney/fzf-tab-completion.git" "$DOT_FILES_DIR/fzf-tab-completion" "master"
 echo
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  printf "  - ${BLUE}Installing \`bigH/clipboard-listener-macos\` ...${NORMAL}"
-  run_and_print_status_symbol "clone" "git clone git@github.com:bigH/clipboard-listener-macos.git $DOT_FILES_DIR/clipboard-listener-macos" && \
-  run_and_print_status_symbol "build" "(cd clipboard-listener-macos ; swift build -c release)"
+  install_or_update_git_repo "bigH/clipboard-listener-macos" "git@github.com:bigH/clipboard-listener-macos.git" "$DOT_FILES_DIR/clipboard-listener-macos" "main" && \
+  run_and_print_status_symbol "build" "$(shell_command_in_dir "$DOT_FILES_DIR/clipboard-listener-macos" swift build -c release)"
 fi
 
 echo
