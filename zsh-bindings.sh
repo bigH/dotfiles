@@ -89,6 +89,7 @@ fi
 
 # Ctrl-V - edit the command line in vim
 bindkey '^v' edit-command-line
+bindkey '^g' edit-command-line
 
 fixup-command-for-cmd-substitution() {
   if [[ "$1" == *'rg'* ]]; then
