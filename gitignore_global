@@ -22,3 +22,5 @@
 .personal_gitignore
 
 .scratchpad/
+
+.worktrees/
