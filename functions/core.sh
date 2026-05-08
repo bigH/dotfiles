@@ -430,6 +430,56 @@ action_when() {
   fi
 }
 
+schedule_helper() {
+  if [ -n "$DOT_FILES_DIR" ] && [ -x "$DOT_FILES_DIR/bin/schedule-time" ]; then
+    echo "$DOT_FILES_DIR/bin/schedule-time"
+  elif command_exists schedule-time; then
+    command -v schedule-time
+  else
+    log_error_to_stderr "could not find schedule-time"
+    return 1
+  fi
+}
+
+schedule() {
+  if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    local helper
+    helper="$(schedule_helper)" || return $?
+    "$helper" --help
+    return $?
+  fi
+
+  local helper
+  helper="$(schedule_helper)" || return $?
+
+  log_command "$helper" "$@"
+
+  local parsed
+  parsed="$("$helper" "$@")" || return $?
+
+  local SCHEDULE_SLEEP_SECONDS
+  local SCHEDULE_LABEL
+  local SCHEDULE_REMAINING_TEXT
+  local SCHEDULE_COMMAND
+  eval "$parsed"
+
+  echo "Scheduling $SCHEDULE_COMMAND at $SCHEDULE_LABEL (in $SCHEDULE_REMAINING_TEXT)"
+
+  log_command sleep "$SCHEDULE_SLEEP_SECONDS"
+  sleep "$SCHEDULE_SLEEP_SECONDS"
+  local sleep_status="$?"
+  if [ "$sleep_status" -ne 0 ]; then
+    return "$sleep_status"
+  fi
+
+  log_command eval "$SCHEDULE_COMMAND"
+  eval "$SCHEDULE_COMMAND"
+}
+
+scheudule() {
+  schedule "$@"
+}
+
 scratch() {
   vim "$HOME/dev/random/scratch.$1"
 }

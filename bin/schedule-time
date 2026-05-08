@@ -1,0 +1,301 @@
+#!/usr/bin/env python3
+
+import argparse
+import math
+import os
+import re
+import shlex
+import sys
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+
+
+UNITS = {
+    "s": 1,
+    "sec": 1,
+    "secs": 1,
+    "second": 1,
+    "seconds": 1,
+    "m": 60,
+    "min": 60,
+    "mins": 60,
+    "minute": 60,
+    "minutes": 60,
+    "h": 60 * 60,
+    "hr": 60 * 60,
+    "hrs": 60 * 60,
+    "hour": 60 * 60,
+    "hours": 60 * 60,
+    "d": 24 * 60 * 60,
+    "day": 24 * 60 * 60,
+    "days": 24 * 60 * 60,
+}
+
+NUMBER = r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)"
+NUMBER_RE = re.compile(rf"^{NUMBER}$")
+NUMBER_UNIT_RE = re.compile(rf"^({NUMBER})([A-Za-z]+)$")
+TIME_RE = re.compile(r"^(\d{1,2})(?::(\d{2}))?([A-Za-z.]+)?$")
+
+
+@dataclass(frozen=True)
+class ParsedSchedule:
+    target: datetime
+    command: list[str]
+
+
+def parse_args(argv: list[str]) -> tuple[list[str], datetime]:
+    now_epoch = parse_now_epoch()
+    now = (
+        datetime.fromtimestamp(now_epoch).astimezone()
+        if now_epoch is not None
+        else datetime.now().astimezone()
+    )
+    return argv, now
+
+
+def parse_now_epoch() -> float | None:
+    now_epoch = os.environ.get("SCHEDULE_TIME_NOW_EPOCH")
+    if now_epoch is None:
+        return None
+
+    try:
+        return float(now_epoch)
+    except ValueError:
+        fail("SCHEDULE_TIME_NOW_EPOCH must be an epoch timestamp")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="schedule",
+        description="Calculate when a shell command should run.",
+        usage="schedule (--at TIME | --in DURATION) [--] COMMAND...",
+    )
+    parser.add_argument(
+        "--at",
+        metavar="TIME",
+        help='time like H, HH, H:MM, HH:MM, optionally with am/pm, e.g. "5 pm"',
+    )
+    parser.add_argument(
+        "--in",
+        dest="in_",
+        metavar="DURATION",
+        help="duration chunks like 45s, 15 min, 1.5h, 1h 30m, 2 days",
+    )
+    return parser
+
+
+def parse_schedule(argv: list[str], now: datetime) -> ParsedSchedule:
+    if not argv:
+        fail("usage: schedule (--at TIME | --in DURATION) [--] COMMAND...")
+
+    flag = argv[0]
+    if flag.startswith("--at="):
+        return parse_at([flag.split("=", 1)[1], *argv[1:]], now)
+    if flag.startswith("--in="):
+        return parse_in([flag.split("=", 1)[1], *argv[1:]], now)
+    if flag == "--at":
+        return parse_at(argv[1:], now)
+    if flag == "--in":
+        return parse_in(argv[1:], now)
+
+    fail("expected --at or --in")
+
+
+def parse_at(argv: list[str], now: datetime) -> ParsedSchedule:
+    if not argv:
+        fail("--at requires a time")
+
+    time_text = argv[0]
+    command_start = 1
+    if command_start < len(argv) and is_meridiem(argv[command_start]):
+        time_text = f"{time_text}{argv[command_start]}"
+        command_start += 1
+
+    if command_start < len(argv) and argv[command_start] == "--":
+        command_start += 1
+
+    command = argv[command_start:]
+    if not command:
+        fail("command required")
+
+    return ParsedSchedule(parse_time(time_text, now), command)
+
+
+def parse_in(argv: list[str], now: datetime) -> ParsedSchedule:
+    seconds, command = parse_duration_and_command(argv)
+    if not command:
+        fail("command required")
+
+    return ParsedSchedule(now + timedelta(seconds=seconds), command)
+
+
+def parse_duration_and_command(argv: list[str]) -> tuple[float, list[str]]:
+    total = 0.0
+    chunks = 0
+    index = 0
+
+    while index < len(argv):
+        token = argv[index]
+        if token == "--":
+            index += 1
+            break
+
+        attached = NUMBER_UNIT_RE.match(token)
+        if attached:
+            total += parse_duration_chunk(attached.group(1), attached.group(2))
+            chunks += 1
+            index += 1
+            continue
+
+        if NUMBER_RE.match(token):
+            if index + 1 >= len(argv) or argv[index + 1] == "--":
+                fail("duration values require a unit")
+            unit = argv[index + 1]
+            if unit.lower() not in UNITS:
+                fail(f"unknown duration unit: {unit}")
+            total += parse_duration_chunk(token, unit)
+            chunks += 1
+            index += 2
+            continue
+
+        if chunks == 0:
+            fail("expected a duration")
+        if looks_like_bad_duration(token):
+            fail(f"bad duration chunk: {token}")
+        break
+
+    if chunks == 0:
+        fail("expected a duration")
+    if total <= 0:
+        fail("duration must be greater than zero")
+
+    return total, argv[index:]
+
+
+def parse_duration_chunk(value_text: str, unit_text: str) -> float:
+    unit = unit_text.lower()
+    if unit not in UNITS:
+        fail(f"unknown duration unit: {unit_text}")
+
+    value = float(value_text)
+    if value <= 0:
+        fail("duration chunks must be greater than zero")
+
+    return value * UNITS[unit]
+
+
+def looks_like_bad_duration(token: str) -> bool:
+    return token[:1].isdigit() or token[:1] in "+-" or token.lower() in UNITS
+
+
+def parse_time(time_text: str, now: datetime) -> datetime:
+    time_text = "".join(time_text.split())
+    match = TIME_RE.match(time_text)
+    if not match:
+        fail(f"bad time: {time_text}")
+
+    hour = int(match.group(1))
+    minute = int(match.group(2) or "0")
+    meridiem = normalize_meridiem(match.group(3))
+
+    if minute > 59:
+        fail("minute must be between 00 and 59")
+
+    hours = candidate_hours(hour, meridiem)
+    candidates = [next_occurrence(now, candidate_hour, minute) for candidate_hour in hours]
+    return min(candidates)
+
+
+def candidate_hours(hour: int, meridiem: str | None) -> list[int]:
+    if meridiem:
+        if hour < 1 or hour > 12:
+            fail("12-hour time must use 1 through 12")
+        if meridiem == "am":
+            return [0 if hour == 12 else hour]
+        return [12 if hour == 12 else hour + 12]
+
+    if hour < 0 or hour > 23:
+        fail("24-hour time must use 00 through 23")
+    if hour == 0:
+        return [0]
+    if 1 <= hour <= 11:
+        return [hour, hour + 12]
+    if hour == 12:
+        return [12, 0]
+    return [hour]
+
+
+def next_occurrence(now: datetime, hour: int, minute: int) -> datetime:
+    target = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    if target <= now:
+        target += timedelta(days=1)
+    return target
+
+
+def normalize_meridiem(value: str | None) -> str | None:
+    if value is None:
+        return None
+
+    compact = value.lower().replace(".", "")
+    if compact in {"am", "pm"}:
+        return compact
+
+    fail(f"bad meridiem: {value}")
+
+
+def is_meridiem(value: str) -> bool:
+    return value.lower().replace(".", "") in {"am", "pm"}
+
+
+def shell_command(command: list[str]) -> str:
+    if len(command) == 1:
+        return command[0]
+    return shlex.join(command)
+
+
+def print_shell_assignments(schedule: ParsedSchedule, now: datetime) -> None:
+    sleep_seconds = max(0.0, schedule.target.timestamp() - now.timestamp())
+    label = schedule.target.strftime("%Y-%m-%d %H:%M:%S")
+    command = shell_command(schedule.command)
+
+    print(f"SCHEDULE_SLEEP_SECONDS={shlex.quote(format_sleep_seconds(sleep_seconds))}")
+    print(f"SCHEDULE_LABEL={shlex.quote(label)}")
+    print(f"SCHEDULE_REMAINING_TEXT={shlex.quote(format_remaining_text(sleep_seconds))}")
+    print(f"SCHEDULE_COMMAND={shlex.quote(command)}")
+
+
+def format_sleep_seconds(seconds: float) -> str:
+    text = f"{seconds:.3f}".rstrip("0").rstrip(".")
+    return text or "0"
+
+
+def format_remaining_text(seconds: float) -> str:
+    if seconds < 60:
+        return "< 1 min"
+
+    whole_seconds = math.floor(seconds)
+    if whole_seconds < 3600:
+        return f"{whole_seconds // 60}:{whole_seconds % 60:02d}"
+
+    return f"{whole_seconds // 3600}:{(whole_seconds % 3600) // 60:02d}"
+
+
+def fail(message: str) -> None:
+    print(f"schedule: {message}", file=sys.stderr)
+    raise SystemExit(2)
+
+
+def main() -> int:
+    parser = build_parser()
+    if sys.argv[1:2] and sys.argv[1] in {"-h", "--help"}:
+        parser.print_help()
+        return 0
+
+    argv, now = parse_args(sys.argv[1:])
+    schedule = parse_schedule(argv, now)
+    print_shell_assignments(schedule, now)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
