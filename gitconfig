@@ -3,7 +3,7 @@
 
 [user]
 	name = "Hiren Hiranandani"
-	email = "hiren.hiranandani@chime.com"
+	email = "hiren.hiranandani@fractional.ai"
 	signingkey = ~/.ssh/id_ed25519_signing.pub
 
 [pager]
