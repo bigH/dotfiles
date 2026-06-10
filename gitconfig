@@ -3,8 +3,11 @@
 
 [user]
 	name = "Hiren Hiranandani"
-	email = "hiren.hiranandani@fractional.ai"
+	email = "hhiranan@gmail.com"
 	signingkey = ~/.ssh/id_ed25519_signing.pub
+
+[includeIf "gitdir:~/dev/**"]
+  path = ~/.hiren/fractional_gitconfig
 
 [pager]
 	blame = delta --color-only --syntax-theme='gruvbox-dark'
