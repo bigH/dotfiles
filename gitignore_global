@@ -23,4 +23,9 @@
 
 .scratchpad/
 
+# temporary directory for use when storing "patch packages" - while waiting for git access
+.patches/
+
 .worktrees/
+
+need-resume
