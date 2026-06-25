@@ -35,15 +35,5 @@ return {
       return not vim.g.vscode
     end,
   },
-  {
-    "norcalli/nvim-colorizer.lua",
-    opts = {},
-    config = function(_, opts)
-      require("colorizer").setup(opts)
-    end,
-    enabled = function()
-      return not vim.g.vscode
-    end,
-  },
 }
 

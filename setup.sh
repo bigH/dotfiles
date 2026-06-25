@@ -49,7 +49,6 @@ echo "${BLUE}${BOLD}..random directories..${NORMAL}"
 mk_expected_dir "$HOME/.backup"
 mk_expected_dir "$HOME/.screenlog"
 mk_expected_dir "$HOME/.local/share/fzf-history"
-mk_expected_dir "$HOME/.local/share/nvim/site/pack/packer/start/"
 mk_expected_dir "$DOT_FILES_DIR/logs"
 mk_expected_dir "$DOT_FILES_DIR/pyenvs"
 echo
@@ -64,7 +63,25 @@ echo
 echo "${BLUE}${BOLD}neovim${NORMAL}"
 mk_expected_dir "$HOME/.config/"
 link_if_possible "$DOT_FILES_DIR/nvim" "$HOME/.config/nvim"
-install_or_update_git_repo "packer.nvim" "git@github.com:wbthomason/packer.nvim" "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" "master" "--depth 1"
+
+if command_exists nvim; then
+  printf "  - ${BLUE}Syncing \`lazy.nvim\` plugins ...${NORMAL}"
+  run_and_print_status_symbol "lazy sync" "nvim --headless +'Lazy! sync' +qa > $DOT_FILES_DIR/logs/nvim-lazy-sync-log 2>&1"
+
+  # nvim-treesitter `main` needs both a C compiler and the tree-sitter CLI to build parsers
+  if ! command -v cc >/dev/null 2>&1 && ! xcode-select -p >/dev/null 2>&1; then
+    printf "  - ${BOLD}${YELLOW}WARN${NORMAL}: ${BLUE}No C compiler found; skipping tree-sitter parsers.${NORMAL}\n"
+    printf "      ${GRAY}Run \`xcode-select --install\`, then re-run setup to compile parsers.${NORMAL}\n"
+  elif ! command_exists tree-sitter; then
+    printf "  - ${BOLD}${YELLOW}WARN${NORMAL}: ${BLUE}No \`tree-sitter\` CLI found; skipping tree-sitter parsers.${NORMAL}\n"
+    printf "      ${GRAY}Run \`brew install tree-sitter-cli\`, then re-run setup to compile parsers.${NORMAL}\n"
+  else
+    printf "  - ${BLUE}Installing tree-sitter parsers ...${NORMAL}"
+    run_and_print_status_symbol "ts install" "nvim --headless -c \"lua require('nvim-treesitter').install(require('treesitter-langs')):wait(600000)\" +qa > $DOT_FILES_DIR/logs/nvim-ts-install-log 2>&1"
+  fi
+else
+  printf "  - ${BOLD}${YELLOW}WARN${NORMAL}: ${BLUE}\`nvim\` not found; skipping plugin and parser install.${NORMAL}\n"
+fi
 echo
 echo
 
@@ -274,13 +291,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "                   ghc git-delta glances go hot htop jq lnav \\"
   echo "                   moreutils multitail neovim numbat prettyping \\"
   echo "                   python3 rbenv ripgrep rustup-init shellcheck \\"
-  echo "                   swaks tldr tig watch wget universal-ctags yq \\"
-  echo "                   zsh-completions\`"
+  echo "                   swaks tldr tig tree-sitter-cli watch wget \\"
+  echo "                   universal-ctags yq zsh-completions\`"
   echo "      - \`rustup update\` should update rust"
   echo "      - \`rbenv install 2.6.5\` installs journal version"
-  echo
-  echo "     ... install neovim plugins"
-  echo "       \`nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'\`"
   echo
   echo "     ... optional if doing \`ruby\`"
   echo "       \`[rbenv exec] gem install ripper-tags\`"

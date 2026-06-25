@@ -8,10 +8,37 @@ entire_file_region = function()
 end
 
 return {
-  -- tree-sitter
+  -- tree-sitter (main branch: modules are gone; highlight/indent wired manually)
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
+    config = function()
+      local ts = require("nvim-treesitter")
+      local langs = require("treesitter-langs")
+
+      -- self-heal: install only the parsers that are missing, never block or error offline
+      pcall(function()
+        local installed = ts.get_installed()
+        local missing = vim.tbl_filter(function(lang)
+          return not vim.list_contains(installed, lang)
+        end, langs)
+        if #missing > 0 then
+          ts.install(missing)
+        end
+      end)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("treesitter_setup", { clear = true }),
+        callback = function(args)
+          local buf = args.buf
+          if pcall(vim.treesitter.start, buf) then
+            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
   },
 
   -- comments
