@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+#
+# clooper — run `claude -p` in a loop until it's done or the budget runs out.
+#
+# Each iteration runs the SAME prompt in a FRESH claude session (no --continue),
+# so the prompt is responsible for reading/writing its own state (git, files).
+# Your personal ~/.claude/CLAUDE.md is excluded for a more vanilla experience.
+#
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+clooper — loop `claude -p` until a done-string appears or a budget is hit.
+
+USAGE
+  clooper <budget_usd> <max_iters> <prompt_file> <done_string>
+  clooper -h | --help
+
+ARGUMENTS (all positional)
+  budget_usd    Stop once cumulative spend reaches this dollar amount (e.g. 100).
+  max_iters     Hard cap on the number of iterations (e.g. 50).
+  prompt_file   Path to a file whose contents are sent as the prompt each run.
+  done_string   If this string appears in claude's result, the loop stops.
+
+BEHAVIOR
+  - Runs `claude -p --model opus --effort medium --output-format json`.
+  - Excludes ~/.claude/CLAUDE.md via --settings claudeMdExcludes (vanilla run).
+  - Fresh session each iteration; prompt must persist its own state to disk/git.
+  - After each run prints: iter #, this run's cost, cumulative cost, git sha.
+  - Stops on: done_string found, budget reached, or max_iters exhausted.
+  - Ctrl-C once: finish the in-flight claude run, then stop looping (graceful).
+  - Ctrl-C twice: terminate the running claude immediately.
+
+EXAMPLE
+  clooper 100 50 ./my-prompt.md "FACELIFT COMPLETE"
+EOF
+}
+
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+esac
+
+if [[ $# -ne 4 ]]; then
+  echo "error: expected 4 arguments, got $#" >&2
+  echo >&2
+  usage >&2
+  exit 2
+fi
+
+BUDGET=$1
+MAX_ITERS=$2
+PROMPT_FILE=$3
+DONE_STRING=$4
+
+# --- validate ---------------------------------------------------------------
+[[ "$BUDGET"    =~ ^[0-9]+(\.[0-9]+)?$ ]] || { echo "error: budget_usd must be a number, got '$BUDGET'" >&2; exit 2; }
+[[ "$MAX_ITERS" =~ ^[0-9]+$ ]]            || { echo "error: max_iters must be an integer, got '$MAX_ITERS'" >&2; exit 2; }
+[[ -f "$PROMPT_FILE" ]]                   || { echo "error: prompt_file not found: $PROMPT_FILE" >&2; exit 2; }
+[[ -n "$DONE_STRING" ]]                   || { echo "error: done_string must be non-empty" >&2; exit 2; }
+
+for bin in claude jq bc; do
+  command -v "$bin" >/dev/null 2>&1 || { echo "error: required tool '$bin' not on PATH" >&2; exit 127; }
+done
+
+PROMPT="$(cat "$PROMPT_FILE")"
+spent=0
+
+# Drop this one known-noisy warning from claude's stderr; keep everything else.
+STDERR_NOISE='connectors are disabled because ANTHROPIC_API_KEY'
+
+sha() { git rev-parse --short HEAD 2>/dev/null || echo "no-git"; }
+
+# --- graceful Ctrl-C --------------------------------------------------------
+# claude runs in a subshell that ignores INT (so a terminal ^C does NOT reach
+# it), while clooper itself traps INT:
+#   1st ^C -> request a graceful stop after the current run finishes.
+#   2nd ^C -> terminate the running claude now.
+stop_requested=0
+claude_pid=""
+
+handle_int() {
+  if [[ -n "$claude_pid" ]] && kill -0 "$claude_pid" 2>/dev/null; then
+    if (( stop_requested == 0 )); then
+      stop_requested=1
+      printf '\nclooper: ^C — will stop looping after the current claude run finishes.\n' >&2
+      printf 'clooper: press ^C again to terminate the running claude now.\n' >&2
+    else
+      printf '\nclooper: ^C again — terminating the running claude…\n' >&2
+      kill -TERM "$claude_pid" 2>/dev/null || true
+    fi
+  else
+    stop_requested=1
+  fi
+}
+trap handle_int INT
+
+echo "clooper: budget=\$$BUDGET  max_iters=$MAX_ITERS  prompt=$PROMPT_FILE  done=\"$DONE_STRING\""
+echo "clooper: ^C once = stop after this run; ^C twice = kill the running claude."
+
+for (( i=1; i<=MAX_ITERS; i++ )); do
+  outfile="$(mktemp)"
+
+  # JSON goes to stdout (outfile); warnings/progress go to stderr (terminal),
+  # with the one noisy connectors warning filtered out via grep.
+  # The subshell ignores INT so a terminal ^C is handled by clooper, not claude.
+  ( trap '' INT; exec claude -p \
+        --effort high \
+        --settings "{\"claudeMdExcludes\":[\"$HOME/.claude/CLAUDE.md\"]}" \
+        --output-format json \
+        --dangerously-skip-permissions \
+        --model opus \
+        "$PROMPT" > "$outfile" 2> >(grep -vF --line-buffered "$STDERR_NOISE" >&2) ) &
+  claude_pid=$!
+
+  # Wait for claude; re-wait if our INT trap interrupts the wait.
+  set +e
+  status=0
+  while kill -0 "$claude_pid" 2>/dev/null; do
+    wait "$claude_pid"; status=$?
+  done
+  set -e
+  claude_pid=""
+
+  if (( status != 0 )); then
+    if (( stop_requested )); then
+      echo "stopped: claude terminated by ^C during iter $i — total \$$(printf '%.4f' "$spent")" >&2
+      rm -f "$outfile"
+      exit 130
+    fi
+    echo "iter $i: claude exited non-zero — raw output at $outfile" >&2
+    exit 1
+  fi
+
+  if ! jq -e . "$outfile" >/dev/null 2>&1; then
+    echo "iter $i: claude did not return valid JSON — see $outfile" >&2
+    exit 1
+  fi
+
+  cost=$(jq -r '.total_cost_usd // 0' "$outfile")
+  result=$(jq -r '.result // ""' "$outfile")
+  is_error=$(jq -r '.is_error // false' "$outfile")
+  spent=$(echo "$spent + $cost" | bc -l)
+
+  printf 'iter %d: $%.4f  (total $%.4f) @ %s%s\n' \
+    "$i" "$cost" "$spent" "$(sha)" \
+    "$([[ "$is_error" == "true" ]] && echo '  [claude reported is_error]')"
+
+  rm -f "$outfile"
+
+  if grep -qF -- "$DONE_STRING" <<<"$result"; then
+    echo "complete: done-string found after $i iteration(s), total \$$(printf '%.4f' "$spent")"
+    exit 0
+  fi
+
+  if (( $(echo "$spent >= $BUDGET" | bc -l) )); then
+    echo "budget hit: \$$(printf '%.4f' "$spent") >= \$$BUDGET after $i iteration(s)"
+    exit 0
+  fi
+
+  if (( stop_requested )); then
+    echo "stopped: ^C requested — halted after $i iteration(s), total \$$(printf '%.4f' "$spent")"
+    exit 130
+  fi
+done
+
+echo "max iters reached: $MAX_ITERS iteration(s), total \$$(printf '%.4f' "$spent")"
