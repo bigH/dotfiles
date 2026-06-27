@@ -1,12 +1,25 @@
 #!/bin/bash
 
-if ! [ -e "$DOT_FILES_DIR/.silent-agent-mode" ]; then
-  say -v Zarvox boop
-fi
-printf '\e[?5h' >> /dev/tty
-sleep 0.1
-printf '\e[?5l' >> /dev/tty
-sleep 1
-printf '\e[?5h' >> /dev/tty
-sleep 0.1
-printf '\e[?5l' >> /dev/tty
+(
+  if ! [ -e "$DOT_FILES_DIR/.silent-agent-mode" ]; then
+    say -v Zarvox boop
+  fi
+
+  if [ -t 1 ]; then
+    printf '\e[?5h' >> /dev/tty
+    sleep 0.1
+    printf '\e[?5l' >> /dev/tty
+    sleep 0.4
+    printf '\e[?5h' >> /dev/tty
+    sleep 0.1
+    printf '\e[?5l' >> /dev/tty
+    sleep 1
+    printf '\e[?5h' >> /dev/tty
+    sleep 0.1
+    printf '\e[?5l' >> /dev/tty
+    sleep 2
+    printf '\e[?5h' >> /dev/tty
+    sleep 0.1
+    printf '\e[?5l' >> /dev/tty
+  fi
+) &
