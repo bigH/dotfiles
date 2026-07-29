@@ -20,7 +20,7 @@ packages = [{include = "siggy", from = "src"}]
 [tool.poetry.group.dev.dependencies]
 ipython = "^9.2.0"
 ipdb = "^0.13.13"
-black = "^25.1.0"
+black = "^26.3.1"
 flake8 = "^7.2.0"
 autoflake = "^2.3.1"
 isort = "^6.0.1"
